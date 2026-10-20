@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 39,
+    "padded": "39",
+    "slug": "39-plastics-and-articles",
+    "title": "Plastics and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/39-plastics-and-articles",
+    "h1": "HTS Chapter 39: Plastics and Articles Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Plastics & Plastic Articles Exports and Foreign Tariffs (HTS Ch. 39) | KoalaGains",
+      "shortDescription": "U.S. plastics exports were $77.66B in 2025. Where they go, what Mexico, Canada, the EU and China charge, and which tariffs changed since January 2025.",
+      "keywords": ["US plastics exports", "tariffs on US plastics", "US polyethylene exports", "China tariff on US plastic", "HS 39 exports by country"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$77.66B** of plastics and plastic articles in 2025, down 3.0% from 2024 and 7% below the 2022 peak of $83.28B. Resin dominates: polyethylene and other ethylene polymers (3901) alone were **21%** ($16.51B), and finished articles (3926, 3923, 3920) add another quarter. Mexico and Canada took **46%** between them, and Mexico ($21.09B) is the single largest buyer.\n\nTariffs are a minor factor for most buyers: Mexico, Canada, Singapore and South Korea charge nothing on qualifying goods, and the EU cut its tariff from 6.5% to zero on July 1, 2026. The exceptions are **China**, which adds a 10% extra duty to its MFN rate (and a 74.9% anti-dumping duty on U.S. POM copolymer) and bought 19.7% less, and **Canada**, which since September 2026 surtaxes six consumer-plastic tariff items at 50%. What usually decides access is chemical-inventory law and food-contact rules, not the tariff.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$77.66B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-3%"
+    },
+    {
+      "label": "Largest product group (3901)",
+      "value": "21%",
+      "note": "Polyethylene & other ethylene polymers, in primary forms"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "46%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "6 of 13",
+      "note": "Mexico, Belgium, Germany, Netherlands, Singapore, South Korea (Canada: free except 50% on listed lines)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. plastics exports were $77.66B in 2025 (−3.0%); polyethylene resin (3901, $16.51B) and finished articles (3926, $9.30B) lead.",
+    "Mexico and Canada took 46% of exports and charge nothing on qualifying goods, but Canada has surtaxed six consumer-plastic items at 50% since September 8, 2026.",
+    "The EU's tariff on U.S. plastics fell from 6.5% to zero on July 1, 2026 under Regulation (EU) 2026/1455.",
+    "China is the one big buyer that raised tariffs — a 10% extra duty on all U.S. goods and a 74.9% anti-dumping duty on U.S. POM copolymer — and U.S. exports there fell 19.7% to $5.98B."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 60216190079,
+      "partnerAUsd": 14743250419,
+      "partnerBUsd": 12439663461,
+      "restUsd": 33033276199
+    },
+    {
+      "year": 2021,
+      "totalUsd": 74311057987,
+      "partnerAUsd": 19327437813,
+      "partnerBUsd": 16002465796,
+      "restUsd": 38981154378
+    },
+    {
+      "year": 2022,
+      "totalUsd": 83283461448,
+      "partnerAUsd": 21250169663,
+      "partnerBUsd": 17482952602,
+      "restUsd": 44550339183
+    },
+    {
+      "year": 2023,
+      "totalUsd": 77796410810,
+      "partnerAUsd": 21198076743,
+      "partnerBUsd": 15411229408,
+      "restUsd": 41187104659
+    },
+    {
+      "year": 2024,
+      "totalUsd": 80078263173,
+      "partnerAUsd": 21739953824,
+      "partnerBUsd": 15065603633,
+      "restUsd": 43272705716
+    },
+    {
+      "year": 2025,
+      "totalUsd": 77664680687,
+      "partnerAUsd": 21092041813,
+      "partnerBUsd": 14290823342,
+      "restUsd": 42281815532
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 39 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 21092041813,
+      "priorExportsUsd": 21739953824,
+      "sharePct": 27.2,
+      "changePct": -3,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 14290823342,
+      "priorExportsUsd": 15065603633,
+      "sharePct": 18.4,
+      "changePct": -5.1,
+      "tariffNow": "Free (CUSMA); 50% surtax on listed consumer articles",
+      "status": "raised"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 5981656873,
+      "priorExportsUsd": 7452840887,
+      "sharePct": 7.7,
+      "changePct": -19.7,
+      "tariffNow": "MFN + 10% extra (74.9% anti-dumping on POM copolymer)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 3269425436,
+      "priorExportsUsd": 3412231244,
+      "sharePct": 4.2,
+      "changePct": -4.2,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 2652088146,
+      "priorExportsUsd": 3018690107,
+      "sharePct": 3.4,
+      "changePct": -12.1,
+      "tariffNow": "MFN ~11.5% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 1869307661,
+      "priorExportsUsd": 1928115975,
+      "sharePct": 2.4,
+      "changePct": -3.1,
+      "tariffNow": "MFN 0%–4.8% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 1636827589,
+      "priorExportsUsd": 1545353581,
+      "sharePct": 2.1,
+      "changePct": 5.9,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 1516490242,
+      "priorExportsUsd": 1517326184,
+      "sharePct": 2,
+      "changePct": -0.1,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 1494718700,
+      "priorExportsUsd": 1495945834,
+      "sharePct": 1.9,
+      "changePct": -0.1,
+      "tariffNow": "UK MFN 0%–6.2%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 1339967028,
+      "priorExportsUsd": 1434727777,
+      "sharePct": 1.7,
+      "changePct": -6.6,
+      "tariffNow": "MFN 7%–15% (US–India framework not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 1304901236,
+      "priorExportsUsd": 1208973643,
+      "sharePct": 1.7,
+      "changePct": 7.9,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 1264941217,
+      "priorExportsUsd": 1303499836,
+      "sharePct": 1.6,
+      "changePct": -3,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 1061365356,
+      "priorExportsUsd": 783806093,
+      "sharePct": 1.4,
+      "changePct": 35.4,
+      "tariffNow": "MFN (no U.S. FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 18890126048,
+  "othersPriorExportsUsd": 18171194555,
+  "byHeading": [
+    {
+      "heading": "3901",
+      "label": "Polyethylene & other ethylene polymers, in primary forms",
+      "exportsUsd": 16507592081,
+      "priorExportsUsd": 16469221612,
+      "changePct": 0.2,
+      "sharePct": 21.3
+    },
+    {
+      "heading": "3902",
+      "label": "Polypropylene & other olefin polymers, in primary forms",
+      "exportsUsd": 3896375131,
+      "priorExportsUsd": 4262211721,
+      "changePct": -8.6,
+      "sharePct": 5
+    },
+    {
+      "heading": "3903",
+      "label": "Polystyrene, SAN & ABS, in primary forms",
+      "exportsUsd": 1321920219,
+      "priorExportsUsd": 1443010406,
+      "changePct": -8.4,
+      "sharePct": 1.7
+    },
+    {
+      "heading": "3904",
+      "label": "PVC, PTFE & other halogenated polymers, in primary forms",
+      "exportsUsd": 3920479542,
+      "priorExportsUsd": 3931613692,
+      "changePct": -0.3,
+      "sharePct": 5
+    },
+    {
+      "heading": "3905",
+      "label": "Polyvinyl acetate, polyvinyl alcohol & other vinyl polymers",
+      "exportsUsd": 831566434,
+      "priorExportsUsd": 914644369,
+      "changePct": -9.1,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "3906",
+      "label": "Acrylic polymers, in primary forms",
+      "exportsUsd": 1751398441,
+      "priorExportsUsd": 1878744458,
+      "changePct": -6.8,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "3907",
+      "label": "PET, polycarbonates, epoxy resins, polyethers & other polyesters",
+      "exportsUsd": 5130984493,
+      "priorExportsUsd": 5881460868,
+      "changePct": -12.8,
+      "sharePct": 6.6
+    },
+    {
+      "heading": "3908",
+      "label": "Polyamides (nylon), in primary forms",
+      "exportsUsd": 2280634123,
+      "priorExportsUsd": 2785049833,
+      "changePct": -18.1,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "3909",
+      "label": "Amino resins, phenolic resins & polyurethanes",
+      "exportsUsd": 1801233017,
+      "priorExportsUsd": 1818583886,
+      "changePct": -1,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "3910",
+      "label": "Silicones, in primary forms",
+      "exportsUsd": 1385780403,
+      "priorExportsUsd": 1387307945,
+      "changePct": -0.1,
+      "sharePct": 1.8
+    },
+    {
+      "heading": "3911",
+      "label": "Petroleum resins, polyterpenes & other resins",
+      "exportsUsd": 1026868345,
+      "priorExportsUsd": 1132831808,
+      "changePct": -9.4,
+      "sharePct": 1.3
+    },
+    {
+      "heading": "3912",
+      "label": "Cellulose & its chemical derivatives",
+      "exportsUsd": 1437870633,
+      "priorExportsUsd": 1538090460,
+      "changePct": -6.5,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "3913",
+      "label": "Natural polymers (alginates) & modified natural polymers",
+      "exportsUsd": 356411870,
+      "priorExportsUsd": 369051467,
+      "changePct": -3.4,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "3914",
+      "label": "Ion-exchange resins",
+      "exportsUsd": 347838974,
+      "priorExportsUsd": 287817509,
+      "changePct": 20.9,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "3915",
+      "label": "Plastic waste, parings & scrap",
+      "exportsUsd": 200571882,
+      "priorExportsUsd": 264308919,
+      "changePct": -24.1,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "3916",
+      "label": "Monofilament, rods, sticks & profile shapes",
+      "exportsUsd": 586482550,
+      "priorExportsUsd": 562062852,
+      "changePct": 4.3,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "3917",
+      "label": "Tubes, pipes, hoses & their fittings",
+      "exportsUsd": 4224843227,
+      "priorExportsUsd": 4050007817,
+      "changePct": 4.3,
+      "sharePct": 5.4
+    },
+    {
+      "heading": "3918",
+      "label": "Floor, wall & ceiling coverings, incl. vinyl flooring",
+      "exportsUsd": 286562451,
+      "priorExportsUsd": 301547512,
+      "changePct": -5,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "3919",
+      "label": "Self-adhesive tape, film, labels & other flat shapes",
+      "exportsUsd": 3355501827,
+      "priorExportsUsd": 3409515349,
+      "changePct": -1.6,
+      "sharePct": 4.3
+    },
+    {
+      "heading": "3920",
+      "label": "Film, sheet & strip, non-cellular and not reinforced",
+      "exportsUsd": 5384652193,
+      "priorExportsUsd": 5697711435,
+      "changePct": -5.5,
+      "sharePct": 6.9
+    },
+    {
+      "heading": "3921",
+      "label": "Foam & other plastic sheet, film & strip",
+      "exportsUsd": 3741908580,
+      "priorExportsUsd": 3849952928,
+      "changePct": -2.8,
+      "sharePct": 4.8
+    },
+    {
+      "heading": "3922",
+      "label": "Baths, sinks, toilet seats & other sanitary ware",
+      "exportsUsd": 149861747,
+      "priorExportsUsd": 153554668,
+      "changePct": -2.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3923",
+      "label": "Packaging: boxes, bags, bottles, caps & closures",
+      "exportsUsd": 6899539616,
+      "priorExportsUsd": 6856609728,
+      "changePct": 0.6,
+      "sharePct": 8.9
+    },
+    {
+      "heading": "3924",
+      "label": "Tableware, kitchenware & household articles",
+      "exportsUsd": 908643547,
+      "priorExportsUsd": 1038770573,
+      "changePct": -12.5,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "3925",
+      "label": "Builders' ware: tanks, doors, windows, shutters",
+      "exportsUsd": 624741500,
+      "priorExportsUsd": 736385469,
+      "changePct": -15.2,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "3926",
+      "label": "Other articles: office supplies, gloves, fittings, gaskets",
+      "exportsUsd": 9304417861,
+      "priorExportsUsd": 9058195889,
+      "changePct": 2.7,
+      "sharePct": 12
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3926.90",
+      "heading": "3926",
+      "description": "Plastics; other articles n.e.c. in chapter 39",
+      "exportsUsd": 8826843678,
+      "priorExportsUsd": 8559200061,
+      "changePct": 3.1,
+      "sharePct": 11.4
+    },
+    {
+      "hs6": "3901.40",
+      "heading": "3901",
+      "description": "Ethylene polymers; in primary forms, ethylene-alpha-olefin copolymers, having a specific gravity of less than 0.94",
+      "exportsUsd": 5860283732,
+      "priorExportsUsd": 5965566453,
+      "changePct": -1.8,
+      "sharePct": 7.5
+    },
+    {
+      "hs6": "3901.20",
+      "heading": "3901",
+      "description": "Ethylene polymers; in primary forms, polyethylene having a specific gravity of 0.94 or more",
+      "exportsUsd": 5136241536,
+      "priorExportsUsd": 5233157694,
+      "changePct": -1.9,
+      "sharePct": 6.6
+    },
+    {
+      "hs6": "3901.10",
+      "heading": "3901",
+      "description": "Ethylene polymers; in primary forms, polyethylene having a specific gravity of less than 0.94",
+      "exportsUsd": 4290016650,
+      "priorExportsUsd": 3993929800,
+      "changePct": 7.4,
+      "sharePct": 5.5
+    },
+    {
+      "hs6": "3904.10",
+      "heading": "3904",
+      "description": "Vinyl chloride, other halogenated olefin polymers; poly(vinyl chloride), not mixed with any other substances, in primary forms",
+      "exportsUsd": 2551393463,
+      "priorExportsUsd": 2543033746,
+      "changePct": 0.3,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "3919.90",
+      "heading": "3919",
+      "description": "Plastics; plates, sheets, film, foil, tape, strip, other flat shapes thereof, self-adhesive, other than in rolls of a width not exceeding 20cm",
+      "exportsUsd": 2432195183,
+      "priorExportsUsd": 2413827695,
+      "changePct": 0.8,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "3923.10",
+      "heading": "3923",
+      "description": "Plastics; boxes, cases, crates and similar articles for the conveyance or packing of goods",
+      "exportsUsd": 2269457249,
+      "priorExportsUsd": 2145473363,
+      "changePct": 5.8,
+      "sharePct": 2.9
+    },
+    {
+      "hs6": "3902.10",
+      "heading": "3902",
+      "description": "Propylene, other olefin polymers; polypropylene in primary forms",
+      "exportsUsd": 1755374044,
+      "priorExportsUsd": 1931114942,
+      "changePct": -9.1,
+      "sharePct": 2.3
+    },
+    {
+      "hs6": "3921.90",
+      "heading": "3921",
+      "description": "Plastics; plates, sheets, film, foil and strip, other than cellular",
+      "exportsUsd": 1739760418,
+      "priorExportsUsd": 1757409376,
+      "changePct": -1,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "3923.90",
+      "heading": "3923",
+      "description": "Plastics; articles for the conveyance or packing of goods n.e.c. in heading no. 3923",
+      "exportsUsd": 1622954659,
+      "priorExportsUsd": 1717884617,
+      "changePct": -5.5,
+      "sharePct": 2.1
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 39, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 76% of 2025 U.S. Chapter 39 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

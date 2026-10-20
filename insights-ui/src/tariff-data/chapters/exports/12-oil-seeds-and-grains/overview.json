@@ -43,7 +43,7 @@
     },
     {
       "label": "Markets taxing this chapter's goods at all",
-      "value": "1 of 8",
+      "value": "1 of 9",
       "note": "China; every other top market applies no tariff"
     }
   ],
@@ -237,6 +237,16 @@
       "status": "unchanged"
     },
     {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 747756862,
+      "priorExportsUsd": 665924522,
+      "sharePct": 3.5,
+      "changePct": 12.3,
+      "tariffNow": "Reportedly free (unconfirmed against Taiwan's current tariff schedule)",
+      "status": "unchanged"
+    },
+    {
       "countryCode": 586,
       "country": "Pakistan",
       "exportsUsd": 727512177,
@@ -287,8 +297,8 @@
       "status": "unchanged"
     }
   ],
-  "othersExportsUsd": 5214587579,
-  "othersPriorExportsUsd": 5252389697,
+  "othersExportsUsd": 4466830717,
+  "othersPriorExportsUsd": 4586465175,
   "byHeading": [
     {
       "heading": "1201",
@@ -499,5 +509,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 12 buyers listed take 76% of 2025 U.S. Chapter 12 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+  "coverageNote": "The 13 buyers listed take 79% of 2025 U.S. Chapter 12 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
 }

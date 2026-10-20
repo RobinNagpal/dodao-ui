@@ -1,0 +1,606 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 90,
+    "padded": "90",
+    "slug": "90-optical-and-precision-instruments",
+    "title": "Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/90-optical-and-precision-instruments",
+    "h1": "HTS Chapter 90: Optical, Photographic, Cinematographic, Measuring, Checking, Precision, Medical or Surgical Instruments and Apparatus; Parts and Accessories Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Medical, Optical & Precision Instrument Exports and Foreign Tariffs (HTS Ch. 90) | KoalaGains",
+      "shortDescription": "U.S. instrument exports were $106.33B in 2025. Where they go, what the EU, China and Canada charge, and which tariffs changed since January 2025.",
+      "keywords": [
+        "US medical device exports",
+        "US instruments exports",
+        "tariffs on US medical devices",
+        "China tariff on US medical equipment",
+        "HS 90 exports by country"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$106.33B** of optical, measuring, precision and medical instruments in 2025, essentially flat on 2024 (+0.0%) and 27% above 2020. Medical, surgical and dental instruments (9018) were **35%** ($36.89B) and implants and orthopedic devices (9021) another 13%; laboratory analysis instruments (9027), measuring and inspection machines (9031) and electrical test instruments (9030) make up most of the rest. The EU is the largest market ($30.81B, 29%), led by the Netherlands ($12.12B); Canada and Mexico take another 20%.\n\nTariffs matter little here: Canada, Mexico, South Korea, Singapore and Australia charge nothing on qualifying goods, the EU went to zero on July 1, 2026, and Japan and the UK charge low rates. **China** is the exception: it adds a 10% extra duty on all U.S. goods and bought 11.7% less. What decides access is device approval (CE, NMPA, PMDA, Health Canada) and, for lasers, thermal imaging, navigation and some inspection tools, U.S. export controls.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$106.33B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+0.0%"
+    },
+    {
+      "label": "Largest product group (9018)",
+      "value": "35%",
+      "note": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "22%",
+      "note": "Netherlands, Canada"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "9 of 13",
+      "note": "Netherlands, Germany, Belgium, France (EU), Canada, Mexico, South Korea, Singapore, Australia"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. instrument exports were flat at $106.33B in 2025; medical, surgical and dental instruments (9018, $36.89B) are 35% and the EU, led by the Netherlands, is 29% of the market.",
+    "Canada, Mexico, South Korea, Singapore and Australia charge nothing on qualifying U.S. instruments, and the EU cut its remaining tariffs to zero on July 1, 2026.",
+    "China is the only large buyer that raised tariffs (a 10% extra duty on all U.S. goods); U.S. exports there fell 11.7%. Its Board of Trade list names 43 medical-device lines for possible cuts, but none is published.",
+    "Device approval — CE under the EU MDR, NMPA in China, PMDA in Japan, a Health Canada licence — is the real gate, and lasers, thermal imagers and navigation equipment need U.S. export licences for some destinations."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 83404371523,
+      "partnerAUsd": 7530521360,
+      "partnerBUsd": 7739731141,
+      "restUsd": 68134119022
+    },
+    {
+      "year": 2021,
+      "totalUsd": 91680459491,
+      "partnerAUsd": 8749638058,
+      "partnerBUsd": 9117553682,
+      "restUsd": 73813267751
+    },
+    {
+      "year": 2022,
+      "totalUsd": 99053191641,
+      "partnerAUsd": 10061613540,
+      "partnerBUsd": 9895802004,
+      "restUsd": 79095776097
+    },
+    {
+      "year": 2023,
+      "totalUsd": 105107609201,
+      "partnerAUsd": 11476251041,
+      "partnerBUsd": 10603592843,
+      "restUsd": 83027765317
+    },
+    {
+      "year": 2024,
+      "totalUsd": 106294950884,
+      "partnerAUsd": 11743147324,
+      "partnerBUsd": 10782927320,
+      "restUsd": 83768876240
+    },
+    {
+      "year": 2025,
+      "totalUsd": 106326006657,
+      "partnerAUsd": 12116424796,
+      "partnerBUsd": 10773621295,
+      "restUsd": 83435960566
+    }
+  ],
+  "byYearPartners": ["Netherlands", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 90 goods each year, split into the two largest 2025 buyers (Netherlands and Canada) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 12116424796,
+      "priorExportsUsd": 11743147324,
+      "sharePct": 11.4,
+      "changePct": 3.2,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 10773621295,
+      "priorExportsUsd": 10782927320,
+      "sharePct": 10.1,
+      "changePct": -0.1,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 10630385345,
+      "priorExportsUsd": 11307619029,
+      "sharePct": 10,
+      "changePct": -6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 9913402027,
+      "priorExportsUsd": 11222672511,
+      "sharePct": 9.3,
+      "changePct": -11.7,
+      "tariffNow": "MFN + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 7154979032,
+      "priorExportsUsd": 7065183879,
+      "sharePct": 6.7,
+      "changePct": 1.3,
+      "tariffNow": "MFN 0%–5.3% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 6505812173,
+      "priorExportsUsd": 6780240784,
+      "sharePct": 6.1,
+      "changePct": -4,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 4348025737,
+      "priorExportsUsd": 3857706662,
+      "sharePct": 4.1,
+      "changePct": 12.7,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 3532736945,
+      "priorExportsUsd": 2892645555,
+      "sharePct": 3.3,
+      "changePct": 22.1,
+      "tariffNow": "MFN 0%–7.5% (US–Taiwan agreement not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 3455564077,
+      "priorExportsUsd": 3220741572,
+      "sharePct": 3.2,
+      "changePct": 7.3,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 3388411846,
+      "priorExportsUsd": 3496870606,
+      "sharePct": 3.2,
+      "changePct": -3.1,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 2899952481,
+      "priorExportsUsd": 2863547384,
+      "sharePct": 2.7,
+      "changePct": 1.3,
+      "tariffNow": "UK MFN 0%–4%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 2664688747,
+      "priorExportsUsd": 2602417566,
+      "sharePct": 2.5,
+      "changePct": 2.4,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 2287149513,
+      "priorExportsUsd": 2345164192,
+      "sharePct": 2.2,
+      "changePct": -2.5,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 26654852643,
+  "othersPriorExportsUsd": 26114066500,
+  "byHeading": [
+    {
+      "heading": "9001",
+      "label": "Optical fibers, contact lenses, spectacle lenses & unmounted optics",
+      "exportsUsd": 3390530692,
+      "priorExportsUsd": 3295596182,
+      "changePct": 2.9,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "9002",
+      "label": "Mounted lenses, filters, prisms & mirrors for instruments",
+      "exportsUsd": 760934903,
+      "priorExportsUsd": 743864538,
+      "changePct": 2.3,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "9003",
+      "label": "Eyeglass frames & parts",
+      "exportsUsd": 366716087,
+      "priorExportsUsd": 345784056,
+      "changePct": 6.1,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "9004",
+      "label": "Sunglasses, safety glasses & goggles",
+      "exportsUsd": 809369749,
+      "priorExportsUsd": 840648083,
+      "changePct": -3.7,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "9005",
+      "label": "Binoculars, telescopes & astronomical instruments",
+      "exportsUsd": 243374566,
+      "priorExportsUsd": 313635292,
+      "changePct": -22.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "9006",
+      "label": "Still cameras, flash units & parts",
+      "exportsUsd": 223605048,
+      "priorExportsUsd": 232429970,
+      "changePct": -3.8,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "9007",
+      "label": "Cinematographic cameras & projectors",
+      "exportsUsd": 74456725,
+      "priorExportsUsd": 90624924,
+      "changePct": -17.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "9008",
+      "label": "Image projectors, enlargers & reducers",
+      "exportsUsd": 16454340,
+      "priorExportsUsd": 18121765,
+      "changePct": -9.2,
+      "sharePct": 0
+    },
+    {
+      "heading": "9010",
+      "label": "Photo lab equipment, negatoscopes & projection screens",
+      "exportsUsd": 53036504,
+      "priorExportsUsd": 65026298,
+      "changePct": -18.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "9011",
+      "label": "Optical microscopes",
+      "exportsUsd": 283630648,
+      "priorExportsUsd": 288944340,
+      "changePct": -1.8,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "9012",
+      "label": "Electron microscopes & diffraction apparatus",
+      "exportsUsd": 344504740,
+      "priorExportsUsd": 396632613,
+      "changePct": -13.1,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "9013",
+      "label": "Lasers, rifle scopes, magnifiers & other optical devices",
+      "exportsUsd": 3370006154,
+      "priorExportsUsd": 3577098775,
+      "changePct": -5.8,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "9014",
+      "label": "Compasses, autopilots & navigational instruments",
+      "exportsUsd": 1425789085,
+      "priorExportsUsd": 1222861192,
+      "changePct": 16.6,
+      "sharePct": 1.3
+    },
+    {
+      "heading": "9015",
+      "label": "Surveying, rangefinders, weather & geophysical instruments",
+      "exportsUsd": 1631772645,
+      "priorExportsUsd": 1740157514,
+      "changePct": -6.2,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "9016",
+      "label": "Precision balances (5 cg or better)",
+      "exportsUsd": 26231822,
+      "priorExportsUsd": 25192827,
+      "changePct": 4.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "9017",
+      "label": "Drafting instruments, calipers, micrometers & measuring tapes",
+      "exportsUsd": 302923299,
+      "priorExportsUsd": 320407258,
+      "changePct": -5.5,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "9018",
+      "label": "Medical, surgical, dental & veterinary instruments (incl. syringes, catheters, ECG, ultrasound, MRI)",
+      "exportsUsd": 36887104004,
+      "priorExportsUsd": 36806601554,
+      "changePct": 0.2,
+      "sharePct": 34.7
+    },
+    {
+      "heading": "9019",
+      "label": "Massage & mechano-therapy apparatus, oxygen therapy, ventilators & CPAP",
+      "exportsUsd": 1576448101,
+      "priorExportsUsd": 1583379154,
+      "changePct": -0.4,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "9020",
+      "label": "Breathing appliances & gas masks",
+      "exportsUsd": 588082394,
+      "priorExportsUsd": 592372439,
+      "changePct": -0.7,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "9021",
+      "label": "Orthopedic devices, implants, artificial joints, hearing aids & pacemakers",
+      "exportsUsd": 13584511698,
+      "priorExportsUsd": 12979845238,
+      "changePct": 4.7,
+      "sharePct": 12.8
+    },
+    {
+      "heading": "9022",
+      "label": "X-ray, CT & radiotherapy apparatus and X-ray tubes",
+      "exportsUsd": 3936922516,
+      "priorExportsUsd": 4325941074,
+      "changePct": -9,
+      "sharePct": 3.7
+    },
+    {
+      "heading": "9023",
+      "label": "Demonstration instruments & models",
+      "exportsUsd": 605134969,
+      "priorExportsUsd": 619692193,
+      "changePct": -2.3,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "9024",
+      "label": "Materials-testing machines (hardness, strength)",
+      "exportsUsd": 608115722,
+      "priorExportsUsd": 693679273,
+      "changePct": -12.3,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "9025",
+      "label": "Thermometers, pyrometers, barometers, hydrometers & hygrometers",
+      "exportsUsd": 1091729073,
+      "priorExportsUsd": 1046614587,
+      "changePct": 4.3,
+      "sharePct": 1
+    },
+    {
+      "heading": "9026",
+      "label": "Flow meters, level gauges & pressure instruments",
+      "exportsUsd": 4356124336,
+      "priorExportsUsd": 4344825159,
+      "changePct": 0.3,
+      "sharePct": 4.1
+    },
+    {
+      "heading": "9027",
+      "label": "Laboratory analysis instruments: spectrometers, chromatographs, analyzers",
+      "exportsUsd": 10409469777,
+      "priorExportsUsd": 10701994557,
+      "changePct": -2.7,
+      "sharePct": 9.8
+    },
+    {
+      "heading": "9028",
+      "label": "Gas, liquid & electricity supply meters",
+      "exportsUsd": 783401281,
+      "priorExportsUsd": 766491549,
+      "changePct": 2.2,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "9029",
+      "label": "Counters, taximeters, speedometers & tachometers",
+      "exportsUsd": 455579330,
+      "priorExportsUsd": 498594905,
+      "changePct": -8.6,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "9030",
+      "label": "Oscilloscopes, multimeters, electrical test & radiation-measuring instruments",
+      "exportsUsd": 5883441337,
+      "priorExportsUsd": 5680047131,
+      "changePct": 3.6,
+      "sharePct": 5.5
+    },
+    {
+      "heading": "9031",
+      "label": "Measuring & inspection machines: CMMs, wafer and mask inspection, test benches",
+      "exportsUsd": 8245186517,
+      "priorExportsUsd": 8181928503,
+      "changePct": 0.8,
+      "sharePct": 7.8
+    },
+    {
+      "heading": "9032",
+      "label": "Thermostats, manostats & automatic regulating instruments",
+      "exportsUsd": 3457425111,
+      "priorExportsUsd": 3357071977,
+      "changePct": 3,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "9033",
+      "label": "Parts & accessories not specified elsewhere in Chapter 90",
+      "exportsUsd": 533993484,
+      "priorExportsUsd": 598845964,
+      "changePct": -10.8,
+      "sharePct": 0.5
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "9018.90",
+      "heading": "9018",
+      "description": "Medical, surgical or dental instruments and appliances; n.e.c. in heading no. 9018",
+      "exportsUsd": 18567315211,
+      "priorExportsUsd": 17934915115,
+      "changePct": 3.5,
+      "sharePct": 17.5
+    },
+    {
+      "hs6": "9018.39",
+      "heading": "9018",
+      "description": "Medical, surgical instruments and appliances; catheters, cannulae and the like",
+      "exportsUsd": 7958094029,
+      "priorExportsUsd": 7930901108,
+      "changePct": 0.3,
+      "sharePct": 7.5
+    },
+    {
+      "hs6": "9018.19",
+      "heading": "9018",
+      "description": "Medical, surgical instruments and appliances; electro-diagnostic apparatus (including apparatus for functional exploratory examination or for checking physiological parameters), n.e.c. in item no. 9018.1",
+      "exportsUsd": 5271182579,
+      "priorExportsUsd": 5986017167,
+      "changePct": -11.9,
+      "sharePct": 5
+    },
+    {
+      "hs6": "9021.39",
+      "heading": "9021",
+      "description": "Artificial parts of the body; excluding artificial joints",
+      "exportsUsd": 4182773047,
+      "priorExportsUsd": 4100111892,
+      "changePct": 2,
+      "sharePct": 3.9
+    },
+    {
+      "hs6": "9021.90",
+      "heading": "9021",
+      "description": "Appliances; worn, carried or implanted in the body, to compensate for a defect or disability",
+      "exportsUsd": 3150705807,
+      "priorExportsUsd": 2853576461,
+      "changePct": 10.4,
+      "sharePct": 3
+    },
+    {
+      "hs6": "9031.80",
+      "heading": "9031",
+      "description": "Instruments, appliances and machines; for measuring or checking n.e.c. in chapter 90",
+      "exportsUsd": 3123439747,
+      "priorExportsUsd": 3174606066,
+      "changePct": -1.6,
+      "sharePct": 2.9
+    },
+    {
+      "hs6": "9021.10",
+      "heading": "9021",
+      "description": "Orthopaedic or fracture appliances",
+      "exportsUsd": 2906038458,
+      "priorExportsUsd": 2768000414,
+      "changePct": 5,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "9031.41",
+      "heading": "9031",
+      "description": "Optical instruments and appliances; for inspecting semiconductor wafers or devices or for inspecting photomasks or reticles used in manufacturing semiconductor devices, n.e.c. in chapter 90",
+      "exportsUsd": 2604858105,
+      "priorExportsUsd": 2578707284,
+      "changePct": 1,
+      "sharePct": 2.4
+    },
+    {
+      "hs6": "9032.89",
+      "heading": "9032",
+      "description": "Regulating or controlling instruments and apparatus; automatic, other than hydraulic or pneumatic",
+      "exportsUsd": 2510744321,
+      "priorExportsUsd": 2424143427,
+      "changePct": 3.6,
+      "sharePct": 2.4
+    },
+    {
+      "hs6": "9027.90",
+      "heading": "9027",
+      "description": "Microtomes and parts and accessories thereof",
+      "exportsUsd": 2481174742,
+      "priorExportsUsd": 2420372608,
+      "changePct": 2.5,
+      "sharePct": 2.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 90, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 75% of 2025 U.S. Chapter 90 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\" (code 490); it is shown here as Taiwan."
+}

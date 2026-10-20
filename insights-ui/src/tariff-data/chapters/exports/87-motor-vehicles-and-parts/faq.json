@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 87,
+    "padded": "87",
+    "slug": "87-motor-vehicles-and-parts",
+    "title": "Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/87-motor-vehicles-and-parts/faq",
+    "h1": "HTS Chapter 87: Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Vehicle & Auto Parts Export FAQ (HTS Ch. 87) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. cars and parts, what to file to export a used car, safety and emissions exemptions and which countries buy the most.",
+      "keywords": ["china tariff on us cars", "eu tariff on us cars", "canada tariff on us cars", "export car from usa", "schedule b code car"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. cars, trucks and auto parts, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada and Mexico take 55% of U.S. vehicle exports and charge no tariff on qualifying goods, but Canada surtaxes the non-U.S. content of U.S.-built passenger vehicles and light trucks.",
+    "The EU cut its 10% tariff on U.S. cars to zero on July 1, 2026; China is the only large buyer that raised its tariffs, taking a larger-engine SUV from 15% to 35%.",
+    "A used vehicle needs title documents at CBP 72 hours before export and an export filing at any value; a vehicle made only for export is exempt from U.S. safety and emissions standards if it is labeled."
+  ],
+  "questionSource": "Google search-suggestion queries for \"china tariff on us cars\", \"canada tariff on us cars\", \"eu tariff on us cars\" and \"export car from usa\".",
+  "faqs": [
+    {
+      "id": "china-car-tariff",
+      "question": "Does China charge extra tariffs on U.S. cars?",
+      "searchedAs": ["china tariff on us cars", "china tariffs on us vehicles"],
+      "answer": "Yes. China charges its 15% MFN rate on cars, plus a 10% extra duty on all U.S. goods (since May 2025), plus a further 10% on cars with engines over 2.5 L and on listed pickups and trucks (since February 2025). A larger-engine SUV now pays 35% against 15% in January 2025, and U.S. vehicle exports to China fell 52.8% in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-car-tariff",
+      "question": "What tariff does the EU charge on U.S. cars?",
+      "searchedAs": ["eu tariff on us cars", "european tariff on us cars"],
+      "answer": "None since July 1, 2026. Regulation (EU) 2026/1455 cut the EU's 10% tariff on cars, and its 13–16% on buses, trucks and tractors, to zero for U.S.-origin vehicles and parts. It applies until December 31, 2029 and the Commission can suspend it.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-car-tariff",
+      "question": "Does Canada have tariffs on U.S. cars?",
+      "searchedAs": ["canada tariff on us cars", "canadian tariff on us made cars"],
+      "answer": "Not on the vehicle itself under CUSMA, but Canada's Motor Vehicles surtax charges 25% on the non-U.S. content of CUSMA-compliant U.S.-built passenger vehicles and light trucks, and on the full value of non-compliant ones. Parts are not covered. Since September 8, 2026 Canada also surtaxes motorcycles over 800 cc at 50% and four trailer lines at 25%.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "who-buys-vehicles",
+      "question": "Who buys the most U.S. vehicles?",
+      "searchedAs": [],
+      "answer": "Canada ($46.32B, 35% of exports) and Mexico ($26.05B, 20%) together took 55% of the $131.44B exported in 2025, followed by Germany ($9.06B), Australia ($4.14B) and the United Arab Emirates ($4.11B).",
+      "link": "exports"
+    },
+    {
+      "id": "china-exports-fall",
+      "question": "Why did U.S. vehicle exports to China fall?",
+      "searchedAs": [],
+      "answer": "Exports to China fell 52.8% to $3.02B in 2025. The trade data do not give a reason, but China had added a 10% duty on all U.S. goods and a further 10% on larger-engine cars and pickups, taking a larger-engine SUV from 15% to 35%.",
+      "link": "exports"
+    },
+    {
+      "id": "mexico-vehicle-tariff",
+      "question": "Does Mexico charge tariffs on U.S. vehicles?",
+      "searchedAs": [],
+      "answer": "Not on vehicles that meet USMCA's rules of origin. Mexico's own MFN rate on cars is high (a WITS average of 35% for passenger-car lines), so a vehicle that does not qualify loses most of its price advantage. Most of what the U.S. sells Mexico is parts: 72% of the $26.05B.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "export-used-car",
+      "question": "What do I need to export a used car from the U.S.?",
+      "searchedAs": ["export car from usa", "export car from usa to canada"],
+      "answer": "Present the vehicle's title or a certified copy to CBP at least 72 hours before export (for land exports the paperwork 72 hours ahead and the vehicle at departure), and file the export information (EEI) in AES at any value, including for shipments to Canada. New vehicles need an EEI filing only above $2,500 per Schedule B number.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "fmvss-export",
+      "question": "Do U.S. vehicles sold abroad have to meet U.S. safety and emission standards?",
+      "searchedAs": [],
+      "answer": "Not if a vehicle is intended only for export and labeled for export on the vehicle and any container (49 U.S.C. 30112(b)(3)). Emissions work the same way: a new vehicle intended solely for export and labeled as such is exempt from EPA certification unless the destination has identical emission standards (40 CFR 85.1709). The destination's own approval rules still apply.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "schedule-b-car",
+      "question": "What is the Schedule B code for a car?",
+      "searchedAs": [],
+      "answer": "Passenger vehicles are in 8703 and the Schedule B number depends on engine type and size: for example 8703.23 for spark-ignition engines of 1,500–3,000 cc (the largest export line, $22.36B in 2025) and 8703.24 above 3,000 cc ($10.42B). Auto parts are mostly 8708. Look up the full 10-digit number in the Census Bureau's Schedule B search.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "russia-vehicles",
+      "question": "Can I export vehicles to Russia?",
+      "searchedAs": [],
+      "answer": "Not without a Commerce licence. 15 CFR 746.8 requires a licence for the items on the HS-code lists in Supplements No. 4 and 5 to Part 746, which include tractors (8701), passenger cars (8703) and other vehicles in this chapter. Belarus is covered by the same rules.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "ship-ev",
+      "question": "How do I ship an electric vehicle?",
+      "searchedAs": [],
+      "answer": "Vehicles with batteries or engines are dangerous goods in transport: 49 CFR 173.220 covers vehicles and machinery with engines or batteries and 49 CFR 173.185 covers lithium batteries, with specific packaging, marking and documentation. Check the carrier's rules as well.",
+      "link": "exports/rules"
+    }
+  ]
+}

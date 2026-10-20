@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 2,
+    "padded": "02",
+    "slug": "2-meat-and-offal",
+    "title": "Meat and Edible Meat Offal"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/2-meat-and-offal/faq",
+    "h1": "HTS Chapter 02: Meat and Edible Meat Offal — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 02 Export FAQ: Meat Tariffs, Certificates & Schedule B",
+      "shortDescription": "Common questions on exporting U.S. beef, pork and poultry, answered from the export tariff report.",
+      "keywords": ["us meat export faq", "china tariff us pork", "japan beef tariff", "usda export certificate meat", "export meat to cuba"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Common questions about exporting U.S. beef, pork and poultry, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "Mexico, Canada, South Korea and Hong Kong charge essentially no tariff on U.S. meat. Japan still charges about 21% on beef, and China adds 10% to its normal rate.",
+    "China lifted its 10–15% tariffs on U.S. pork, beef and chicken on November 10, 2025; only its extra 10% on all U.S. goods remains.",
+    "To ship meat you need a Schedule B number, a USDA FSIS export certificate from an eligible plant and an AES filing; no export licence applies in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions for queries such as \"us pork exports\", \"us beef exports to japan\", \"beef export tariff\", \"exporting meat from the us\" and \"usda export certificate\" (October 2026).",
+  "faqs": [
+    {
+      "id": "how-much-meat",
+      "question": "How much meat does the U.S. export?",
+      "answer": "The U.S. exported $21.31 billion of Chapter 02 goods in 2025, down 6.0% from 2024. Pork (heading 0203) is 30%, poultry (0207) 22% and beef (0201 and 0202 together) 38%.",
+      "link": "exports",
+      "searchedAs": ["how much meat does the us export", "how much beef does the u.s. export", "does the us export beef"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. meat?",
+      "answer": "Mexico takes 24.3% of Chapter 02 exports, South Korea 13.6% and Japan 13.5%, so these three buy 51%. Canada takes 7.6% and China 6.3%, down 52.5% from 2024.",
+      "link": "exports",
+      "searchedAs": ["us pork exports by country", "us pork exports to mexico", "us beef exports to japan"]
+    },
+    {
+      "id": "china-tariff",
+      "question": "Does China tariff U.S. pork and beef?",
+      "answer": "Yes. China charges its normal rate on meat, about 12% on frozen beef and pork and up to about 20% on fresh pork and chicken cuts, plus an extra 10% on every U.S. good. Its separate 10–15% tariffs on U.S. pork, beef and chicken were lifted on November 10, 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us beef", "did china put tariffs on us beef", "us pork exports to china"]
+    },
+    {
+      "id": "china-lifted",
+      "question": "Did China remove its extra tariffs on U.S. meat?",
+      "answer": "Partly. The 10% on pork and beef and the 15% on chicken, imposed in March 2025, were lifted on November 10, 2025. The extra 10% on all U.S. goods stays, and China extended it to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us beef", "us beef exports tariffs"]
+    },
+    {
+      "id": "japan-beef",
+      "question": "What tariff does Japan charge on U.S. beef?",
+      "answer": "About 21% in 2026. It was 21.6% in 2025 under the U.S.–Japan agreement and falls by about a point a year to 9% in 2033, from a 38.5% normal rate. A safeguard can lift it back to 38.5% for 30 days if U.S. shipments exceed a trigger.",
+      "link": "exports/markets",
+      "searchedAs": ["us beef exports to japan", "does us export beef to japan", "us beef exports tariffs"]
+    },
+    {
+      "id": "korea-beef",
+      "question": "Is U.S. beef duty-free in South Korea?",
+      "answer": "Yes, since January 1, 2026, the last step of the 2012 KORUS agreement. Most U.S. pork is also duty-free. Korea still requires beef from cattle under 30 months old and an FSIS certificate from an eligible plant.",
+      "link": "exports/markets",
+      "searchedAs": ["beef export tariffs", "us beef exports tariffs"]
+    },
+    {
+      "id": "canada-meat",
+      "question": "Does Canada tariff U.S. meat?",
+      "answer": "Not beef, pork or offal, which enter duty-free under CUSMA. Chicken and turkey move only inside CUSMA quotas, with very high duties above them. Canada's September 2026 counter-tariffs name steel, aluminum and dairy, not meat.",
+      "link": "exports/markets",
+      "searchedAs": ["exporting meat from the us", "does the us export meat"]
+    },
+    {
+      "id": "schedule-b-meat",
+      "question": "What is the Schedule B code for pork and beef?",
+      "answer": "Look up the 10-digit number in the Census Schedule B search tool. Frozen pork cuts are in 0203.29, frozen chicken cuts and paws in 0207.14, and beef in 0201 (fresh) and 0202 (frozen). The first six digits match the HS code every country uses.",
+      "link": "exports/rules",
+      "searchedAs": ["exporting meat from the us"]
+    },
+    {
+      "id": "export-certificate",
+      "question": "Do I need an export certificate or licence to export meat?",
+      "answer": "You need a USDA FSIS export certificate from a plant the destination accepts, but no Commerce export licence in the ordinary case, since meat is EAR99. Over $2,500 per Schedule B number you also file in AES.",
+      "link": "exports/rules",
+      "searchedAs": ["usda export certificate", "usda export health certificate"]
+    },
+    {
+      "id": "cuba-meat",
+      "question": "Can I export meat to Cuba?",
+      "answer": "Yes, under the Trade Sanctions Reform Act: cash in advance or financing by a third-country bank, and a notice to BIS before shipping under License Exception AGR. Cuba bought about $340 million of Chapter 02 goods in 2025.",
+      "link": "exports/rules",
+      "searchedAs": ["exporting meat from the us"]
+    },
+    {
+      "id": "exclusions-end",
+      "question": "When do China's tariff exclusions for U.S. goods end?",
+      "answer": "December 31, 2026, with no extension announced. For Chapter 02 they matter mainly for pork, which China's older 2018–19 counter-tariffs hit. China's separate 24-point suspension is extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["did china put tariffs on us beef"]
+    }
+  ]
+}

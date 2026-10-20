@@ -1,0 +1,1441 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 71,
+    "padded": "71",
+    "slug": "71-pearls-stones-and-jewelry",
+    "title": "Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/71-pearls-stones-and-jewelry/markets",
+    "h1": "HTS Chapter 71: Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 71 Export Markets: Tariffs on U.S. Gold & Jewelry by Country",
+      "shortDescription": "The tariff each top buyer charges on U.S. gold, silver, diamonds and jewelry, with the trade agreement and regulator for each.",
+      "keywords": ["switzerland tariff us gold", "uk tariff us gold", "india gold import duty", "eu tariff jewelry", "hong kong gold import duty"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "For the largest buyers, tariffs on U.S. gold, silver and diamonds are zero. Switzerland abolished its industrial tariffs for every country in 2024, and Hong Kong, the EU, Canada, Singapore and Australia charge nothing on bullion. The tariffs that do exist are on jewelry (about 2.5% in the EU, about 5% in the UAE) and on gold in India. What decides access is a regulator's approval: hallmarking in the UK and Switzerland, responsible-sourcing due diligence in the EU and UAE, and Kimberley Process certificates for rough diamonds almost everywhere.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7101",
+      "label": "Pearls, natural or cultured (loose or temporarily strung)",
+      "shortLabel": "Pearls"
+    },
+    {
+      "heading": "7102",
+      "label": "Diamonds, unmounted — rough, polished and industrial",
+      "shortLabel": "Diamonds"
+    },
+    {
+      "heading": "7103",
+      "label": "Rubies, sapphires, emeralds & other gemstones (unmounted)",
+      "shortLabel": "Gemstones"
+    },
+    {
+      "heading": "7104",
+      "label": "Lab-grown diamonds & other synthetic stones",
+      "shortLabel": "Lab-grown & synthetic"
+    },
+    {
+      "heading": "7105",
+      "label": "Diamond and gemstone dust & powder",
+      "shortLabel": "Dust & powder"
+    },
+    {
+      "heading": "7106",
+      "label": "Silver — bullion, doré, bars, powder",
+      "shortLabel": "Silver"
+    },
+    {
+      "heading": "7107",
+      "label": "Base metals clad with silver",
+      "shortLabel": "Silver-clad metal"
+    },
+    {
+      "heading": "7108",
+      "label": "Gold — bullion, doré, bars, powder, leaf, monetary gold",
+      "shortLabel": "Gold"
+    },
+    {
+      "heading": "7109",
+      "label": "Base metals or silver clad with gold",
+      "shortLabel": "Gold-clad metal"
+    },
+    {
+      "heading": "7110",
+      "label": "Platinum, palladium, rhodium, iridium, osmium & ruthenium",
+      "shortLabel": "Platinum group metals"
+    },
+    {
+      "heading": "7111",
+      "label": "Metals clad with platinum",
+      "shortLabel": "Platinum-clad metal"
+    },
+    {
+      "heading": "7112",
+      "label": "Precious-metal waste, scrap & ash",
+      "shortLabel": "Scrap & sweepings"
+    },
+    {
+      "heading": "7113",
+      "label": "Jewelry of gold, silver, platinum or clad metal",
+      "shortLabel": "Fine jewelry"
+    },
+    {
+      "heading": "7114",
+      "label": "Silverware & goldsmiths' wares (tableware, flatware)",
+      "shortLabel": "Silverware"
+    },
+    {
+      "heading": "7115",
+      "label": "Other precious-metal articles — minted bars, platinum gauze",
+      "shortLabel": "Other precious-metal articles"
+    },
+    {
+      "heading": "7116",
+      "label": "Articles of pearls & gemstones (strands, gemstone jewelry, carvings)",
+      "shortLabel": "Pearl & gemstone articles"
+    },
+    {
+      "heading": "7117",
+      "label": "Imitation (costume) jewelry",
+      "shortLabel": "Costume jewelry"
+    },
+    {
+      "heading": "7118",
+      "label": "Coins — bullion coins and other coin",
+      "shortLabel": "Coins"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 757,
+      "name": "Switzerland",
+      "rule": "Swiss customs tariff: industrial tariffs abolished for all origins in 2024",
+      "usTradeAgreement": null,
+      "exportsUsd": 58304281931,
+      "priorExportsUsd": 12567175836,
+      "sharePct": 39.4,
+      "changePct": 363.9,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 3233143,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7102": {
+          "exportsUsd": 694657979,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7103": {
+          "exportsUsd": 608521576,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7104": {
+          "exportsUsd": 374442,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7105": {
+          "exportsUsd": 1406103,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7106": {
+          "exportsUsd": 551379186,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7107": {
+          "exportsUsd": 3150,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7108": {
+          "exportsUsd": 45310754049,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7109": {
+          "exportsUsd": 0,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7110": {
+          "exportsUsd": 454172086,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7111": {
+          "exportsUsd": 77896,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7112": {
+          "exportsUsd": 546545425,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7113": {
+          "exportsUsd": 1507561309,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7114": {
+          "exportsUsd": 730286,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7115": {
+          "exportsUsd": 8610390996,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7116": {
+          "exportsUsd": 11429901,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7117": {
+          "exportsUsd": 1316202,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        },
+        "7118": {
+          "exportsUsd": 1728202,
+          "rate": "Free (Swiss industrial tariffs abolished 2024)",
+          "normalRate": null,
+          "basis": "Swiss customs tariff: customs duties on industrial goods (HS chapters 25–97) were abolished for all origins on Jan. 1, 2024. The Nov. 2025 U.S.–Switzerland framework restates zero duties on U.S. industrial goods. Not re-verified against the 2026 tariff."
+        }
+      },
+      "profile": {
+        "headline": "Switzerland is the largest buyer, taking 39.4% of the chapter, mostly gold bullion for its refiners and vaults. It charges no tariff on gold or any other industrial good.",
+        "mainProducts": "Gold — bullion, doré, bars, powder, leaf, monetary gold (7108) · Other precious-metal articles — minted bars, platinum gauze (7115)",
+        "tariffNow": "Free (industrial tariffs abolished 2024)",
+        "regulator": {
+          "name": "Federal Office for Customs and Border Security (FOCBS) and the Central Office for Precious Metals Control",
+          "url": "https://www.ezv.admin.ch/ezv/en/home.html",
+          "requirement": "Importers of precious metals register with Swiss precious metals control, and bars and jewelry sold in Switzerland must meet its hallmarking and fineness rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Switzerland import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/switzerland-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 31589941848,
+      "priorExportsUsd": 12899534465,
+      "sharePct": 21.3,
+      "changePct": 144.9,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 4030271,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7102": {
+          "exportsUsd": 292412470,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026: unwrought and semi-manufactured gold, silver and platinum-group metals and diamonds carry a 0% rate. Not re-verified against the 2026 tariff."
+        },
+        "7103": {
+          "exportsUsd": 110420988,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7104": {
+          "exportsUsd": 2978313,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7105": {
+          "exportsUsd": 382286,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7106": {
+          "exportsUsd": 4875995038,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026: unwrought and semi-manufactured gold, silver and platinum-group metals and diamonds carry a 0% rate. Not re-verified against the 2026 tariff."
+        },
+        "7107": {
+          "exportsUsd": 913865,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7108": {
+          "exportsUsd": 19638049843,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026: unwrought and semi-manufactured gold, silver and platinum-group metals and diamonds carry a 0% rate. Not re-verified against the 2026 tariff."
+        },
+        "7109": {
+          "exportsUsd": 75005,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7110": {
+          "exportsUsd": 826830919,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026: unwrought and semi-manufactured gold, silver and platinum-group metals and diamonds carry a 0% rate. Not re-verified against the 2026 tariff."
+        },
+        "7111": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7112": {
+          "exportsUsd": 606302959,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7113": {
+          "exportsUsd": 613732304,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7114": {
+          "exportsUsd": 1607100,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7115": {
+          "exportsUsd": 4598085726,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7116": {
+          "exportsUsd": 6289404,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7117": {
+          "exportsUsd": 9094914,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        },
+        "7118": {
+          "exportsUsd": 2740443,
+          "rate": "Not individually verified — see the UK Global Tariff",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; this heading was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "The UK is the second-largest buyer, taking 21.3% of the chapter, mostly gold and silver bullion for London's market. It charges no tariff on bullion.",
+        "mainProducts": "Gold — bullion, doré, bars, powder, leaf, monetary gold (7108) · Silver — bullion, doré, bars, powder (7106)",
+        "tariffNow": "Bullion and diamonds free; jewelry rate not verified",
+        "regulator": {
+          "name": "British Hallmarking Council and the UK assay offices",
+          "url": "https://www.gov.uk/government/organisations/british-hallmarking-council",
+          "requirement": "Gold, silver, platinum and palladium articles above set weights must be hallmarked by a UK assay office before sale; bullion bars follow separate good-delivery rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "Hong Kong free port: no customs tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 12594078566,
+      "priorExportsUsd": 7036288310,
+      "sharePct": 8.5,
+      "changePct": 79,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 15591975,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7102": {
+          "exportsUsd": 2254570094,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7103": {
+          "exportsUsd": 919667427,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7104": {
+          "exportsUsd": 56271786,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7105": {
+          "exportsUsd": 369484,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7106": {
+          "exportsUsd": 13916198,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7107": {
+          "exportsUsd": 6413530,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7108": {
+          "exportsUsd": 2518696497,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7109": {
+          "exportsUsd": 363893,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7110": {
+          "exportsUsd": 373975563,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7111": {
+          "exportsUsd": 44200,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7112": {
+          "exportsUsd": 70951078,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7113": {
+          "exportsUsd": 2519724663,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7114": {
+          "exportsUsd": 348164,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7115": {
+          "exportsUsd": 3799048469,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7116": {
+          "exportsUsd": 40459226,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7117": {
+          "exportsUsd": 3420861,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        },
+        "7118": {
+          "exportsUsd": 245458,
+          "rate": "Free (no tariff)",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port: it levies no import duty on gold, silver, diamonds or jewelry. It charges duty only on liquor, tobacco, hydrocarbon oil and methyl alcohol."
+        }
+      },
+      "profile": {
+        "headline": "Hong Kong, the third-largest buyer at 8.5%, buys diamonds, jewelry and bullion tariff-free as a trading hub for Asia.",
+        "mainProducts": "Other precious-metal articles — minted bars, platinum gauze (7115) · Jewelry of gold, silver, platinum or clad metal (7113)",
+        "tariffNow": "Free (no tariff)",
+        "regulator": {
+          "name": "Customs and Excise Department (Kimberley Process permits)",
+          "url": "https://www.customs.gov.hk/en/home/index.html",
+          "requirement": "Rough diamonds need a Kimberley Process certificate from the exporting country and must be notified on arrival; jewelry and bullion need no import licence."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff (bullion and diamonds free; jewelry low)",
+      "usTradeAgreement": null,
+      "exportsUsd": 10966996830,
+      "priorExportsUsd": 8265952180,
+      "sharePct": 7.4,
+      "changePct": 32.7,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 3536454782,
+          "priorExportsUsd": 2475679420,
+          "changePct": 42.8
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 3282023776,
+          "priorExportsUsd": 1397065117,
+          "changePct": 134.9
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 2307885872,
+          "priorExportsUsd": 1597641443,
+          "changePct": 44.5
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 1095306592,
+          "priorExportsUsd": 2097835135,
+          "changePct": -47.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 437250257,
+          "priorExportsUsd": 361058427,
+          "changePct": 21.1
+        }
+      ],
+      "cells": {
+        "7101": {
+          "exportsUsd": 7979053,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7102": {
+          "exportsUsd": 1146815545,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: gold, silver and platinum-group bullion and diamonds are duty-free."
+        },
+        "7103": {
+          "exportsUsd": 634392999,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7104": {
+          "exportsUsd": 5862768,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7105": {
+          "exportsUsd": 3445204,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7106": {
+          "exportsUsd": 252168845,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: gold, silver and platinum-group bullion and diamonds are duty-free."
+        },
+        "7107": {
+          "exportsUsd": 11429259,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7108": {
+          "exportsUsd": 2137803251,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: gold, silver and platinum-group bullion and diamonds are duty-free."
+        },
+        "7109": {
+          "exportsUsd": 1125708,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7110": {
+          "exportsUsd": 1992761517,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: gold, silver and platinum-group bullion and diamonds are duty-free."
+        },
+        "7111": {
+          "exportsUsd": 87649,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7112": {
+          "exportsUsd": 2587883153,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7113": {
+          "exportsUsd": 1274527104,
+          "rate": "About 2.5% on jewelry of precious metal",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: jewelry of precious metal (7113) carries about 2.5%. Confirm the exact line in TARIC."
+        },
+        "7114": {
+          "exportsUsd": 4230633,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7115": {
+          "exportsUsd": 741614778,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7116": {
+          "exportsUsd": 19573013,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7117": {
+          "exportsUsd": 23485146,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        },
+        "7118": {
+          "exportsUsd": 121811205,
+          "rate": "Not individually verified — see TARIC",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this heading was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "The EU takes 7.4% of the chapter, led by Italy, France and Germany, with jewelry and diamonds. Bullion and diamonds are duty-free; jewelry pays about 2.5%.",
+        "mainProducts": "Precious-metal waste, scrap & ash (7112) · Gold — bullion, doré, bars, powder, leaf, monetary gold (7108)",
+        "tariffNow": "Bullion and diamonds free; jewelry about 2.5%",
+        "regulator": {
+          "name": "European Commission and national authorities, under the Conflict Minerals Regulation (EU) 2017/821",
+          "url": "https://eur-lex.europa.eu/eli/reg/2017/821/oj",
+          "requirement": "EU importers of gold above set quantities must carry out supply-chain due diligence under the Conflict Minerals Regulation. Rough diamonds need a Kimberley Process certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination (Canada's schedule)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 8554583891,
+      "priorExportsUsd": 7380800054,
+      "sharePct": 5.8,
+      "changePct": 15.9,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 641685,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7102": {
+          "exportsUsd": 63596734,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7103": {
+          "exportsUsd": 6493236,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7104": {
+          "exportsUsd": 14339511,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7105": {
+          "exportsUsd": 5332127,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7106": {
+          "exportsUsd": 853477333,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7107": {
+          "exportsUsd": 901691,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7108": {
+          "exportsUsd": 2529975022,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7109": {
+          "exportsUsd": 416435,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7110": {
+          "exportsUsd": 1121781344,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7111": {
+          "exportsUsd": 21159,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7112": {
+          "exportsUsd": 2789644646,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7113": {
+          "exportsUsd": 542727078,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7114": {
+          "exportsUsd": 1151915,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7115": {
+          "exportsUsd": 527594848,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7116": {
+          "exportsUsd": 38429917,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7117": {
+          "exportsUsd": 53035807,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        },
+        "7118": {
+          "exportsUsd": 5023403,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. goods of this chapter enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada buys scrap, gold and platinum-group metals duty-free for its refiners. Its September 2026 counter-tariffs name steel, aluminum and dairy, not precious metals.",
+        "mainProducts": "Precious-metal waste, scrap & ash (7112) · Gold — bullion, doré, bars, powder, leaf, monetary gold (7108)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canada Border Services Agency (CBSA)",
+          "url": "https://www.cbsa-asfc.gc.ca/",
+          "requirement": "Rough diamonds need a Kimberley Process certificate; articles of precious metal sold in Canada must carry quality marks that match their stated fineness."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's customs tariff (no U.S. trade agreement); interim framework agreed Feb. 2026",
+      "usTradeAgreement": null,
+      "exportsUsd": 4744176363,
+      "priorExportsUsd": 5314105107,
+      "sharePct": 3.2,
+      "changePct": -10.7,
+      "status": "pending",
+      "cells": {
+        "7101": {
+          "exportsUsd": 732831,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7102": {
+          "exportsUsd": 1022843433,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7103": {
+          "exportsUsd": 44117249,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7104": {
+          "exportsUsd": 40731646,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7105": {
+          "exportsUsd": 782713,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7106": {
+          "exportsUsd": 486331733,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7107": {
+          "exportsUsd": 184376,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7108": {
+          "exportsUsd": 1820390280,
+          "rate": "About 6% (one report says 15% from May 2026; not confirmed)",
+          "normalRate": "About 6% (July 2024 rate)",
+          "basis": "India Customs Tariff: the Union Budget of July 2024 set the duty on gold at 6% (5% basic duty plus 1% AIDC). One press report says notifications from May 13, 2026 raised the effective duty to 15% (10% plus 5%); that was not confirmed from a customs notification. Check CBIC."
+        },
+        "7109": {
+          "exportsUsd": 43877,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7110": {
+          "exportsUsd": 27501576,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7111": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7112": {
+          "exportsUsd": 926731,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7113": {
+          "exportsUsd": 1146136296,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7114": {
+          "exportsUsd": 23679,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7115": {
+          "exportsUsd": 141418724,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7116": {
+          "exportsUsd": 9922919,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7117": {
+          "exportsUsd": 1978713,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        },
+        "7118": {
+          "exportsUsd": 109587,
+          "rate": "Not individually verified — see India's customs tariff",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this heading was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "India is the one large buyer with a real tariff on gold. The Union Budget set it at 6% in July 2024, and one report says it rose to 15% in May 2026. In February 2026 India also said it intends to buy U.S. precious metals as part of a $500 billion goal.",
+        "mainProducts": "Gold — bullion, doré, bars, powder, leaf, monetary gold (7108) · Jewelry of gold, silver, platinum or clad metal (7113)",
+        "tariffNow": "Gold about 6% (one report says 15% from May 2026)",
+        "regulator": {
+          "name": "Directorate General of Foreign Trade (DGFT)",
+          "url": "https://www.dgft.gov.in/",
+          "requirement": "Imports of gold and silver are limited to authorized agencies, and rough diamonds need a Kimberley Process certificate. Gold jewelry sold in India must carry a BIS hallmark."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "Singapore has no customs tariff; U.S.–Singapore FTA",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 4109200081,
+      "priorExportsUsd": 3654786237,
+      "sharePct": 2.8,
+      "changePct": 12.4,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 52000,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7102": {
+          "exportsUsd": 25130266,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7103": {
+          "exportsUsd": 4171015,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7104": {
+          "exportsUsd": 3057448,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7105": {
+          "exportsUsd": 5729557,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7106": {
+          "exportsUsd": 20750594,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7107": {
+          "exportsUsd": 53162,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7108": {
+          "exportsUsd": 2788974471,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7109": {
+          "exportsUsd": 0,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7110": {
+          "exportsUsd": 3684401,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7111": {
+          "exportsUsd": 92632,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7112": {
+          "exportsUsd": 166315640,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7113": {
+          "exportsUsd": 358827770,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7114": {
+          "exportsUsd": 50551,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7115": {
+          "exportsUsd": 725375674,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7116": {
+          "exportsUsd": 2193788,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7117": {
+          "exportsUsd": 1370241,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        },
+        "7118": {
+          "exportsUsd": 3370871,
+          "rate": "Free (no customs tariff)",
+          "normalRate": null,
+          "basis": "Singapore levies no customs duty on these goods (it charges duty on liquor, tobacco, petroleum and some motor vehicles only); the U.S.–Singapore FTA also applies."
+        }
+      },
+      "profile": {
+        "headline": "Singapore, a bullion and diamond trading hub, buys mostly gold duty-free. It charges no customs tariff on these goods.",
+        "mainProducts": "Gold — bullion, doré, bars, powder, leaf, monetary gold (7108) · Other precious-metal articles — minted bars, platinum gauze (7115)",
+        "tariffNow": "Free (no tariff; U.S.–Singapore FTA)",
+        "regulator": {
+          "name": "Singapore Customs and the Ministry of Law's precious stones and metals regime",
+          "url": "https://www.customs.gov.sg/",
+          "requirement": "Rough diamonds need a Kimberley Process certificate, and dealers in precious stones and metals must register and meet anti-money-laundering rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC common external tariff (5% on most goods); bullion duty-free",
+      "usTradeAgreement": null,
+      "exportsUsd": 3645790369,
+      "priorExportsUsd": 2527792494,
+      "sharePct": 2.5,
+      "changePct": 44.2,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 19259,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7102": {
+          "exportsUsd": 820463193,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7103": {
+          "exportsUsd": 137775257,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7104": {
+          "exportsUsd": 158301080,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7105": {
+          "exportsUsd": 194312,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7106": {
+          "exportsUsd": 249656973,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7107": {
+          "exportsUsd": 0,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7108": {
+          "exportsUsd": 826424182,
+          "rate": "Free (not re-verified for 2026)",
+          "normalRate": null,
+          "basis": "UAE customs: investment gold bullion is exempt from customs duty. Not re-verified against the 2026 schedule."
+        },
+        "7109": {
+          "exportsUsd": 0,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7110": {
+          "exportsUsd": 588471,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7111": {
+          "exportsUsd": 0,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7112": {
+          "exportsUsd": 6998273,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7113": {
+          "exportsUsd": 429441615,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7114": {
+          "exportsUsd": 3593512,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7115": {
+          "exportsUsd": 946794547,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7116": {
+          "exportsUsd": 3516220,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7117": {
+          "exportsUsd": 3216749,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        },
+        "7118": {
+          "exportsUsd": 58806726,
+          "rate": "About 5% (GCC common external tariff); not individually verified",
+          "normalRate": null,
+          "basis": "GCC common external tariff 5% on most goods. Not re-verified against the UAE schedule for this heading."
+        }
+      },
+      "profile": {
+        "headline": "The UAE, home to Dubai's gold and diamond markets, buys diamonds, jewelry and bullion. Bullion is not charged; jewelry pays the 5% common external tariff.",
+        "mainProducts": "Other precious-metal articles — minted bars, platinum gauze (7115) · Gold — bullion, doré, bars, powder, leaf, monetary gold (7108)",
+        "tariffNow": "Bullion free; jewelry about 5%",
+        "regulator": {
+          "name": "Ministry of Economy (responsible sourcing of gold and Kimberley Process)",
+          "url": "https://www.moec.gov.ae/en/home",
+          "requirement": "Refiners and gold traders must meet the UAE's responsible-sourcing due-diligence rules, and rough diamonds need a Kimberley Process certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "U.S.–Australia FTA tariff elimination (Australia's schedule)",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 2245720437,
+      "priorExportsUsd": 1261544106,
+      "sharePct": 1.5,
+      "changePct": 78,
+      "status": "unchanged",
+      "cells": {
+        "7101": {
+          "exportsUsd": 365980,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7102": {
+          "exportsUsd": 21778043,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7103": {
+          "exportsUsd": 3265988,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7104": {
+          "exportsUsd": 1730837,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7105": {
+          "exportsUsd": 100447,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7106": {
+          "exportsUsd": 35463571,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7107": {
+          "exportsUsd": 33056,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7108": {
+          "exportsUsd": 1372642904,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7109": {
+          "exportsUsd": 212556,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7110": {
+          "exportsUsd": 32363548,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7111": {
+          "exportsUsd": 0,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7112": {
+          "exportsUsd": 0,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7113": {
+          "exportsUsd": 61096921,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7114": {
+          "exportsUsd": 312454,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7115": {
+          "exportsUsd": 705037845,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7116": {
+          "exportsUsd": 3149534,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7117": {
+          "exportsUsd": 5248528,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        },
+        "7118": {
+          "exportsUsd": 2918225,
+          "rate": "Free (U.S.–Australia FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Australia FTA, Australia's tariff schedule: tariffs on U.S. industrial goods, including jewelry, are zero."
+        }
+      },
+      "profile": {
+        "headline": "Australia buys U.S. gold and jewelry duty-free under the 2005 free-trade agreement.",
+        "mainProducts": "Gold — bullion, doré, bars, powder, leaf, monetary gold (7108) · Other precious-metal articles — minted bars, platinum gauze (7115)",
+        "tariffNow": "Free (U.S.–Australia FTA)",
+        "regulator": {
+          "name": "Australian Border Force",
+          "url": "https://www.abf.gov.au/",
+          "requirement": "Rough diamonds need a Kimberley Process certificate; check the Border Force rules for the specific shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Switzerland",
+      "heading": "7108",
+      "exportsUsd": 45310754049,
+      "rate": "Free (Swiss industrial tariffs abolished 2024)"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "7108",
+      "exportsUsd": 19638049843,
+      "rate": "Free"
+    },
+    {
+      "market": "Switzerland",
+      "heading": "7115",
+      "exportsUsd": 8610390996,
+      "rate": "Free (Swiss industrial tariffs abolished 2024)"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "7106",
+      "exportsUsd": 4875995038,
+      "rate": "Free"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "7115",
+      "exportsUsd": 4598085726,
+      "rate": "Not individually verified — see the UK Global Tariff"
+    },
+    {
+      "market": "Hong Kong",
+      "heading": "7115",
+      "exportsUsd": 3799048469,
+      "rate": "Free (no tariff)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7112",
+      "exportsUsd": 2789644646,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Singapore",
+      "heading": "7108",
+      "exportsUsd": 2788974471,
+      "rate": "Free (no customs tariff)"
+    }
+  ],
+  "assumptions": [
+    "Rates come from each market's customs tariff or trade agreement where they could be confirmed. Switzerland abolished customs duties on industrial goods for all origins from January 1, 2024; where a 2026 figure was not confirmed, the cell says 'not individually verified' or 'not re-verified'.",
+    "Eighteen headings are shown, but four (gold 7108, other precious-metal articles 7115, jewelry 7113 and silver 7106) are about 82% of the chapter. The small headings carry the market-wide default.",
+    "India's gold rate is shown as 6% (the rate set in July 2024 by the Union Budget) with the report of a 15% rate from May 2026 flagged as unconfirmed. Check the CBIC notification before pricing a shipment.",
+    "VAT and similar taxes on investment gold (for example the UK's VAT exemption) are the buyer's business and are not shown.",
+    "National 8–10-digit tariff lines can set a different rate than the four-digit group shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 71, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 92% of 2025 U.S. Chapter 71 exports. A customs union (the EU) is one market: its members share one tariff."
+}

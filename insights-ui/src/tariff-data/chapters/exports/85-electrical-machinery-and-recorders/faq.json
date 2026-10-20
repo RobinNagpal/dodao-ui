@@ -20,9 +20,9 @@
   },
   "intro": "Short answers to real questions people search about exporting U.S. electrical machinery and electronics, with a link to the page that has the detail.",
   "keyTakeaways": [
-    "China is the only one of this chapter's major buyers charging more than in January 2025: a flat 10% extra on all U.S. goods.",
+    "Canada and China are the two major buyers charging more than in January 2025: Canada 25%–50% on a list of U.S. phones, network gear, monitors, appliances, parts and cable since September 2026, and China a flat 10% extra on all U.S. goods.",
     "For advanced semiconductors, a U.S. export licence — not a foreign tariff — is usually the real obstacle.",
-    "Mexico, Canada, the EU, South Korea and Hong Kong all charge nothing on U.S. goods in this chapter."
+    "Mexico, the EU, South Korea and Hong Kong all charge nothing on U.S. goods in this chapter."
   ],
   "questionSource": "Google search-suggestion queries for \"china tariff on us chips\", \"export license semiconductor\", \"schedule b code integrated circuits\", \"tariff on us electronics to eu\", \"do i need eei for electronics export\", and \"canada tariff on us appliances\".",
   "faqs": [
@@ -58,7 +58,7 @@
       "id": "canada-appliance-tariff",
       "question": "Did Canada add new tariffs on U.S. electronics or appliances?",
       "searchedAs": ["canada tariff on us appliances", "canada counter tariff electronics 2026"],
-      "answer": "Canada's September 2026 counter-tariff list reaches a narrow slice of this chapter — household appliances with a motor and water/space heaters that do not claim CUSMA treatment — not chips, phones or industrial electrical machinery. Goods claimed under CUSMA with a valid certificate of origin still enter duty-free.",
+      "answer": "Yes. Since September 8, 2026 Canada charges a 50% counter-tariff on U.S. smartphones (8517.13), routers, switches and other data-transmission apparatus (8517.62) and other monitors (8528.59.90), and 25% on other domestic appliances (8509.80), domestic cooking appliances (8516.60), parts for TV, radio and monitor apparatus (8529.90) and insulated conductors for 1,000 V or less (8544.49). The list has no exemption for goods that qualify for CUSMA: it applies to all U.S.-origin goods on it. Chips, semiconductors, motors, batteries and most industrial electrical machinery are not on the list and still enter duty-free under CUSMA.",
       "link": "exports/tariff-updates"
     },
     {

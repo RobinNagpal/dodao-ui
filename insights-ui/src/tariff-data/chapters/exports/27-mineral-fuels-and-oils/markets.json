@@ -1,0 +1,1323 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 27,
+    "padded": "27",
+    "slug": "27-mineral-fuels-and-oils",
+    "title": "Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/27-mineral-fuels-and-oils/markets",
+    "h1": "HTS Chapter 27: Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 27 Export Markets: Tariffs on U.S. Energy by Country",
+      "shortDescription": "The tariff each top buyer charges on U.S. crude oil, refined fuels, LNG and coal, with the trade agreement and energy regulator for each.",
+      "keywords": ["eu tariff us lng", "mexico usmca fuels", "canada cusma crude oil", "india lng import duty", "japan lng import tariff"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The largest buyers charge little or nothing on crude oil, LNG and coal: the EU is duty-free on all three and Mexico and Canada charge nothing under USMCA. Rates for South Korea, Japan, India, Brazil, the United Kingdom and Taiwan were not confirmed from an official 2026 schedule, so those cells say so rather than guess. China, no longer a top-nine buyer, is the one market with a heavy tariff on U.S. energy. For LNG into the EU, the rule that matters most is not a tariff but the EU's methane regulation, which will require importers to show their suppliers meet EU methane monitoring standards.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "2701",
+      "label": "Coal and coal briquettes",
+      "shortLabel": "Coal"
+    },
+    {
+      "heading": "2702",
+      "label": "Lignite",
+      "shortLabel": "Lignite"
+    },
+    {
+      "heading": "2703",
+      "label": "Peat",
+      "shortLabel": "Peat"
+    },
+    {
+      "heading": "2704",
+      "label": "Coke and semicoke",
+      "shortLabel": "Coke"
+    },
+    {
+      "heading": "2705",
+      "label": "Coal gas and similar gases",
+      "shortLabel": "Coal gas"
+    },
+    {
+      "heading": "2706",
+      "label": "Coal tar and mineral tars",
+      "shortLabel": "Tar"
+    },
+    {
+      "heading": "2707",
+      "label": "Coal-tar distillation products (benzene, toluene, xylenes)",
+      "shortLabel": "Coal-tar products"
+    },
+    {
+      "heading": "2708",
+      "label": "Pitch and pitch coke",
+      "shortLabel": "Pitch"
+    },
+    {
+      "heading": "2709",
+      "label": "Crude oil",
+      "shortLabel": "Crude oil"
+    },
+    {
+      "heading": "2710",
+      "label": "Refined petroleum products (gasoline, diesel, jet fuel)",
+      "shortLabel": "Refined products"
+    },
+    {
+      "heading": "2711",
+      "label": "Natural gas, LNG and LPG (propane, butane)",
+      "shortLabel": "Gas / LNG / LPG"
+    },
+    {
+      "heading": "2712",
+      "label": "Petroleum jelly and waxes",
+      "shortLabel": "Waxes"
+    },
+    {
+      "heading": "2713",
+      "label": "Petroleum coke and bitumen",
+      "shortLabel": "Pet coke / bitumen"
+    },
+    {
+      "heading": "2714",
+      "label": "Natural bitumen, oil shale and tar sands",
+      "shortLabel": "Natural bitumen"
+    },
+    {
+      "heading": "2715",
+      "label": "Bituminous mixtures",
+      "shortLabel": "Bitumen mixes"
+    },
+    {
+      "heading": "2716",
+      "label": "Electricity",
+      "shortLabel": "Electricity"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff (crude oil, LNG and coal duty-free; refined fuels low)",
+      "usTradeAgreement": null,
+      "exportsUsd": 81208147083,
+      "priorExportsUsd": 79439112846,
+      "sharePct": 26.3,
+      "changePct": 2.2,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 35678587640,
+          "priorExportsUsd": 35367145185,
+          "changePct": 0.9
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 9199261577,
+          "priorExportsUsd": 9341505435,
+          "changePct": -1.5
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 8578427083,
+          "priorExportsUsd": 8251908948,
+          "changePct": 4
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 6819755407,
+          "priorExportsUsd": 6556181431,
+          "changePct": 4
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 6068251441,
+          "priorExportsUsd": 5415020449,
+          "changePct": 12.1
+        }
+      ],
+      "cells": {
+        "2701": {
+          "exportsUsd": 2394718535,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: coal is duty-free."
+        },
+        "2702": {
+          "exportsUsd": 718086,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2703": {
+          "exportsUsd": 859372,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2704": {
+          "exportsUsd": 4199173,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2705": {
+          "exportsUsd": 5883,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2707": {
+          "exportsUsd": 103312442,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2709": {
+          "exportsUsd": 39308613233,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: crude petroleum oils are duty-free."
+        },
+        "2710": {
+          "exportsUsd": 9051136386,
+          "rate": "About 3.5–4.7% on most refined fuels; some uses free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: most refined petroleum products carry a low duty (about 3.5% on gas oils and 4.7% on motor spirit), and many are duty-free for refining or chemical use. Confirm the exact line in TARIC."
+        },
+        "2711": {
+          "exportsUsd": 29778012747,
+          "rate": "Free (LNG and natural gas); LPG not individually verified",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026: LNG and natural gas are duty-free; propane and butane (LPG) lines were not individually verified."
+        },
+        "2712": {
+          "exportsUsd": 29913639,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2713": {
+          "exportsUsd": 519876759,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2714": {
+          "exportsUsd": 2706039,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2715": {
+          "exportsUsd": 14074789,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; this small heading was not individually verified. Check TARIC."
+        }
+      },
+      "profile": {
+        "headline": "The EU is the largest market, led by the Netherlands (Rotterdam, a trading hub), France, Spain and Germany. Crude oil, LNG and coal are duty-free; the new rule to plan for is the EU methane regulation.",
+        "mainProducts": "Crude oil (2709) · Natural gas, LNG and LPG (propane, butane) (2711)",
+        "tariffNow": "Crude, LNG and coal free; refined fuels about 3.5–4.7%",
+        "regulator": {
+          "name": "European Commission (DG ENER), under the Methane Regulation (EU) 2024/1787",
+          "url": "https://eur-lex.europa.eu/eli/reg/2024/1787/oj",
+          "requirement": "From 2027 EU importers of oil, gas and coal must show that the supplier's methane monitoring, reporting and verification is equivalent to the EU's, with methane-intensity reporting to follow. Check the Regulation's dates."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 37427219610,
+      "priorExportsUsd": 40940573162,
+      "sharePct": 12.1,
+      "changePct": -8.6,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 2265483,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2702": {
+          "exportsUsd": 1668175,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2703": {
+          "exportsUsd": 9056764,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2704": {
+          "exportsUsd": 52905265,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2705": {
+          "exportsUsd": 227947,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2706": {
+          "exportsUsd": 271529,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2707": {
+          "exportsUsd": 92482088,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2708": {
+          "exportsUsd": 175714,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2709": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2710": {
+          "exportsUsd": 27487474069,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2711": {
+          "exportsUsd": 9443187408,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2712": {
+          "exportsUsd": 44194139,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2713": {
+          "exportsUsd": 287254761,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2714": {
+          "exportsUsd": 667106,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2715": {
+          "exportsUsd": 5389162,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. energy products enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest single country buyer, almost all refined fuels by pipeline and tanker, duty-free under USMCA. Its import permits, not tariffs, govern who can buy.",
+        "mainProducts": "Refined petroleum products (gasoline, diesel, jet fuel) (2710) · Natural gas, LNG and LPG (propane, butane) (2711)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Ministry of Energy (SENER)",
+          "url": "https://www.gob.mx/sener",
+          "requirement": "The Mexican importer needs a hydrocarbon import permit from SENER, and refined fuels must meet Mexico's fuel-quality standards."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination (Canada's schedule)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 27025184734,
+      "priorExportsUsd": 26400567252,
+      "sharePct": 8.7,
+      "changePct": 2.4,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 580460173,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2702": {
+          "exportsUsd": 1210751,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2703": {
+          "exportsUsd": 14399365,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2704": {
+          "exportsUsd": 297503280,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2705": {
+          "exportsUsd": 90155,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2706": {
+          "exportsUsd": 60746916,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2707": {
+          "exportsUsd": 54569620,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2708": {
+          "exportsUsd": 14875715,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2709": {
+          "exportsUsd": 9470111400,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2710": {
+          "exportsUsd": 12322936668,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2711": {
+          "exportsUsd": 2689071782,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2712": {
+          "exportsUsd": 182931216,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2713": {
+          "exportsUsd": 358038297,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2714": {
+          "exportsUsd": 5310682,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2715": {
+          "exportsUsd": 32568394,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        },
+        "2716": {
+          "exportsUsd": 940360320,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. energy products enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada buys U.S. refined fuels, natural gas and some crude duty-free under CUSMA. Its September 2026 counter-tariffs name steel, aluminum and dairy, not energy.",
+        "mainProducts": "Refined petroleum products (gasoline, diesel, jet fuel) (2710) · Crude oil (2709)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canada Energy Regulator (CER)",
+          "url": "https://www.cer-rec.gc.ca/en/",
+          "requirement": "Natural gas and electricity imports are regulated by the CER; refined fuels must meet Canada's fuel regulations. Check whether a licence is needed for the specific shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "Korea's customs tariff; KORUS partner (energy lines not individually verified)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 17345590303,
+      "priorExportsUsd": 18489410929,
+      "sharePct": 5.6,
+      "changePct": -6.2,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 239825383,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2702": {
+          "exportsUsd": 82640,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2703": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2704": {
+          "exportsUsd": 334373,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2705": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2707": {
+          "exportsUsd": 3711009,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2709": {
+          "exportsUsd": 12528784219,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2710": {
+          "exportsUsd": 891604754,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2711": {
+          "exportsUsd": 3657908708,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2712": {
+          "exportsUsd": 4265054,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2713": {
+          "exportsUsd": 17803327,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2714": {
+          "exportsUsd": 132738,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2715": {
+          "exportsUsd": 1138098,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Korea's customs tariff 2026 and KORUS Annex 2-B; energy lines were not individually confirmed."
+        }
+      },
+      "profile": {
+        "headline": "South Korea buys U.S. crude, LNG and coal under long-term contracts and is a KORUS partner. A rate for each energy line was not confirmed from the 2026 schedule.",
+        "mainProducts": "Crude oil (2709) · Natural gas, LNG and LPG (propane, butane) (2711)",
+        "tariffNow": "Not individually verified (KORUS partner)",
+        "regulator": {
+          "name": "Ministry of Trade, Industry and Resources (MOTIR)",
+          "url": "https://english.motie.go.kr/",
+          "requirement": "Importers register as petroleum or gas importers with the ministry and its agencies; check the registration rules for the specific product."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's customs tariff (no U.S. trade agreement); interim framework agreed Feb. 2026",
+      "usTradeAgreement": null,
+      "exportsUsd": 14144892728,
+      "priorExportsUsd": 12600467664,
+      "sharePct": 4.6,
+      "changePct": 12.3,
+      "status": "pending",
+      "cells": {
+        "2701": {
+          "exportsUsd": 2521391938,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2702": {
+          "exportsUsd": 57497,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2703": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2704": {
+          "exportsUsd": 19129,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2705": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2707": {
+          "exportsUsd": 10990327,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2708": {
+          "exportsUsd": 4590,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2709": {
+          "exportsUsd": 7901903399,
+          "rate": "Crude duty reportedly cut to Re 1 per tonne in 2026 (press reports)",
+          "normalRate": "5% (previous rate, per press)",
+          "basis": "India Customs Tariff: the Union Budget 2026-27 is reported to have cut the basic duty on crude petroleum from 5% to Re 1 per tonne. This comes from press reports and was not confirmed from the customs notification."
+        },
+        "2710": {
+          "exportsUsd": 987007841,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2711": {
+          "exportsUsd": 2085179715,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2712": {
+          "exportsUsd": 10326805,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2713": {
+          "exportsUsd": 626616459,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2714": {
+          "exportsUsd": 506644,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2715": {
+          "exportsUsd": 888384,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; this line was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "India bought 12% more U.S. energy in 2025, and in February 2026 it said it intends to buy $500 billion of U.S. energy, aircraft, precious metals, technology and coking coal over five years. The commitment is a purchase goal, not a tariff cut.",
+        "mainProducts": "Crude oil (2709) · Coal and coal briquettes (2701)",
+        "tariffNow": "Crude duty reportedly cut in 2026; other rates not verified",
+        "regulator": {
+          "name": "Ministry of Petroleum and Natural Gas",
+          "url": "https://mopng.gov.in/",
+          "requirement": "Imports of crude oil and LNG are made by registered refiners and gas importers; check the authorization the buyer needs for the specific product."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's customs tariff (crude oil, LNG and coal listed as free)",
+      "usTradeAgreement": null,
+      "exportsUsd": 12524112379,
+      "priorExportsUsd": 12295809989,
+      "sharePct": 4.1,
+      "changePct": 1.9,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 688559322,
+          "rate": "Free (not re-verified for 2026)",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff (Statistical Code for Import): coal is listed as free. Not re-verified against the 2026 schedule."
+        },
+        "2702": {
+          "exportsUsd": 31938,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2703": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2704": {
+          "exportsUsd": 10848,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2705": {
+          "exportsUsd": 8682,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2707": {
+          "exportsUsd": 1657156,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2709": {
+          "exportsUsd": 2635403517,
+          "rate": "Free (not re-verified for 2026)",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff (Statistical Code for Import): crude petroleum is listed as free. Not re-verified against the 2026 schedule; the petroleum and coal tax is a separate domestic tax."
+        },
+        "2710": {
+          "exportsUsd": 576475203,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2711": {
+          "exportsUsd": 8248829575,
+          "rate": "Free (not re-verified for 2026)",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff (Statistical Code for Import): LNG and natural gas are listed as free. Not re-verified against the 2026 schedule."
+        },
+        "2712": {
+          "exportsUsd": 23538627,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2713": {
+          "exportsUsd": 345131815,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2714": {
+          "exportsUsd": 735234,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2715": {
+          "exportsUsd": 3730462,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026 (Statistical Code for Import); this line was not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys U.S. LNG, crude oil and coal on long-term contracts. The normal customs rate on crude, LNG and coal is listed as free; the petroleum and coal tax is a separate domestic tax.",
+        "mainProducts": "Natural gas, LNG and LPG (propane, butane) (2711) · Crude oil (2709)",
+        "tariffNow": "Crude, LNG and coal listed as free (not re-verified)",
+        "regulator": {
+          "name": "Ministry of Economy, Trade and Industry (METI)",
+          "url": "https://www.meti.go.jp/english/",
+          "requirement": "Importers of crude oil and petroleum products are registered under Japan's petroleum laws; check the registration the buyer needs."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Brazil's (Mercosur) customs tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 11226290986,
+      "priorExportsUsd": 8565633369,
+      "sharePct": 3.6,
+      "changePct": 31.1,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 988880217,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2702": {
+          "exportsUsd": 51845,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2703": {
+          "exportsUsd": 3517,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2704": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2705": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2707": {
+          "exportsUsd": 81359790,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2709": {
+          "exportsUsd": 1872471648,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2710": {
+          "exportsUsd": 6908720152,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2711": {
+          "exportsUsd": 905713542,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2712": {
+          "exportsUsd": 7996577,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2713": {
+          "exportsUsd": 456404249,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2714": {
+          "exportsUsd": 2435734,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2715": {
+          "exportsUsd": 2253715,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Brazil's Mercosur Common External Tariff 2026; fuel lines were not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "Brazil bought 31% more U.S. energy in 2025, mostly refined fuels and LPG. Its import tariffs on fuels were not confirmed from an official 2026 schedule.",
+        "mainProducts": "Refined petroleum products (gasoline, diesel, jet fuel) (2710) · Crude oil (2709)",
+        "tariffNow": "Normal tariff (no U.S. trade agreement); rates not verified",
+        "regulator": {
+          "name": "National Agency for Petroleum, Natural Gas and Biofuels (ANP)",
+          "url": "https://www.gov.br/anp/pt-br",
+          "requirement": "Importers of fuels need an authorization from the ANP and must meet its fuel specifications."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 11169132246,
+      "priorExportsUsd": 14679498260,
+      "sharePct": 3.6,
+      "changePct": -23.9,
+      "status": "unchanged",
+      "cells": {
+        "2701": {
+          "exportsUsd": 30081571,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2702": {
+          "exportsUsd": 40907,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2703": {
+          "exportsUsd": 77434,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2704": {
+          "exportsUsd": 11184388,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2705": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2707": {
+          "exportsUsd": 258842,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2709": {
+          "exportsUsd": 4544845203,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2710": {
+          "exportsUsd": 3747496980,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2711": {
+          "exportsUsd": 2793971658,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2712": {
+          "exportsUsd": 1175804,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2713": {
+          "exportsUsd": 39095664,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2714": {
+          "exportsUsd": 123848,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2715": {
+          "exportsUsd": 779947,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026; fuel lines were not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "The UK bought 24% less U.S. energy in 2025. Its tariff on U.S. fuels was not confirmed from the 2026 UK Global Tariff; its energy sanctions rules target Russian-origin oil, not U.S. cargoes.",
+        "mainProducts": "Crude oil (2709) · Refined petroleum products (gasoline, diesel, jet fuel) (2710)",
+        "tariffNow": "Normal tariff (no U.S. trade agreement); rates not verified",
+        "regulator": {
+          "name": "Department for Energy Security and Net Zero",
+          "url": "https://www.gov.uk/government/organisations/department-for-energy-security-and-net-zero",
+          "requirement": "U.S. crude oil and LNG are generally imported without a product approval; refined fuels must meet UK fuel-quality standards."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs tariff; cuts and energy purchases agreed in the 2026 U.S.–Taiwan trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 6711392777,
+      "priorExportsUsd": 7333083546,
+      "sharePct": 2.2,
+      "changePct": -8.5,
+      "status": "pending",
+      "cells": {
+        "2701": {
+          "exportsUsd": 146145,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2702": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2703": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2704": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2705": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2706": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2707": {
+          "exportsUsd": 1444136,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2708": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2709": {
+          "exportsUsd": 5600711753,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2710": {
+          "exportsUsd": 99963627,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2711": {
+          "exportsUsd": 1007113722,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2712": {
+          "exportsUsd": 1571082,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2713": {
+          "exportsUsd": 39010,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2714": {
+          "exportsUsd": 27522,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2715": {
+          "exportsUsd": 375780,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        },
+        "2716": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; energy lines were not individually verified. The Feb. 2026 U.S.–Taiwan agreement (USTR fact sheet) names purchases of U.S. LNG and crude oil but publishes no rates."
+        }
+      },
+      "profile": {
+        "headline": "Taiwan, which UN Comtrade reports as \"Other Asia, nes\", buys U.S. LNG and crude oil, and in February 2026 planned to buy $44.4 billion of them from 2025 through 2029. The agreement needs Taiwan's legislature and does not itself change its tariffs.",
+        "mainProducts": "Crude oil (2709) · Natural gas, LNG and LPG (propane, butane) (2711)",
+        "tariffNow": "Cuts agreed Feb. 2026 (not yet confirmed in force)",
+        "regulator": {
+          "name": "Energy Administration, Ministry of Economic Affairs",
+          "url": "https://www.moeaea.gov.tw/ECW/english/",
+          "requirement": "Importers of crude oil, petroleum products and natural gas hold the permits the Energy Administration requires; check the specific permit for the product."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "2709",
+      "exportsUsd": 39308613233,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "2711",
+      "exportsUsd": 29778012747,
+      "rate": "Free (LNG and natural gas); LPG not individually verified"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2710",
+      "exportsUsd": 27487474069,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "2709",
+      "exportsUsd": 12528784219,
+      "rate": "Not individually verified — see the market's tariff schedule"
+    },
+    {
+      "market": "Canada",
+      "heading": "2710",
+      "exportsUsd": 12322936668,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "2709",
+      "exportsUsd": 9470111400,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2711",
+      "exportsUsd": 9443187408,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "2710",
+      "exportsUsd": 9051136386,
+      "rate": "About 3.5–4.7% on most refined fuels; some uses free"
+    }
+  ],
+  "assumptions": [
+    "Rates come from the trade agreements (USMCA, CUSMA) and, for the EU, Japan, India and the others, from each market's customs tariff where it could be confirmed. Where an official 2026 figure was not found, the cell says 'not individually verified' rather than showing a guess.",
+    "Four headings carry nearly the whole chapter (refined fuels 2710, crude oil 2709, natural gas and LNG 2711, coal 2701). The other 12 headings are under 6% together and are shown with the market-wide default.",
+    "Energy duties are often set by use (for example refined fuels for refining or chemical use can be duty-free in the EU), so the EU rate for refined fuels is shown as a range and should be confirmed on the exact TARIC line.",
+    "Fuel excise and petroleum taxes (for example Japan's petroleum and coal tax, India's cess) are domestic taxes, not tariffs, and are not shown.",
+    "National 8–10-digit tariff lines can set a different rate than the four-digit group shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 27, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 71% of 2025 U.S. Chapter 27 exports. A customs union (the EU) is one market: its members share one tariff. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

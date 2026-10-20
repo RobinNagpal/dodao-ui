@@ -1,0 +1,680 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 29,
+    "padded": "29",
+    "slug": "29-organic-chemicals",
+    "title": "Organic Chemicals"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/29-organic-chemicals",
+    "h1": "HTS Chapter 29: Organic Chemicals — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Organic Chemicals Exports and Foreign Tariffs (HTS Ch. 29) | KoalaGains",
+      "shortDescription": "U.S. organic chemical exports were $59.18B in 2025, up 14.1%. Where they go, what the EU, China and Mexico charge, and which tariffs changed since January 2025.",
+      "keywords": ["US chemical exports", "US organic chemicals exports", "tariffs on US chemicals", "China tariff on US chemicals", "HS 29 exports by country"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$59.18B** of organic chemicals in 2025, up 14.1% on 2024 and 74% above 2020 ($33.97B). One heading drove the jump: hormones and steroids (2937), which include insulin and other peptide hormones, were **32%** of the total ($19.09B, up 91.6%). Italy alone bought $16.04B (up 128.5%) and the EU as a whole $28.94B, 49% of the chapter. The rest is bulk intermediates — acyclic hydrocarbons (2901, $9.30B), alcohols (2905) and ethers (2909) — sold to Mexico, Canada, China and Japan.\n\nTariffs are low or zero for most buyers: the EU cut its duties to zero on July 1, 2026 (except mannitol and sorbitol), and Mexico, Canada and South Korea charge nothing on qualifying goods. **China** is the exception: it adds a 10% extra duty to its MFN rates and bought 13.3% less. What usually decides access is chemical registration (REACH, K-REACH, KKDIK, China's Order No. 12) and, for drug ingredients, the medicines regulator — plus U.S. rules such as TSCA export notices and DEA and Chemical Weapons Convention controls.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$59.18B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+14.1%"
+    },
+    {
+      "label": "Largest product group (2937)",
+      "value": "32%",
+      "note": "Hormones and steroids (insulin, peptide hormones)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "37%",
+      "note": "Italy, Mexico"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "8 of 13",
+      "note": "Italy, Belgium, Germany, Netherlands, France (EU), Mexico, Canada, South Korea"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. organic chemical exports rose 14.1% to $59.18B in 2025, led by hormones and steroids (2937, $19.09B, up 91.6%); Italy alone bought $16.04B.",
+    "The EU is 49% of the chapter and has charged U.S. chemicals nothing since July 1, 2026 (mannitol and sorbitol excepted); Mexico, Canada and South Korea also charge nothing on qualifying goods.",
+    "China is the only large buyer that raised tariffs — a 10% extra duty on all U.S. goods — and U.S. exports there fell 13.3% to $3.45B; India's February 2026 framework promises cuts but none is in force.",
+    "Before shipping, check TSCA section 12(b) export notices, DEA rules for listed chemicals and controlled substances, and the Chemical Weapons Convention controls; the buyer's chemical-registration regime decides whether the cargo can be sold."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 33969411319,
+      "partnerAUsd": 999816713,
+      "partnerBUsd": 4250203309,
+      "restUsd": 28719391297
+    },
+    {
+      "year": 2021,
+      "totalUsd": 42881362299,
+      "partnerAUsd": 1163093606,
+      "partnerBUsd": 6312494717,
+      "restUsd": 35405773976
+    },
+    {
+      "year": 2022,
+      "totalUsd": 51063344919,
+      "partnerAUsd": 1151075749,
+      "partnerBUsd": 8254764558,
+      "restUsd": 41657504612
+    },
+    {
+      "year": 2023,
+      "totalUsd": 51730962501,
+      "partnerAUsd": 3613900036,
+      "partnerBUsd": 6829509878,
+      "restUsd": 41287552587
+    },
+    {
+      "year": 2024,
+      "totalUsd": 51878424544,
+      "partnerAUsd": 7020051566,
+      "partnerBUsd": 6484650794,
+      "restUsd": 38373722184
+    },
+    {
+      "year": 2025,
+      "totalUsd": 59182337984,
+      "partnerAUsd": 16041188265,
+      "partnerBUsd": 5816129008,
+      "restUsd": 37325020711
+    }
+  ],
+  "byYearPartners": ["Italy", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 29 goods each year, split into the two largest 2025 buyers (Italy and Mexico) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 16041188265,
+      "priorExportsUsd": 7020051566,
+      "sharePct": 27.1,
+      "changePct": 128.5,
+      "tariffNow": "Free (EU–US framework); mannitol and sorbitol excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 5816129008,
+      "priorExportsUsd": 6484650794,
+      "sharePct": 9.8,
+      "changePct": -10.3,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 3881151911,
+      "priorExportsUsd": 3537650644,
+      "sharePct": 6.6,
+      "changePct": 9.7,
+      "tariffNow": "Free (EU–US framework); mannitol and sorbitol excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3540220940,
+      "priorExportsUsd": 3667815766,
+      "sharePct": 6,
+      "changePct": -3.5,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 3449399227,
+      "priorExportsUsd": 3980594815,
+      "sharePct": 5.8,
+      "changePct": -13.3,
+      "tariffNow": "MFN + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 3093953408,
+      "priorExportsUsd": 2657359657,
+      "sharePct": 5.2,
+      "changePct": 16.4,
+      "tariffNow": "Free (EU–US framework); mannitol and sorbitol excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 2709596524,
+      "priorExportsUsd": 2284056995,
+      "sharePct": 4.6,
+      "changePct": 18.6,
+      "tariffNow": "Free (EU–US framework); mannitol and sorbitol excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 2394114968,
+      "priorExportsUsd": 2838528768,
+      "sharePct": 4,
+      "changePct": -15.7,
+      "tariffNow": "MFN 0%–5.5% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 1963379268,
+      "priorExportsUsd": 2305713043,
+      "sharePct": 3.3,
+      "changePct": -14.8,
+      "tariffNow": "MFN ~6.1% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 1870012743,
+      "priorExportsUsd": 1915357406,
+      "sharePct": 3.2,
+      "changePct": -2.4,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 1513022809,
+      "priorExportsUsd": 1110954801,
+      "sharePct": 2.6,
+      "changePct": 36.2,
+      "tariffNow": "MFN 2%–7.5% (US–India framework not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 1149727046,
+      "priorExportsUsd": 1042527663,
+      "sharePct": 1.9,
+      "changePct": 10.3,
+      "tariffNow": "Free (EU–US framework); mannitol and sorbitol excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "exportsUsd": 923945070,
+      "priorExportsUsd": 1035782211,
+      "sharePct": 1.6,
+      "changePct": -10.8,
+      "tariffNow": "MFN 0%–6.5% (no U.S. FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 10836496797,
+  "othersPriorExportsUsd": 11997380415,
+  "byHeading": [
+    {
+      "heading": "2901",
+      "label": "Acyclic hydrocarbons",
+      "exportsUsd": 9304847351,
+      "priorExportsUsd": 9203226706,
+      "changePct": 1.1,
+      "sharePct": 15.7
+    },
+    {
+      "heading": "2902",
+      "label": "Cyclic hydrocarbons (benzene, toluene, xylene, styrene)",
+      "exportsUsd": 2662682431,
+      "priorExportsUsd": 3200634837,
+      "changePct": -16.8,
+      "sharePct": 4.5
+    },
+    {
+      "heading": "2903",
+      "label": "Halogenated hydrocarbons (HFCs, HCFCs, CFCs, chlorinated solvents)",
+      "exportsUsd": 2195365102,
+      "priorExportsUsd": 2171448901,
+      "changePct": 1.1,
+      "sharePct": 3.7
+    },
+    {
+      "heading": "2904",
+      "label": "Sulfonated, nitrated or nitrosated hydrocarbons",
+      "exportsUsd": 101138149,
+      "priorExportsUsd": 114680898,
+      "changePct": -11.8,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2905",
+      "label": "Acyclic alcohols (methanol, glycols, glycerol, sorbitol)",
+      "exportsUsd": 4506376725,
+      "priorExportsUsd": 4352865566,
+      "changePct": 3.5,
+      "sharePct": 7.6
+    },
+    {
+      "heading": "2906",
+      "label": "Cyclic alcohols (menthol, benzyl alcohol)",
+      "exportsUsd": 154409410,
+      "priorExportsUsd": 168462467,
+      "changePct": -8.3,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2907",
+      "label": "Phenols",
+      "exportsUsd": 321153240,
+      "priorExportsUsd": 449820816,
+      "changePct": -28.6,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "2908",
+      "label": "Halogenated or nitrated phenols",
+      "exportsUsd": 28679852,
+      "priorExportsUsd": 25832994,
+      "changePct": 11,
+      "sharePct": 0
+    },
+    {
+      "heading": "2909",
+      "label": "Ethers, ether-alcohols and peroxides",
+      "exportsUsd": 3558969955,
+      "priorExportsUsd": 3976736699,
+      "changePct": -10.5,
+      "sharePct": 6
+    },
+    {
+      "heading": "2910",
+      "label": "Epoxides (ethylene oxide, propylene oxide)",
+      "exportsUsd": 484348195,
+      "priorExportsUsd": 418744849,
+      "changePct": 15.7,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "2911",
+      "label": "Acetals and hemiacetals",
+      "exportsUsd": 3609464,
+      "priorExportsUsd": 6172507,
+      "changePct": -41.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "2912",
+      "label": "Aldehydes (formaldehyde, vanillin)",
+      "exportsUsd": 205442772,
+      "priorExportsUsd": 222337700,
+      "changePct": -7.6,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2913",
+      "label": "Halogenated or nitrated aldehydes",
+      "exportsUsd": 177205,
+      "priorExportsUsd": 141699,
+      "changePct": 25.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "2914",
+      "label": "Ketones and quinones (acetone, MEK, camphor)",
+      "exportsUsd": 274777760,
+      "priorExportsUsd": 370376513,
+      "changePct": -25.8,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "2915",
+      "label": "Saturated monocarboxylic acids (acetic, formic, stearic)",
+      "exportsUsd": 1797814373,
+      "priorExportsUsd": 1900060527,
+      "changePct": -5.4,
+      "sharePct": 3
+    },
+    {
+      "heading": "2916",
+      "label": "Unsaturated and aromatic monocarboxylic acids (acrylic, benzoic)",
+      "exportsUsd": 780271337,
+      "priorExportsUsd": 890945512,
+      "changePct": -12.4,
+      "sharePct": 1.3
+    },
+    {
+      "heading": "2917",
+      "label": "Polycarboxylic acids (adipic, phthalic, terephthalic)",
+      "exportsUsd": 724096616,
+      "priorExportsUsd": 761483800,
+      "changePct": -4.9,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "2918",
+      "label": "Carboxylic acids with extra oxygen function (citric, lactic, salicylic)",
+      "exportsUsd": 360923661,
+      "priorExportsUsd": 410506397,
+      "changePct": -12.1,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2919",
+      "label": "Phosphoric esters (TCPP, lactophosphates)",
+      "exportsUsd": 44647210,
+      "priorExportsUsd": 52359110,
+      "changePct": -14.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2920",
+      "label": "Esters of other inorganic acids (phosphites, carbonates)",
+      "exportsUsd": 168004497,
+      "priorExportsUsd": 172831479,
+      "changePct": -2.8,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2921",
+      "label": "Amines (methylamines, aniline, hexamethylenediamine)",
+      "exportsUsd": 1095364804,
+      "priorExportsUsd": 1301756000,
+      "changePct": -15.9,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "2922",
+      "label": "Amino alcohols, amino acids and their salts (lysine, glycine, MSG)",
+      "exportsUsd": 1000443187,
+      "priorExportsUsd": 937831805,
+      "changePct": 6.7,
+      "sharePct": 1.7
+    },
+    {
+      "heading": "2923",
+      "label": "Quaternary ammonium salts (choline, lecithins)",
+      "exportsUsd": 308356960,
+      "priorExportsUsd": 355137329,
+      "changePct": -13.2,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "2924",
+      "label": "Amides (acetaminophen, lidocaine, ureines)",
+      "exportsUsd": 364394705,
+      "priorExportsUsd": 421312280,
+      "changePct": -13.5,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2925",
+      "label": "Imides and imines (saccharin, guanidines)",
+      "exportsUsd": 119176231,
+      "priorExportsUsd": 96350501,
+      "changePct": 23.7,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2926",
+      "label": "Nitriles (acrylonitrile, adiponitrile)",
+      "exportsUsd": 349498463,
+      "priorExportsUsd": 423239610,
+      "changePct": -17.4,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2927",
+      "label": "Diazo, azo and azoxy compounds",
+      "exportsUsd": 8875166,
+      "priorExportsUsd": 12097810,
+      "changePct": -26.6,
+      "sharePct": 0
+    },
+    {
+      "heading": "2928",
+      "label": "Hydrazine and hydroxylamine derivatives",
+      "exportsUsd": 54681654,
+      "priorExportsUsd": 63105768,
+      "changePct": -13.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2929",
+      "label": "Other nitrogen compounds (isocyanates MDI, TDI)",
+      "exportsUsd": 547076327,
+      "priorExportsUsd": 575097397,
+      "changePct": -4.9,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "2930",
+      "label": "Organo-sulfur compounds (methionine, thiocarbamates)",
+      "exportsUsd": 605422868,
+      "priorExportsUsd": 660508770,
+      "changePct": -8.3,
+      "sharePct": 1
+    },
+    {
+      "heading": "2931",
+      "label": "Other organo-inorganic compounds (glyphosate, organophosphorus, silanes)",
+      "exportsUsd": 1392152686,
+      "priorExportsUsd": 1508736575,
+      "changePct": -7.7,
+      "sharePct": 2.4
+    },
+    {
+      "heading": "2932",
+      "label": "Oxygen heterocyclics (THF, lactones, furfural, coumarin)",
+      "exportsUsd": 568111063,
+      "priorExportsUsd": 595936373,
+      "changePct": -4.7,
+      "sharePct": 1
+    },
+    {
+      "heading": "2933",
+      "label": "Nitrogen heterocyclics (most drug APIs, melamine, pyridines)",
+      "exportsUsd": 2267195622,
+      "priorExportsUsd": 2303370656,
+      "changePct": -1.6,
+      "sharePct": 3.8
+    },
+    {
+      "heading": "2934",
+      "label": "Nucleic acids and other heterocyclics (APIs)",
+      "exportsUsd": 1452308507,
+      "priorExportsUsd": 1386037303,
+      "changePct": 4.8,
+      "sharePct": 2.5
+    },
+    {
+      "heading": "2935",
+      "label": "Sulfonamides",
+      "exportsUsd": 179517331,
+      "priorExportsUsd": 207175192,
+      "changePct": -13.3,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2936",
+      "label": "Vitamins and provitamins",
+      "exportsUsd": 1096571826,
+      "priorExportsUsd": 1038511699,
+      "changePct": 5.6,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "2937",
+      "label": "Hormones and steroids (insulin, peptide hormones)",
+      "exportsUsd": 19089207993,
+      "priorExportsUsd": 9962943789,
+      "changePct": 91.6,
+      "sharePct": 32.3
+    },
+    {
+      "heading": "2938",
+      "label": "Glycosides (rutin, stevioside)",
+      "exportsUsd": 39634016,
+      "priorExportsUsd": 44195438,
+      "changePct": -10.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2939",
+      "label": "Alkaloids (caffeine, ephedrine, opiates, nicotine)",
+      "exportsUsd": 147326441,
+      "priorExportsUsd": 108927077,
+      "changePct": 35.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2940",
+      "label": "Chemically pure sugars (arabinose, ribose)",
+      "exportsUsd": 190700522,
+      "priorExportsUsd": 160272958,
+      "changePct": 19,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2941",
+      "label": "Antibiotics",
+      "exportsUsd": 536759113,
+      "priorExportsUsd": 736480732,
+      "changePct": -27.1,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "2942",
+      "label": "Other organic compounds",
+      "exportsUsd": 91827194,
+      "priorExportsUsd": 109729505,
+      "changePct": -16.3,
+      "sharePct": 0.2
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2937.19",
+      "heading": "2937",
+      "description": "Polypeptide hormones, protein hormones and glycoprotein hormones, their derivatives and structural analogues; other than somatotropin, (its derivatives and structural anaologues) and insulin and its salts",
+      "exportsUsd": 18467281168,
+      "priorExportsUsd": 9159511200,
+      "changePct": 101.6,
+      "sharePct": 31.2
+    },
+    {
+      "hs6": "2901.10",
+      "heading": "2901",
+      "description": "Acyclic hydrocarbons; saturated",
+      "exportsUsd": 7051075268,
+      "priorExportsUsd": 6757023347,
+      "changePct": 4.4,
+      "sharePct": 11.9
+    },
+    {
+      "hs6": "2909.19",
+      "heading": "2909",
+      "description": "Ethers; acyclic, and their halogenated, sulphonated, nitrated or nitrosated derivatives, other than diethyl ether",
+      "exportsUsd": 2893213411,
+      "priorExportsUsd": 3271147765,
+      "changePct": -11.6,
+      "sharePct": 4.9
+    },
+    {
+      "hs6": "2902.50",
+      "heading": "2902",
+      "description": "Cyclic hydrocarbons; styrene",
+      "exportsUsd": 1616264413,
+      "priorExportsUsd": 1700606288,
+      "changePct": -5,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "2905.31",
+      "heading": "2905",
+      "description": "Alcohols; acyclic, diols; ethylene glycol (ethanediol)",
+      "exportsUsd": 1582316314,
+      "priorExportsUsd": 1752733676,
+      "changePct": -9.7,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "2905.11",
+      "heading": "2905",
+      "description": "Alcohols; saturated monohydric, methanol (methyl alcohol)",
+      "exportsUsd": 1500073522,
+      "priorExportsUsd": 1008279101,
+      "changePct": 48.8,
+      "sharePct": 2.5
+    },
+    {
+      "hs6": "2934.99",
+      "heading": "2934",
+      "description": "Nucleic acids and their salts, other heterocyclic compounds, n.e.c. in heading number 2934",
+      "exportsUsd": 1397342362,
+      "priorExportsUsd": 1308899527,
+      "changePct": 6.8,
+      "sharePct": 2.4
+    },
+    {
+      "hs6": "2901.29",
+      "heading": "2901",
+      "description": "Acyclic hydrocarbons; unsaturated, n.e.c. in heading no. 2901",
+      "exportsUsd": 1064851132,
+      "priorExportsUsd": 1165854701,
+      "changePct": -8.7,
+      "sharePct": 1.8
+    },
+    {
+      "hs6": "2933.39",
+      "heading": "2933",
+      "description": "Heterocyclic compounds; containing an unfused pyridine ring (whether or not hydrogenated) in the structure, n.e.c. in 2933.3",
+      "exportsUsd": 866499703,
+      "priorExportsUsd": 756762423,
+      "changePct": 14.5,
+      "sharePct": 1.5
+    },
+    {
+      "hs6": "2931.49",
+      "heading": "2931",
+      "description": "Non-halogenated organo-phosphorous derivatives; other non-halogenated organo-phosphorous derivatives, n.e.c. in item no. 2931.4",
+      "exportsUsd": 839582060,
+      "priorExportsUsd": 873530136,
+      "changePct": -3.9,
+      "sharePct": 1.4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 29, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 82% of 2025 U.S. Chapter 29 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 29,
+    "padded": "29",
+    "slug": "29-organic-chemicals",
+    "title": "Organic Chemicals"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/29-organic-chemicals/rules",
+    "h1": "HTS Chapter 29: Organic Chemicals — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Chemical Export Rules: TSCA, DEA & CWC Controls (HTS Ch. 29) | KoalaGains",
+      "shortDescription": "What U.S. exporters of organic chemicals and drug ingredients must do before shipping: TSCA 12(b) notices, DEA listed-chemical and controlled-substance rules, Chemical Weapons Convention licences and FDA rules.",
+      "keywords": [
+        "TSCA 12(b) export notification",
+        "DEA Form 486 export listed chemicals",
+        "chemical weapons convention export license",
+        "export chemicals license",
+        "schedule b code methanol"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "A U.S. exporter of organic chemicals takes the same five steps as every exporter, and this chapter has more chemical-specific rules than most. A **TSCA section 12(b)** notice to EPA is needed when the chemical is subject to certain EPA actions; **DEA** rules apply to listed chemicals (Form 486, 15 days before export) and controlled substances (a permit); **Chemical Weapons Convention** chemicals need a Commerce licence or end-use certificate for some destinations; and drug ingredients follow the FDA's export rules. Most commodity chemicals are EAR99 and need no export licence, and none of Chapter 29's HS codes is on the Russia and Belarus licence lists, though controlled chemicals still need one.",
+  "regulationsAsOf": "2026-10-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Hormones and steroids (2937) were 32% of 2025 exports; the largest line was 2937.19 (polypeptide, protein and glycoprotein hormones, $18.47B), then 2901.10 (saturated acyclic hydrocarbons, $7.05B) and 2909.19 (acyclic ethers, $2.89B). Check the full 10-digit Schedule B number; several headings split by purity or use."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Chemicals that can be diverted to weapons or drug manufacture are a common focus of screening; check the end user and the stated end use, not only the consignee."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most commodity chemicals are EAR99. Chemicals on the Commerce Control List need a licence for some destinations: ECCN 1C350 (precursors for toxic chemical agents) for CB reasons, and ECCN 1C355 and 1C395 for the Chemical Weapons Convention Schedule 2 and 3 chemicals and certain mixtures and kits. Schedule 1 chemicals need a licence for every destination."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "None of Chapter 29's HS codes is on the Russia and Belarus HS-code lists in Supplements No. 4 and 5 to 15 CFR Part 746, but a licence is still required for any item with an ECCN and for restricted end users. Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "A shipment that needs a DEA permit or declaration, or a Commerce licence, needs an EEI filing at any value. Bulk chemical shipments usually exceed $2,500 per Schedule B number anyway."
+    }
+  ],
+  "rules": [
+    {
+      "id": "epa-tsca-12b",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "TSCA section 12(b): notify EPA of the export of a chemical subject to certain EPA data requirements, rules or orders, within seven days of forming the intent to export or on the date of export, whichever is earlier; drugs are outside TSCA",
+      "citations": [
+        {
+          "label": "40 CFR 707.65 (submission to the agency)",
+          "url": "https://www.ecfr.gov/current/title-40/section-707.65"
+        },
+        {
+          "label": "40 CFR Part 707, Subpart D (export notification)",
+          "url": "https://www.ecfr.gov/current/title-40/part-707/subpart-D"
+        },
+        {
+          "label": "EPA: TSCA requirements for exporting chemicals",
+          "url": "https://www.epa.gov/tsca-import-export-requirements/tsca-requirements-exporting-chemicals"
+        }
+      ]
+    },
+    {
+      "id": "dea-listed-chemicals",
+      "agency": "Drug Enforcement Administration (DEA)",
+      "title": "List I and List II chemicals (for example acetic anhydride, phenylacetic acid, ephedrine and pseudoephedrine, and solvents such as acetone and toluene): file DEA Form 486 at least 15 calendar days before export when the quantity meets the threshold, with a waiver for some established customers",
+      "citations": [
+        {
+          "label": "21 CFR 1313.21 (notification prior to export)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1313.21"
+        },
+        {
+          "label": "DEA: instructions for Form 486",
+          "url": "https://www.deadiversion.usdoj.gov/21cfr_reports/chemicals/486_instruct.html"
+        }
+      ]
+    },
+    {
+      "id": "dea-controlled-substances",
+      "agency": "Drug Enforcement Administration (DEA)",
+      "title": "Controlled substances (for example opioids, fentanyl-related compounds, amphetamines and benzodiazepines): DEA registration and an export permit for Schedule I and II and narcotic Schedule III and IV substances",
+      "citations": [
+        {
+          "label": "21 CFR 1312.21 (requirement of authorization to export)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1312.21"
+        }
+      ]
+    },
+    {
+      "id": "bis-cwc",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Chemical Weapons Convention chemicals: Schedule 1 chemicals need a licence for every destination; Schedule 2 chemicals cannot go to States not Party to the Convention; Schedule 3 chemicals need an end-use certificate for States not Party",
+      "citations": [
+        {
+          "label": "15 CFR 742.18 (Chemical Weapons Convention)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.18"
+        },
+        {
+          "label": "15 CFR Part 745 (CWC requirements)",
+          "url": "https://www.ecfr.gov/current/title-15/part-745"
+        },
+        {
+          "label": "BIS: Chemical Weapons Convention",
+          "url": "https://www.bis.gov/licensing/chemical-weapons-convention"
+        }
+      ]
+    },
+    {
+      "id": "bis-cb-precursors",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Precursors for toxic chemical agents (ECCN 1C350) and CWC Schedule 2 and 3 chemicals and mixtures (ECCN 1C355, 1C395): a licence is required for the destinations on the chemical and biological (CB) columns of the Country Chart",
+      "citations": [
+        {
+          "label": "15 CFR 742.2 (proliferation of chemical and biological weapons)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.2"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 1",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "fda-drug-substances",
+      "agency": "Food and Drug Administration (FDA)",
+      "title": "Drug ingredients (APIs, hormones, antibiotics, vitamins for drug use): FDA treats them as drugs, so its export rules apply; FDA does not require an export certificate, but buyers' regulators often ask for one, and unapproved drugs follow FD&C Act sections 801(e)(1) and 802",
+      "citations": [
+        {
+          "label": "FDA: exporting unapproved drugs",
+          "url": "https://www.fda.gov/drugs/human-drug-exports/export-requirements-unapproved-drugs"
+        },
+        {
+          "label": "FDA: electronic certificates of pharmaceutical product",
+          "url": "https://www.fda.gov/drugs/human-drug-exports/electronic-certificates-pharmaceutical-product"
+        }
+      ]
+    },
+    {
+      "id": "dot-hazmat",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Hazardous chemicals ship as dangerous goods: classification, packaging, marking and documentation under the Hazardous Materials Regulations, which also underpin the ocean (IMDG) and air (IATA) rules",
+      "citations": [
+        {
+          "label": "49 CFR Part 172 (hazardous materials table, communications)",
+          "url": "https://www.ecfr.gov/current/title-49/part-172"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "2901",
+      "label": "Acyclic hydrocarbons",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": "Most liquid hydrocarbons, alcohols, ethers and ketones are flammable and ship as dangerous goods."
+    },
+    {
+      "heading": "2902",
+      "label": "Cyclic hydrocarbons (benzene, toluene, xylene, styrene)",
+      "ruleIds": ["epa-tsca-12b", "dea-listed-chemicals", "dot-hazmat"],
+      "note": "Toluene (a List II chemical) and other solvents are in this heading; check the DEA threshold before exporting."
+    },
+    {
+      "heading": "2903",
+      "label": "Halogenated hydrocarbons (HFCs, HCFCs, CFCs, chlorinated solvents)",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc", "bis-cb-precursors"],
+      "note": null
+    },
+    {
+      "heading": "2904",
+      "label": "Sulfonated, nitrated or nitrosated hydrocarbons",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc", "bis-cb-precursors"],
+      "note": null
+    },
+    {
+      "heading": "2905",
+      "label": "Acyclic alcohols (methanol, glycols, glycerol, sorbitol)",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc", "bis-cb-precursors", "dot-hazmat"],
+      "note": null
+    },
+    {
+      "heading": "2906",
+      "label": "Cyclic alcohols (menthol, benzyl alcohol)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2907",
+      "label": "Phenols",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2908",
+      "label": "Halogenated or nitrated phenols",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2909",
+      "label": "Ethers, ether-alcohols and peroxides",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": null
+    },
+    {
+      "heading": "2910",
+      "label": "Epoxides (ethylene oxide, propylene oxide)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2911",
+      "label": "Acetals and hemiacetals",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2912",
+      "label": "Aldehydes (formaldehyde, vanillin)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2913",
+      "label": "Halogenated or nitrated aldehydes",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2914",
+      "label": "Ketones and quinones (acetone, MEK, camphor)",
+      "ruleIds": ["epa-tsca-12b", "dea-listed-chemicals", "dot-hazmat"],
+      "note": "Acetone and methyl ethyl ketone are DEA List II chemicals."
+    },
+    {
+      "heading": "2915",
+      "label": "Saturated monocarboxylic acids (acetic, formic, stearic)",
+      "ruleIds": ["epa-tsca-12b", "dea-listed-chemicals"],
+      "note": "Acetic anhydride (2915.24) is a DEA List I chemical, the clearest example in this chapter."
+    },
+    {
+      "heading": "2916",
+      "label": "Unsaturated and aromatic monocarboxylic acids (acrylic, benzoic)",
+      "ruleIds": ["epa-tsca-12b", "dea-listed-chemicals"],
+      "note": "Phenylacetic acid (2916.34) is a DEA List I chemical."
+    },
+    {
+      "heading": "2917",
+      "label": "Polycarboxylic acids (adipic, phthalic, terephthalic)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2918",
+      "label": "Carboxylic acids with extra oxygen function (citric, lactic, salicylic)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2919",
+      "label": "Phosphoric esters (TCPP, lactophosphates)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2920",
+      "label": "Esters of other inorganic acids (phosphites, carbonates)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2921",
+      "label": "Amines (methylamines, aniline, hexamethylenediamine)",
+      "ruleIds": ["epa-tsca-12b", "dea-controlled-substances"],
+      "note": null
+    },
+    {
+      "heading": "2922",
+      "label": "Amino alcohols, amino acids and their salts (lysine, glycine, MSG)",
+      "ruleIds": ["dea-listed-chemicals", "dea-controlled-substances", "bis-cwc", "bis-cb-precursors"],
+      "note": null
+    },
+    {
+      "heading": "2923",
+      "label": "Quaternary ammonium salts (choline, lecithins)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2924",
+      "label": "Amides (acetaminophen, lidocaine, ureines)",
+      "ruleIds": ["dea-listed-chemicals", "dea-controlled-substances"],
+      "note": null
+    },
+    {
+      "heading": "2925",
+      "label": "Imides and imines (saccharin, guanidines)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2926",
+      "label": "Nitriles (acrylonitrile, adiponitrile)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2927",
+      "label": "Diazo, azo and azoxy compounds",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2928",
+      "label": "Hydrazine and hydroxylamine derivatives",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2929",
+      "label": "Other nitrogen compounds (isocyanates MDI, TDI)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2930",
+      "label": "Organo-sulfur compounds (methionine, thiocarbamates)",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc", "bis-cb-precursors"],
+      "note": "Thiodiglycol and other CWC Schedule 2 chemicals are classified here; check the CWC schedules by chemical name and CAS number."
+    },
+    {
+      "heading": "2931",
+      "label": "Other organo-inorganic compounds (glyphosate, organophosphorus, silanes)",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc", "bis-cb-precursors"],
+      "note": "Organophosphorus compounds include several CWC Schedule 2 and 3 chemicals (for example dimethyl methylphosphonate); check by chemical name and CAS number."
+    },
+    {
+      "heading": "2932",
+      "label": "Oxygen heterocyclics (THF, lactones, furfural, coumarin)",
+      "ruleIds": ["epa-tsca-12b", "dea-listed-chemicals"],
+      "note": null
+    },
+    {
+      "heading": "2933",
+      "label": "Nitrogen heterocyclics (most drug APIs, melamine, pyridines)",
+      "ruleIds": ["dea-controlled-substances", "bis-cwc", "bis-cb-precursors", "fda-drug-substances"],
+      "note": "Fentanyl-related compounds and benzodiazepines are classified here and need a DEA export permit; most other drug intermediates are not controlled."
+    },
+    {
+      "heading": "2934",
+      "label": "Nucleic acids and other heterocyclics (APIs)",
+      "ruleIds": ["fda-drug-substances"],
+      "note": null
+    },
+    {
+      "heading": "2935",
+      "label": "Sulfonamides",
+      "ruleIds": ["fda-drug-substances"],
+      "note": null
+    },
+    {
+      "heading": "2936",
+      "label": "Vitamins and provitamins",
+      "ruleIds": ["fda-drug-substances"],
+      "note": null
+    },
+    {
+      "heading": "2937",
+      "label": "Hormones and steroids (insulin, peptide hormones)",
+      "ruleIds": ["fda-drug-substances"],
+      "note": "Insulin and other peptide hormones are drugs: FDA's export rules apply, and the importing country's regulator will usually ask for an FDA export certificate or the equivalent."
+    },
+    {
+      "heading": "2938",
+      "label": "Glycosides (rutin, stevioside)",
+      "ruleIds": ["fda-drug-substances"],
+      "note": null
+    },
+    {
+      "heading": "2939",
+      "label": "Alkaloids (caffeine, ephedrine, opiates, nicotine)",
+      "ruleIds": ["dea-listed-chemicals", "dea-controlled-substances", "fda-drug-substances"],
+      "note": "Opium alkaloids and ephedrine-type alkaloids are DEA-controlled or listed; caffeine and most others are not."
+    },
+    {
+      "heading": "2940",
+      "label": "Chemically pure sugars (arabinose, ribose)",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "2941",
+      "label": "Antibiotics",
+      "ruleIds": ["fda-drug-substances"],
+      "note": null
+    },
+    {
+      "heading": "2942",
+      "label": "Other organic compounds",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

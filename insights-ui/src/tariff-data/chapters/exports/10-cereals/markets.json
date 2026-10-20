@@ -1,0 +1,881 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 10,
+    "padded": "10",
+    "slug": "10-cereals",
+    "title": "Cereals"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/10-cereals/markets",
+    "h1": "HTS Chapter 10: Cereals — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 10 Export Markets: Tariffs on U.S. Grain by Country",
+      "shortDescription": "The tariff each top buyer charges on U.S. corn, wheat, rice and sorghum, with the trade agreement and plant-health regulator for each.",
+      "keywords": ["mexico usmca corn", "japan tariff us wheat", "korea tariff us corn", "colombia us corn tariff", "eu import duty maize"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Almost every large buyer takes U.S. grain duty-free or close to it. Mexico and Canada charge nothing under USMCA, South Korea and Colombia charge nothing on corn and wheat under their agreements, Japan admits feed corn and sorghum free, and the EU sets its grain duty by a formula that is often zero. Japan's wheat and rice, and Korea's rice, move only through state-run quotas. What decides access is more often a plant-health certificate or a biotech approval than a tariff.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "1001",
+      "label": "Wheat & meslin",
+      "shortLabel": "Wheat"
+    },
+    {
+      "heading": "1002",
+      "label": "Rye",
+      "shortLabel": "Rye"
+    },
+    {
+      "heading": "1003",
+      "label": "Barley",
+      "shortLabel": "Barley"
+    },
+    {
+      "heading": "1004",
+      "label": "Oats",
+      "shortLabel": "Oats"
+    },
+    {
+      "heading": "1005",
+      "label": "Corn (maize)",
+      "shortLabel": "Corn"
+    },
+    {
+      "heading": "1006",
+      "label": "Rice",
+      "shortLabel": "Rice"
+    },
+    {
+      "heading": "1007",
+      "label": "Grain sorghum",
+      "shortLabel": "Grain sorghum"
+    },
+    {
+      "heading": "1008",
+      "label": "Buckwheat, millet, quinoa & other cereals",
+      "shortLabel": "Quinoa & other"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 7574432652,
+      "priorExportsUsd": 7259780155,
+      "sharePct": 27.2,
+      "changePct": 4.3,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 1116588063,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1002": {
+          "exportsUsd": 48327,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1003": {
+          "exportsUsd": 4912327,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1004": {
+          "exportsUsd": 4372366,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1005": {
+          "exportsUsd": 6029355091,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1006": {
+          "exportsUsd": 223179110,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1007": {
+          "exportsUsd": 189185906,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "1008": {
+          "exportsUsd": 6791462,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's tariff schedule, 2026: originating U.S. grain enters duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest buyer, mostly of corn, and charges nothing under USMCA. Biotech rules, not tariffs, are what have tested this market.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (plant health) and COFEPRIS (biotech approvals)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "A phytosanitary certificate for grain shipments; genetically modified corn must have the approvals Mexico requires before it can be used for food."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's customs tariff; U.S.–Japan Trade Agreement; state trading for wheat, barley and rice",
+      "usTradeAgreement": null,
+      "exportsUsd": 4366254827,
+      "priorExportsUsd": 3708474723,
+      "sharePct": 15.7,
+      "changePct": 17.7,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 538186094,
+          "rate": "Free in the state-run quota, plus a government mark-up",
+          "normalRate": "55 yen/kg (normal over-quota duty)",
+          "basis": "Japan's state-trading wheat system: no duty inside the quota, with a government mark-up paid by the miller (about 17 yen/kg in the TPP-era baseline, cut by 45% over nine years under the CPTPP-equivalent terms). The U.S.–Japan Trade Agreement also gives U.S. wheat a country-specific quota. Confirm the current mark-up with USDA FAS."
+        },
+        "1002": {
+          "exportsUsd": 745494,
+          "rate": "Free (U.S.–Japan agreement; 4.2% normal rate removed in 2019)",
+          "normalRate": "4.2% (normal rate)",
+          "basis": "USDA FAS, USJTA Treatment for Coarse Grains (JA2020-0045): rye went from a 4.2% normal rate to free in 2019."
+        },
+        "1003": {
+          "exportsUsd": 8820715,
+          "rate": "Free in the state-run quota, plus a government mark-up",
+          "normalRate": null,
+          "basis": "USDA FAS, USJTA Treatment for Coarse Grains (JA2020-0045): government-imported barley is free subject to a WTO mark-up that falls to a maximum of 4.4 yen/kg in 2026."
+        },
+        "1004": {
+          "exportsUsd": 1462688,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Japan Customs Tariff 2026; a small group (under 1% of the chapter), check the national line"
+        },
+        "1005": {
+          "exportsUsd": 3428332297,
+          "rate": "Free for feed corn",
+          "normalRate": "3.0% (normal rate, non-feed corn)",
+          "basis": "USDA FAS, USJTA Treatment for Coarse Grains (JA2020-0045): feed corn stays at 0%, and the 3.0% normal rate on other corn went to free in 2019."
+        },
+        "1006": {
+          "exportsUsd": 360778443,
+          "rate": "Quota only: 341 yen/kg above the minimum-access quota",
+          "normalRate": "341 yen/kg (over-quota duty)",
+          "basis": "Japan Customs Tariff 2026: rice was excluded from tariff elimination. Imports inside the WTO minimum-access quota (682,200 tonnes of milled rice) pay a government mark-up; above it the duty is 341 yen/kg. U.S. rice is bought inside the quota."
+        },
+        "1007": {
+          "exportsUsd": 13869477,
+          "rate": "Free (3.0% normal rate removed in 2019)",
+          "normalRate": "3.0% (normal rate)",
+          "basis": "USDA FAS, USJTA Treatment for Coarse Grains (JA2020-0045): grain sorghum went from a 3.0% normal rate to free in 2019."
+        },
+        "1008": {
+          "exportsUsd": 14059619,
+          "rate": "Buckwheat free since 2023; other lines not verified",
+          "normalRate": "9.0% (normal rate, buckwheat)",
+          "basis": "USDA FAS, USJTA Treatment for Coarse Grains (JA2020-0045): buckwheat went from a 9.0% normal rate to free in 2023. Millet, canary seed and other cereals in this heading are not individually verified."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys corn and sorghum duty-free for feed, but wheat and rice are state-managed: wheat enters through a government-run quota with a mark-up, and rice through a small minimum-access quota.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Feed corn and sorghum free; wheat and rice through quotas",
+        "regulator": {
+          "name": "Ministry of Agriculture, Forestry and Fisheries (MAFF), Plant Protection Station",
+          "url": "https://www.maff.go.jp/e/",
+          "requirement": "A U.S. phytosanitary certificate for each shipment, inspected at the port; genetically modified varieties must be approved by Japan before sale."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS staged tariff elimination (Korea's schedule); rice excluded",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 2558084069,
+      "priorExportsUsd": 1394277596,
+      "sharePct": 9.2,
+      "changePct": 83.5,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 558896809,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1002": {
+          "exportsUsd": 2985965,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1003": {
+          "exportsUsd": 5429456,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1004": {
+          "exportsUsd": 332698,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1005": {
+          "exportsUsd": 1861384098,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1006": {
+          "exportsUsd": 125053658,
+          "rate": "Quota only; very high duty above it (rice excluded from KORUS)",
+          "normalRate": null,
+          "basis": "KORUS excluded rice. Korea buys U.S. rice inside its WTO minimum-access quota through a state agency; the above-quota duty is very high. Confirm the current figure on the national line."
+        },
+        "1007": {
+          "exportsUsd": 487509,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        },
+        "1008": {
+          "exportsUsd": 3513876,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: wheat, feed corn and sorghum enter duty-free; processing corn moved from a quota to duty-free over seven years (USTR). Confirm the national line for the exact stage."
+        }
+      },
+      "profile": {
+        "headline": "South Korea's purchases rose 83.5% in 2025. Corn for feed, wheat and sorghum enter duty-free; rice is the exception and moves only in a small state-run quota.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Free on corn, wheat and sorghum (KORUS)",
+        "regulator": {
+          "name": "Animal and Plant Quarantine Agency (APQA) and the LMO import approval process",
+          "url": "https://www.qia.go.kr/eng/",
+          "requirement": "A phytosanitary certificate for each shipment, inspected by APQA; genetically modified corn needs Korea's LMO approval before import."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 170,
+      "name": "Colombia",
+      "rule": "U.S.–Colombia TPA staged elimination (Colombia's schedule)",
+      "usTradeAgreement": "U.S.–Colombia Trade Promotion Agreement (TPA)",
+      "exportsUsd": 2015142501,
+      "priorExportsUsd": 1773397716,
+      "sharePct": 7.2,
+      "changePct": 13.6,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 223729860,
+          "rate": "Free (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3: U.S. wheat enters duty-free (USTR)."
+        },
+        "1002": {
+          "exportsUsd": 0,
+          "rate": "Free or free in quota (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination. Check the trade.gov FTA Tariff Tool for the exact 2026 stage of this line."
+        },
+        "1003": {
+          "exportsUsd": 0,
+          "rate": "Free or free in quota (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination. Check the trade.gov FTA Tariff Tool for the exact 2026 stage of this line."
+        },
+        "1004": {
+          "exportsUsd": 151633,
+          "rate": "Free or free in quota (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination. Check the trade.gov FTA Tariff Tool for the exact 2026 stage of this line."
+        },
+        "1005": {
+          "exportsUsd": 1773548324,
+          "rate": "Free (U.S.–Colombia TPA; corn quotas ended 2023)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3: the yellow and white corn tariff-rate quotas ended at the start of 2023 (USDA ERS), so U.S. corn pays 0% with no quota."
+        },
+        "1006": {
+          "exportsUsd": 17271653,
+          "rate": "Free in quota; above-quota duty still phasing out",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3: rice moves in a tariff-rate quota with a long phase-out of the above-quota duty. Check the trade.gov FTA Tariff Tool for the 2026 stage."
+        },
+        "1007": {
+          "exportsUsd": 23772,
+          "rate": "Free or free in quota (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination. Check the trade.gov FTA Tariff Tool for the exact 2026 stage of this line."
+        },
+        "1008": {
+          "exportsUsd": 417259,
+          "rate": "Free or free in quota (U.S.–Colombia TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia TPA Annex 2.3, Colombia's schedule: staged elimination. Check the trade.gov FTA Tariff Tool for the exact 2026 stage of this line."
+        }
+      },
+      "profile": {
+        "headline": "Colombia buys corn and wheat duty-free under the 2012 trade agreement. The corn quotas ended at the start of 2023, so there is no quota to manage.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Free on corn and wheat (U.S.–Colombia TPA)",
+        "regulator": {
+          "name": "Colombian Agricultural Institute (ICA)",
+          "url": "https://www.ica.gov.co/",
+          "requirement": "A phytosanitary import authorization from ICA for each shipment of grain, with a U.S. phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Colombia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/colombia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff: grain import duties set by formula; EU countermeasures suspended",
+      "usTradeAgreement": null,
+      "exportsUsd": 1561710050,
+      "priorExportsUsd": 645188493,
+      "sharePct": 5.6,
+      "changePct": 142.1,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 903437115,
+          "priorExportsUsd": 264597632,
+          "changePct": 241.4
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 233099930,
+          "priorExportsUsd": 193654586,
+          "changePct": 20.4
+        },
+        {
+          "countryCode": 620,
+          "country": "Portugal",
+          "exportsUsd": 194506225,
+          "priorExportsUsd": 67160447,
+          "changePct": 189.6
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 135454457,
+          "priorExportsUsd": 59371564,
+          "changePct": 128.1
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 57736521,
+          "priorExportsUsd": 23580791,
+          "changePct": 144.8
+        }
+      ],
+      "cells": {
+        "1001": {
+          "exportsUsd": 148711841,
+          "rate": "Variable or fixed duty — see the EU tariff (TARIC)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026. The cereal duties follow Regulation (EU) No 642/2010 where a formula applies; confirm the line in TARIC."
+        },
+        "1002": {
+          "exportsUsd": 0,
+          "rate": "Variable or fixed duty — see the EU tariff (TARIC)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026. The cereal duties follow Regulation (EU) No 642/2010 where a formula applies; confirm the line in TARIC."
+        },
+        "1003": {
+          "exportsUsd": 3760,
+          "rate": "Variable or fixed duty — see the EU tariff (TARIC)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026. The cereal duties follow Regulation (EU) No 642/2010 where a formula applies; confirm the line in TARIC."
+        },
+        "1004": {
+          "exportsUsd": 31473,
+          "rate": "Variable or fixed duty — see the EU tariff (TARIC)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026. The cereal duties follow Regulation (EU) No 642/2010 where a formula applies; confirm the line in TARIC."
+        },
+        "1005": {
+          "exportsUsd": 1225690976,
+          "rate": "Variable duty set by formula (often zero); 10%/25% countermeasure duty suspended",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; maize duty follows Regulation (EU) No 642/2010. The countermeasure duty on maize in Implementing Regulation (EU) 2025/1564 (Annex I) is suspended with no end date (Implementing Regulation (EU) 2026/1893)."
+        },
+        "1006": {
+          "exportsUsd": 23444632,
+          "rate": "Fixed duty per tonne; 10%/25% countermeasure duty suspended",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 for husked, milled and broken rice. The countermeasure duty on rice in Implementing Regulation (EU) 2025/1564 (Annex I) is suspended with no end date."
+        },
+        "1007": {
+          "exportsUsd": 153959760,
+          "rate": "Variable duty set by formula (often zero)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026; sorghum duty follows Regulation (EU) No 642/2010, priced off the barley reference."
+        },
+        "1008": {
+          "exportsUsd": 9867608,
+          "rate": "Variable or fixed duty — see the EU tariff (TARIC)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026. The cereal duties follow Regulation (EU) No 642/2010 where a formula applies; confirm the line in TARIC."
+        }
+      },
+      "profile": {
+        "headline": "The EU bought 142% more U.S. grain in 2025, led by Spain. Its duty on maize and sorghum follows a world-price formula and is sometimes zero. The corn and rice countermeasure duties of 10% and 25% set in 2025 are suspended with no end date.",
+        "mainProducts": "Corn (maize) (1005) · Grain sorghum (1007)",
+        "tariffNow": "Variable duty set by formula, often zero (EU)",
+        "regulator": {
+          "name": "European Commission (DG SANTE) and national plant-health authorities",
+          "url": "https://food.ec.europa.eu/",
+          "requirement": "A phytosanitary certificate for grain. Each genetically modified event must be authorised by the EU before the grain can be placed on the market."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs tariff and temporary wheat relief; cuts agreed in the 2026 U.S.–Taiwan trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 1118471143,
+      "priorExportsUsd": 765078015,
+      "sharePct": 4,
+      "changePct": 46.2,
+      "status": "pending",
+      "cells": {
+        "1001": {
+          "exportsUsd": 292715526,
+          "rate": "Tariff waived (normally 6.5%) through Mar. 31, 2027",
+          "normalRate": "6.5% (normal rate)",
+          "basis": "Taiwan's relief on wheat imports, extended through March 31, 2027 (USDA FAS Taiwan grain reports). The Feb. 2026 U.S.–Taiwan agreement also promises U.S. wheat preferential access but is not yet confirmed in force."
+        },
+        "1002": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        },
+        "1003": {
+          "exportsUsd": 724801,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        },
+        "1004": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        },
+        "1005": {
+          "exportsUsd": 783673572,
+          "rate": "Not individually verified — business tax waived to Mar. 2027",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026. Taiwan waives its 5% business tax on imported corn, wheat and soybeans through March 31, 2027; the corn tariff itself was not confirmed. Check Taiwan's tariff for the current rate."
+        },
+        "1006": {
+          "exportsUsd": 40302235,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        },
+        "1007": {
+          "exportsUsd": 602543,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        },
+        "1008": {
+          "exportsUsd": 452466,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff 2026; a small group (under 1% of the chapter), check Taiwan's tariff for the current rate"
+        }
+      },
+      "profile": {
+        "headline": "Taiwan, which UN Comtrade reports as \"Other Asia, nes\", bought 46% more in 2025, mostly corn. It waived its wheat tariff through March 31, 2027, and in February 2026 agreed to give U.S. wheat preferential access, but the agreement still needs Taiwan's legislature.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Wheat tariff waived to Mar. 2027; corn rate not verified",
+        "regulator": {
+          "name": "Taiwan Food and Drug Administration (TFDA) and BAPHIQ",
+          "url": "https://www.fda.gov.tw/ENG/",
+          "requirement": "A phytosanitary certificate and a BAPHIQ quarantine inspection for each shipment; TFDA approval for genetically modified varieties."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination (Canada's schedule)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 717447801,
+      "priorExportsUsd": 883561508,
+      "sharePct": 2.6,
+      "changePct": -18.8,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 29236679,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1002": {
+          "exportsUsd": 98691,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1003": {
+          "exportsUsd": 28348977,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1004": {
+          "exportsUsd": 3669088,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1005": {
+          "exportsUsd": 474211578,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1006": {
+          "exportsUsd": 161976069,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1007": {
+          "exportsUsd": 1985139,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        },
+        "1008": {
+          "exportsUsd": 17921580,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule, 2026: qualifying U.S. grain enters duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada takes U.S. grain duty-free under CUSMA. Its September 2026 counter-tariffs name steel, aluminum and dairy rather than grain.",
+        "mainProducts": "Corn (maize) (1005) · Rice (1006)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "Grain generally needs a phytosanitary certificate only for seed or when Canada's plant-health rules require one; check the CFIA import requirements for the specific grain."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 608,
+      "name": "Philippines",
+      "rule": "Philippines customs tariff (no U.S. trade agreement); temporary rice tariff cut",
+      "usTradeAgreement": null,
+      "exportsUsd": 658254716,
+      "priorExportsUsd": 773803840,
+      "sharePct": 2.4,
+      "changePct": -14.9,
+      "status": "unchanged",
+      "cells": {
+        "1001": {
+          "exportsUsd": 630846482,
+          "rate": "Milling wheat free; feed wheat about 7% (older USDA baseline)",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule. USDA FAS reported milling wheat at 0% and feed wheat at 7% (2017); the current feed-wheat rate was not confirmed."
+        },
+        "1002": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule; a small group (under 1% of the chapter), check the Tariff Commission's current schedule"
+        },
+        "1003": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule; a small group (under 1% of the chapter), check the Tariff Commission's current schedule"
+        },
+        "1004": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule; a small group (under 1% of the chapter), check the Tariff Commission's current schedule"
+        },
+        "1005": {
+          "exportsUsd": 25712665,
+          "rate": "5% in quota, 15% above the quota",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule per Executive Order 171 (2022): corn 5% inside the quota and 15% above it. Confirm the current schedule."
+        },
+        "1006": {
+          "exportsUsd": 20091,
+          "rate": "15% (cut from 35% by Executive Order 62)",
+          "normalRate": null,
+          "basis": "Philippine Executive Order 62 (June 2024) cut the rice tariff from 35% to 15% on a multi-year schedule (USDA FAS)."
+        },
+        "1007": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule; a small group (under 1% of the chapter), check the Tariff Commission's current schedule"
+        },
+        "1008": {
+          "exportsUsd": 1675478,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Philippine Tariff Commission schedule; a small group (under 1% of the chapter), check the Tariff Commission's current schedule"
+        }
+      },
+      "profile": {
+        "headline": "The Philippines buys mostly wheat and corn from the U.S. and has no trade agreement with it. Its corn tariff is 5% inside a quota and 15% above it, and wheat for milling enters free.",
+        "mainProducts": "Wheat & meslin (1001) · Corn (maize) (1005)",
+        "tariffNow": "Corn 5% in quota, 15% above; wheat low",
+        "regulator": {
+          "name": "Department of Agriculture, Bureau of Plant Industry",
+          "url": "https://www.da.gov.ph/",
+          "requirement": "A sanitary and phytosanitary import clearance from the Bureau of Plant Industry, with a U.S. phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Philippines import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/philippines-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam's customs tariff (no U.S. trade agreement); corn tariff cut to zero in 2025",
+      "usTradeAgreement": null,
+      "exportsUsd": 628408530,
+      "priorExportsUsd": 144696792,
+      "sharePct": 2.3,
+      "changePct": 334.3,
+      "status": "lowered",
+      "cells": {
+        "1001": {
+          "exportsUsd": 232448528,
+          "rate": "0–3% (cut in recent years; current rate not confirmed)",
+          "normalRate": null,
+          "basis": "Viet Nam cut its U.S. wheat tariff from 5% to 3% in 2020 and planned to remove it; the current rate was not confirmed. Check the decree schedule."
+        },
+        "1002": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        },
+        "1003": {
+          "exportsUsd": 3058,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        },
+        "1004": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        },
+        "1005": {
+          "exportsUsd": 395448971,
+          "rate": "0% (Decree 73/2025)",
+          "normalRate": null,
+          "basis": "Viet Nam Decree 73/2025/ND-CP (March 31, 2025) cut the MFN corn tariff, reported by USDA FAS as 0%."
+        },
+        "1006": {
+          "exportsUsd": 248124,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        },
+        "1007": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        },
+        "1008": {
+          "exportsUsd": 259849,
+          "rate": "Not individually verified — see the market's tariff schedule",
+          "normalRate": null,
+          "basis": "Viet Nam import tariff 2026; a small group (under 1% of the chapter), check the current decree schedule"
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam's purchases more than quadrupled in 2025 after it cut its corn tariff to zero by decree in March 2025. It has no trade agreement with the U.S.",
+        "mainProducts": "Corn (maize) (1005) · Wheat & meslin (1001)",
+        "tariffNow": "Corn 0% (cut in 2025); no U.S. trade agreement",
+        "regulator": {
+          "name": "Plant Protection Department, Ministry of Agriculture",
+          "url": "https://ppd.gov.vn/",
+          "requirement": "A phytosanitary certificate and a plant-quarantine registration for each grain shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "1005",
+      "exportsUsd": 6029355091,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "1005",
+      "exportsUsd": 3428332297,
+      "rate": "Free for feed corn"
+    },
+    {
+      "market": "South Korea",
+      "heading": "1005",
+      "exportsUsd": 1861384098,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Colombia",
+      "heading": "1005",
+      "exportsUsd": 1773548324,
+      "rate": "Free (U.S.–Colombia TPA; corn quotas ended 2023)"
+    },
+    {
+      "market": "European Union",
+      "heading": "1005",
+      "exportsUsd": 1225690976,
+      "rate": "Variable duty set by formula (often zero); 10%/25% countermeasure duty suspended"
+    },
+    {
+      "market": "Mexico",
+      "heading": "1001",
+      "exportsUsd": 1116588063,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Taiwan",
+      "heading": "1005",
+      "exportsUsd": 783673572,
+      "rate": "Not individually verified — business tax waived to Mar. 2027"
+    },
+    {
+      "market": "Philippines",
+      "heading": "1001",
+      "exportsUsd": 630846482,
+      "rate": "Milling wheat free; feed wheat about 7% (older USDA baseline)"
+    }
+  ],
+  "assumptions": [
+    "Rates come from each market's trade-agreement schedule (USMCA, KORUS, U.S.–Colombia TPA) or its own customs tariff, with USDA Foreign Agricultural Service reports used for Japan, Taiwan and the Philippines.",
+    "One representative subheading stands in for each four-digit group (corn 1005.90, wheat 1001.99, rice 1006.30). Smaller groups (rye, barley, oats and the grains in 1008 — together under 1% of the chapter) carry a market-wide rate where it is known and are marked 'not individually verified' where it is not.",
+    "Japan's wheat and barley move through a state-trading system: the tariff is zero in the quota, and the government adds a mark-up that is the real cost. That mark-up, and the Philippines, Taiwan and EU grain rates, are shown as described in the cited source and should be confirmed on the national tariff line.",
+    "The EU sets its import duty on maize, sorghum and rye by a formula tied to world prices (Regulation (EU) No 642/2010), so it changes with the market and is sometimes zero. Check the Commission's current notice.",
+    "National 8–10-digit tariff lines can set a different rate than the six-digit subheading shown here — check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 10, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "usjta-coarse-grains-fas",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN report JA2020-0045",
+      "document": "USJTA Treatment for Coarse Grains",
+      "title": "USJTA Treatment for Coarse Grains (Japan)",
+      "signed": null,
+      "published": "2020-03-03",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=USJTA+Treatment+for+Coarse+Grains_Tokyo_Japan_02-26-2020"
+    },
+    {
+      "id": "tpa-agriculture-ustr",
+      "publisher": "USTR",
+      "citation": "U.S.–Colombia TPA, agriculture",
+      "document": "Expanding Markets for America's Farmers and Ranchers",
+      "title": "U.S.–Colombia Trade Promotion Agreement: agriculture",
+      "signed": null,
+      "published": "2012-05-15",
+      "url": "https://ustr.gov/uscolombiatpa/agriculture"
+    },
+    {
+      "id": "korus-agriculture-ustr",
+      "publisher": "USTR",
+      "citation": "KORUS FTA, agriculture",
+      "document": "U.S. Agriculture in the U.S.-South Korea Trade Agreement",
+      "title": "U.S. Agriculture in the U.S.-South Korea Trade Agreement",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/uskoreaFTA/agriculture"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 76% of 2025 U.S. Chapter 10 exports. A customs union (the EU) is one market: its members share one tariff. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

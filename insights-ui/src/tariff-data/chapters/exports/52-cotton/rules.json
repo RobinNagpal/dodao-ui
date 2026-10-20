@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 52,
+    "padded": "52",
+    "slug": "52-cotton",
+    "title": "Cotton"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/52-cotton/rules",
+    "h1": "HTS Chapter 52: Cotton — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Chapter 52 Export Rules: Phytosanitary Certificate & Schedule B",
+      "shortDescription": "What a U.S. cotton exporter must do before shipping: Schedule B, phytosanitary certificate, buyer screening and AES, plus textile-trade savings.",
+      "keywords": ["schedule b cotton", "cotton export requirements", "phytosanitary certificate cotton", "export cotton from us", "cafta-dr yarn forward"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "For most of this chapter the U.S. side is routine: find the Schedule B number, screen the buyer and file the export in AES. The one document buyers most often ask for is a phytosanitary certificate, because raw cotton is a plant-health risk (boll weevil, pink bollworm); an authorized official inspects the shipment and issues it through APHIS's PCIT system. Cotton, yarn and fabric are EAR99, so no Commerce licence applies in the ordinary case. Textile-trade rules can also save duty abroad: U.S. yarn and fabric sent to CAFTA-DR partners is duty-free.",
+  "regulationsAsOf": "2026-10-08",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Most of this chapter is raw cotton, Schedule B 5201.00. Cotton yarn lines (5205.12 and 5205.13 are the largest) and woven fabric lines in 5209 follow. The first six digits are the HS code on the Overview."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Raw cotton, yarn and fabric are EAR99, so no Commerce licence is needed unless the destination or end user is restricted (see the sanctions step)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "A shipment of baled cotton is almost always over $2,500 per Schedule B number, so file in AES."
+    }
+  ],
+  "rules": [
+    {
+      "id": "aphis-phyto",
+      "agency": "USDA APHIS",
+      "title": "Phytosanitary certificate: the U.S. does not require one to export cotton, but most buyers' plant-quarantine authorities do (Viet Nam, Pakistan, India, Bangladesh, China and Türkiye all ask for one on raw cotton). An authorized certification official inspects the shipment and issues the certificate through APHIS's PCIT system; some buyers also require fumigation.",
+      "citations": [
+        {
+          "label": "APHIS: plant export certification",
+          "url": "https://www.aphis.usda.gov/plant-export/certification"
+        },
+        {
+          "label": "PCIT (Phytosanitary Certificate Issuance and Tracking)",
+          "url": "https://pcit.aphis.usda.gov/"
+        },
+        {
+          "label": "7 CFR Part 353 (export certification)",
+          "url": "https://www.ecfr.gov/current/title-7/part-353"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "5201",
+      "label": "Raw cotton, not carded or combed",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Raw cotton: the phytosanitary certificate is the usual buyer requirement; there is no U.S. grading rule for export."
+    },
+    {
+      "heading": "5202",
+      "label": "Cotton waste (yarn waste, garnetted stock, card strips)",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Cotton waste: the buyer's phytosanitary certificate, if required."
+    },
+    {
+      "heading": "5203",
+      "label": "Cotton, carded or combed",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Carded or combed cotton: the buyer's phytosanitary certificate, if required."
+    },
+    {
+      "heading": "5204",
+      "label": "Cotton sewing thread",
+      "ruleIds": [],
+      "note": "Sewing thread: routine — Schedule B, buyer screening and AES cover almost every shipment."
+    },
+    {
+      "heading": "5205",
+      "label": "Cotton yarn, 85% or more cotton, not for retail sale",
+      "ruleIds": [],
+      "note": "Cotton yarn: routine — Schedule B, buyer screening and AES. Yarn qualifies for the textile preferences described under Ways to pay less abroad."
+    },
+    {
+      "heading": "5206",
+      "label": "Cotton yarn, under 85% cotton, not for retail sale",
+      "ruleIds": [],
+      "note": "Blended cotton yarn: routine."
+    },
+    {
+      "heading": "5207",
+      "label": "Cotton yarn put up for retail sale",
+      "ruleIds": [],
+      "note": "Retail-packed cotton yarn: routine."
+    },
+    {
+      "heading": "5208",
+      "label": "Woven cotton fabric, 85%+ cotton, up to 200 g/m²",
+      "ruleIds": [],
+      "note": "Woven cotton fabric: routine. Fabric qualifies for the textile preferences described under Ways to pay less abroad."
+    },
+    {
+      "heading": "5209",
+      "label": "Woven cotton fabric, 85%+ cotton, over 200 g/m² (incl. denim)",
+      "ruleIds": [],
+      "note": "Heavier woven cotton fabric: routine, with the same textile preferences."
+    },
+    {
+      "heading": "5210",
+      "label": "Woven cotton blends with man-made fibre, up to 200 g/m²",
+      "ruleIds": [],
+      "note": "Woven cotton and man-made-fibre blends: routine."
+    },
+    {
+      "heading": "5211",
+      "label": "Woven cotton blends with man-made fibre, over 200 g/m²",
+      "ruleIds": [],
+      "note": "Woven cotton and man-made-fibre blends: routine."
+    },
+    {
+      "heading": "5212",
+      "label": "Other woven cotton fabrics (incl. cotton–wool blends)",
+      "ruleIds": [],
+      "note": "Other woven cotton fabric: routine."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "textile-preferences",
+      "title": "Ship U.S. yarn and fabric to CAFTA-DR and USMCA partners under the textile rules",
+      "saves": "The partner's duty on U.S. cotton yarn and fabric: 0% instead of its normal rate.",
+      "appliesTo": "U.S.-origin yarn and fabric shipped to Honduras, the Dominican Republic, Guatemala and the other CAFTA-DR partners, and to Mexico and Canada under USMCA, which are the markets that cut apparel from U.S. inputs.",
+      "document": "A certification of origin from the exporter, producer or importer. The agreements' yarn-forward textile rules decide whether the finished apparel later enters the U.S. duty-free.",
+      "caveat": "The savings depend on the goods meeting the agreement's rules of origin; whoever certifies must be able to back it up with records.",
+      "citations": [
+        {
+          "label": "trade.gov: Free Trade Agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

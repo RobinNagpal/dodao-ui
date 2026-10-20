@@ -82,7 +82,7 @@
           "url": "https://www.bis.gov/licensing/classify-your-item"
         }
       ],
-      "chapterNote": "This is the step that matters most for this chapter. Certain high-performance computing chips and the equipment that makes them carry ECCNs 3A090, 4A090 and 3B090 — created by BIS's October 2022 rule and tightened several times since — and need a licence for China and dozens of other destinations regardless of value. Most consumer electronics, by contrast, are EAR99 and need no licence at all."
+      "chapterNote": "This is the step that matters most for this chapter. Certain high-performance computing chips and computers carry ECCNs 3A090 and 4A090, created by BIS's October 2022 rule and tightened several times since; the equipment that makes advanced chips is controlled under ECCN 3B001 and, since BIS's December 2024 rule, ECCNs 3B993 and 3B994. These items need a licence for China and many other destinations regardless of value. Most consumer electronics, by contrast, are EAR99 and need no licence at all."
     },
     {
       "id": "sanctions",
@@ -135,7 +135,7 @@
     {
       "id": "bis-advanced-computing",
       "agency": "Bureau of Industry and Security (BIS)",
-      "title": "Advanced computing and semiconductor-manufacturing controls (ECCNs 3A090, 3B090, 4A090 and related software/technology entries)",
+      "title": "Advanced computing and semiconductor-manufacturing controls (ECCNs 3A090 and 4A090 for chips and computers; 3B001, 3B993 and 3B994 for chipmaking equipment; related software/technology entries)",
       "citations": [
         {
           "label": "87 FR 62186 (Oct. 13, 2022 interim final rule)",
@@ -449,7 +449,7 @@
       "heading": "8542",
       "label": "Integrated circuits (chips)",
       "ruleIds": ["bis-advanced-computing"],
-      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); the equipment and materials that make them carry ECCN 3B090 and related 4D090/4E001 entries. See the licence step above."
+      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); the equipment that makes them is controlled under ECCN 3B001 and ECCNs 3B993 and 3B994. See the licence step above."
     },
     {
       "heading": "8543",

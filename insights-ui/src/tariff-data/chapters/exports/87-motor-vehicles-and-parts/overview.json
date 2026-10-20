@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 87,
+    "padded": "87",
+    "slug": "87-motor-vehicles-and-parts",
+    "title": "Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/87-motor-vehicles-and-parts",
+    "h1": "HTS Chapter 87: Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Vehicle & Auto Parts Exports and Foreign Tariffs (HTS Ch. 87) | KoalaGains",
+      "shortDescription": "U.S. vehicle and auto-parts exports were $131.44B in 2025, down 8.6%. Where they go, what Canada, Mexico, the EU and China charge, and which tariffs changed since January 2025.",
+      "keywords": ["US car exports", "US auto parts exports", "tariffs on US cars", "China tariff on US cars", "US vehicle exports by country", "HS 87 exports"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$131.44B** of vehicles and vehicle parts in 2025, down 8.6% from 2024 and 14% below the 2023 peak of $152.83B. Cars, SUVs and other light passenger vehicles (8703) were **41%** of the total ($53.49B) and auto parts (8708) another **33%** ($43.28B). Canada and Mexico took **55%** between them: they share an integrated North American auto industry, and much of what crosses is parts and components that move more than once before a finished vehicle is sold.\n\nFor most large buyers tariffs now matter less than a year ago. The EU cut its 10% car duty to zero on July 1, 2026, and Mexico, South Korea, Australia and Chile charge nothing under U.S. free-trade agreements. Two buyers moved the other way. **Canada** keeps a 25% surtax on the non-U.S. content of U.S.-built passenger vehicles and light trucks (the full value if the vehicle is not CUSMA-compliant), and added surtaxes on trailers and large motorcycles in September 2026. **China** charges 15% on cars plus its 10% extra duty on all U.S. goods, and a further 10% on larger-engine cars and pickups; U.S. exports there fell 53% to $3.02B. In most other markets, what decides access is vehicle-safety and emissions approval, not the tariff.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$131.44B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-8.6%"
+    },
+    {
+      "label": "Largest product group (8703)",
+      "value": "41%",
+      "note": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "55%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "9 of 13",
+      "note": "Mexico, Germany, Belgium, Poland, Australia, South Korea, Japan, Chile, Georgia (customs duty only)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. vehicle and parts exports fell to $131.44B in 2025 (−8.6%); cars and SUVs (8703, $53.49B) and auto parts (8708, $43.28B) made up 74% of the total.",
+    "Canada and Mexico took 55% of exports and charge nothing on qualifying U.S. goods under USMCA — but Canada adds a 25% surtax on the non-U.S. content of U.S.-built passenger vehicles and light trucks, and from September 8, 2026 a 25% or 50% surtax on listed trailers and large motorcycles.",
+    "The EU's tariff on U.S. cars fell from 10% to zero on July 1, 2026 under Regulation (EU) 2026/1455; the EU is the third-largest market at $17.30B (+0.9%), with Germany alone buying $9.06B.",
+    "China is the one large buyer that raised its tariffs on U.S. vehicles: 15% MFN on cars plus a 10% extra duty on all U.S. goods, plus another 10% on larger-engine cars and pickups. U.S. vehicle exports to China fell 52.8% in 2025."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 105158056180,
+      "partnerAUsd": 37443496566,
+      "partnerBUsd": 15878897206,
+      "restUsd": 51835662408
+    },
+    {
+      "year": 2021,
+      "totalUsd": 122202361060,
+      "partnerAUsd": 44211981059,
+      "partnerBUsd": 18873880519,
+      "restUsd": 59116499482
+    },
+    {
+      "year": 2022,
+      "totalUsd": 134886248740,
+      "partnerAUsd": 52742686357,
+      "partnerBUsd": 22956583204,
+      "restUsd": 59186979179
+    },
+    {
+      "year": 2023,
+      "totalUsd": 152826672481,
+      "partnerAUsd": 57725517633,
+      "partnerBUsd": 28356072255,
+      "restUsd": 66745082593
+    },
+    {
+      "year": 2024,
+      "totalUsd": 143765553479,
+      "partnerAUsd": 53672343007,
+      "partnerBUsd": 28924283216,
+      "restUsd": 61168927256
+    },
+    {
+      "year": 2025,
+      "totalUsd": 131444701653,
+      "partnerAUsd": 46322882459,
+      "partnerBUsd": 26049264840,
+      "restUsd": 59072554354
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 87 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 46322882459,
+      "priorExportsUsd": 53672343007,
+      "sharePct": 35.2,
+      "changePct": -13.7,
+      "tariffNow": "Free (CUSMA); 25% surtax on non-U.S. vehicle content",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 26049264840,
+      "priorExportsUsd": 28924283216,
+      "sharePct": 19.8,
+      "changePct": -9.9,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 9063195709,
+      "priorExportsUsd": 9191373420,
+      "sharePct": 6.9,
+      "changePct": -1.4,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 4141767710,
+      "priorExportsUsd": 5050994423,
+      "sharePct": 3.2,
+      "changePct": -18,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 4114300213,
+      "priorExportsUsd": 4758280986,
+      "sharePct": 3.1,
+      "changePct": -13.5,
+      "tariffNow": "5% (GCC common tariff; no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 3019436008,
+      "priorExportsUsd": 6394726026,
+      "sharePct": 2.3,
+      "changePct": -52.8,
+      "tariffNow": "MFN + 10% extra (+10% more on large cars, pickups)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 2452363099,
+      "priorExportsUsd": 2478996898,
+      "sharePct": 1.9,
+      "changePct": -1.1,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "exportsUsd": 2402089046,
+      "priorExportsUsd": 2178745480,
+      "sharePct": 1.8,
+      "changePct": 10.3,
+      "tariffNow": "Mostly 5% (GCC common tariff; no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 2033968245,
+      "priorExportsUsd": 2353405050,
+      "sharePct": 1.5,
+      "changePct": -13.6,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 268,
+      "country": "Georgia",
+      "exportsUsd": 1728720643,
+      "priorExportsUsd": 1311368473,
+      "sharePct": 1.3,
+      "changePct": 31.8,
+      "tariffNow": "0% customs duty (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 1626279040,
+      "priorExportsUsd": 1393555110,
+      "sharePct": 1.2,
+      "changePct": 16.7,
+      "tariffNow": "0% MFN (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "exportsUsd": 1396695721,
+      "priorExportsUsd": 1156430285,
+      "sharePct": 1.1,
+      "changePct": 20.8,
+      "tariffNow": "Free (U.S.–Chile FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 616,
+      "country": "Poland",
+      "exportsUsd": 1383661330,
+      "priorExportsUsd": 1023671594,
+      "sharePct": 1.1,
+      "changePct": 35.2,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 25710077590,
+  "othersPriorExportsUsd": 23877379511,
+  "byHeading": [
+    {
+      "heading": "8701",
+      "label": "Tractors: road tractors for semi-trailers, farm and track-laying tractors",
+      "exportsUsd": 4883290368,
+      "priorExportsUsd": 6591854246,
+      "changePct": -25.9,
+      "sharePct": 3.7
+    },
+    {
+      "heading": "8702",
+      "label": "Buses, coaches and vans for 10 or more people",
+      "exportsUsd": 1247789934,
+      "priorExportsUsd": 1000375970,
+      "changePct": 24.7,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "8703",
+      "label": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles",
+      "exportsUsd": 53494759355,
+      "priorExportsUsd": 59195338633,
+      "changePct": -9.6,
+      "sharePct": 40.7
+    },
+    {
+      "heading": "8704",
+      "label": "Trucks and pickups: light trucks, heavy trucks, dump trucks",
+      "exportsUsd": 17465437899,
+      "priorExportsUsd": 21175935461,
+      "changePct": -17.5,
+      "sharePct": 13.3
+    },
+    {
+      "heading": "8705",
+      "label": "Special-purpose vehicles: mobile cranes, fire trucks, concrete mixers, wreckers",
+      "exportsUsd": 2064194406,
+      "priorExportsUsd": 2286927496,
+      "changePct": -9.7,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "8706",
+      "label": "Chassis fitted with engines",
+      "exportsUsd": 106786274,
+      "priorExportsUsd": 58129534,
+      "changePct": 83.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8707",
+      "label": "Vehicle bodies and cabs",
+      "exportsUsd": 443662877,
+      "priorExportsUsd": 317049354,
+      "changePct": 39.9,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "8708",
+      "label": "Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags",
+      "exportsUsd": 43276282585,
+      "priorExportsUsd": 45082655425,
+      "changePct": -4,
+      "sharePct": 32.9
+    },
+    {
+      "heading": "8709",
+      "label": "Works trucks for factories, warehouses and airports (tugs, tow tractors)",
+      "exportsUsd": 323228762,
+      "priorExportsUsd": 398120967,
+      "changePct": -18.8,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8710",
+      "label": "Tanks and armored fighting vehicles",
+      "exportsUsd": 2695996990,
+      "priorExportsUsd": 1941801604,
+      "changePct": 38.8,
+      "sharePct": 2.1
+    },
+    {
+      "heading": "8711",
+      "label": "Motorcycles, scooters, mopeds and e-bikes",
+      "exportsUsd": 738316897,
+      "priorExportsUsd": 714764857,
+      "changePct": 3.3,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "8712",
+      "label": "Bicycles and other non-motorized cycles",
+      "exportsUsd": 94225257,
+      "priorExportsUsd": 115580339,
+      "changePct": -18.5,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8713",
+      "label": "Wheelchairs and mobility carriages",
+      "exportsUsd": 88476359,
+      "priorExportsUsd": 84972811,
+      "changePct": 4.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8714",
+      "label": "Parts of motorcycles, bicycles and wheelchairs",
+      "exportsUsd": 680689722,
+      "priorExportsUsd": 661064450,
+      "changePct": 3,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8715",
+      "label": "Baby carriages, strollers and parts",
+      "exportsUsd": 20394744,
+      "priorExportsUsd": 21106719,
+      "changePct": -3.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8716",
+      "label": "Trailers, semi-trailers, campers, container chassis, hand trucks and carts",
+      "exportsUsd": 3821169224,
+      "priorExportsUsd": 4119875613,
+      "changePct": -7.3,
+      "sharePct": 2.9
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "8703.23",
+      "heading": "8703",
+      "description": "Vehicles; with only spark-ignition internal combustion reciprocating piston engine, cylinder capacity over 1500 but not over 3000cc",
+      "exportsUsd": 22362517304,
+      "priorExportsUsd": 24179868388,
+      "changePct": -7.5,
+      "sharePct": 17
+    },
+    {
+      "hs6": "8708.99",
+      "heading": "8708",
+      "description": "Vehicle parts and accessories; n.e.c. in heading no. 8708",
+      "exportsUsd": 13749350980,
+      "priorExportsUsd": 13391472154,
+      "changePct": 2.7,
+      "sharePct": 10.5
+    },
+    {
+      "hs6": "8703.24",
+      "heading": "8703",
+      "description": "Vehicles; with only spark-ignition internal combustion reciprocating piston engine, cylinder capacity over 3000cc",
+      "exportsUsd": 10422950899,
+      "priorExportsUsd": 12623538544,
+      "changePct": -17.4,
+      "sharePct": 7.9
+    },
+    {
+      "hs6": "8708.40",
+      "heading": "8708",
+      "description": "Vehicle parts; gear boxes and parts thereof",
+      "exportsUsd": 7868533285,
+      "priorExportsUsd": 7762118215,
+      "changePct": 1.4,
+      "sharePct": 6
+    },
+    {
+      "hs6": "8704.31",
+      "heading": "8704",
+      "description": "Vehicles; with only spark-ignition internal combustion piston engine, for transport of goods, (of a g.v.w. not exceeding 5 tonnes), n.e.c. in item no 8704.1",
+      "exportsUsd": 7845903851,
+      "priorExportsUsd": 10064285944,
+      "changePct": -22,
+      "sharePct": 6
+    },
+    {
+      "hs6": "8708.29",
+      "heading": "8708",
+      "description": "Vehicles; parts and accessories, of bodies, other than safety seat belts",
+      "exportsUsd": 7216193423,
+      "priorExportsUsd": 8240584314,
+      "changePct": -12.4,
+      "sharePct": 5.5
+    },
+    {
+      "hs6": "8703.33",
+      "heading": "8703",
+      "description": "Vehicles; with only compression-ignition internal combustion piston engine (diesel or semi-diesel), cylinder capacity over 2500cc",
+      "exportsUsd": 4134697462,
+      "priorExportsUsd": 4070176752,
+      "changePct": 1.6,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "8703.80",
+      "heading": "8703",
+      "description": "Vehicles; with only electric motor for propulsion",
+      "exportsUsd": 3748210323,
+      "priorExportsUsd": 5515265622,
+      "changePct": -32,
+      "sharePct": 2.9
+    },
+    {
+      "hs6": "8703.40",
+      "heading": "8703",
+      "description": "Vehicles; with both spark-ignition internal combustion piston engine and electric motor for propulsion, incapable of being charged by plugging to external source of electric power",
+      "exportsUsd": 3537820610,
+      "priorExportsUsd": 3264378345,
+      "changePct": 8.4,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "8703.60",
+      "heading": "8703",
+      "description": "Vehicles; with both spark-ignition internal combustion piston engine and electric motor for propulsion, capable of being charged by plugging to external source of electric power",
+      "exportsUsd": 3468293459,
+      "priorExportsUsd": 3985731215,
+      "changePct": -13,
+      "sharePct": 2.6
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 87, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 80% of 2025 U.S. Chapter 87 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

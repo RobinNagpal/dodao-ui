@@ -1,0 +1,1032 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 84,
+    "padded": "84",
+    "slug": "84-nuclear-reactors-and-machinery",
+    "title": "Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/84-nuclear-reactors-and-machinery",
+    "h1": "HTS Chapter 84: Nuclear Reactors, Boilers, Machinery and Mechanical Appliances; Parts Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Machinery & Mechanical Equipment Exports and Foreign Tariffs (HTS Ch. 84) | KoalaGains",
+      "shortDescription": "U.S. machinery exports were $283.61B in 2025. Where they go, what Canada, Mexico, the EU and China charge, and which tariffs changed since January 2025.",
+      "keywords": ["US machinery exports", "tariffs on US machinery", "China tariff on US farm machinery", "US machinery exports by country", "HS 84 exports"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$283.61B** of machinery and mechanical equipment in 2025, up 12.4% on 2024 and 55% above 2020. The largest headings were computers (8471, $61.18B), computer parts (8473, $35.76B), semiconductor equipment (8486, $19.27B). Mexico and Canada took **41%** between them.\n\nTariffs are a minor factor for most buyers: Mexico, South Korea and the other free-trade partners charge nothing on qualifying goods, and the EU cut its remaining tariffs to zero on July 1, 2026. The exceptions are **Canada**, which since September 2026 surtaxes about 50 machinery tariff items at 15–50% regardless of CUSMA, and **China**, which adds a 10% extra duty (and another 10% on farm machinery). What usually decides access is conformity approval and, for machine tools, chip-making equipment and some pumps and valves, U.S. export-control licensing.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$283.61B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+12.4%"
+    },
+    {
+      "label": "Largest product group (8471)",
+      "value": "22%",
+      "note": "Computers and computer units"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "41%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "6 of 13",
+      "note": "Mexico, Netherlands, Singapore, Germany, Rep. of Korea, Australia (Canada: free except 15–50% on listed lines)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. machinery exports were $283.61B in 2025 (+12.4%); the largest headings were computers (8471, $61.18B), computer parts (8473, $35.76B), semiconductor equipment (8486, $19.27B).",
+    "Mexico and Canada took 41% of exports; Mexico and the free-trade partners charge nothing on qualifying goods, and the EU went to zero on July 1, 2026.",
+    "Canada has surtaxed about 50 machinery tariff items at 15%, 25% or 50% since September 8, 2026 — air conditioners, refrigerators, washers, lifting equipment and parts — and CUSMA qualification does not remove it.",
+    "China adds a 10% extra duty on all U.S. goods and another 10% on agricultural machinery; U.S. machine tools, chip-making equipment and some pumps and valves also need U.S. export licences for some destinations."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 182585530775,
+      "partnerAUsd": 34499487310,
+      "partnerBUsd": 39126243439,
+      "restUsd": 108959800026
+    },
+    {
+      "year": 2021,
+      "totalUsd": 209284552323,
+      "partnerAUsd": 39302996955,
+      "partnerBUsd": 44249317424,
+      "restUsd": 125732237944
+    },
+    {
+      "year": 2022,
+      "totalUsd": 229594064757,
+      "partnerAUsd": 45152973701,
+      "partnerBUsd": 49159508598,
+      "restUsd": 135281582458
+    },
+    {
+      "year": 2023,
+      "totalUsd": 233009958652,
+      "partnerAUsd": 45705711303,
+      "partnerBUsd": 52762021769,
+      "restUsd": 134542225580
+    },
+    {
+      "year": 2024,
+      "totalUsd": 252426810370,
+      "partnerAUsd": 52281895318,
+      "partnerBUsd": 51268880834,
+      "restUsd": 148876034218
+    },
+    {
+      "year": 2025,
+      "totalUsd": 283610471656,
+      "partnerAUsd": 65938523820,
+      "partnerBUsd": 51254095960,
+      "restUsd": 166417851876
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 84 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 65938523820,
+      "priorExportsUsd": 52281895318,
+      "sharePct": 23.2,
+      "changePct": 26.1,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 51254095960,
+      "priorExportsUsd": 51268880834,
+      "sharePct": 18.1,
+      "changePct": 0,
+      "tariffNow": "Free (CUSMA); 15–50% surtax on listed appliances and equipment",
+      "status": "raised"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 16778265253,
+      "priorExportsUsd": 9180254088,
+      "sharePct": 5.9,
+      "changePct": 82.8,
+      "tariffNow": "MFN 0%–14.5% (US–Taiwan agreement not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 10805109479,
+      "priorExportsUsd": 8849252979,
+      "sharePct": 3.8,
+      "changePct": 22.1,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 10508296995,
+      "priorExportsUsd": 12858594797,
+      "sharePct": 3.7,
+      "changePct": -18.3,
+      "tariffNow": "MFN + 10% extra (+10% more on farm machinery)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 8932160271,
+      "priorExportsUsd": 7313476705,
+      "sharePct": 3.1,
+      "changePct": 22.1,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 8437477714,
+      "priorExportsUsd": 7566449327,
+      "sharePct": 3,
+      "changePct": 11.5,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 8212471755,
+      "priorExportsUsd": 8024378876,
+      "sharePct": 2.9,
+      "changePct": 2.3,
+      "tariffNow": "0% MFN (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 8190159072,
+      "priorExportsUsd": 6951194550,
+      "sharePct": 2.9,
+      "changePct": 17.8,
+      "tariffNow": "UK MFN 0%–8%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 8187467992,
+      "priorExportsUsd": 7320467008,
+      "sharePct": 2.9,
+      "changePct": 11.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 6459734825,
+      "priorExportsUsd": 6713650298,
+      "sharePct": 2.3,
+      "changePct": -3.8,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 6339891328,
+      "priorExportsUsd": 5869606778,
+      "sharePct": 2.2,
+      "changePct": 8,
+      "tariffNow": "MFN (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 5079723090,
+      "priorExportsUsd": 4416149515,
+      "sharePct": 1.8,
+      "changePct": 15,
+      "tariffNow": "MFN (no U.S. FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 68487094102,
+  "othersPriorExportsUsd": 63812559297,
+  "byHeading": [
+    {
+      "heading": "8401",
+      "label": "Nuclear reactors, fuel elements and isotope separation machinery",
+      "exportsUsd": 496255725,
+      "priorExportsUsd": 269140403,
+      "changePct": 84.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8402",
+      "label": "Steam and vapor generating boilers; super-heated water boilers",
+      "exportsUsd": 161841918,
+      "priorExportsUsd": 213902067,
+      "changePct": -24.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8403",
+      "label": "Central heating boilers",
+      "exportsUsd": 119248416,
+      "priorExportsUsd": 114549539,
+      "changePct": 4.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "8404",
+      "label": "Boiler auxiliary plant; steam condensers",
+      "exportsUsd": 76219140,
+      "priorExportsUsd": 73814336,
+      "changePct": 3.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "8405",
+      "label": "Producer gas, water gas and acetylene generators",
+      "exportsUsd": 77012968,
+      "priorExportsUsd": 100044751,
+      "changePct": -23,
+      "sharePct": 0
+    },
+    {
+      "heading": "8406",
+      "label": "Steam turbines and parts",
+      "exportsUsd": 330377307,
+      "priorExportsUsd": 353405816,
+      "changePct": -6.5,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8407",
+      "label": "Spark-ignition engines (gasoline engines)",
+      "exportsUsd": 9216829034,
+      "priorExportsUsd": 7918576485,
+      "changePct": 16.4,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "8408",
+      "label": "Diesel engines",
+      "exportsUsd": 6529938698,
+      "priorExportsUsd": 7963754044,
+      "changePct": -18,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "8409",
+      "label": "Engine parts",
+      "exportsUsd": 5633669263,
+      "priorExportsUsd": 5770517197,
+      "changePct": -2.4,
+      "sharePct": 2
+    },
+    {
+      "heading": "8410",
+      "label": "Hydraulic turbines and water wheels",
+      "exportsUsd": 54376159,
+      "priorExportsUsd": 48012169,
+      "changePct": 13.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "8411",
+      "label": "Turbojets, turboprops and gas turbines",
+      "exportsUsd": 15886836665,
+      "priorExportsUsd": 14080237944,
+      "changePct": 12.8,
+      "sharePct": 5.6
+    },
+    {
+      "heading": "8412",
+      "label": "Other engines and motors (hydraulic, pneumatic)",
+      "exportsUsd": 4534510270,
+      "priorExportsUsd": 4371169248,
+      "changePct": 3.7,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "8413",
+      "label": "Pumps for liquids",
+      "exportsUsd": 9347211238,
+      "priorExportsUsd": 9517553981,
+      "changePct": -1.8,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "8414",
+      "label": "Air and vacuum pumps, compressors and fans",
+      "exportsUsd": 7907648368,
+      "priorExportsUsd": 7688855094,
+      "changePct": 2.8,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "8415",
+      "label": "Air conditioners",
+      "exportsUsd": 2770904286,
+      "priorExportsUsd": 3027030358,
+      "changePct": -8.5,
+      "sharePct": 1
+    },
+    {
+      "heading": "8416",
+      "label": "Furnace burners and mechanical stokers",
+      "exportsUsd": 203725791,
+      "priorExportsUsd": 203128752,
+      "changePct": 0.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8417",
+      "label": "Industrial and laboratory furnaces and ovens (non-electric)",
+      "exportsUsd": 282316537,
+      "priorExportsUsd": 375203046,
+      "changePct": -24.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8418",
+      "label": "Refrigerators, freezers and heat pumps",
+      "exportsUsd": 2547546721,
+      "priorExportsUsd": 2803152908,
+      "changePct": -9.1,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "8419",
+      "label": "Heating, cooling and drying machinery; water heaters",
+      "exportsUsd": 4998870198,
+      "priorExportsUsd": 4888408966,
+      "changePct": 2.3,
+      "sharePct": 1.8
+    },
+    {
+      "heading": "8420",
+      "label": "Calendering and rolling machines",
+      "exportsUsd": 60622294,
+      "priorExportsUsd": 65866604,
+      "changePct": -8,
+      "sharePct": 0
+    },
+    {
+      "heading": "8421",
+      "label": "Centrifuges and filtering or purifying machinery",
+      "exportsUsd": 12378598075,
+      "priorExportsUsd": 12326725465,
+      "changePct": 0.4,
+      "sharePct": 4.4
+    },
+    {
+      "heading": "8422",
+      "label": "Dishwashers and packaging machinery",
+      "exportsUsd": 1305813140,
+      "priorExportsUsd": 1336394519,
+      "changePct": -2.3,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8423",
+      "label": "Weighing machinery",
+      "exportsUsd": 375643565,
+      "priorExportsUsd": 448249198,
+      "changePct": -16.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8424",
+      "label": "Sprayers, fire extinguishers and pressure washers",
+      "exportsUsd": 2987328480,
+      "priorExportsUsd": 2887275045,
+      "changePct": 3.5,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "8425",
+      "label": "Hoists, winches and jacks",
+      "exportsUsd": 655616959,
+      "priorExportsUsd": 652609778,
+      "changePct": 0.5,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8426",
+      "label": "Cranes and derricks",
+      "exportsUsd": 471681270,
+      "priorExportsUsd": 543955932,
+      "changePct": -13.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8427",
+      "label": "Forklifts and other works trucks",
+      "exportsUsd": 2772419397,
+      "priorExportsUsd": 2786176205,
+      "changePct": -0.5,
+      "sharePct": 1
+    },
+    {
+      "heading": "8428",
+      "label": "Elevators, conveyors and other handling machinery",
+      "exportsUsd": 2110336125,
+      "priorExportsUsd": 2251317980,
+      "changePct": -6.3,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "8429",
+      "label": "Bulldozers, excavators and other earthmoving machinery",
+      "exportsUsd": 4111457447,
+      "priorExportsUsd": 4819262383,
+      "changePct": -14.7,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "8430",
+      "label": "Other earthmoving, boring and snow-clearing machinery",
+      "exportsUsd": 2768110762,
+      "priorExportsUsd": 1202336204,
+      "changePct": 130.2,
+      "sharePct": 1
+    },
+    {
+      "heading": "8431",
+      "label": "Parts of hoists, cranes, forklifts and construction machinery",
+      "exportsUsd": 6486714432,
+      "priorExportsUsd": 7324948969,
+      "changePct": -11.4,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "8432",
+      "label": "Soil preparation and cultivation machinery",
+      "exportsUsd": 632100600,
+      "priorExportsUsd": 694085416,
+      "changePct": -8.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8433",
+      "label": "Harvesting machinery and lawn mowers",
+      "exportsUsd": 3913571851,
+      "priorExportsUsd": 4201675845,
+      "changePct": -6.9,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "8434",
+      "label": "Milking machines and dairy machinery",
+      "exportsUsd": 158913268,
+      "priorExportsUsd": 130024712,
+      "changePct": 22.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8435",
+      "label": "Wine and juice presses",
+      "exportsUsd": 25047775,
+      "priorExportsUsd": 27977048,
+      "changePct": -10.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "8436",
+      "label": "Poultry, bee-keeping and other agricultural machinery",
+      "exportsUsd": 688331630,
+      "priorExportsUsd": 683176994,
+      "changePct": 0.8,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8437",
+      "label": "Grain cleaning and milling machinery",
+      "exportsUsd": 135706037,
+      "priorExportsUsd": 138421411,
+      "changePct": -2,
+      "sharePct": 0
+    },
+    {
+      "heading": "8438",
+      "label": "Food processing machinery",
+      "exportsUsd": 1231613355,
+      "priorExportsUsd": 1278147848,
+      "changePct": -3.6,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8439",
+      "label": "Pulp and papermaking machinery",
+      "exportsUsd": 232264528,
+      "priorExportsUsd": 258832484,
+      "changePct": -10.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8440",
+      "label": "Bookbinding machinery",
+      "exportsUsd": 24007430,
+      "priorExportsUsd": 29970960,
+      "changePct": -19.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "8441",
+      "label": "Paper converting machinery",
+      "exportsUsd": 460967095,
+      "priorExportsUsd": 482315867,
+      "changePct": -4.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8442",
+      "label": "Platemaking machinery and printing plates",
+      "exportsUsd": 86409162,
+      "priorExportsUsd": 84743223,
+      "changePct": 2,
+      "sharePct": 0
+    },
+    {
+      "heading": "8443",
+      "label": "Printing machinery, printers and copiers",
+      "exportsUsd": 3825966035,
+      "priorExportsUsd": 4104840243,
+      "changePct": -6.8,
+      "sharePct": 1.3
+    },
+    {
+      "heading": "8444",
+      "label": "Machines for extruding man-made textile materials",
+      "exportsUsd": 27011243,
+      "priorExportsUsd": 31021342,
+      "changePct": -12.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "8445",
+      "label": "Spinning and textile preparation machinery",
+      "exportsUsd": 16991484,
+      "priorExportsUsd": 41242747,
+      "changePct": -58.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "8446",
+      "label": "Weaving machines (looms)",
+      "exportsUsd": 13978573,
+      "priorExportsUsd": 16048574,
+      "changePct": -12.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "8447",
+      "label": "Knitting and embroidery machines",
+      "exportsUsd": 49720827,
+      "priorExportsUsd": 52683328,
+      "changePct": -5.6,
+      "sharePct": 0
+    },
+    {
+      "heading": "8448",
+      "label": "Auxiliary textile machinery and parts",
+      "exportsUsd": 108931906,
+      "priorExportsUsd": 178447480,
+      "changePct": -39,
+      "sharePct": 0
+    },
+    {
+      "heading": "8449",
+      "label": "Felt and nonwovens machinery",
+      "exportsUsd": 8279502,
+      "priorExportsUsd": 8320638,
+      "changePct": -0.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "8450",
+      "label": "Household and laundry-type washing machines",
+      "exportsUsd": 406756170,
+      "priorExportsUsd": 409945897,
+      "changePct": -0.8,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8451",
+      "label": "Dryers and other laundry and textile finishing machinery",
+      "exportsUsd": 323705901,
+      "priorExportsUsd": 327558415,
+      "changePct": -1.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8452",
+      "label": "Sewing machines",
+      "exportsUsd": 127606099,
+      "priorExportsUsd": 133514199,
+      "changePct": -4.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8453",
+      "label": "Leather and footwear machinery",
+      "exportsUsd": 8516126,
+      "priorExportsUsd": 13611903,
+      "changePct": -37.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8454",
+      "label": "Converters, ladles, ingot molds and casting machines",
+      "exportsUsd": 200276067,
+      "priorExportsUsd": 200689284,
+      "changePct": -0.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8455",
+      "label": "Metal-rolling mills and rolls",
+      "exportsUsd": 224901604,
+      "priorExportsUsd": 200838654,
+      "changePct": 12,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8456",
+      "label": "Laser, plasma, waterjet and EDM machine tools",
+      "exportsUsd": 325870536,
+      "priorExportsUsd": 379380299,
+      "changePct": -14.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8457",
+      "label": "Machining centers and transfer machines",
+      "exportsUsd": 539918417,
+      "priorExportsUsd": 697647954,
+      "changePct": -22.6,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8458",
+      "label": "Lathes for metal",
+      "exportsUsd": 288619298,
+      "priorExportsUsd": 325252908,
+      "changePct": -11.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8459",
+      "label": "Drilling, boring, milling and threading machines",
+      "exportsUsd": 120951937,
+      "priorExportsUsd": 135186335,
+      "changePct": -10.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "8460",
+      "label": "Grinding, honing and polishing machines",
+      "exportsUsd": 151171884,
+      "priorExportsUsd": 157631249,
+      "changePct": -4.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8461",
+      "label": "Planing, broaching, gear-cutting and sawing machines",
+      "exportsUsd": 111345890,
+      "priorExportsUsd": 130499885,
+      "changePct": -14.7,
+      "sharePct": 0
+    },
+    {
+      "heading": "8462",
+      "label": "Metal forming presses, bending, punching and shearing machines",
+      "exportsUsd": 618823726,
+      "priorExportsUsd": 624476253,
+      "changePct": -0.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "8463",
+      "label": "Other metal working machine tools",
+      "exportsUsd": 93654936,
+      "priorExportsUsd": 115624054,
+      "changePct": -19,
+      "sharePct": 0
+    },
+    {
+      "heading": "8464",
+      "label": "Machine tools for stone, ceramics, concrete and glass",
+      "exportsUsd": 91948834,
+      "priorExportsUsd": 106156003,
+      "changePct": -13.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8465",
+      "label": "Woodworking and plastics-working machine tools",
+      "exportsUsd": 181869022,
+      "priorExportsUsd": 273687590,
+      "changePct": -33.5,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8466",
+      "label": "Parts and accessories of machine tools",
+      "exportsUsd": 2081833607,
+      "priorExportsUsd": 2281121549,
+      "changePct": -8.7,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "8467",
+      "label": "Power hand tools (pneumatic, hydraulic, motorized)",
+      "exportsUsd": 1472398554,
+      "priorExportsUsd": 1531465334,
+      "changePct": -3.9,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8468",
+      "label": "Gas welding and soldering machinery",
+      "exportsUsd": 69577179,
+      "priorExportsUsd": 76562193,
+      "changePct": -9.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "8470",
+      "label": "Calculators, cash registers and postage machines",
+      "exportsUsd": 304777657,
+      "priorExportsUsd": 395135189,
+      "changePct": -22.9,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8471",
+      "label": "Computers and computer units",
+      "exportsUsd": 61177860878,
+      "priorExportsUsd": 40096673695,
+      "changePct": 52.6,
+      "sharePct": 21.6
+    },
+    {
+      "heading": "8472",
+      "label": "Other office machines (ATMs, coin sorters)",
+      "exportsUsd": 349655143,
+      "priorExportsUsd": 314513395,
+      "changePct": 11.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8473",
+      "label": "Parts of computers and office machines",
+      "exportsUsd": 35755741485,
+      "priorExportsUsd": 24007271563,
+      "changePct": 48.9,
+      "sharePct": 12.6
+    },
+    {
+      "heading": "8474",
+      "label": "Mineral, stone and concrete processing machinery",
+      "exportsUsd": 1030063330,
+      "priorExportsUsd": 1191463241,
+      "changePct": -13.5,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8475",
+      "label": "Glass and lamp making machinery",
+      "exportsUsd": 280239586,
+      "priorExportsUsd": 308436141,
+      "changePct": -9.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8476",
+      "label": "Vending machines",
+      "exportsUsd": 76961926,
+      "priorExportsUsd": 94280234,
+      "changePct": -18.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8477",
+      "label": "Plastics and rubber working machinery",
+      "exportsUsd": 1275724451,
+      "priorExportsUsd": 1393459779,
+      "changePct": -8.4,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "8478",
+      "label": "Tobacco machinery",
+      "exportsUsd": 34679608,
+      "priorExportsUsd": 56313048,
+      "changePct": -38.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "8479",
+      "label": "Machines with individual functions, n.e.s. (incl. robots)",
+      "exportsUsd": 7810455889,
+      "priorExportsUsd": 8394432640,
+      "changePct": -7,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "8480",
+      "label": "Molds and mold bases",
+      "exportsUsd": 835409638,
+      "priorExportsUsd": 868012051,
+      "changePct": -3.8,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "8481",
+      "label": "Valves, taps and cocks",
+      "exportsUsd": 14501101798,
+      "priorExportsUsd": 14116806715,
+      "changePct": 2.7,
+      "sharePct": 5.1
+    },
+    {
+      "heading": "8482",
+      "label": "Ball and roller bearings",
+      "exportsUsd": 2724749018,
+      "priorExportsUsd": 2726254497,
+      "changePct": -0.1,
+      "sharePct": 1
+    },
+    {
+      "heading": "8483",
+      "label": "Transmission shafts, gears, gearboxes and couplings",
+      "exportsUsd": 9005504001,
+      "priorExportsUsd": 8895615836,
+      "changePct": 1.2,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "8484",
+      "label": "Gaskets and mechanical seals",
+      "exportsUsd": 1330847912,
+      "priorExportsUsd": 1692254833,
+      "changePct": -21.4,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "8485",
+      "label": "Additive manufacturing (3D printing) machines",
+      "exportsUsd": 182048348,
+      "priorExportsUsd": 203912869,
+      "changePct": -10.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "8486",
+      "label": "Semiconductor and flat-panel manufacturing machines",
+      "exportsUsd": 19266066639,
+      "priorExportsUsd": 19715062413,
+      "changePct": -2.3,
+      "sharePct": 6.8
+    },
+    {
+      "heading": "8487",
+      "label": "Non-electrical machinery parts n.e.s.",
+      "exportsUsd": 929345613,
+      "priorExportsUsd": 968510727,
+      "changePct": -4,
+      "sharePct": 0.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "8473.30",
+      "heading": "8473",
+      "description": "Machinery; parts and accessories (other than covers, carrying cases and the like) of the machines of heading no. 8471",
+      "exportsUsd": 35058349184,
+      "priorExportsUsd": 23417528878,
+      "changePct": 49.7,
+      "sharePct": 12.4
+    },
+    {
+      "hs6": "8471.50",
+      "heading": "8471",
+      "description": "Units of automatic data processing machines; processing units other than those of item no. 8471.41 or 8471.49, whether or not containing in the same housing one or two of the following types of unit: storage units, input units or output units",
+      "exportsUsd": 30894029340,
+      "priorExportsUsd": 16306565785,
+      "changePct": 89.5,
+      "sharePct": 10.9
+    },
+    {
+      "hs6": "8486.20",
+      "heading": "8486",
+      "description": "Machines and apparatus of a kind used solely or principally for the manufacture of semiconductor devices or of electronic integrated circuits",
+      "exportsUsd": 11351795763,
+      "priorExportsUsd": 11188589055,
+      "changePct": 1.5,
+      "sharePct": 4
+    },
+    {
+      "hs6": "8471.80",
+      "heading": "8471",
+      "description": "Units of automatic data processing machines; n.e.c. in item no. 8471.50, 8471.60 or 8471.70",
+      "exportsUsd": 8001155600,
+      "priorExportsUsd": 4219426577,
+      "changePct": 89.6,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "8407.34",
+      "heading": "8407",
+      "description": "Engines; reciprocating piston engines, of a kind used for the propulsion of vehicles of chapter 87, of a cylinder capacity exceeding 1000cc",
+      "exportsUsd": 7961392160,
+      "priorExportsUsd": 6637377822,
+      "changePct": 19.9,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "8481.80",
+      "heading": "8481",
+      "description": "Taps, cocks, valves and similar appliances; for pipes, boiler shells, tanks, vats or the like, including thermostatically controlled valves",
+      "exportsUsd": 7891531494,
+      "priorExportsUsd": 7573621867,
+      "changePct": 4.2,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "8486.90",
+      "heading": "8486",
+      "description": "Machines and apparatus of heading 8486; parts and accessories",
+      "exportsUsd": 7081657475,
+      "priorExportsUsd": 7682461215,
+      "changePct": -7.8,
+      "sharePct": 2.5
+    },
+    {
+      "hs6": "8471.70",
+      "heading": "8471",
+      "description": "Units of automatic data processing machines; storage units",
+      "exportsUsd": 6971919103,
+      "priorExportsUsd": 5936917868,
+      "changePct": 17.4,
+      "sharePct": 2.5
+    },
+    {
+      "hs6": "8471.30",
+      "heading": "8471",
+      "description": "Automatic data processing machines; portable, weighing not more than 10kg, consisting of at least a central processing unit, a keyboard and a display",
+      "exportsUsd": 6811880952,
+      "priorExportsUsd": 6649779660,
+      "changePct": 2.4,
+      "sharePct": 2.4
+    },
+    {
+      "hs6": "8411.99",
+      "heading": "8411",
+      "description": "Turbines; parts of gas turbines (excluding turbo-jets and turbo-propellers)",
+      "exportsUsd": 6320017511,
+      "priorExportsUsd": 6399477763,
+      "changePct": -1.2,
+      "sharePct": 2.2
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 84, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 76% of 2025 U.S. Chapter 84 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\" (code 490); it is shown here as Taiwan."
+}

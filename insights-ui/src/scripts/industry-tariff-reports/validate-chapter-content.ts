@@ -150,6 +150,24 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'caas.gov.sg', // Singapore Civil Aviation Authority
   'gcaa.gov.ae', // UAE General Civil Aviation Authority
   'faa.gov', // U.S. Federal Aviation Administration (export airworthiness approval)
+  'fincen.gov', // Treasury FinCEN (anti-money-laundering rules for precious-metal dealers)
+  'gov.au', // Australian government sites (Australian Border Force)
+  'gov.ae', // UAE government sites (Ministry of Economy)
+  'gov.sg', // Singapore government sites (Singapore Customs)
+  'gob.hn', // Honduras government sites (SENASA)
+  'gov.tr', // Türkiye government sites (Ministry of Agriculture and Forestry)
+  'gov.bd', // Bangladesh government sites (Department of Agricultural Extension)
+  'gov.in', // India government sites (Ministry of Petroleum and Natural Gas)
+  'energy.gov', // U.S. Department of Energy (LNG export authorization)
+  'infrastructure.gov.au', // Australia Department of Infrastructure (road-vehicle import approval)
+  'moiat.gov.ae', // UAE Ministry of Industry and Advanced Technology
+  'gov.vn', // Viet Nam government sites (Plant Protection Department)
+  'gov.ph', // Philippines government sites (Department of Agriculture)
+  'gov.tw', // Taiwan government sites (TFDA, BAPHIQ)
+  'gov.co', // Colombia government sites (ICA, INVIMA)
+  'gob.do', // Dominican Republic government sites (Ministry of Agriculture)
+  'gov.hk', // Hong Kong government sites (Centre for Food Safety)
+  'go.kr', // Korea government sites (APQA, MAFRA)
 ];
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */

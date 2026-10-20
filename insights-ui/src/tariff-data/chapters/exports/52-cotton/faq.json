@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 52,
+    "padded": "52",
+    "slug": "52-cotton",
+    "title": "Cotton"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/52-cotton/faq",
+    "h1": "HTS Chapter 52: Cotton — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 52 Export FAQ: Cotton Tariffs, Certificates & Schedule B",
+      "shortDescription": "Common questions on exporting U.S. raw cotton, yarn and fabric, answered from the export tariff report.",
+      "keywords": ["us cotton exports faq", "china tariff us cotton", "us cotton exports to vietnam", "schedule b cotton", "cotton phytosanitary certificate"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Common questions about exporting U.S. raw cotton, yarn and fabric, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "Viet Nam charges 0% on U.S. raw cotton and Mexico, Honduras and the Dominican Republic are duty-free under trade agreements; China is the one big buyer that charges real tariffs.",
+    "China lifted its 15% tariff on U.S. cotton on November 10, 2025, but its extra 10% on all U.S. goods stays, and its purchases fell 85% in 2025.",
+    "To ship cotton you need a Schedule B number, usually a phytosanitary certificate and an AES filing; no export licence applies in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions for queries such as \"us cotton exports\", \"us cotton exports by country\", \"us cotton exports to china\", \"china tariff on us cotton\" and \"us cotton exports to india\" (October 2026).",
+  "faqs": [
+    {
+      "id": "how-much-cotton",
+      "question": "How much cotton does the U.S. export?",
+      "answer": "The U.S. exported $5.88 billion of Chapter 52 goods in 2025, down 4.8% from 2024. Raw cotton (heading 5201) is 82%, cotton yarn (5204–5207) 13% and woven fabric under 5%.",
+      "link": "exports",
+      "searchedAs": ["us cotton exports", "us cotton exports 2025", "us cotton exports by year"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Which countries buy the most U.S. cotton?",
+      "answer": "Viet Nam takes 22% of Chapter 52 exports, Pakistan 12.7%, Türkiye 11.3% and Honduras 9.4%. Viet Nam's purchases rose 122% in 2025; China, once a top buyer, bought 85% less.",
+      "link": "exports",
+      "searchedAs": ["us cotton exports by country", "us cotton exports to india"]
+    },
+    {
+      "id": "china-cotton-tariff",
+      "question": "Does China tariff U.S. cotton?",
+      "answer": "Yes. China charges 1% inside its 894,000-tonne cotton quota and 40% above it, plus an extra 10% on every U.S. good. Its separate 15% tariff on U.S. cotton was lifted on November 10, 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us cotton", "us cotton exports to china"]
+    },
+    {
+      "id": "china-lifted",
+      "question": "Did China remove its extra tariff on U.S. cotton?",
+      "answer": "Partly. The 15% tariff imposed in March 2025 was lifted on November 10, 2025. The extra 10% on all U.S. goods stays and was extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us cotton"]
+    },
+    {
+      "id": "vietnam-cotton",
+      "question": "What tariff does Viet Nam charge on U.S. cotton?",
+      "answer": "0% on raw cotton and 5% on cotton yarn, according to USDA's April 2026 report. Viet Nam has no quota on cotton and no trade agreement with the U.S.",
+      "link": "exports/markets",
+      "searchedAs": ["us cotton exports by country"]
+    },
+    {
+      "id": "cafta-cotton",
+      "question": "Is U.S. cotton duty-free in Mexico, Honduras and the Dominican Republic?",
+      "answer": "Yes. U.S.-origin cotton, yarn and fabric enter Mexico under USMCA and Honduras and the Dominican Republic under CAFTA-DR at 0%, because the goods qualify as originating.",
+      "link": "exports/markets",
+      "searchedAs": ["us cotton exports by country"]
+    },
+    {
+      "id": "india-cotton",
+      "question": "What duty does India charge on U.S. cotton?",
+      "answer": "Normally about 11% (5% basic duty and 5% cess, plus a 10% surcharge on both). India waived it from August 19, 2025 and, according to press reports, again from June 1 to October 31, 2026. Check the customs notification before pricing a shipment.",
+      "link": "exports/markets",
+      "searchedAs": ["us cotton exports to india"]
+    },
+    {
+      "id": "schedule-b-cotton",
+      "question": "What is the Schedule B code for cotton?",
+      "answer": "Raw cotton is 5201.00; look up the 10-digit number in the Census Schedule B search tool. Cotton yarn is in 5205 and woven fabric in 5208 to 5212. The first six digits match the HS code every country uses.",
+      "link": "exports/rules",
+      "searchedAs": ["us cotton exports"]
+    },
+    {
+      "id": "phyto-cotton",
+      "question": "Do I need a phytosanitary certificate or licence to export cotton?",
+      "answer": "The U.S. does not require a certificate, but most buyers do, so you request one through APHIS's PCIT system. No Commerce export licence applies in the ordinary case, since cotton is EAR99. Over $2,500 per Schedule B number you also file in AES.",
+      "link": "exports/rules",
+      "searchedAs": ["us cotton exports"]
+    },
+    {
+      "id": "exclusions-end",
+      "question": "When do China's tariff exclusions for U.S. goods end?",
+      "answer": "December 31, 2026, with no extension announced. For Chapter 52 they matter for cotton, which China's older 2018–19 counter-tariffs hit. China's separate 24-point suspension is extended to January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china tariff on us cotton"]
+    }
+  ]
+}

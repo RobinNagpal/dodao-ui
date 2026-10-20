@@ -154,6 +154,114 @@
         "label": "Country Commercial Guide: United Arab Emirates import requirements",
         "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
       }
+    },
+    {
+      "countryCodes": [214],
+      "marketCode": 214,
+      "name": "Dominican Republic",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Dominican Republic import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [170],
+      "marketCode": 170,
+      "name": "Colombia",
+      "usTradeAgreement": "U.S.–Colombia Trade Promotion Agreement (TPA)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Colombia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/colombia-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [490],
+      "marketCode": 490,
+      "name": "Taiwan",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Taiwan import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [608],
+      "marketCode": 608,
+      "name": "Philippines",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Philippines import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/philippines-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [704],
+      "marketCode": 704,
+      "name": "Viet Nam",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Vietnam import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [699],
+      "marketCode": 699,
+      "name": "India",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: India import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [792],
+      "marketCode": 792,
+      "name": "Türkiye",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Türkiye import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/turkey-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [340],
+      "marketCode": 340,
+      "name": "Honduras",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Honduras import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/honduras-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [50],
+      "marketCode": 50,
+      "name": "Bangladesh",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Bangladesh import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/bangladesh-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [682],
+      "name": "Saudi Arabia",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Saudi Arabia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [268],
+      "name": "Georgia",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Georgia import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/georgia-import-requirements-and-documentation"
+      }
     }
   ]
 }

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 71,
+    "padded": "71",
+    "slug": "71-pearls-stones-and-jewelry",
+    "title": "Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/71-pearls-stones-and-jewelry/faq",
+    "h1": "HTS Chapter 71: Natural or Cultured Pearls, Precious or Semiprecious Stones, Precious Metals, Metals Clad With Precious Metal, and Articles Thereof; Imitation Jewelry; Coin — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 71 Export FAQ: Gold Tariffs, Kimberley Process & Schedule B",
+      "shortDescription": "Common questions on exporting U.S. gold, silver, diamonds and jewelry, answered from the export tariff report.",
+      "keywords": ["us gold exports faq", "us gold exports jump", "kimberley certificate us export", "schedule b code gold", "export jewelry to russia"]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Common questions about exporting U.S. gold, silver, diamonds and jewelry, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "Gold is more than half of this chapter and most of it goes to Switzerland and the UK, which charge no tariff on bullion; India's gold duty is the main exception.",
+    "A Kimberley Process certificate is required for every export of rough diamonds, whatever the value.",
+    "Dealers need an anti-money-laundering program, and exports of listed luxury goods, including jewelry and precious stones, to Russia and Belarus need a licence that is not granted in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions for queries such as \"us gold exports\", \"us gold exports by year\", \"us gold exports jump\", \"us diamond exports\" and \"gold exports from us\" (October 2026).",
+  "faqs": [
+    {
+      "id": "how-much-gold",
+      "question": "How much gold and jewelry does the U.S. export?",
+      "answer": "The U.S. exported $147.97 billion of Chapter 71 goods in 2025, up 102.5% from 2024. Gold (7108) is 54.5%, other precious-metal articles (7115) 14.5%, jewelry (7113) 8.2%, silver 5.5% and diamonds 5.3%.",
+      "link": "exports",
+      "searchedAs": ["us gold exports", "us gold exports 2025", "us gold exports by year", "us gold exports chart"]
+    },
+    {
+      "id": "gold-jump",
+      "question": "Did U.S. gold exports jump in 2025?",
+      "answer": "Yes. Gold (7108) rose 172% to $80.6 billion and other precious-metal articles (7115) from $1.2 billion to $21.5 billion. Switzerland (+364%) and the UK (+145%) took most of it.",
+      "link": "exports",
+      "searchedAs": ["us gold exports jump", "us gold exports 2026"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Which countries buy the most U.S. gold?",
+      "answer": "Switzerland takes 39.4% of Chapter 71 exports and the United Kingdom 21.3%, so the two buy 61%. Hong Kong takes 8.5%, Canada 5.8% and India 3.2%.",
+      "link": "exports",
+      "searchedAs": ["us exporting gold", "gold exports from us", "us export gold to china"]
+    },
+    {
+      "id": "gold-tariffs",
+      "question": "Do other countries tariff U.S. gold?",
+      "answer": "Not the largest buyers. Switzerland, the UK, Hong Kong, the EU, Canada, Singapore and Australia charge nothing on gold bullion. India charges about 6% (one report says 15% from May 2026), and the UAE does not charge on bullion.",
+      "link": "exports/markets",
+      "searchedAs": ["us exporting gold", "gold exports from us"]
+    },
+    {
+      "id": "india-gold",
+      "question": "What duty does India charge on U.S. gold?",
+      "answer": "About 6% since the July 2024 Budget, made of 5% basic duty and 1% cess. One press report says it rose to 15% from May 13, 2026; that was not confirmed from a customs notification, so check CBIC before pricing a shipment.",
+      "link": "exports/markets",
+      "searchedAs": ["gold exports from us"]
+    },
+    {
+      "id": "china-gold",
+      "question": "Does China tariff U.S. gold and jewelry?",
+      "answer": "China adds an extra 10% on every U.S. good on top of its normal rate, extended to January 10, 2027. China bought only 0.7% of this chapter in 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["us export gold to china"]
+    },
+    {
+      "id": "gold-licence",
+      "question": "Do I need a licence to export gold from the U.S.?",
+      "answer": "No Commerce licence is needed for gold bullion, which is generally EAR99. You still need a Schedule B number, a sanctions check and an AES filing, and dealers must run an anti-money-laundering program.",
+      "link": "exports/rules",
+      "searchedAs": ["gold exports from us", "us exporting gold"]
+    },
+    {
+      "id": "kimberley-cert",
+      "question": "Do I need a Kimberley Process certificate to export diamonds?",
+      "answer": "Yes for rough diamonds (HTS 7102.10, 7102.21 and 7102.31), for every shipment whatever the value. Polished diamonds do not need one. The certificate is issued by the U.S. Kimberley Process Authority and its number goes in the AES record.",
+      "link": "exports/rules",
+      "searchedAs": ["us diamond exports", "diamond exports by country"]
+    },
+    {
+      "id": "schedule-b-gold",
+      "question": "What is the Schedule B code for gold?",
+      "answer": "Non-monetary gold in other unwrought forms, the largest line, is 7108.12; semi-manufactured gold is 7108.13. Look up the 10-digit number in the Census Schedule B search tool. The first six digits match the HS code every country uses.",
+      "link": "exports/rules",
+      "searchedAs": ["us gold exports"]
+    },
+    {
+      "id": "russia-jewelry",
+      "question": "Can I export jewelry to Russia?",
+      "answer": "Not in the ordinary case. BIS requires a licence, which is not granted in the ordinary case, to export listed luxury goods, including jewelry and precious stones, to Russia and Belarus. Check Supplement No. 5 to Part 746 for the exact codes.",
+      "link": "exports/rules",
+      "searchedAs": ["us jewelry exports"]
+    }
+  ]
+}

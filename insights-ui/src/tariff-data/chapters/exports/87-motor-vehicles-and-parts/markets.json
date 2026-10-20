@@ -1,0 +1,1331 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 87,
+    "padded": "87",
+    "slug": "87-motor-vehicles-and-parts",
+    "title": "Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/87-motor-vehicles-and-parts/markets",
+    "h1": "HTS Chapter 87: Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Vehicles & Auto Parts by Market (HTS Ch. 87) | KoalaGains",
+      "shortDescription": "What Canada, Mexico, the EU, China, Korea and the Gulf charge on U.S. cars, trucks and auto parts, by market and product, with each market's vehicle-approval rules.",
+      "keywords": [
+        "tariff on US cars",
+        "China tariff on US cars",
+        "EU tariff on US cars",
+        "Canada surtax on US vehicles",
+        "US auto parts export tariffs",
+        "HS 87 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Five of the nine largest markets charge nothing on U.S. vehicles: Mexico and South Korea under free-trade agreements, Australia under its FTA, Georgia on its own schedule, and the EU since July 1, 2026. Canada charges nothing on the vehicle itself but surtaxes its non-U.S. content, and China charges 25–35% on cars. For vehicles, though, the tariff is only half the story: every market has its own safety and emissions approval, and a U.S.-specification vehicle usually needs changes before it can be registered abroad — see each market's regulator below.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "8701",
+      "label": "Tractors: road tractors for semi-trailers, farm and track-laying tractors",
+      "shortLabel": "Tractors"
+    },
+    {
+      "heading": "8702",
+      "label": "Buses, coaches and vans for 10 or more people",
+      "shortLabel": "Buses"
+    },
+    {
+      "heading": "8703",
+      "label": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles",
+      "shortLabel": "Cars & SUVs"
+    },
+    {
+      "heading": "8704",
+      "label": "Trucks and pickups: light trucks, heavy trucks, dump trucks",
+      "shortLabel": "Trucks & pickups"
+    },
+    {
+      "heading": "8705",
+      "label": "Special-purpose vehicles: mobile cranes, fire trucks, concrete mixers, wreckers",
+      "shortLabel": "Special vehicles"
+    },
+    {
+      "heading": "8706",
+      "label": "Chassis fitted with engines",
+      "shortLabel": "Chassis with engines"
+    },
+    {
+      "heading": "8707",
+      "label": "Vehicle bodies and cabs",
+      "shortLabel": "Bodies & cabs"
+    },
+    {
+      "heading": "8708",
+      "label": "Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags",
+      "shortLabel": "Auto parts"
+    },
+    {
+      "heading": "8709",
+      "label": "Works trucks for factories, warehouses and airports (tugs, tow tractors)",
+      "shortLabel": "Works trucks"
+    },
+    {
+      "heading": "8710",
+      "label": "Tanks and armored fighting vehicles",
+      "shortLabel": "Armored vehicles"
+    },
+    {
+      "heading": "8711",
+      "label": "Motorcycles, scooters, mopeds and e-bikes",
+      "shortLabel": "Motorcycles & e-bikes"
+    },
+    {
+      "heading": "8712",
+      "label": "Bicycles and other non-motorized cycles",
+      "shortLabel": "Bicycles"
+    },
+    {
+      "heading": "8713",
+      "label": "Wheelchairs and mobility carriages",
+      "shortLabel": "Wheelchairs"
+    },
+    {
+      "heading": "8714",
+      "label": "Parts of motorcycles, bicycles and wheelchairs",
+      "shortLabel": "Bike & motorcycle parts"
+    },
+    {
+      "heading": "8715",
+      "label": "Baby carriages, strollers and parts",
+      "shortLabel": "Strollers"
+    },
+    {
+      "heading": "8716",
+      "label": "Trailers, semi-trailers, campers, container chassis, hand trucks and carts",
+      "shortLabel": "Trailers"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. On top of it, Canada's Motor Vehicles surtax (SOR/2025-118) charges 25% on the non-U.S. content of CUSMA-compliant passenger vehicles and light trucks, and on the full value of non-compliant ones; its September 8, 2026 surtax (SOR/2026-186) adds 25% on four trailer lines and 50% on motorcycles over 800 cc",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 46322882459,
+      "priorExportsUsd": 53672343007,
+      "sharePct": 35.2,
+      "changePct": -13.7,
+      "status": "raised",
+      "cells": {
+        "8701": {
+          "exportsUsd": 2624056539,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.1% for HS 870121 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8702": {
+          "exportsUsd": 1047704803,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.1% for HS 870210 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8703": {
+          "exportsUsd": 12739897341,
+          "rate": "Free (CUSMA); 25% surtax on non-U.S. content",
+          "normalRate": "6.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.1% for HS 870323 (2023); plus the Motor Vehicles surtax (SOR/2025-118): 25% on the non-U.S. content of CUSMA-compliant passenger vehicles and light trucks, and on the full value of non-compliant ones (8704.60 trucks over 5 tonnes are excluded). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8704": {
+          "exportsUsd": 12132180481,
+          "rate": "Free (CUSMA); 25% surtax on non-U.S. content",
+          "normalRate": "6.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.1% for HS 870431 (2023); plus the Motor Vehicles surtax (SOR/2025-118): 25% on the non-U.S. content of CUSMA-compliant passenger vehicles and light trucks, and on the full value of non-compliant ones (8704.60 trucks over 5 tonnes are excluded). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8705": {
+          "exportsUsd": 1120897500,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3% for HS 870590 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8706": {
+          "exportsUsd": 72070963,
+          "rate": "Free (CUSMA)",
+          "normalRate": "4.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 4.1% for HS 870600 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8707": {
+          "exportsUsd": 105723475,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6% for HS 870710 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8708": {
+          "exportsUsd": 13845316155,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3.3% for HS 870899 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8709": {
+          "exportsUsd": 62679036,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3% for HS 870919 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8710": {
+          "exportsUsd": 58179586,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 871000 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8711": {
+          "exportsUsd": 188821538,
+          "rate": "Free (CUSMA); 50% surtax on 8711.50",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 871150 (2023); plus the September 8, 2026 surtax (SOR/2026-186, Schedule 3): 50% on 8711.50.00 (motorcycles over 800 cc). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8712": {
+          "exportsUsd": 66764994,
+          "rate": "Free (CUSMA)",
+          "normalRate": "13% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 13% for HS 871200 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8713": {
+          "exportsUsd": 42715778,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8714": {
+          "exportsUsd": 138861167,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 871410 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8715": {
+          "exportsUsd": 15528799,
+          "rate": "Free (CUSMA)",
+          "normalRate": "8% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 8% for HS 871500 (2023). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        },
+        "8716": {
+          "exportsUsd": 2061484304,
+          "rate": "Free (CUSMA); 25% surtax on 8716.39",
+          "normalRate": "5.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 5.2% for HS 871639 (2023); plus the September 8, 2026 surtax (SOR/2026-186, Schedule 2): 25% on the four 8716.39 trailer lines. The surtaxes apply to goods of U.S. origin under the CUSMA marking rules and have no CUSMA exemption"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest market ($46.32B, down 13.7%). The vehicle itself enters free under CUSMA, but since April 9, 2025 Canada has charged a 25% surtax on the non-U.S. content of U.S.-built passenger vehicles and light trucks (the full value if the vehicle is not CUSMA-compliant). Parts (8708) are not on that list, so the $13.85B of parts crosses without the surtax.",
+        "mainProducts": "Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708) · Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703)",
+        "tariffNow": "Free (CUSMA); 25% surtax on non-U.S. vehicle content",
+        "regulator": {
+          "name": "Transport Canada (Motor Vehicle Safety Act)",
+          "url": "https://tc.canada.ca/en/road-transportation/safety-standards-vehicles-tires-child-car-seats/safety-standards-vehicles",
+          "requirement": "New vehicles sold in Canada must meet the Canadian Motor Vehicle Safety Standards (CMVSS) under the manufacturer's self-certification; meeting U.S. FMVSS alone is not enough"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin (vehicles and core parts must meet the automotive rules)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 26049264840,
+      "priorExportsUsd": 28924283216,
+      "sharePct": 19.8,
+      "changePct": -9.9,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 344094088,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); no WITS MFN observation found for HS 870121; certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8702": {
+          "exportsUsd": 84606449,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (Mexican national lines under HS 870210)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 35% for HS 870210 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8703": {
+          "exportsUsd": 3959692046,
+          "rate": "Free (USMCA, auto rules of origin)",
+          "normalRate": "35% MFN (Mexican national lines under HS 870323)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 35% for HS 870323 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8704": {
+          "exportsUsd": 1433121421,
+          "rate": "Free (USMCA, auto rules of origin)",
+          "normalRate": "22.5% MFN (Mexican national lines under HS 870431)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 22.5% for HS 870431 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8705": {
+          "exportsUsd": 202737908,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN (Mexican national lines under HS 870590)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 870590 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8706": {
+          "exportsUsd": 741577,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN (Mexican national lines under HS 870600)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 10% for HS 870600 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8707": {
+          "exportsUsd": 23989835,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 870710 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8708": {
+          "exportsUsd": 18880594862,
+          "rate": "Free (USMCA, auto rules of origin)",
+          "normalRate": "4% MFN (Mexican national lines under HS 870899)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 4% for HS 870899 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8709": {
+          "exportsUsd": 54280130,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 870919 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8710": {
+          "exportsUsd": 2312985,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN (Mexican national lines under HS 871000)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 871000 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8711": {
+          "exportsUsd": 70305818,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 871150 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8712": {
+          "exportsUsd": 1887708,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN (Mexican national lines under HS 871200)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 15% for HS 871200 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8713": {
+          "exportsUsd": 1958212,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 871310 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8714": {
+          "exportsUsd": 34778581,
+          "rate": "Free (USMCA)",
+          "normalRate": "1.2% MFN (Mexican national lines under HS 871410)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 1.2% for HS 871410 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8715": {
+          "exportsUsd": 947022,
+          "rate": "Free (USMCA)",
+          "normalRate": "7.5% MFN (Mexican national lines under HS 871500)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 7.5% for HS 871500 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        },
+        "8716": {
+          "exportsUsd": 953216198,
+          "rate": "Free (USMCA)",
+          "normalRate": "3.8% MFN (Mexican national lines under HS 871639)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 3.8% for HS 871639 (2023); certificate of origin required. Vehicles and core parts must meet USMCA's automotive rules of origin"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the second-largest market ($26.05B, down 9.9%), and 72% of it is parts (8708, $18.88B) feeding Mexican assembly plants. Mexico's own MFN rate on cars is high (a WITS average of 35%), so a vehicle that fails USMCA's rules of origin loses most of its price advantage.",
+        "mainProducts": "Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708) · Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Economía (Mexican Official Standards, NOM)",
+          "url": "https://www.gob.mx/se",
+          "requirement": "Vehicles and parts sold in Mexico must meet the applicable Mexican Official Standards (NOMs) for safety and emissions; check the NOM for the specific product with the importer of record"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists chapter 87 in full) from July 1, 2026 to December 31, 2029, replacing the EU's common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 17303536842,
+      "priorExportsUsd": 17151388924,
+      "sharePct": 13.2,
+      "changePct": 0.9,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 9063195709,
+          "priorExportsUsd": 9191373420,
+          "changePct": -1.4
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 2033968245,
+          "priorExportsUsd": 2353405050,
+          "changePct": -13.6
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 1383661330,
+          "priorExportsUsd": 1023671594,
+          "changePct": 35.2
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 1228156358,
+          "priorExportsUsd": 1082988342,
+          "changePct": 13.4
+        },
+        {
+          "countryCode": 440,
+          "country": "Lithuania",
+          "exportsUsd": 1154456387,
+          "priorExportsUsd": 926025577,
+          "changePct": 24.7
+        }
+      ],
+      "cells": {
+        "8701": {
+          "exportsUsd": 610807541,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "16% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 16% for HS 870121 (2023) before that date"
+        },
+        "8702": {
+          "exportsUsd": 3832292,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "13% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 13% for HS 870210 (2023) before that date"
+        },
+        "8703": {
+          "exportsUsd": 12318091815,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "10% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 10% for HS 870323 (2023) before that date"
+        },
+        "8704": {
+          "exportsUsd": 182036694,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "13.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 13.5% for HS 870431 (2023) before that date"
+        },
+        "8705": {
+          "exportsUsd": 219049616,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 870590 (2023) before that date"
+        },
+        "8706": {
+          "exportsUsd": 1346270,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "9.9% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 9.9% for HS 870600 (2023) before that date"
+        },
+        "8707": {
+          "exportsUsd": 10521157,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 4.5% for HS 870710 (2023) before that date"
+        },
+        "8708": {
+          "exportsUsd": 2153028200,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 870899 (2023) before that date"
+        },
+        "8709": {
+          "exportsUsd": 54846570,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3% for HS 870919 (2023) before that date"
+        },
+        "8710": {
+          "exportsUsd": 1148279889,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 1.7% for HS 871000 (2023) before that date"
+        },
+        "8711": {
+          "exportsUsd": 264121426,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 6% for HS 871150 (2023) before that date"
+        },
+        "8712": {
+          "exportsUsd": 3444505,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "14.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 14.5% for HS 871200 (2023) before that date"
+        },
+        "8713": {
+          "exportsUsd": 8491963,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023) before that date"
+        },
+        "8714": {
+          "exportsUsd": 159492132,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 3.7% for HS 871410 (2023) before that date"
+        },
+        "8715": {
+          "exportsUsd": 647770,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.7% for HS 871500 (2023) before that date"
+        },
+        "8716": {
+          "exportsUsd": 165499002,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 87 listed in full), from July 1, 2026; WITS/TRAINS simple-average MFN 2.7% for HS 871639 (2023) before that date"
+        }
+      },
+      "profile": {
+        "headline": "The EU is the third-largest market ($17.30B, up 0.9%) and 71% of it is passenger vehicles (8703, $12.32B). Until July 1, 2026 the EU charged 10% on cars and about 13–16% on buses and heavy trucks; Regulation (EU) 2026/1455 cut all of it to zero, and the Commission can suspend that if the U.S. departs from the framework. Germany alone takes $9.06B.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708)",
+        "tariffNow": "Free (EU–US framework)",
+        "regulator": {
+          "name": "EU type-approval authorities (Regulation (EU) 2018/858)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2018/858/oj/eng",
+          "requirement": "A new vehicle needs an EU type-approval and a certificate of conformity from a national approval authority before it can be sold or registered; U.S.-specification vehicles generally need modification first"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "Australia–U.S. Free Trade Agreement preferential tariff: 0% for U.S.-origin goods",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 4141767710,
+      "priorExportsUsd": 5050994423,
+      "sharePct": 3.2,
+      "changePct": -18,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 434249386,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870121 (2023)"
+        },
+        "8702": {
+          "exportsUsd": 514738,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870210 (2023)"
+        },
+        "8703": {
+          "exportsUsd": 1016441325,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870323 (2023)"
+        },
+        "8704": {
+          "exportsUsd": 1318530787,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870431 (2023)"
+        },
+        "8705": {
+          "exportsUsd": 105849994,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870590 (2023)"
+        },
+        "8706": {
+          "exportsUsd": 1066064,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870600 (2023)"
+        },
+        "8707": {
+          "exportsUsd": 16889108,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870710 (2023)"
+        },
+        "8708": {
+          "exportsUsd": 859349083,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "3.8% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 3.8% for HS 870899 (2023)"
+        },
+        "8709": {
+          "exportsUsd": 43178605,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 870919 (2023)"
+        },
+        "8710": {
+          "exportsUsd": 220792840,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 0% for HS 871000 (2023)"
+        },
+        "8711": {
+          "exportsUsd": 26956794,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 0% for HS 871150 (2023)"
+        },
+        "8712": {
+          "exportsUsd": 2810928,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 871200 (2023)"
+        },
+        "8713": {
+          "exportsUsd": 9322786,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023)"
+        },
+        "8714": {
+          "exportsUsd": 41357453,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "2.5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 2.5% for HS 871410 (2023)"
+        },
+        "8715": {
+          "exportsUsd": 15642,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 0% for HS 871500 (2023)"
+        },
+        "8716": {
+          "exportsUsd": 44442177,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "Australian Customs Tariff, U.S.–Australia FTA preferential rate for U.S.-origin goods; WITS/TRAINS simple-average MFN 5% for HS 871639 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Australia ($4.14B, down 18%) takes mostly pickups and trucks (8704, $1.32B), SUVs (8703, $1.02B) and parts. U.S. vehicles are tariff-free, but each model needs an Australian import approval and a place on the Register of Approved Vehicles, and Australia drives on the left, so right-hand-drive conversion is part of the cost.",
+        "mainProducts": "Trucks and pickups: light trucks, heavy trucks, dump trucks (8704) · Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Department of Infrastructure, Transport, Regional Development (Road Vehicle Standards Act 2018)",
+          "url": "https://www.infrastructure.gov.au/infrastructure-transport-vehicles/vehicles/importing-road-vehicle-australia",
+          "requirement": "Importing a road vehicle without approval is an offence; vehicles need an import approval and entry on the Register of Approved Vehicles (type approval or a concessional entry)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC Common Customs Tariff as applied by the UAE (5% on vehicles and parts); no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 4114300213,
+      "priorExportsUsd": 4758280986,
+      "sharePct": 3.1,
+      "changePct": -13.5,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 21730621,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870121 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8702": {
+          "exportsUsd": 1875204,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870210 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8703": {
+          "exportsUsd": 3428329395,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870323 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8704": {
+          "exportsUsd": 212875494,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870431 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8705": {
+          "exportsUsd": 44274549,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870590 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8706": {
+          "exportsUsd": 713770,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870600 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8707": {
+          "exportsUsd": 7936664,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870710 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8708": {
+          "exportsUsd": 289890787,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870899 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8709": {
+          "exportsUsd": 1913971,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 870919 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8710": {
+          "exportsUsd": 57386589,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871000 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8711": {
+          "exportsUsd": 14949180,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871150 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8712": {
+          "exportsUsd": 1717184,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871200 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8713": {
+          "exportsUsd": 273895,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8714": {
+          "exportsUsd": 2212479,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871410 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8715": {
+          "exportsUsd": 3648,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871500 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        },
+        "8716": {
+          "exportsUsd": 28216783,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE; WITS/TRAINS simple-average MFN 5% for HS 871639 (2023). No U.S. free-trade agreement; VAT and any excise are not included"
+        }
+      },
+      "profile": {
+        "headline": "The UAE ($4.11B, down 13.5%) buys almost only passenger vehicles (8703, $3.43B). The 5% GCC duty has not changed; the larger hurdles are conformity approval and, for used vehicles, a separate status statement and label card from the Ministry of Industry and Advanced Technology.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708)",
+        "tariffNow": "5% (GCC common tariff; no U.S. FTA)",
+        "regulator": {
+          "name": "Ministry of Industry and Advanced Technology (MoIAT)",
+          "url": "https://moiat.gov.ae/en/services/issue-conformity-certificates-for-regulated-products",
+          "requirement": "Products under Gulf technical regulations need a UAE conformity certificate (Emirates Conformity Assessment scheme); used imported vehicles need a product status statement and label card"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule plus the 10% extra duty on all U.S.-origin goods (in force since May 2025), and a further 10% on larger-engine cars, pickups, tractors and farm machinery (Announcement 2025 No. 1, in force since February 10, 2025)",
+      "usTradeAgreement": null,
+      "exportsUsd": 3019436008,
+      "priorExportsUsd": 6394726026,
+      "sharePct": 2.3,
+      "changePct": -52.8,
+      "status": "raised",
+      "cells": {
+        "8701": {
+          "exportsUsd": 22827283,
+          "rate": "16% (6% MFN + 10% extra); 26% on listed tractors (8701.10, .30, .91–.95)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 870121 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended); plus a further 10% on the Annex 2 lines of Announcement 2025 No. 1 (in force since February 10, 2025)"
+        },
+        "8702": {
+          "exportsUsd": 195538,
+          "rate": "22.8% (12.8% MFN + 10% extra)",
+          "normalRate": "12.8% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 12.8% for HS 870210 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8703": {
+          "exportsUsd": 2271266199,
+          "rate": "25% (15% MFN + 10% extra); 35% on engines over 2.5 L (8703.23 above 2.5 L, 8703.24)",
+          "normalRate": "15% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 15% for HS 870323 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended); plus a further 10% on the Annex 2 lines of Announcement 2025 No. 1 (in force since February 10, 2025)"
+        },
+        "8704": {
+          "exportsUsd": 1669482,
+          "rate": "25% (15% MFN + 10% extra); 35% on listed trucks and pickups (8704.21, .31, .41, .51, .60)",
+          "normalRate": "15% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 15% for HS 870431 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended); plus a further 10% on the Annex 2 lines of Announcement 2025 No. 1 (in force since February 10, 2025)"
+        },
+        "8705": {
+          "exportsUsd": 5794794,
+          "rate": "21.5% (11.5% MFN + 10% extra)",
+          "normalRate": "11.5% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 11.5% for HS 870590 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8706": {
+          "exportsUsd": 5280,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 870600 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8707": {
+          "exportsUsd": 1017230,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 870710 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8708": {
+          "exportsUsd": 684421101,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 870899 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8709": {
+          "exportsUsd": 911919,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 10% for HS 870919 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8710": {
+          "exportsUsd": 0,
+          "rate": "25% (15% MFN + 10% extra)",
+          "normalRate": "15% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 15% for HS 871000 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8711": {
+          "exportsUsd": 2747745,
+          "rate": "40% (30% MFN + 10% extra)",
+          "normalRate": "30% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 30% for HS 871150 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8712": {
+          "exportsUsd": 43007,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 871200 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8713": {
+          "exportsUsd": 418758,
+          "rate": "15% (5% MFN + 10% extra)",
+          "normalRate": "5% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 5% for HS 871310 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8714": {
+          "exportsUsd": 7744082,
+          "rate": "25% (15% MFN + 10% extra)",
+          "normalRate": "15% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 15% for HS 871410 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8715": {
+          "exportsUsd": 716318,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 6% for HS 871500 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended)"
+        },
+        "8716": {
+          "exportsUsd": 19657272,
+          "rate": "20% (10% MFN + 10% extra); 30% on agricultural trailers (8716.20)",
+          "normalRate": "10% (MFN)",
+          "basis": "China customs tariff, 2026 schedule; WITS/TRAINS simple-average MFN 10% for HS 871639 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended); plus a further 10% on the Annex 2 lines of Announcement 2025 No. 1 (in force since February 10, 2025)"
+        }
+      },
+      "profile": {
+        "headline": "China has fallen to sixth place ($3.02B, down 52.8% from $6.39B). A U.S. SUV with an engine over 2.5 L now pays 35% (15% MFN, the 10% extra duty on all U.S. goods and a further 10% on larger-engine cars and pickups) against 15% in January 2025. Parts pay MFN 6% plus the 10%.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708)",
+        "tariffNow": "MFN + 10% extra (+10% more on large cars, pickups)",
+        "regulator": {
+          "name": "State Administration for Market Regulation (China Compulsory Certification)",
+          "url": "https://english.samr.gov.cn/CooperationandExchanges/Organizations/art/2026/art_c2f7533f9c0046a1ae3e65a95259218a.html",
+          "requirement": "Products on the CCC catalogue (including many auto parts) cannot be imported or sold without the certificate and mark; check the current catalogue for the specific part or vehicle"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 2452363099,
+      "priorExportsUsd": 2478996898,
+      "sharePct": 1.9,
+      "changePct": -1.1,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 4804291,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870121 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8702": {
+          "exportsUsd": 171600,
+          "rate": "Free (KORUS)",
+          "normalRate": "10% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 10% for HS 870210 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8703": {
+          "exportsUsd": 2088758108,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870323 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8704": {
+          "exportsUsd": 31335674,
+          "rate": "Free (KORUS)",
+          "normalRate": "10% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 10% for HS 870431 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8705": {
+          "exportsUsd": 7497094,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870590 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8706": {
+          "exportsUsd": 7500,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870600 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8707": {
+          "exportsUsd": 138343,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870710 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8708": {
+          "exportsUsd": 140609273,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870899 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8709": {
+          "exportsUsd": 3132674,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 870919 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8710": {
+          "exportsUsd": 151432490,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 871000 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8711": {
+          "exportsUsd": 8194696,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 871150 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8712": {
+          "exportsUsd": 733588,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 871200 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8713": {
+          "exportsUsd": 524859,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8714": {
+          "exportsUsd": 2291802,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 871410 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8715": {
+          "exportsUsd": 6448,
+          "rate": "Free (KORUS)",
+          "normalRate": "5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 5% for HS 871500 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        },
+        "8716": {
+          "exportsUsd": 12724659,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule; most industrial tariffs eliminated; WITS/TRAINS simple-average MFN 8% for HS 871639 (2023). U.S.-built vehicles also need Korean safety approval (see regulator)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($2.45B, down 1.1%) buys mostly passenger vehicles (8703, $2.09B). Under KORUS a U.S.-built vehicle certified to U.S. safety standards is deemed to comply with Korean standards, up to 50,000 vehicles per manufacturer a year; the November 2025 U.S.–Korea deal says Korea will lift that cap, and we found no source confirming it has.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Tanks and armored fighting vehicles (8710)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Land, Infrastructure and Transport (Korea Motor Vehicle Safety Standards)",
+          "url": "https://ustr.gov/about-us/policy-offices/press-office/fact-sheets/2018/september/fact-sheet-us-korea-free-trade",
+          "requirement": "Vehicles must meet Korean Motor Vehicle Safety Standards; KORUS deems U.S.-FMVSS-certified vehicles compliant up to a per-manufacturer annual cap (50,000 since 2019, per the USTR fact sheet)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 682,
+      "name": "Saudi Arabia",
+      "rule": "GCC Common Customs Tariff as applied by Saudi Arabia (mostly 5% on vehicles and parts); no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 2402089046,
+      "priorExportsUsd": 2178745480,
+      "sharePct": 1.8,
+      "changePct": 10.3,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 22396998,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 15% for HS 870121 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8702": {
+          "exportsUsd": 1961906,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 7% for HS 870210 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8703": {
+          "exportsUsd": 1874141975,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 870323 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8704": {
+          "exportsUsd": 176072712,
+          "rate": "8.5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 8.5% for HS 870431 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8705": {
+          "exportsUsd": 30878138,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 870590 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8706": {
+          "exportsUsd": 4240644,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 870600 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8707": {
+          "exportsUsd": 168619365,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 15% for HS 870710 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8708": {
+          "exportsUsd": 77016737,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 870899 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8709": {
+          "exportsUsd": 5135521,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 870919 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8710": {
+          "exportsUsd": 8308937,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871000 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8711": {
+          "exportsUsd": 8155089,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871150 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8712": {
+          "exportsUsd": 323347,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871200 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8713": {
+          "exportsUsd": 790705,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 0% for HS 871310 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8714": {
+          "exportsUsd": 670210,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871410 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8715": {
+          "exportsUsd": 100655,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871500 (2023). No U.S. free-trade agreement; VAT is not included"
+        },
+        "8716": {
+          "exportsUsd": 23276107,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by Saudi Arabia; WITS/TRAINS simple-average MFN 5% for HS 871639 (2023). No U.S. free-trade agreement; VAT is not included"
+        }
+      },
+      "profile": {
+        "headline": "Saudi Arabia ($2.40B, up 10.3%, one of the few growing markets) buys mainly passenger vehicles (8703, $1.87B). The GCC duty is 5% on cars; tractors (15%) and vehicle bodies (15%) are the exceptions in the WITS sample. Products regulated by SASO need a conformity certificate before shipment.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Trucks and pickups: light trucks, heavy trucks, dump trucks (8704)",
+        "tariffNow": "Mostly 5% (GCC common tariff; no U.S. FTA)",
+        "regulator": {
+          "name": "Saudi Standards, Metrology and Quality Organization (SASO, SABER platform)",
+          "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-standards-trade",
+          "requirement": "Regulated products need a conformity certificate through the SABER platform before shipment; vehicle-specific rules should be confirmed with SASO"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Saudi Arabia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 268,
+      "name": "Georgia",
+      "rule": "Georgia's customs tariff (0% ad valorem on vehicles and parts in the WITS sample); no U.S. free-trade agreement. Excise tax and VAT are charged separately",
+      "usTradeAgreement": null,
+      "exportsUsd": 1728720643,
+      "priorExportsUsd": 1311368473,
+      "sharePct": 1.3,
+      "changePct": 31.8,
+      "status": "unchanged",
+      "cells": {
+        "8701": {
+          "exportsUsd": 617899,
+          "rate": "Not confirmed",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff: no WITS observation found for this line; excise and VAT are not included"
+        },
+        "8702": {
+          "exportsUsd": 28498633,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870210 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8703": {
+          "exportsUsd": 1572045825,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870323 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8704": {
+          "exportsUsd": 5536717,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870431 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8705": {
+          "exportsUsd": 572606,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870590 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8706": {
+          "exportsUsd": 0,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870600 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8707": {
+          "exportsUsd": 174831,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870710 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8708": {
+          "exportsUsd": 105595639,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870899 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8709": {
+          "exportsUsd": 52379,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 870919 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8710": {
+          "exportsUsd": 0,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871000 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8711": {
+          "exportsUsd": 14503726,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871150 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8712": {
+          "exportsUsd": 0,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871200 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8713": {
+          "exportsUsd": 4966,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871310 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8714": {
+          "exportsUsd": 350954,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871410 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8715": {
+          "exportsUsd": 0,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871500 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        },
+        "8716": {
+          "exportsUsd": 766468,
+          "rate": "Free (0% MFN)",
+          "normalRate": null,
+          "basis": "Georgia's customs tariff, ad valorem duty only; WITS/TRAINS simple-average MFN 0% for HS 871639 (2022). No U.S. free-trade agreement; excise tax on vehicles and 18% VAT are not included"
+        }
+      },
+      "profile": {
+        "headline": "Georgia, the country in the South Caucasus, is a small but fast-growing market ($1.73B, up 31.8%), and 91% of it is passenger vehicles (8703, $1.57B). Its customs duty is 0%; excise tax and 18% VAT are charged on top, so the tariff is not the cost to watch.",
+        "mainProducts": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles (8703) · Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags (8708)",
+        "tariffNow": "0% customs duty (no U.S. FTA)",
+        "regulator": {
+          "name": "Georgia customs and land-transport authorities",
+          "url": "https://www.trade.gov/country-commercial-guides/georgia-import-requirements-and-documentation",
+          "requirement": "Vehicle import conditions (age, emissions, registration) are set by Georgian authorities; see the Country Commercial Guide and confirm with the importer's broker"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Georgia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/georgia-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "8708",
+      "exportsUsd": 18880594862,
+      "rate": "Free (USMCA, auto rules of origin)"
+    },
+    {
+      "market": "Canada",
+      "heading": "8708",
+      "exportsUsd": 13845316155,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "8703",
+      "exportsUsd": 12739897341,
+      "rate": "Free (CUSMA); 25% surtax on non-U.S. content"
+    },
+    {
+      "market": "European Union",
+      "heading": "8703",
+      "exportsUsd": 12318091815,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Canada",
+      "heading": "8704",
+      "exportsUsd": 12132180481,
+      "rate": "Free (CUSMA); 25% surtax on non-U.S. content"
+    },
+    {
+      "market": "Mexico",
+      "heading": "8703",
+      "exportsUsd": 3959692046,
+      "rate": "Free (USMCA, auto rules of origin)"
+    },
+    {
+      "market": "United Arab Emirates",
+      "heading": "8703",
+      "exportsUsd": 3428329395,
+      "rate": "5%"
+    },
+    {
+      "market": "Canada",
+      "heading": "8701",
+      "exportsUsd": 2624056539,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "MFN rates are the World Bank/UNCTAD WITS (TRAINS) simple-average applied rates for one representative six-digit subheading per heading — the subheading with the largest 2025 U.S. exports in that heading (for example 8703.23 for passenger cars and 8708.99 for parts) — using the most recent year WITS holds (2022 or 2023). National 8–10-digit lines can differ, and some use specific or compound duties.",
+    "USMCA (Mexico, Canada), KORUS (South Korea) and the Australia FTA apply 0% to qualifying U.S.-origin goods. For USMCA, vehicles and core parts must also meet the automotive rules of origin, otherwise the market's ordinary MFN rate applies; the normal-rate column shows that MFN rate.",
+    "For the EU, Regulation (EU) 2026/1455 zeroes out chapter 87 from July 1, 2026 to December 31, 2029; the normal-rate column shows the rate the EU charged before that date.",
+    "China's cells add the 10% extra duty on all U.S. goods to China's MFN rate, and a further 10% on the Annex 2 lines of Announcement 2025 No. 1 (tractors, cars with larger engines, pickups and trucks, agricultural trailers). China's 2019 counter-tariffs on U.S. goods, valid unless a line is covered by an exclusion until December 31, 2026, are not added because exclusions are granted line by line.",
+    "Canada's cells show the CUSMA rate and the surtax lines named in the Canada Gazette: Motor Vehicles surtax SOR/2025-118 (8703 and 8704 passenger vehicles and light trucks) and the September 8, 2026 order SOR/2026-186 (8711.50 motorcycles, 8716.39 trailers). Neither order has a CUSMA exemption, though remission orders exist for some uses.",
+    "UAE, Saudi Arabia and Georgia show customs duty only. VAT, excise and registration fees are the buyer's business and are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 87, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 82% of 2025 U.S. Chapter 87 exports. A customs union (the EU) is one market: its members share one tariff."
+}

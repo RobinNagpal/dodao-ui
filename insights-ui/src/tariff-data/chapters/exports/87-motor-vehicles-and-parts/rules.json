@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 87,
+    "padded": "87",
+    "slug": "87-motor-vehicles-and-parts",
+    "title": "Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/87-motor-vehicles-and-parts/rules",
+    "h1": "HTS Chapter 87: Vehicles Other Than Railway or Tramway Rolling Stock, and Parts and Accessories Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Vehicle Export Rules: Used Cars, Titles & Licences (HTS Ch. 87) | KoalaGains",
+      "shortDescription": "What U.S. exporters of cars, trucks, tractors and auto parts must do before shipping: the 72-hour title rule for used vehicles, export filing, safety and emissions exemptions, ITAR and Russia licences.",
+      "keywords": [
+        "export car from usa",
+        "used vehicle export title 72 hours",
+        "export vehicle EEI",
+        "schedule b code car",
+        "ITAR tanks armored vehicles export"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "A U.S. exporter of vehicles takes the same five steps as every exporter, plus a few specific to this chapter. A **used** car, truck, tractor or motorcycle needs its title documents shown to CBP at least 72 hours before it leaves and an export filing at any value — even for Canada — while a new vehicle needs a filing only above $2,500 per Schedule B number. Most vehicles and parts are EAR99 and need no export licence, but tanks and armored vehicles (8710) are controlled by the State Department under the ITAR, and exports of many vehicles and parts to Russia and Belarus need a Commerce licence.",
+  "regulationsAsOf": "2026-10-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Passenger cars (8703) and auto parts (8708) were 74% of 2025 exports. A car's Schedule B number depends on engine type and size, for example 8703.23 for spark-ignition engines of 1,500–3,000 cc (the largest line, $22.36B in 2025) and 8703.24 above 3,000 cc."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Vehicles are often resold or re-exported by the first buyer, so screen the end user and final destination, not only the consignee."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most vehicles and parts are EAR99 and need no licence. The exceptions are military: tanks and armored fighting vehicles (8710, $2.70B in 2025, up 38.8%) are on the U.S. Munitions List (Category VII), and some less sensitive military ground vehicles and parts are in Commerce ECCN 0A606."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: a Commerce licence is required for the items on the HS-code lists in Supplements No. 4 and 5 to 15 CFR Part 746, which include 84 six-digit Chapter 87 codes in Supplement 4 (such as tractors, 8701) and 23 in Supplement 5 (such as passenger cars, 8703). Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Used self-propelled vehicles — cars, trucks, tractors, buses, motorcycles, motor homes and self-propelled farm or construction machinery that a manufacturer or dealer has sold to an ultimate purchaser — need an EEI filing at any value, including to Canada, and the vehicle's title documents must reach CBP at least 72 hours before export. New vehicles follow the usual $2,500 rule, and shipments to Canada are otherwise exempt."
+    }
+  ],
+  "rules": [
+    {
+      "id": "cbp-used-vehicles",
+      "agency": "U.S. Customs and Border Protection and the Census Bureau",
+      "title": "Used self-propelled vehicles: present the title or ownership documents to CBP at least 72 hours before export, and file EEI at any value",
+      "citations": [
+        {
+          "label": "19 CFR 192.2 (requirements for exportation)",
+          "url": "https://www.ecfr.gov/current/title-19/section-192.2"
+        },
+        {
+          "label": "19 CFR 192.1 (definitions of \"used\" and \"self-propelled vehicle\")",
+          "url": "https://www.ecfr.gov/current/title-19/section-192.1"
+        },
+        {
+          "label": "15 CFR 30.2(a)(1)(iv)(H) (EEI for used self-propelled vehicles)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "CBP: Exporting a motor vehicle",
+          "url": "https://www.cbp.gov/trade/basic-import-export/motor-vehicle"
+        }
+      ]
+    },
+    {
+      "id": "nhtsa-export",
+      "agency": "National Highway Traffic Safety Administration (NHTSA)",
+      "title": "Vehicles and equipment intended only for export and labeled for export are exempt from the Federal Motor Vehicle Safety Standards (49 U.S.C. 30112(b)(3))",
+      "citations": [
+        {
+          "label": "49 U.S.C. 30112 (prohibitions and exceptions)",
+          "url": "https://www.govinfo.gov/link/uscode/49/30112?type=usc&year=mostrecent&link-type=html"
+        }
+      ]
+    },
+    {
+      "id": "epa-vehicle-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "New vehicles and engines intended solely for export and labeled as such are exempt from U.S. emission certification unless the destination has identical emission standards, in which case they must be certified (40 CFR 85.1709; 40 CFR 1068.230 for engines and equipment)",
+      "citations": [
+        {
+          "label": "40 CFR 85.1709 (export exemptions)",
+          "url": "https://www.ecfr.gov/current/title-40/section-85.1709"
+        },
+        {
+          "label": "40 CFR 1068.230 (exempting engines and equipment for export)",
+          "url": "https://www.ecfr.gov/current/title-40/section-1068.230"
+        },
+        {
+          "label": "42 U.S.C. 7522 (Clean Air Act §203)",
+          "url": "https://www.govinfo.gov/link/uscode/42/7522?type=usc&year=mostrecent&link-type=html"
+        }
+      ]
+    },
+    {
+      "id": "itar-military-vehicles",
+      "agency": "State Department, Directorate of Defense Trade Controls (DDTC)",
+      "title": "Tanks, armored fighting vehicles and other military ground vehicles: U.S. Munitions List Category VII; less sensitive military ground vehicles and parts fall under Commerce ECCN 0A606",
+      "citations": [
+        {
+          "label": "22 CFR 121.1 (U.S. Munitions List)",
+          "url": "https://www.ecfr.gov/current/title-22/section-121.1"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the vehicles and parts on the HS-code lists in Supplements No. 4 and 5 to Part 746 (15 CFR 746.8)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        }
+      ]
+    },
+    {
+      "id": "dot-vehicle-battery",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Vehicles and machinery with engines or batteries, and loose lithium batteries, ship as dangerous goods (49 CFR 173.220 and 49 CFR 173.185)",
+      "citations": [
+        {
+          "label": "49 CFR 173.220 (engines, vehicles and machinery with engines or batteries)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.220"
+        },
+        {
+          "label": "49 CFR 173.185 (lithium cells and batteries)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.185"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "8701",
+      "label": "Tractors: road tractors for semi-trailers, farm and track-laying tractors",
+      "ruleIds": ["cbp-used-vehicles", "epa-vehicle-export", "bis-russia-belarus"],
+      "note": "Tractors count as self-propelled vehicles for CBP's used-vehicle rule once sold to an ultimate purchaser. Engines and nonroad equipment sold only for export must be labeled as exempt from U.S. emission rules."
+    },
+    {
+      "heading": "8702",
+      "label": "Buses, coaches and vans for 10 or more people",
+      "ruleIds": ["cbp-used-vehicles", "nhtsa-export", "epa-vehicle-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8703",
+      "label": "Cars, SUVs, minivans, EVs, hybrids, ATVs, golf carts and snowmobiles",
+      "ruleIds": ["cbp-used-vehicles", "nhtsa-export", "epa-vehicle-export", "bis-russia-belarus", "dot-vehicle-battery"],
+      "note": "Electric and hybrid vehicles are dangerous goods when shipped. Passenger cars to Russia and Belarus are on the licence lists."
+    },
+    {
+      "heading": "8704",
+      "label": "Trucks and pickups: light trucks, heavy trucks, dump trucks",
+      "ruleIds": ["cbp-used-vehicles", "nhtsa-export", "epa-vehicle-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8705",
+      "label": "Special-purpose vehicles: mobile cranes, fire trucks, concrete mixers, wreckers",
+      "ruleIds": ["cbp-used-vehicles", "nhtsa-export", "epa-vehicle-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8706",
+      "label": "Chassis fitted with engines",
+      "ruleIds": ["nhtsa-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8707",
+      "label": "Vehicle bodies and cabs",
+      "ruleIds": ["nhtsa-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8708",
+      "label": "Auto parts: bumpers, brakes, gearboxes, axles, wheels, radiators, steering, airbags",
+      "ruleIds": ["nhtsa-export", "bis-russia-belarus"],
+      "note": "Parts and equipment intended only for export and labeled for export share the safety-standard exemption. Check the Russia and Belarus lists, which include many parts."
+    },
+    {
+      "heading": "8709",
+      "label": "Works trucks for factories, warehouses and airports (tugs, tow tractors)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8710",
+      "label": "Tanks and armored fighting vehicles",
+      "ruleIds": ["itar-military-vehicles", "bis-russia-belarus"],
+      "note": "Tanks and armored fighting vehicles need a State Department licence or government-to-government authorization, not the Commerce steps above."
+    },
+    {
+      "heading": "8711",
+      "label": "Motorcycles, scooters, mopeds and e-bikes",
+      "ruleIds": ["cbp-used-vehicles", "nhtsa-export", "epa-vehicle-export", "bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8712",
+      "label": "Bicycles and other non-motorized cycles",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8713",
+      "label": "Wheelchairs and mobility carriages",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8714",
+      "label": "Parts of motorcycles, bicycles and wheelchairs",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "8715",
+      "label": "Baby carriages, strollers and parts",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "8716",
+      "label": "Trailers, semi-trailers, campers, container chassis, hand trucks and carts",
+      "ruleIds": ["nhtsa-export", "bis-russia-belarus"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

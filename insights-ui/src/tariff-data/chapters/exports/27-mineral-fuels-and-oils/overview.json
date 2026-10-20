@@ -1,0 +1,479 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 27,
+    "padded": "27",
+    "slug": "27-mineral-fuels-and-oils",
+    "title": "Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/27-mineral-fuels-and-oils",
+    "h1": "HTS Chapter 27: Mineral Fuels, Mineral Oils and Products of Their Distillation; Bituminous Substances; Mineral Waxes — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 27 U.S. Energy Exports: Crude, LNG & Fuel Buyers",
+      "shortDescription": "How much crude oil, refined fuel, LNG and coal the U.S. exports, who buys it, and what each top buyer charges, from 2020–2025 UN Comtrade data.",
+      "keywords": [
+        "us crude oil exports",
+        "us lng exports",
+        "us coal exports",
+        "us refined products exports",
+        "hts chapter 27 exports",
+        "energy export tariffs"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "The U.S. exported **$308.91 billion** of Chapter 27 goods in 2025, down **3.5%** from 2024. **Refined fuels (heading 2710) are 36%** of that, **crude oil (2709) 32.5%** and **natural gas, LNG and LPG (2711) 26.5%**; coal (2701) is 3.2%. The **EU takes 26%**, then Mexico (12.1%), Canada (8.7%), South Korea (5.6%) and India (4.6%). Brazil's purchases rose 31%, and China's fell **65%** to $5.1 billion.\n\nTariffs matter in one place. China adds 15% to U.S. coal and LNG and 10% to crude oil on top of its normal rate and its extra 10% on every U.S. good, so a U.S. LNG cargo pays about 25% and crude about 20%, and the announcement says the energy tariffs cannot be waived. Crude oil, LNG and coal enter the EU duty-free, and Mexico and Canada charge nothing under USMCA. For most buyers, what decides sales is price, freight and long-term contracts, and the U.S. side is a licensing question for LNG, not a tariff.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$308.91B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-3.5%"
+    },
+    {
+      "label": "Largest product group (2710)",
+      "value": "36%",
+      "note": "Refined petroleum products (gasoline, diesel, jet fuel)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "24%",
+      "note": "Mexico, Netherlands"
+    },
+    {
+      "label": "Top markets with a confirmed zero tariff on crude oil",
+      "value": "3 of 9",
+      "note": "European Union, Mexico, Canada"
+    }
+  ],
+  "keyTakeaways": [
+    "Three products are about 94% of this chapter: refined fuels (2710) 36%, crude oil (2709) 32.5% and natural gas and LNG (2711) 26.5%. Coal is 3.2%.",
+    "The EU (26.3%), Mexico (12.1%) and Canada (8.7%) take 47%. Crude oil, LNG and coal enter the EU duty-free, and Mexico and Canada charge nothing under USMCA.",
+    "China is the one buyer that taxes U.S. energy heavily, about 20% on crude, 25% on LNG and 28–31% on coal once its added tariffs stack, and its purchases fell 65% in 2025.",
+    "The U.S. side is routine for crude oil and coal, but LNG needs Department of Energy authorization (automatic for free-trade-agreement countries), and sanctions bar sales to Cuba, Iran and other embargoed destinations."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 155092241024,
+      "partnerAUsd": 24251341556,
+      "partnerBUsd": 7996657450,
+      "restUsd": 122844242018
+    },
+    {
+      "year": 2021,
+      "totalUsd": 239780823659,
+      "partnerAUsd": 41980736585,
+      "partnerBUsd": 12119226689,
+      "restUsd": 185680860385
+    },
+    {
+      "year": 2022,
+      "totalUsd": 378564312024,
+      "partnerAUsd": 56012257153,
+      "partnerBUsd": 24176744511,
+      "restUsd": 298375310360
+    },
+    {
+      "year": 2023,
+      "totalUsd": 323170541814,
+      "partnerAUsd": 45071282456,
+      "partnerBUsd": 30551053986,
+      "restUsd": 247548205372
+    },
+    {
+      "year": 2024,
+      "totalUsd": 320138684614,
+      "partnerAUsd": 40940573162,
+      "partnerBUsd": 35367145185,
+      "restUsd": 243830966267
+    },
+    {
+      "year": 2025,
+      "totalUsd": 308911122009,
+      "partnerAUsd": 37427219610,
+      "partnerBUsd": 35678587640,
+      "restUsd": 235805314759
+    }
+  ],
+  "byYearPartners": ["Mexico", "Netherlands"],
+  "byYearCaption": "U.S. exports of Chapter 27 goods each year, split into the two largest 2025 buyers (Mexico and Netherlands) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 37427219610,
+      "priorExportsUsd": 40940573162,
+      "sharePct": 12.1,
+      "changePct": -8.6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 35678587640,
+      "priorExportsUsd": 35367145185,
+      "sharePct": 11.5,
+      "changePct": 0.9,
+      "tariffNow": "EU rate: crude, LNG and coal free; refined fuels about 3.5–4.7%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 27025184734,
+      "priorExportsUsd": 26400567252,
+      "sharePct": 8.7,
+      "changePct": 2.4,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 17345590303,
+      "priorExportsUsd": 18489410929,
+      "sharePct": 5.6,
+      "changePct": -6.2,
+      "tariffNow": "Not individually verified (KORUS partner)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 14144892728,
+      "priorExportsUsd": 12600467664,
+      "sharePct": 4.6,
+      "changePct": 12.3,
+      "tariffNow": "Crude duty reportedly cut in 2026; other rates not verified",
+      "status": "pending"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 12524112379,
+      "priorExportsUsd": 12295809989,
+      "sharePct": 4.1,
+      "changePct": 1.9,
+      "tariffNow": "Crude, LNG and coal listed as free (not re-verified)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 11226290986,
+      "priorExportsUsd": 8565633369,
+      "sharePct": 3.6,
+      "changePct": 31.1,
+      "tariffNow": "Normal tariff (no U.S. trade agreement); rates not verified",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 11169132246,
+      "priorExportsUsd": 14679498260,
+      "sharePct": 3.6,
+      "changePct": -23.9,
+      "tariffNow": "Normal tariff (no U.S. trade agreement); rates not verified",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 9199261577,
+      "priorExportsUsd": 9341505435,
+      "sharePct": 3,
+      "changePct": -1.5,
+      "tariffNow": "EU rate: crude, LNG and coal free; refined fuels about 3.5–4.7%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 8578427083,
+      "priorExportsUsd": 8251908948,
+      "sharePct": 2.8,
+      "changePct": 4,
+      "tariffNow": "EU rate: crude, LNG and coal free; refined fuels about 3.5–4.7%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 6819755407,
+      "priorExportsUsd": 6556181431,
+      "sharePct": 2.2,
+      "changePct": 4,
+      "tariffNow": "EU rate: crude, LNG and coal free; refined fuels about 3.5–4.7%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 6711392777,
+      "priorExportsUsd": 7333083546,
+      "sharePct": 2.2,
+      "changePct": -8.5,
+      "tariffNow": "Cuts agreed Feb. 2026 (not yet confirmed in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "exportsUsd": 6381881414,
+      "priorExportsUsd": 6597431594,
+      "sharePct": 2.1,
+      "changePct": -3.3,
+      "tariffNow": "Free (U.S.–Chile FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 104679393125,
+  "othersPriorExportsUsd": 112719467850,
+  "byHeading": [
+    {
+      "heading": "2701",
+      "label": "Coal and coal briquettes",
+      "exportsUsd": 9970683193,
+      "priorExportsUsd": 14215235275,
+      "changePct": -29.9,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "2702",
+      "label": "Lignite",
+      "exportsUsd": 5189777,
+      "priorExportsUsd": 6314639,
+      "changePct": -17.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "2703",
+      "label": "Peat",
+      "exportsUsd": 26948066,
+      "priorExportsUsd": 28843185,
+      "changePct": -6.6,
+      "sharePct": 0
+    },
+    {
+      "heading": "2704",
+      "label": "Coke and semicoke",
+      "exportsUsd": 367184813,
+      "priorExportsUsd": 512032630,
+      "changePct": -28.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2705",
+      "label": "Coal gas and similar gases",
+      "exportsUsd": 332667,
+      "priorExportsUsd": 335241,
+      "changePct": -0.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "2706",
+      "label": "Coal tar and mineral tars",
+      "exportsUsd": 61189576,
+      "priorExportsUsd": 78656197,
+      "changePct": -22.2,
+      "sharePct": 0
+    },
+    {
+      "heading": "2707",
+      "label": "Coal-tar distillation products (benzene, toluene, xylenes)",
+      "exportsUsd": 646022931,
+      "priorExportsUsd": 929184833,
+      "changePct": -30.5,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2708",
+      "label": "Pitch and pitch coke",
+      "exportsUsd": 15179806,
+      "priorExportsUsd": 22917909,
+      "changePct": -33.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "2709",
+      "label": "Crude oil",
+      "exportsUsd": 100346331270,
+      "priorExportsUsd": 118499361483,
+      "changePct": -15.3,
+      "sharePct": 32.5
+    },
+    {
+      "heading": "2710",
+      "label": "Refined petroleum products (gasoline, diesel, jet fuel)",
+      "exportsUsd": 109515470268,
+      "priorExportsUsd": 117537978921,
+      "changePct": -6.8,
+      "sharePct": 35.5
+    },
+    {
+      "heading": "2711",
+      "label": "Natural gas, LNG and LPG (propane, butane)",
+      "exportsUsd": 81905814995,
+      "priorExportsUsd": 62174578609,
+      "changePct": 31.7,
+      "sharePct": 26.5
+    },
+    {
+      "heading": "2712",
+      "label": "Petroleum jelly and waxes",
+      "exportsUsd": 354616566,
+      "priorExportsUsd": 383159333,
+      "changePct": -7.4,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2713",
+      "label": "Petroleum coke and bitumen",
+      "exportsUsd": 4628797972,
+      "priorExportsUsd": 4734683162,
+      "changePct": -2.2,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "2714",
+      "label": "Natural bitumen, oil shale and tar sands",
+      "exportsUsd": 29477613,
+      "priorExportsUsd": 86218584,
+      "changePct": -65.8,
+      "sharePct": 0
+    },
+    {
+      "heading": "2715",
+      "label": "Bituminous mixtures",
+      "exportsUsd": 97522176,
+      "priorExportsUsd": 85224921,
+      "changePct": 14.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "2716",
+      "label": "Electricity",
+      "exportsUsd": 940360320,
+      "priorExportsUsd": 843959692,
+      "changePct": 11.4,
+      "sharePct": 0.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2709.00",
+      "heading": "2709",
+      "description": "Oils; petroleum oils and oils obtained from bituminous minerals, crude",
+      "exportsUsd": 100346331270,
+      "priorExportsUsd": 118499361483,
+      "changePct": -15.3,
+      "sharePct": 32.5
+    },
+    {
+      "hs6": "2710.19",
+      "heading": "2710",
+      "description": "Petroleum oils and oils from bituminous minerals, not containing biodiesel, not crude, not waste oils; preparations n.e.c, containing by weight 70% or more of petroleum oils or oils from bituminous minerals; not light oils and preparations",
+      "exportsUsd": 63933061832,
+      "priorExportsUsd": 69888650393,
+      "changePct": -8.5,
+      "sharePct": 20.7
+    },
+    {
+      "hs6": "2710.12",
+      "heading": "2710",
+      "description": "Petroleum oils and oils from bituminous minerals, not containing biodiesel, not crude, not waste oils; preparations n.e.c, containing by weight 70% or more of petroleum oils or oils from bituminous minerals; light oils and preparations",
+      "exportsUsd": 44633461253,
+      "priorExportsUsd": 46906830994,
+      "changePct": -4.8,
+      "sharePct": 14.4
+    },
+    {
+      "hs6": "2711.11",
+      "heading": "2711",
+      "description": "Petroleum gases and other gaseous hydrocarbons; liquefied, natural gas",
+      "exportsUsd": 44598360633,
+      "priorExportsUsd": 28900889054,
+      "changePct": 54.3,
+      "sharePct": 14.4
+    },
+    {
+      "hs6": "2711.12",
+      "heading": "2711",
+      "description": "Petroleum gases and other gaseous hydrocarbons; liquefied, propane",
+      "exportsUsd": 23240078922,
+      "priorExportsUsd": 23493955040,
+      "changePct": -1.1,
+      "sharePct": 7.5
+    },
+    {
+      "hs6": "2701.12",
+      "heading": "2701",
+      "description": "Coal; bituminous, whether or not pulverised, but not agglomerated",
+      "exportsUsd": 9622079552,
+      "priorExportsUsd": 13750191732,
+      "changePct": -30,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "2711.21",
+      "heading": "2711",
+      "description": "Petroleum gases and other gaseous hydrocarbons; in gaseous state, natural gas",
+      "exportsUsd": 9006965717,
+      "priorExportsUsd": 5314549641,
+      "changePct": 69.5,
+      "sharePct": 2.9
+    },
+    {
+      "hs6": "2711.13",
+      "heading": "2711",
+      "description": "Petroleum gases and other gaseous hydrocarbons; liquefied, butanes",
+      "exportsUsd": 4649496114,
+      "priorExportsUsd": 4011235815,
+      "changePct": 15.9,
+      "sharePct": 1.5
+    },
+    {
+      "hs6": "2713.11",
+      "heading": "2713",
+      "description": "Petroleum coke; (not calcined), obtained from bituminous minerals",
+      "exportsUsd": 3104129165,
+      "priorExportsUsd": 3128831076,
+      "changePct": -0.8,
+      "sharePct": 1
+    },
+    {
+      "hs6": "2713.12",
+      "heading": "2713",
+      "description": "Petroleum coke; calcined, obtained from bituminous minerals",
+      "exportsUsd": 1055959242,
+      "priorExportsUsd": 1075248504,
+      "changePct": -1.8,
+      "sharePct": 0.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 27, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-10-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 13 buyers listed take 66% of 2025 U.S. Chapter 27 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. UN Comtrade reports Taiwan as \"Other Asia, nes\"."
+}

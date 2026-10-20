@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 39,
+    "padded": "39",
+    "slug": "39-plastics-and-articles",
+    "title": "Plastics and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/39-plastics-and-articles/faq",
+    "h1": "HTS Chapter 39: Plastics and Articles Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Plastics Export FAQ (HTS Ch. 39) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. plastics, China's POM anti-dumping duty, Canada's surtax, TSCA export notices, plastic scrap and Schedule B codes.",
+      "keywords": [
+        "china tariff on us plastics",
+        "eu tariff on us plastics",
+        "tsca 12b export notification",
+        "plastic scrap export",
+        "schedule b code polyethylene"
+      ]
+    },
+    "lastCheckedAt": "2026-10-20"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. plastic resins and articles, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Mexico, Canada, Singapore and South Korea charge no tariff on qualifying U.S. plastics, and the EU cut its 6.5% tariff to zero on July 1, 2026; Canada surtaxes six consumer-plastic items at 50%.",
+    "China is the one large buyer that raised tariffs on plastics: a 10% extra duty on all U.S. goods, plus a 74.9% anti-dumping duty on U.S. POM copolymer.",
+    "Most plastics need no export licence, but a TSCA 12(b) notice, ECCN 1C008/1C009 controls, plastic-scrap consent rules and Russia licences can apply to specific products."
+  ],
+  "questionSource": "Google search-suggestion queries for \"tsca 12b export notification\", \"plastic scrap export\" and \"export plastics tariff\"; the tariff questions follow the Markets and Tariff updates pages.",
+  "faqs": [
+    {
+      "id": "china-plastics-tariff",
+      "question": "Does China charge extra tariffs on U.S. plastics?",
+      "searchedAs": [],
+      "answer": "Yes. China charges its MFN rate (6.5% on most resins and articles, 10% on some articles) plus a 10% extra duty on all U.S. goods, in force since May 2025. U.S. exports to China fell 19.7% to $5.98B in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-pom-duty",
+      "question": "What anti-dumping duty does China charge on U.S. POM copolymer?",
+      "searchedAs": [],
+      "answer": "74.9% on all U.S. producers, the highest rate of any origin, under MOFCOM Announcement 2025 No. 25. It has applied since May 19, 2025 for five years and covers only POM copolymer (HS 3907.1010 and 3907.1090), on top of China's MFN rate and the 10% extra duty.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-plastics-tariff",
+      "question": "What tariff does the EU charge on U.S. plastics?",
+      "searchedAs": [],
+      "answer": "None since July 1, 2026. Regulation (EU) 2026/1455 cut the EU's 6.5% tariff on most plastics to zero for U.S.-origin goods; it applies until December 31, 2029 and the Commission can suspend it.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-plastics-surtax",
+      "question": "Did Canada put a tariff on U.S. plastic products?",
+      "searchedAs": [],
+      "answer": "Since September 8, 2026 Canada charges a 50% surtax on six consumer-plastic tariff items: vinyl floor and wall coverings (3918.10), narrow self-adhesive film and tape (3919.10.99), polyethylene bags (3923.21.90) and household articles (3924). Resins and other plastic articles still enter free under CUSMA.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "north-america-plastics",
+      "question": "Do Mexico and Canada charge tariffs on U.S. plastics?",
+      "searchedAs": [],
+      "answer": "Not on qualifying goods under USMCA, apart from Canada's 50% surtax on the six consumer-plastic items. Mexico ($21.09B) and Canada ($14.29B) together took 46% of the $77.66B exported in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "who-buys-plastics",
+      "question": "Who buys the most U.S. plastics?",
+      "searchedAs": [],
+      "answer": "Mexico ($21.09B, 27%) and Canada ($14.29B, 18%) are by far the largest, followed by China ($5.98B), Belgium ($3.27B) and Brazil ($2.65B). Polyethylene resin (3901, $16.51B) is the largest product group.",
+      "link": "exports"
+    },
+    {
+      "id": "schedule-b-polyethylene",
+      "question": "What is the Schedule B code for polyethylene?",
+      "searchedAs": [],
+      "answer": "Polyethylene in primary forms is in 3901: 3901.10 for specific gravity below 0.94, 3901.20 for 0.94 or more, and 3901.40 for ethylene-alpha-olefin copolymers below 0.94 ($5.86B in 2025). Other plastic articles are in 3926.90. Look up the full 10-digit number in the Census Bureau's Schedule B search.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "plastics-export-licence",
+      "question": "Do I need an export licence for plastics?",
+      "searchedAs": [],
+      "answer": "Usually not: commodity resins and articles are EAR99. Certain high-performance polymers (ECCN 1C008 and 1C009) need a licence for some destinations, and many resins and articles on the Supplement 4 and 5 lists need one for Russia and Belarus. Check the product's specification against the Commerce Control List.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "tsca-12b",
+      "question": "Do I have to notify EPA before exporting a polymer or chemical?",
+      "searchedAs": ["tsca 12b export notification", "tsca 12b export notification requirements"],
+      "answer": "Only if the substance is subject to certain TSCA actions (data requirements, orders, rules or pending actions under sections 4, 5, 6 or 7). Then you must notify EPA through CDX within seven days of forming the intent to export or on the date of export, whichever is earlier — for the first export to each country (renewed each calendar year for some kinds of EPA action).",
+      "link": "exports/rules"
+    },
+    {
+      "id": "plastic-scrap",
+      "question": "Can I export plastic scrap?",
+      "searchedAs": ["plastic scrap export", "plastic scrap exporters in usa"],
+      "answer": "Yes, but since January 1, 2021 most plastic scrap needs the importing country's written consent when that country is a Basel Convention Party. The U.S. is not a Party, so the importer's rules and any bilateral arrangement apply; the U.S. and Canada agreed that non-hazardous scrap needs no prior consent between them.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "india-plastics",
+      "question": "Will India cut tariffs on U.S. plastics?",
+      "searchedAs": [],
+      "answer": "India has said it will eliminate or reduce tariffs on all U.S. industrial goods under the February 6, 2026 framework, but no effective date or Indian tariff notification has been published, so India still charges its basic duty on plastics.",
+      "link": "exports/tariff-updates"
+    }
+  ]
+}
