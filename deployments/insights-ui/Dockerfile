@@ -52,8 +52,17 @@ ENV NODE_OPTIONS=--max-old-space-size=8192
 # industries from the DB. Mounted as a BuildKit secret so it never lands in an image layer;
 # the mount is optional so local builds without the secret still run (and fail only at the
 # prerender step, same as before).
+#
+# NEXT_SERVER_ACTIONS_ENCRYPTION_KEY (optional secret mount): Next salts every Server Action id
+# with this key, and without it generates a new key per build — so every deploy renamed every
+# action and pages CloudFront cached before the deploy (up to 6 days) called ids the new build
+# didn't have ("Failed to find Server Action" / POST <page> 404). A fixed key keeps the ids
+# stable across builds. The same value is set in the runtime env (deploy workflow →
+# app_secrets) so build and runtime agree.
 RUN --mount=type=secret,id=database_url \
+    --mount=type=secret,id=server_actions_key \
     if [ -s /run/secrets/database_url ]; then export DATABASE_URL="$(cat /run/secrets/database_url)"; fi \
+    && if [ -s /run/secrets/server_actions_key ]; then export NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="$(cat /run/secrets/server_actions_key)"; fi \
     && pnpm --filter insights-ui exec prisma generate \
     && pnpm --filter insights-ui build
 

@@ -154,7 +154,14 @@ jobs:
           # app-env JSON is not guaranteed to hold it). Passed to docker as a BuildKit
           # secret (not a build-arg) so it is never baked into image layers.
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Fixed salt for Server Action ids (see the Dockerfile build step). Also injected into
+          # the runtime env in the Terraform step so build and runtime use the same key.
+          NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: ${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}
         run: |
+          # A malformed key would break every Server Action at runtime — fail the deploy instead.
+          if [ -n "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" ] && [ "$(printf '%s' "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" | base64 -d 2>/dev/null | wc -c)" -ne 32 ]; then
+            echo "::error::NEXT_SERVER_ACTIONS_ENCRYPTION_KEY must be base64 of 32 bytes (openssl rand -base64 32)"; exit 1
+          fi
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
           # Rewritten every run, so it lives in the MUTABLE -buildcache repo (the app repo is
@@ -179,6 +186,7 @@ jobs:
             --build-arg NEXT_PUBLIC_VERCEL_ENV="production" \
             --build-arg NEXT_PUBLIC_ASSET_PREFIX="$ASSET_PREFIX" \
             --secret id=database_url,env=DATABASE_URL \
+            --secret id=server_actions_key,env=NEXT_SERVER_ACTIONS_ENCRYPTION_KEY \
             --cache-from "type=registry,ref=$CACHE" \
             --cache-to "type=registry,ref=$CACHE,mode=max,image-manifest=true,oci-mediatypes=true" \
             --load \
@@ -214,9 +222,12 @@ jobs:
         working-directory: ${{ env.TF_DIR }}
         env:
           TAG: ${{ steps.build.outputs.tag }}
+          NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: ${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}
         run: |
           SECRETS_JSON=$(aws secretsmanager get-secret-value --secret-id "$APP_SECRETS_ID" --query SecretString --output text)
-          jq -n --argjson s "$SECRETS_JSON" --arg tag "$TAG" '{app_secrets: $s, image_tag: $tag}' > secrets.auto.tfvars.json
+          # Same key the image was built with (empty secret → left out, Next falls back to its build key).
+          jq -n --argjson s "$SECRETS_JSON" --arg tag "$TAG" --arg sak "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" \
+            '{app_secrets: (if $sak == "" then $s else $s + {NEXT_SERVER_ACTIONS_ENCRYPTION_KEY: $sak} end), image_tag: $tag}' > secrets.auto.tfvars.json
           # First apply can fail while the Lightsail cert is still PENDING_VALIDATION — retry once
           # after a wait for DNS validation to propagate.
           terraform apply -input=false -auto-approve \
