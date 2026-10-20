@@ -6,6 +6,7 @@
 You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapter content format. About 24 other agents are doing other chapters in parallel, in the same worktree.
 
 ## Where
+
 - **Worktree:** one shared batch worktree (`<worktrees>/chapter-migration-1812-b2`, branch `chapter-migration-1812-b2`). Work only there. Never touch the main checkout or any other worktree.
 - **Output:** `insights-ui/src/tariff-data/chapters/<NN>-<slug>.json`, and nothing else.
   - Do NOT edit `chapter-prototype.ts`; I register chapters.
@@ -18,6 +19,7 @@ You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapte
   - Do not commit.
 
 ## Read first
+
 - `CLAUDE.md` and `docs/insights-ui/README.md`.
 - The tariffs docs in `docs/insights-ui/tariffs/`, especially `chapter-content-refresh.md` and `chapter-migration-one-pager.md` if present.
 - `src/types/tariff-chapter-prototype.ts`.
@@ -29,6 +31,7 @@ You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapte
 - The live pages, for SEO keywords to keep: https://koalagains.com/industry-tariff-report/chapters/<slug>, plus its `/tariff-updates`, `/understand-industry`, `/industry-areas`, `/tariff-engineering` and `/final-conclusion`.
 
 ## Steps
+
 1. **Trade data.** I'm fetching `insights-ui/src/tariff-data/trade/chapter-<NN>.json` in the background. Comtrade's quota may delay it by up to an hour. Research meanwhile, and poll for the file every few minutes. Don't fetch it yourself.
 
 2. **Generate.** Run from `insights-ui/`:
@@ -40,6 +43,7 @@ You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapte
    - Keep the generated data. Write the prose around it, with a re-runnable `run.sh` plus fill script in your scratch folder. The script must do generate → fill → `pnpm tariff:compact-chapters <file>` → `npx prettier --write <file>`.
 
 3. **Fill every TODO from OFFICIAL sources only.**
+
    - **Allowed sources:** Federal Register, eCFR, USITC/HTS plus the Chapter 98/99 notes, USTR, CBP/CSMS and rulings, Commerce/ITA/BIS, USDA, FDA, EPA, CPSC, FTC, FWS, DHS, govinfo U.S. Code, and UN Comtrade.
    - **Not allowed:** news, company commentary, or unsourced market claims.
    - **Don't cite `uscode.house.gov/view.xhtml` links.** They return "Page Not Found", and the validator now errors on them. Use the govinfo U.S. Code page instead: `https://www.govinfo.gov/link/uscode/<title>/<section>?type=usc&year=mostrecent&link-type=html` resolves to the stable `https://www.govinfo.gov/content/pkg/USCODE-2024-title…htm` URL, so cite that resolved URL.
@@ -66,17 +70,20 @@ You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapte
    - **FAQ:** 11–15 questions taken from real Google search suggestions; record the date.
    - **SEO:** keep the slug and the valuable live keywords, add real searches, and drop stale or wrong facts from the live pages. List what you dropped.
    - **Batch 3 updates.** The generator, data and engine have been fixed since batch 1. Don't add workarounds for these:
+
      - Matrix cells that depend on a confirmation fact get readable labels from the generator (e.g. "not a vehicle part / car or light-truck part", "informational materials / not informational materials", "quartz surface product over quota"). The validator now cross-checks them.
      - Labels are no longer truncated, every trade partner is mapped to a country, pending changes carry their notice date, and the SPI legend names every program.
      - Note 52(i) (the CAFTA-DR textile/apparel exemption, 9903.05.95) is now modelled. It applies when SPI P/P+ is claimed, but not on lines that are Free at the general rate (no printed P rate).
      - Informational-materials reliefs (9903.05.92 / .09) cover only the CBP list: chapter 49, 3704–3706, 5807, 8310, 9701–9705, 6307.90.30/.85, 8523.29/.41/.49, 8523.80.10 and 9405.61/.69.
      - Since #1838 the engine prices importer-answered base rates:
+
        - "% on the value of the X content" and "on the value of the rifle + … telescopic sight", via `componentValuesUsd`;
        - "The rate applicable to …" garment ensembles, sets, parts and accessories, and movements, via `referencedLines`;
        - the chapter 58 "See additional U.S. note" rates;
        - "Free, under bond".
 
        The generator writes these cells in the HTS wording. Explain them in prose: what the importer must provide, and how it's priced.
+
      - Agents found these programs and gave them separate pages, so match them: the quartz duty (9903.45.30/.31) is a Section 201 safeguard, not Section 232. The DR Congo is an AGOA beneficiary (Proclamation 10128).
 
 4. **Compact and format** (your run.sh does this).
@@ -90,6 +97,7 @@ You migrate ONE HTS chapter of KoalaGains (insights-ui) to the Approach-2 chapte
      - usitc.gov JSON returning 403 to scripts is known.
 
 ## Report back (concise)
+
 - File path and size.
 - Gate results: cases compared, mismatches.
 - Key facts.

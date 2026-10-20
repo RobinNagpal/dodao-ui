@@ -199,7 +199,7 @@
       "coversChapter": "yes",
       "status": "Framework announced; no implementing Indian tariff notification found",
       "detail": "The February 6, 2026 U.S.–India joint statement says India will eliminate or reduce tariffs on all U.S. industrial goods and a wide range of U.S. farm products. It gives no effective date, and we found no Indian notification implementing it, so India's rates on organic chemicals are unchanged today.",
-      "sourceIds": ["wh-india-joint-statement-2026"]
+      "sourceIds": ["in-framework-ws"]
     },
     {
       "id": "mx-ligie-2026",
@@ -381,109 +381,19 @@
       "coversChapter": "no",
       "status": "In force (MOFCOM's policy database lists the announcement as currently effective)",
       "detail": "China's Announcement 2025 No. 1 (effective February 10, 2025) added 15% on U.S. coal and LNG and 10% on U.S. crude oil, agricultural machinery, large-displacement cars and pickups. None of its 72 listed lines is in Chapter 29.",
-      "sourceIds": ["cn-ann-2025-1", "cn-ann-2025-1-annex2"]
+      "sourceIds": ["cn-sctc-feb2025", "cn-sctc-nov2025"]
     }
   ],
   "sources": [
     {
-      "id": "br-2025",
-      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
-      "citation": "Gecex, 232nd meeting",
-      "document": "Deliberations",
-      "title": "Deliberações da 232ª Reunião Ordinária do Comitê-Executivo de Gestão (Gecex)",
-      "signed": null,
-      "published": "2025-12-18",
-      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/deliberacoes/deliberacoes-da-232a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex"
-    },
-    {
-      "id": "br-law",
-      "publisher": "Presidência da República (Brazil)",
-      "citation": "Lei nº 15.122/2025",
-      "document": "Law",
-      "title": "Lei nº 15.122, de 11 de abril de 2025 (Economic Reciprocity Law)",
-      "signed": "2025-04-11",
-      "published": "2025-04-14",
-      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15122.htm"
-    },
-    {
-      "id": "br-talks-2026",
-      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
-      "citation": "MDIC, Sep 30, 2026",
-      "document": "Press release",
-      "title": "Reunião presencial Brasil-EUA sobre temas comerciais",
-      "signed": null,
-      "published": "2026-09-30",
-      "url": "https://www.gov.br/mdic/pt-br/assuntos/noticias/2026-periodo-eleitoral/setembro/reuniao-presencial-brasil-eua-sobre-temas-comerciais"
-    },
-    {
-      "id": "br-wto-2026",
-      "publisher": "Ministry of Foreign Affairs (Brazil)",
-      "citation": "MRE press note, Jul 27, 2026",
-      "document": "Press note",
-      "title": "Pedido de consultas aos Estados Unidos na Organização Mundial do Comércio",
-      "signed": null,
-      "published": "2026-07-27",
-      "url": "https://www.gov.br/mre/pt-br/canais_atendimento/imprensa/notas-a-imprensa/pedido-de-consultas-aos-estados-unidos-na-organizacao-mundial-do-comercio"
-    },
-    {
-      "id": "ca-2025-list",
-      "publisher": "Department of Finance Canada",
-      "citation": "Finance Canada, Mar 2025",
-      "document": "Notice",
-      "title": "List of products from the United States subject to 25 per cent tariffs effective March 4, 2025",
-      "signed": null,
-      "published": "2025-03-04",
-      "url": "https://www.canada.ca/en/department-finance/news/2025/03/list-of-products-from-the-united-states-subject-to-25-per-cent-tariffs-effective-march-4-2025.html"
-    },
-    {
-      "id": "ca-2026-list",
-      "publisher": "Department of Finance Canada",
-      "citation": "Finance Canada, Aug 2026",
-      "document": "Notice",
-      "title": "List of products from the United States subject to counter-tariffs effective September 8, 2026",
-      "signed": null,
-      "published": "2026-08-26",
-      "url": "https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html"
-    },
-    {
-      "id": "ca-sor-2025-181",
-      "publisher": "Canada Gazette",
-      "citation": "SOR/2025-181",
-      "document": "Order",
-      "title": "Removal of the 2025 counter-tariffs on most U.S. goods",
-      "signed": null,
-      "published": "2025-09-10",
-      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-09-10/html/sor-dors181-eng.html"
-    },
-    {
-      "id": "ch-framework",
+      "id": "cn-bot-list",
       "publisher": "The White House",
-      "citation": "Joint Statement, Nov 2025",
-      "document": "Joint statement",
-      "title": "Framework for a United States–Switzerland–Liechtenstein Agreement on Fair, Balanced, and Reciprocal Trade",
+      "citation": "30-for-30 China Import List",
+      "document": "Product list",
+      "title": "China import list (U.S. products recommended for reduced Chinese tariffs), U.S.–China Board of Trade",
       "signed": null,
-      "published": "2025-11-14",
-      "url": "https://www.whitehouse.gov/briefings-statements/2025/11/joint-statement-on-a-framework-for-a-united-states-switzerland-liechtenstein-agreement-on-fair-balanced-and-reciprocal-trade/"
-    },
-    {
-      "id": "ch-seco",
-      "publisher": "SECO",
-      "citation": "SECO",
-      "document": "Web page",
-      "title": "Swiss–US trade relations",
-      "signed": null,
-      "published": "2026-08-01",
-      "url": "https://www.seco.admin.ch/en/swiss-us-trade-relations"
-    },
-    {
-      "id": "cn-24-suspend",
-      "publisher": "State Council Tariff Commission (PRC)",
-      "citation": "Tariff Commission Announcement No. 10 of 2025",
-      "document": "Announcement",
-      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for one year from November 10, 2025; 10% kept)",
-      "signed": null,
-      "published": "2025-11-05",
-      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
+      "published": "2026-09-27",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
     },
     {
       "id": "cn-board-of-trade",
@@ -496,174 +406,54 @@
       "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ambassador-greer-issues-statement-announcement-recommendations-us-china-board-trade"
     },
     {
-      "id": "cn-bot-list",
-      "publisher": "The White House",
-      "citation": "30-for-30 China Import List",
-      "document": "Product list",
-      "title": "China import list (U.S. products recommended for reduced Chinese tariffs), U.S.–China Board of Trade",
+      "id": "ca-2026-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Aug 2026",
+      "document": "Notice",
+      "title": "List of products from the United States subject to counter-tariffs effective September 8, 2026",
       "signed": null,
-      "published": "2026-09-27",
-      "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
+      "published": "2026-08-26",
+      "url": "https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html"
     },
     {
-      "id": "cn-sctc-125",
-      "publisher": "State Council Tariff Commission (PRC)",
-      "citation": "Tariff Commission Announcement No. 6 of 2025",
-      "document": "Announcement",
-      "title": "Adjusting the additional tariffs on imports originating in the United States (84% raised to 125% from April 12, 2025)",
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
       "signed": null,
-      "published": "2025-04-11",
-      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202504/t20250411_3961823.htm"
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
     },
     {
-      "id": "cn-sctc-aug2025",
-      "publisher": "State Council Tariff Commission (PRC)",
-      "citation": "Tariff Commission Announcement No. 8 of 2025",
-      "document": "Announcement",
-      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension extended 90 days from August 12, 2025)",
+      "id": "br-wto-2026",
+      "publisher": "Ministry of Foreign Affairs (Brazil)",
+      "citation": "MRE press note, Jul 27, 2026",
+      "document": "Press note",
+      "title": "Pedido de consultas aos Estados Unidos na Organização Mundial do Comércio",
       "signed": null,
-      "published": "2025-08-12",
-      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202508/t20250812_3969806.htm"
+      "published": "2026-07-27",
+      "url": "https://www.gov.br/mre/pt-br/canais_atendimento/imprensa/notas-a-imprensa/pedido-de-consultas-aos-estados-unidos-na-organizacao-mundial-do-comercio"
     },
     {
-      "id": "cn-sctc-may2025",
-      "publisher": "State Council Tariff Commission (PRC)",
-      "citation": "Tariff Commission Announcement No. 7 of 2025",
-      "document": "Announcement",
-      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
-      "signed": null,
-      "published": "2025-05-13",
-      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
-    },
-    {
-      "id": "eu-framework",
-      "publisher": "EUR-Lex",
-      "citation": "Regulation (EU) 2026/1455",
-      "document": "Regulation",
-      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
-      "signed": "2026-06-25",
-      "published": "2026-06-30",
-      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
-    },
-    {
-      "id": "eu-joint-2025",
-      "publisher": "The White House",
-      "citation": "Joint Statement, Aug 2025",
-      "document": "Joint statement",
-      "title": "Joint Statement on a United States–European Union Framework on an Agreement on Reciprocal, Fair, and Balanced Trade",
-      "signed": null,
-      "published": "2025-08-21",
-      "url": "https://www.whitehouse.gov/briefings-statements/2025/08/joint-statement-on-a-united-states-european-union-framework-on-an-agreement-on-reciprocal-fair-and-balanced-trade/"
-    },
-    {
-      "id": "eu-rebalancing",
-      "publisher": "EUR-Lex",
-      "citation": "Implementing Regulation (EU) 2026/1893",
-      "document": "Implementing regulation",
-      "title": "Commission Implementing Regulation (EU) 2026/1893 suspending commercial rebalancing measures concerning certain products originating in the United States",
-      "signed": "2026-07-30",
-      "published": "2026-07-31",
-      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1893/oj"
-    },
-    {
-      "id": "eu-rebalancing-pharma",
-      "publisher": "EUR-Lex",
-      "citation": "Implementing Regulation (EU) 2025/1564",
-      "document": "Implementing regulation",
-      "title": "Commission Implementing Regulation (EU) 2025/1564 on commercial rebalancing measures concerning certain products originating in the United States of America",
-      "signed": "2025-07-24",
-      "published": "2025-07-24",
-      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1564/oj/eng"
-    },
-    {
-      "id": "jp-deal",
-      "publisher": "Federal Register",
-      "citation": "90 FR 43535",
-      "document": "Executive Order 14345",
-      "title": "Implementing the United States-Japan Agreement",
-      "signed": "2025-09-04",
-      "published": "2025-09-09",
-      "url": "https://www.federalregister.gov/documents/2025/09/09/2025-17389/implementing-the-united-states-japan-agreement"
-    },
-    {
-      "id": "mx-dof-2025",
-      "publisher": "Diario Oficial de la Federación (Mexico)",
-      "citation": "DOF, Dec 29, 2025",
-      "document": "Decree",
-      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
-      "signed": null,
-      "published": "2025-12-29",
-      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
-    },
-    {
-      "id": "mx-usmca-review",
-      "publisher": "Federal Register",
-      "citation": "91 FR 63379",
-      "document": "Notice (USTR)",
-      "title": "Request for Public Comments and Notice of Public Hearing Relating to the Operation of the Agreement Between the United States of America, the United Mexican States, and Canada",
-      "signed": null,
-      "published": "2026-10-05",
-      "url": "https://www.federalregister.gov/documents/2026/10/05/2026-20341/request-for-public-comments-and-notice-of-public-hearing-relating-to-the-operation-of-the-agreement-between-the-united-states-of-america-the-united-mexican-states-and-canada"
-    },
-    {
-      "id": "uk-epd",
-      "publisher": "HM Government",
-      "citation": "US–UK EPD",
-      "document": "Policy paper",
-      "title": "US–UK Economic Prosperity Deal",
-      "signed": null,
-      "published": "2025-05-08",
-      "url": "https://www.gov.uk/government/publications/us-uk-economic-prosperity-deal-epd"
-    },
-    {
-      "id": "uk-pharma",
-      "publisher": "HM Government",
-      "citation": "GOV.UK, Dec 2025",
+      "id": "br-talks-2026",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "MDIC, Sep 30, 2026",
       "document": "Press release",
-      "title": "Landmark UK–US pharmaceuticals deal to safeguard medicines access and drive vital investment for UK patients and businesses",
+      "title": "Reunião presencial Brasil-EUA sobre temas comerciais",
       "signed": null,
-      "published": "2025-12-01",
-      "url": "https://www.gov.uk/government/news/landmark-uk-us-pharmaceuticals-deal-to-safeguard-medicines-access-and-drive-vital-investmentfor-uk-patients-and-businesses"
+      "published": "2026-09-30",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/noticias/2026-periodo-eleitoral/setembro/reuniao-presencial-brasil-eua-sobre-temas-comerciais"
     },
     {
-      "id": "uk-pharma-text",
-      "publisher": "USTR",
-      "citation": "US–UK Pharma Pricing Arrangement",
-      "document": "Arrangement text",
-      "title": "Arrangement between the United States and the United Kingdom on pharmaceutical pricing",
-      "signed": null,
-      "published": "2026-04-02",
-      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.-UK%20Pharma%20Pricing%20Arrangement%20-%204.2.2026.pdf"
-    },
-    {
-      "id": "cn-mofcom-2026-09",
-      "publisher": "State Council of the PRC (gov.cn)",
-      "citation": "MOFCOM, Sep 28, 2026",
-      "document": "Statement by the head of MOFCOM's Department of American and Oceanian Affairs",
-      "title": "商务部美大司负责人解读第八轮中美经贸磋商成果 (results of the eighth round of China–U.S. economic and trade talks)",
-      "signed": null,
-      "published": "2026-09-28",
-      "url": "https://www.gov.cn/lianbo/202609/content_7082235.htm"
-    },
-    {
-      "id": "wh-china-deal-2025",
-      "publisher": "The White House",
-      "citation": "Fact Sheet, Nov 1, 2025",
-      "document": "Fact sheet",
-      "title": "Fact Sheet: President Donald J. Trump Strikes Deal on Economic and Trade Relations with China",
-      "signed": null,
-      "published": "2025-11-01",
-      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
-    },
-    {
-      "id": "cn-2019-annex3",
-      "publisher": "State Council Tariff Commission (PRC)",
-      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
-      "document": "Annex 3 (10% list)",
-      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3",
-      "signed": null,
-      "published": "2019-05-13",
-      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+      "id": "br-law",
+      "publisher": "Presidência da República (Brazil)",
+      "citation": "Lei nº 15.122/2025",
+      "document": "Law",
+      "title": "Lei nº 15.122, de 11 de abril de 2025 (Economic Reciprocity Law)",
+      "signed": "2025-04-11",
+      "published": "2025-04-14",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15122.htm"
     },
     {
       "id": "eu-aircraft-truce-2021",
@@ -686,34 +476,34 @@
       "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1549/oj"
     },
     {
-      "id": "wh-india-joint-statement-2026",
-      "publisher": "The White House",
-      "citation": "U.S.–India Joint Statement, Feb 2026",
-      "document": "Joint statement",
-      "title": "United States-India Joint Statement",
+      "id": "mx-usmca-review",
+      "publisher": "Federal Register",
+      "citation": "91 FR 63379",
+      "document": "Notice (USTR)",
+      "title": "Request for Public Comments and Notice of Public Hearing Relating to the Operation of the Agreement Between the United States of America, the United Mexican States, and Canada",
       "signed": null,
-      "published": "2026-02-06",
-      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+      "published": "2026-10-05",
+      "url": "https://www.federalregister.gov/documents/2026/10/05/2026-20341/request-for-public-comments-and-notice-of-public-hearing-relating-to-the-operation-of-the-agreement-between-the-united-states-of-america-the-united-mexican-states-and-canada"
     },
     {
-      "id": "cn-ann-2025-1",
-      "publisher": "State Council Tariff Commission (PRC), via MOFCOM policy database",
-      "citation": "Tariff Commission Announcement No. 1 of 2025",
-      "document": "Announcement",
-      "title": "Additional tariffs on certain imported goods originating in the United States (coal, LNG; crude oil, agricultural machinery, large-displacement cars, pickups)",
-      "signed": "2025-02-04",
-      "published": "2025-02-04",
-      "url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=101822"
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
     },
     {
-      "id": "cn-ann-2025-1-annex2",
-      "publisher": "State Council Tariff Commission (PRC), via MOFCOM policy database",
-      "citation": "Annex 2 to Announcement No. 1 of 2025",
-      "document": "Annex",
-      "title": "List of goods subject to the additional 10% tariff",
-      "signed": "2025-02-04",
-      "published": "2025-02-11",
-      "url": "https://picpolicy.mofcom.gov.cn/file/20250211/60251739242363218.pdf"
+      "id": "eu-joint-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Aug 2025",
+      "document": "Joint statement",
+      "title": "Joint Statement on a United States–European Union Framework on an Agreement on Reciprocal, Fair, and Balanced Trade",
+      "signed": null,
+      "published": "2025-08-21",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/08/joint-statement-on-a-united-states-european-union-framework-on-an-agreement-on-reciprocal-fair-and-balanced-trade/"
     },
     {
       "id": "tw-art-fact",
@@ -756,6 +546,126 @@
       "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.%20BGD%20Agreement%20on%20Reciprocal%20Trade%20Final%2009FEB2026%20LETTER.pdf"
     },
     {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "United States-India Joint Statement, Feb. 6, 2026",
+      "document": "United States-India Joint Statement",
+      "title": "United States-India Joint Statement on a framework for an Interim Agreement on reciprocal and mutually beneficial trade",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "br-2025",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "Gecex, 232nd meeting",
+      "document": "Deliberations",
+      "title": "Deliberações da 232ª Reunião Ordinária do Comitê-Executivo de Gestão (Gecex)",
+      "signed": null,
+      "published": "2025-12-18",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/deliberacoes/deliberacoes-da-232a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex"
+    },
+    {
+      "id": "uk-pharma",
+      "publisher": "HM Government",
+      "citation": "GOV.UK, Dec 2025",
+      "document": "Press release",
+      "title": "Landmark UK–US pharmaceuticals deal to safeguard medicines access and drive vital investment for UK patients and businesses",
+      "signed": null,
+      "published": "2025-12-01",
+      "url": "https://www.gov.uk/government/news/landmark-uk-us-pharmaceuticals-deal-to-safeguard-medicines-access-and-drive-vital-investmentfor-uk-patients-and-businesses"
+    },
+    {
+      "id": "uk-pharma-text",
+      "publisher": "USTR",
+      "citation": "US–UK Pharma Pricing Arrangement",
+      "document": "Arrangement text",
+      "title": "Arrangement between the United States and the United Kingdom on pharmaceutical pricing",
+      "signed": null,
+      "published": "2026-04-02",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/U.S.-UK%20Pharma%20Pricing%20Arrangement%20-%204.2.2026.pdf"
+    },
+    {
+      "id": "ch-framework",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Nov 2025",
+      "document": "Joint statement",
+      "title": "Framework for a United States–Switzerland–Liechtenstein Agreement on Fair, Balanced, and Reciprocal Trade",
+      "signed": null,
+      "published": "2025-11-14",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/11/joint-statement-on-a-framework-for-a-united-states-switzerland-liechtenstein-agreement-on-fair-balanced-and-reciprocal-trade/"
+    },
+    {
+      "id": "ch-seco",
+      "publisher": "SECO",
+      "citation": "SECO",
+      "document": "Web page",
+      "title": "Swiss–US trade relations",
+      "signed": null,
+      "published": "2026-08-01",
+      "url": "https://www.seco.admin.ch/en/swiss-us-trade-relations"
+    },
+    {
+      "id": "wh-china-deal-2025",
+      "publisher": "The White House",
+      "citation": "Fact Sheet, Nov 1, 2025",
+      "document": "Fact sheet",
+      "title": "Fact Sheet: President Donald J. Trump Strikes Deal on Economic and Trade Relations with China",
+      "signed": null,
+      "published": "2025-11-01",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Annex 3 (10% list)",
+      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    },
+    {
+      "id": "jp-deal",
+      "publisher": "Federal Register",
+      "citation": "90 FR 43535",
+      "document": "Executive Order 14345",
+      "title": "Implementing the United States-Japan Agreement",
+      "signed": "2025-09-04",
+      "published": "2025-09-09",
+      "url": "https://www.federalregister.gov/documents/2025/09/09/2025-17389/implementing-the-united-states-japan-agreement"
+    },
+    {
+      "id": "eu-rebalancing",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1893",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1893 suspending commercial rebalancing measures concerning certain products originating in the United States",
+      "signed": "2026-07-30",
+      "published": "2026-07-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1893/oj"
+    },
+    {
+      "id": "eu-rebalancing-pharma",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1564",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2025/1564 on commercial rebalancing measures concerning certain products originating in the United States of America",
+      "signed": "2025-07-24",
+      "published": "2025-07-24",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1564/oj/eng"
+    },
+    {
       "id": "cn-mofcom-pom-2025",
       "publisher": "Ministry of Commerce (PRC)",
       "citation": "MOFCOM Announcement No. 25 of 2025",
@@ -764,6 +674,66 @@
       "signed": "2025-05-18",
       "published": "2025-05-18",
       "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2025/art_09eb6be1f50f4cdaa6a36dfbb09bb529.html"
+    },
+    {
+      "id": "cn-sctc-125",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (84% raised to 125% from April 12, 2025)",
+      "signed": null,
+      "published": "2025-04-11",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202504/t20250411_3961823.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-aug2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 8 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension extended 90 days from August 12, 2025)",
+      "signed": null,
+      "published": "2025-08-12",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202508/t20250812_3969806.htm"
+    },
+    {
+      "id": "cn-24-suspend",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 10 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for one year from November 10, 2025; 10% kept)",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
+    },
+    {
+      "id": "cn-mofcom-2026-09",
+      "publisher": "State Council of the PRC (gov.cn)",
+      "citation": "MOFCOM, Sep 28, 2026",
+      "document": "Statement by the head of MOFCOM's Department of American and Oceanian Affairs",
+      "title": "商务部美大司负责人解读第八轮中美经贸磋商成果 (results of the eighth round of China–U.S. economic and trade talks)",
+      "signed": null,
+      "published": "2026-09-28",
+      "url": "https://www.gov.cn/lianbo/202609/content_7082235.htm"
+    },
+    {
+      "id": "uk-epd",
+      "publisher": "HM Government",
+      "citation": "US–UK EPD",
+      "document": "Policy paper",
+      "title": "US–UK Economic Prosperity Deal",
+      "signed": null,
+      "published": "2025-05-08",
+      "url": "https://www.gov.uk/government/publications/us-uk-economic-prosperity-deal-epd"
     },
     {
       "id": "ca-sor-2025-118",
@@ -796,14 +766,34 @@
       "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975755.htm"
     },
     {
-      "id": "ca-sor-2026-186",
-      "publisher": "Government of Canada (Canada Gazette, Part II)",
-      "citation": "SOR/2026-186",
-      "document": "Order",
-      "title": "United States Surtax Order (2026)",
+      "id": "ca-2025-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Mar 2025",
+      "document": "Notice",
+      "title": "List of products from the United States subject to 25 per cent tariffs effective March 4, 2025",
       "signed": null,
-      "published": "2026-09-23",
-      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+      "published": "2025-03-04",
+      "url": "https://www.canada.ca/en/department-finance/news/2025/03/list-of-products-from-the-united-states-subject-to-25-per-cent-tariffs-effective-march-4-2025.html"
+    },
+    {
+      "id": "ca-sor-2025-181",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-181",
+      "document": "Order",
+      "title": "Removal of the 2025 counter-tariffs on most U.S. goods",
+      "signed": null,
+      "published": "2025-09-10",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-09-10/html/sor-dors181-eng.html"
+    },
+    {
+      "id": "cn-sctc-feb2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2025",
+      "document": "Announcement on imposing additional tariffs on certain imports originating in the United States",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品加征关税的公告",
+      "signed": null,
+      "published": "2025-02-04",
+      "url": "https://www.mof.gov.cn/zhengwuxinxi/caizhengxinwen/202502/t20250204_3955222.htm"
     }
   ]
 }

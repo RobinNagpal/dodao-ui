@@ -26,7 +26,7 @@
     "lastCheckedAt": "2026-10-13"
   },
   "intro": "What **other countries** changed on U.S. pharmaceuticals since January 2025, and what is coming. The only new measure that costs U.S. medicine exporters money is **China's extra 10%** on all U.S. goods — and it could rise to 34% if the suspension of the rest lapses on **January 10, 2027**. China's older 2019 counter-tariffs still reach some dressings and 3006 goods unless the buyer holds an exclusion, and the exclusions end on **December 31, 2026**.\n\nCanada's counter-tariff lists left Chapter 30 out; the EU's list named only adhesive dressings and has never been applied. The 2025–26 deals with the UK, Japan, Switzerland and the EU did not need to cut tariffs that were already zero. For what the U.S. charges on imported medicines, see the import Tariff updates page.",
-  "scope": "The 8 largest markets for U.S. Chapter 30 goods (85% of 2025 exports; the EU counts as one market). Actions on other U.S. goods are listed only where a buyer might reasonably expect them to reach medicines.",
+  "scope": "The 8 largest markets for U.S. Chapter 30 goods (85% of 2025 exports; the EU counts as one market). Every foreign action in the shared tracker is listed, each marked by whether it reaches Chapter 30.",
   "stats": [
     {
       "label": "Actions tracked",
@@ -38,9 +38,9 @@
       "note": "China +10%"
     },
     {
-      "label": "Counter-tariff lists that skipped Ch. 30",
-      "value": "2",
-      "note": "Canada 2025, Canada 2026 (the suspended EU list named adhesive dressings)"
+      "label": "Retaliatory actions that skip Ch. 30",
+      "value": "7",
+      "note": "Canada 2026, Brazil 2025, China POM duty, Canada vehicle surtax, China Mar 2025, Canada 2025, China Feb 2025 (the suspended EU list named adhesive dressings)"
     },
     {
       "label": "Coming up",
@@ -74,7 +74,7 @@
   ],
   "inEffect": [
     {
-      "id": "cn-10",
+      "id": "cn-all",
       "country": "China",
       "measure": "Extra tariff on all U.S. goods (State Council Tariff Commission)",
       "before": "0% (Jan 2025)",
@@ -110,7 +110,7 @@
       "now": "15% / 25% / 50%",
       "coversChapter": "no",
       "status": "In force",
-      "detail": "Mostly steel, aluminum, dairy, appliances, furniture and clothing. The list jumps from Chapter 19 to perfumes (3303), skipping pharmaceuticals entirely.",
+      "detail": "Counter-tariffs of 15%, 25% and 50% on listed U.S. products — steel, aluminum, dairy, furniture and clothing, but also machinery, household appliances and electronics such as smartphones, routers and monitors (50%). The order applies to goods of U.S. origin and has no exemption for goods that qualify for CUSMA. The list jumps from Chapter 19 to perfumes (3303), skipping pharmaceuticals entirely.",
       "sourceIds": ["ca-2026-list", "ca-sor-2026-186"]
     },
     {
