@@ -12,8 +12,6 @@ export interface SendEmailInput {
   html: string;
   /** Set when the recipient should be able to hit "reply" and land on someone other than `from` (e.g. a contact-form submitter). */
   replyTo?: string;
-  /** Extra recipients hidden from everyone else on the email (so a "reply all" never reaches them). */
-  bcc?: string[];
   /**
    * Set when `subject`/`html` carry third-party-submitted content (e.g. a contact-form
    * visitor's name/message) that shouldn't land in production logs. Callers that only ever
@@ -36,14 +34,14 @@ function isRealProduction(): boolean {
  * isn't configured locally (the send then fails and the caller logs that).
  * That logging is skipped in production for callers marked `containsUserSuppliedContent`.
  */
-export async function sendEmail({ to, from, subject, html, replyTo, bcc, containsUserSuppliedContent }: SendEmailInput): Promise<void> {
+export async function sendEmail({ to, from, subject, html, replyTo, containsUserSuppliedContent }: SendEmailInput): Promise<void> {
   if (!(containsUserSuppliedContent && isRealProduction())) {
-    console.log('Sending email to', to, bcc?.length ? `(bcc ${bcc.join(', ')})` : '', 'from', from, 'subject', subject);
+    console.log('Sending email to', to, 'from', from, 'subject', subject);
     console.log('Email body: ', html);
   }
   await ses.sendEmail({
     Source: from,
-    Destination: { ToAddresses: [to], BccAddresses: bcc?.length ? bcc : undefined },
+    Destination: { ToAddresses: [to] },
     ReplyToAddresses: replyTo ? [replyTo] : undefined,
     Message: {
       Subject: { Data: subject },

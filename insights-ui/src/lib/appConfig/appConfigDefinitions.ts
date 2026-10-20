@@ -186,7 +186,7 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
     key: 'CONTACT_FORM_FORWARD_EMAILS',
     label: 'Forward contact-form messages to',
     description:
-      'Comma-separated email addresses that also receive every message sent from the homepage "Get in Touch" form, in addition to contact@koalagains.com. They are added as BCC, so a visitor who hits "reply all" never sees them. Invalid addresses are skipped (and logged). Type "off" to stop forwarding (this screen cannot save an empty value). Applies within about 30 minutes, or immediately when saved here.',
+      'Email addresses (comma-separated, up to 10) that also receive every message sent from the homepage "Get in Touch" form, in addition to contact@koalagains.com. Each address gets its own separate copy, so one bad address never stops the main inbox or the others from receiving it, and recipients never see each other. Names and "Name <address>" forms are fine; malformed addresses are skipped and logged. Type "off" to stop forwarding (this screen cannot save an empty value). Applies immediately when saved here.',
     type: 'string',
     group: 'contact-form',
   },
