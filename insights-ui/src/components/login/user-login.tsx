@@ -5,6 +5,7 @@ import { useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { isValidEmailAddress } from '@/utils/email/koalagains-email';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { ShieldCheck, BarChart3, LineChart } from 'lucide-react';
 
@@ -21,18 +22,12 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
-  const validateEmail = useCallback((value: string): boolean => {
-    // Basic RFC 5322-ish email check (kept simple, explicit typing)
-    const pattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(value);
-  }, []);
-
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
       e.preventDefault();
       setLocalError(null);
 
-      if (!validateEmail(email)) {
+      if (!isValidEmailAddress(email)) {
         setLocalError('Please enter a valid email address.');
         return;
       }
@@ -45,7 +40,7 @@ export function UserLogin({ onLogin, onGoogleSignIn, errorMessage, compact = fal
       onLogin(email);
       setIsLoading(false);
     },
-    [email, onLogin, validateEmail]
+    [email, onLogin]
   );
 
   return (

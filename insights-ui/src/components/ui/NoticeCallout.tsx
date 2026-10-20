@@ -17,6 +17,7 @@ const noticeCallout = cva('rounded-lg px-3 py-2 text-sm', {
       danger: badgeTone({ tone: 'danger' }),
       info: badgeTone({ tone: 'info' }),
       neutral: badgeTone({ tone: 'neutral' }),
+      success: badgeTone({ tone: 'success' }),
     },
   },
   defaultVariants: { tone: 'info' },

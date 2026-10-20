@@ -1,5 +1,6 @@
 'use client';
 
+import NoticeCallout from '@/components/ui/NoticeCallout';
 import { submitContactForm } from '@/utils/contact/contact-actions';
 import { BuildingOffice2Icon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { FormEvent, useRef, useState } from 'react';
@@ -9,23 +10,35 @@ type SubmitStatus = { state: 'idle' } | { state: 'submitting' } | { state: 'succ
 export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   const [status, setStatus] = useState<SubmitStatus>({ state: 'idle' });
+  // Guards against a double-click/double-Enter firing two submits before the `disabled` re-render commits.
+  const submittingRef = useRef(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+
     const data = new FormData(e.currentTarget);
     setStatus({ state: 'submitting' });
-    const result = await submitContactForm({
-      firstName: (data.get('first-name') as string) ?? '',
-      lastName: (data.get('last-name') as string) ?? '',
-      email: (data.get('email') as string) ?? '',
-      phoneNumber: (data.get('phone-number') as string) ?? '',
-      message: (data.get('message') as string) ?? '',
-    });
-    if (result.ok) {
-      setStatus({ state: 'success' });
-      formRef.current?.reset();
-    } else {
-      setStatus({ state: 'error', message: result.error ?? 'Something went wrong. Please try again.' });
+    try {
+      const result = await submitContactForm({
+        firstName: data.get('first-name'),
+        lastName: data.get('last-name'),
+        email: data.get('email'),
+        phoneNumber: data.get('phone-number'),
+        message: data.get('message'),
+        honeypot: data.get('company'),
+      });
+      if (result.ok) {
+        setStatus({ state: 'success' });
+        formRef.current?.reset();
+      } else {
+        setStatus({ state: 'error', message: result.error });
+      }
+    } catch {
+      setStatus({ state: 'error', message: 'Something went wrong. Please try again, or email hello@koalagains.com directly.' });
+    } finally {
+      submittingRef.current = false;
     }
   };
 
@@ -70,7 +83,17 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <form ref={formRef} onSubmit={handleSubmit} className="px-6 lg:px-8">
+            <form ref={formRef} onSubmit={handleSubmit} method="POST" className="px-6 lg:px-8">
+              {/* Honeypot: hidden from sighted users, so a non-empty value means a bot filled every field blindly. */}
+              <input
+                type="text"
+                name="company"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="absolute h-0 w-0 opacity-0"
+                style={{ left: '-9999px' }}
+              />
               <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div>
@@ -152,9 +175,9 @@ export default function Contact() {
 
                 <div className="mt-8 flex flex-col items-end gap-3">
                   {status.state === 'success' && (
-                    <p className="text-sm text-emerald-500">Thanks — your message has been sent. We&apos;ll get back to you soon.</p>
+                    <NoticeCallout tone="success">Thanks — your message has been sent. We&apos;ll get back to you soon.</NoticeCallout>
                   )}
-                  {status.state === 'error' && <p className="text-sm text-red-500">{status.message}</p>}
+                  {status.state === 'error' && <NoticeCallout tone="danger">{status.message}</NoticeCallout>}
                   <button
                     type="submit"
                     disabled={status.state === 'submitting'}

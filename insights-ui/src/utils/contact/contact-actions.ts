@@ -1,16 +1,21 @@
 'use server';
 
+import { escapeHtml, isValidEmailAddress, KOALAGAINS_FROM_ADDRESS } from '@/utils/email/koalagains-email';
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
 
-/** Same sender as the other KoalaGains system emails (login links, report-result emails). */
-const FROM_ADDRESS = 'contact@koalagains.com';
 /** The address shown on the homepage's "Get in Touch" section. */
 const TO_ADDRESS = 'hello@koalagains.com';
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export type ContactFormResult = { ok: true } | { ok: false; error: string };
 
-function escapeHtml(text: string): string {
-  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function asTrimmedString(value: unknown): string {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+/** Strips characters that have no business in a one-line email header (CR/LF and other controls). */
+function toHeaderSafeText(value: string): string {
+  // eslint-disable-next-line no-control-regex -- deliberately stripping CR/LF/control chars before use in a mail header
+  return value.replace(/[\x00-\x1f\x7f]+/g, ' ').trim();
 }
 
 function emailHtml(name: string, email: string, phoneNumber: string, message: string): string {
@@ -31,32 +36,41 @@ function emailHtml(name: string, email: string, phoneNumber: string, message: st
 /**
  * Sends the homepage "Get in Touch" form to the KoalaGains contact inbox, with the
  * submitter set as reply-to so a reply goes straight to them.
+ *
+ * `honeypot` is an input the real form keeps hidden from sighted users via CSS; a filled-in
+ * value means a bot filled every field blindly, so the submission is dropped — while still
+ * reporting success, so the bot cannot tell it was dropped.
  */
 export async function submitContactForm(input: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phoneNumber: string;
-  message: string;
-}): Promise<{ ok: boolean; error?: string }> {
-  const email = input.email?.trim() ?? '';
-  const message = input.message?.trim() ?? '';
-  if (!email || !EMAIL_RE.test(email)) {
+  firstName: unknown;
+  lastName: unknown;
+  email: unknown;
+  phoneNumber: unknown;
+  message: unknown;
+  honeypot?: unknown;
+}): Promise<ContactFormResult> {
+  if (asTrimmedString(input.honeypot) !== '') {
+    return { ok: true };
+  }
+
+  const email = asTrimmedString(input.email);
+  const message = asTrimmedString(input.message);
+  if (!email || !isValidEmailAddress(email)) {
     return { ok: false, error: 'Enter a valid email address.' };
   }
   if (!message) {
     return { ok: false, error: 'Enter a message.' };
   }
 
-  const firstName = input.firstName?.trim() ?? '';
-  const lastName = input.lastName?.trim() ?? '';
-  const phoneNumber = input.phoneNumber?.trim() ?? '';
+  const firstName = toHeaderSafeText(asTrimmedString(input.firstName));
+  const lastName = toHeaderSafeText(asTrimmedString(input.lastName));
+  const phoneNumber = asTrimmedString(input.phoneNumber);
   const name = [firstName, lastName].filter(Boolean).join(' ') || '(no name given)';
 
   try {
     await sendEmail({
       to: TO_ADDRESS,
-      from: FROM_ADDRESS,
+      from: KOALAGAINS_FROM_ADDRESS,
       replyTo: email,
       subject: `New contact form message from ${name}`,
       html: emailHtml(name, email, phoneNumber, message),
@@ -64,6 +78,6 @@ export async function submitContactForm(input: {
     return { ok: true };
   } catch (error) {
     console.error('[contact-actions] Failed to send contact form email', error instanceof Error ? error.message : error);
-    return { ok: false, error: 'Something went wrong sending your message. Please email hello@koalagains.com directly.' };
+    return { ok: false, error: `Something went wrong sending your message. Please email ${TO_ADDRESS} directly.` };
   }
 }
