@@ -4,7 +4,7 @@ import { escapeHtml, isValidEmailAddress, KOALAGAINS_FROM_ADDRESS } from '@/util
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
 
 /** The address shown on the homepage's "Get in Touch" section. */
-const TO_ADDRESS = 'hello@koalagains.com';
+const TO_ADDRESS = 'contact@koalagains.com';
 
 export type ContactFormResult = { ok: true } | { ok: false; error: string };
 

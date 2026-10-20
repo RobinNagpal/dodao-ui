@@ -36,7 +36,7 @@ export default function Contact() {
         setStatus({ state: 'error', message: result.error });
       }
     } catch {
-      setStatus({ state: 'error', message: 'Something went wrong. Please try again, or email hello@koalagains.com directly.' });
+      setStatus({ state: 'error', message: 'Something went wrong. Please try again, or email contact@koalagains.com directly.' });
     } finally {
       submittingRef.current = false;
     }
@@ -73,8 +73,8 @@ export default function Contact() {
                       <EnvelopeIcon aria-hidden="true" className="h-7 w-6 text-muted" />
                     </dt>
                     <dd>
-                      <a href="mailto:hello@koalagains.com" className="hover:text-link">
-                        hello@koalagains.com
+                      <a href="mailto:contact@koalagains.com" className="hover:text-link">
+                        contact@koalagains.com
                       </a>
                     </dd>
                   </div>
