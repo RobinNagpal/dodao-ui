@@ -454,7 +454,11 @@ export async function getEtfCompetitionData(spaceId: string, exchange: string, e
  * show its AUM / expense ratio. Single batched query — no N+1.
  *
  * The same symbol can be listed on several exchanges (e.g. IXJ on NYSEARCA and
- * ASX), so a match prefers the exchange the report named, then a listing in the
+ * ASX), and an unrelated fund can share a ticker in another country (SPLG on
+ * NYSEARCA vs SPLG on LSE). When the report names an exchange we recognize, only
+ * a listing in that exchange's country counts — preferring the exact exchange —
+ * so a peer we don't cover is shown as uncovered instead of borrowing a
+ * look-alike's scores, AUM and link. Without a recognizable exchange, prefer the
  * main ETF's country, then any listing.
  */
 async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], mainExchange: string): Promise<EtfCompetitor[]> {
@@ -498,11 +502,11 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], ma
   return competitionArray.map((entry) => {
     const symbolUpper = entry.companySymbol?.toUpperCase();
     const listings = symbolUpper ? listingsBySymbol.get(symbolUpper) ?? [] : [];
-    const namedExchange = entry.exchangeSymbol?.trim().toUpperCase();
-    const existing =
-      listings.find((l) => l.exchange.toUpperCase() === namedExchange) ??
-      listings.find((l) => mainCountry && countryOfExchange(l.exchange) === mainCountry) ??
-      listings[0];
+    const namedExchange = entry.exchangeSymbol?.trim().toUpperCase() ?? '';
+    const namedCountry = countryOfExchange(namedExchange);
+    const existing = namedCountry
+      ? listings.find((l) => l.exchange.toUpperCase() === namedExchange) ?? listings.find((l) => countryOfExchange(l.exchange) === namedCountry)
+      : listings.find((l) => mainCountry && countryOfExchange(l.exchange) === mainCountry) ?? listings[0];
 
     return {
       companyName: entry.companyName,
