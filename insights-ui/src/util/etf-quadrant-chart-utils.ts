@@ -15,6 +15,10 @@ export interface EtfQuadrantDataPoint {
   classification: EtfCompetitorClassification;
   isMainEtf: boolean;
   exchange?: string;
+  aum?: string | null;
+  expenseRatio?: number | null;
+  /** "US: NYSEARCA"-style label, set only when the peer trades in a different country than the main ETF. */
+  foreignExchangeLabel?: string;
 }
 
 // Each ETF analysis category caps at ~5 group-filtered factors per fund.

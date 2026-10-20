@@ -80,6 +80,10 @@ export interface EtfCompetitor {
     symbol: string;
     exchange: string;
     cachedScoreEntry?: EtfCompetitorCachedScore | null;
+    /** AUM display string from `etf_financial_info` (e.g. "4520000000" or "$4.5B"). */
+    aum?: string | null;
+    /** Expense ratio as a percent number (0.38 = 0.38%). */
+    expenseRatio?: number | null;
   };
 }
 
@@ -103,6 +107,8 @@ export interface EtfCompetitionResponse {
     symbol: string;
     exchange: string;
     cachedScoreEntry?: EtfCompetitorCachedScore | null;
+    aum?: string | null;
+    expenseRatio?: number | null;
     createdAt?: string | Date;
     updatedAt?: string | Date;
   };

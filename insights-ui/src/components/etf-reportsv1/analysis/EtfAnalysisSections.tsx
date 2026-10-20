@@ -25,19 +25,11 @@ interface EtfAnalysisSectionsProps {
   data: EtfAnalysisResponse;
   exchange: string;
   symbol: string;
-  /** Optional content rendered inside the Summary Analysis flow, immediately after the Performance & Returns card. */
-  afterPerformanceReturns?: ReactNode;
   /** Optional content rendered at the top of the Future Performance Outlook card (e.g. expected-return figures). */
   futureOutlookTop?: ReactNode;
 }
 
-export default function EtfAnalysisSections({
-  data,
-  exchange,
-  symbol,
-  afterPerformanceReturns,
-  futureOutlookTop,
-}: EtfAnalysisSectionsProps): JSX.Element | null {
+export default function EtfAnalysisSections({ data, exchange, symbol, futureOutlookTop }: EtfAnalysisSectionsProps): JSX.Element | null {
   if (!data.categories || data.categories.length === 0) {
     return null;
   }
@@ -82,7 +74,6 @@ export default function EtfAnalysisSections({
                   dangerouslySetInnerHTML={{ __html: parseMarkdown(categoryResult?.overallAnalysisDetails || 'No summary available.') }}
                 />
               </div>
-              {categoryKey === EtfAnalysisCategory.PerformanceAndReturns && afterPerformanceReturns}
             </Fragment>
           );
         })}
