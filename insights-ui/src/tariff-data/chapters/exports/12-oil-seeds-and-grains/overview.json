@@ -12,13 +12,13 @@
     "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains",
     "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — U.S. Exports & Foreign Tariffs",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "Chapter 12 Exports: U.S. Soybeans & Oilseed Trade | Foreign Tariffs",
+      "shortDescription": "How much the U.S. exports of Chapter 12 oilseeds and grains — mostly soybeans — and what China, Mexico, the EU and other buyers charge on them.",
+      "keywords": ["soybean export tariff", "chapter 12 tariff report", "US soybean exports to China", "oilseed export tariff", "HS 1201 export tariff"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: 2 short paragraphs: how much the U.S. exports and what; where tariffs matter and where they do not",
+  "intro": "The U.S. exported **$21.36 billion** of Chapter 12 goods in 2025, down **28.8%** from 2024. **Soybeans (heading 1201) are 77%** of that — almost the whole chapter — and the drop is almost entirely China: its purchases fell 74% in 2025 as Beijing bought more from Brazil and Argentina during the tariff fight, before U.S. exports of this chapter rebounded **25%** in the first seven months of 2026 on fresh Chinese buying.\n\nOutside China there is almost no tariff story here. Mexico, Canada, the EU, Japan and Egypt all buy this chapter's goods duty-free, so for most buyers it is harvest size, crushing demand and freight cost — not a tariff rate — that decides how much moves. China is the exception: on top of its 3% normal rate, it still charges the 10% tariff from the 2025 U.S.–China tariff fight, and its own September 2026 goodwill list left non-seed soybeans, this chapter's single biggest export, out of the tariff relief it gave other U.S. farm goods.",
   "latestYear": 2025,
   "priorYear": 2024,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
@@ -42,12 +42,17 @@
       "note": "China, Mexico"
     },
     {
-      "label": "TODO",
-      "value": "TODO",
-      "note": "TODO: a tariff stat, e.g. \"Top buyers charging 0%\" or \"Buyers that raised tariffs\""
+      "label": "Markets taxing this chapter's goods at all",
+      "value": "1 of 8",
+      "note": "China; every other top market applies no tariff"
     }
   ],
-  "keyTakeaways": ["TODO"],
+  "keyTakeaways": [
+    "Soybeans are almost the whole story: heading 1201 is 77% of this chapter's exports, and China and Mexico alone take 31%.",
+    "China's 2025 pullback, not a new foreign tariff, explains most of the decline — its purchases fell 74% in 2025, then U.S. exports of this chapter were up 25% in the first seven months of 2026.",
+    "Outside China, there is almost no tariff story: Mexico, Canada, the EU, Japan and Egypt all buy this chapter's goods duty-free or close to it.",
+    "China's own September 2026 goodwill tariff list still excludes non-seed soybeans — the single biggest line in this chapter — so its extra 10% tariff stays in place even as other U.S. farm goods got relief."
+  ],
   "byYear": [
     {
       "year": 2020,
@@ -168,8 +173,8 @@
       "priorExportsUsd": 13352430718,
       "sharePct": 16.5,
       "changePct": -73.7,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "3% MFN + 10% (2025 reciprocal tariff); 25% legacy tariff waived for soybeans through Dec. 2026",
+      "status": "lowered"
     },
     {
       "countryCode": 484,
@@ -178,8 +183,8 @@
       "priorExportsUsd": 2892046327,
       "sharePct": 14.1,
       "changePct": 4.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 818,
@@ -188,8 +193,8 @@
       "priorExportsUsd": 1017586974,
       "sharePct": 8,
       "changePct": 67.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (no duty on raw oilseeds)",
+      "status": "unchanged"
     },
     {
       "countryCode": 392,
@@ -198,8 +203,8 @@
       "priorExportsUsd": 1590442049,
       "sharePct": 7.6,
       "changePct": 2.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (WTO binding)",
+      "status": "unchanged"
     },
     {
       "countryCode": 360,
@@ -208,8 +213,8 @@
       "priorExportsUsd": 1261001436,
       "sharePct": 5,
       "changePct": -15.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Reportedly free (unconfirmed against Indonesia's current tariff book)",
+      "status": "unchanged"
     },
     {
       "countryCode": 276,
@@ -218,8 +223,8 @@
       "priorExportsUsd": 1129693385,
       "sharePct": 4.8,
       "changePct": -8.4,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (EU tariff binding on soybeans)",
+      "status": "unchanged"
     },
     {
       "countryCode": 124,
@@ -228,18 +233,8 @@
       "priorExportsUsd": 898200463,
       "sharePct": 3.9,
       "changePct": -6.2,
-      "tariffNow": "TODO",
-      "status": "TODO"
-    },
-    {
-      "countryCode": 490,
-      "country": "Other Asia, nes",
-      "exportsUsd": 747756862,
-      "priorExportsUsd": 665924522,
-      "sharePct": 3.5,
-      "changePct": 12.3,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 586,
@@ -248,8 +243,8 @@
       "priorExportsUsd": 6794453,
       "sharePct": 3.4,
       "changePct": 10607.4,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Reportedly near 0% (unconfirmed against Pakistan's current tariff schedule)",
+      "status": "unchanged"
     },
     {
       "countryCode": 704,
@@ -258,8 +253,8 @@
       "priorExportsUsd": 689687867,
       "sharePct": 3.1,
       "changePct": -3.4,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Reportedly free or low (unconfirmed)",
+      "status": "unchanged"
     },
     {
       "countryCode": 380,
@@ -268,8 +263,8 @@
       "priorExportsUsd": 680342811,
       "sharePct": 3.1,
       "changePct": -3,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (EU tariff binding on soybeans)",
+      "status": "unchanged"
     },
     {
       "countryCode": 608,
@@ -278,8 +273,8 @@
       "priorExportsUsd": 863339673,
       "sharePct": 3,
       "changePct": -25.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Reportedly free or low (unconfirmed)",
+      "status": "unchanged"
     },
     {
       "countryCode": 50,
@@ -288,12 +283,12 @@
       "priorExportsUsd": 351025313,
       "sharePct": 3,
       "changePct": 81.9,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Reportedly free or low (unconfirmed)",
+      "status": "unchanged"
     }
   ],
-  "othersExportsUsd": 4466830717,
-  "othersPriorExportsUsd": 4586465175,
+  "othersExportsUsd": 5214587579,
+  "othersPriorExportsUsd": 5252389697,
   "byHeading": [
     {
       "heading": "1201",
@@ -504,5 +499,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 13 buyers listed take 79% of 2025 U.S. Chapter 12 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+  "coverageNote": "The 12 buyers listed take 76% of 2025 U.S. Chapter 12 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
 }

@@ -12,13 +12,20 @@
     "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders",
     "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — U.S. Exports & Foreign Tariffs",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "U.S. Electrical Machinery Exports & Foreign Tariffs (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "U.S. exports of electrical machinery and electronics were $226.05B in 2025. Where they go, what each country charges on U.S. chips, phones and electrical equipment, and which tariffs changed since January 2025.",
+      "keywords": [
+        "US electronics exports",
+        "tariffs on US semiconductors",
+        "China tariff on US chips",
+        "US electrical machinery exports by country",
+        "HS 85 exports",
+        "semiconductor export controls"
+      ]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: 2 short paragraphs: how much the U.S. exports and what; where tariffs matter and where they do not",
+  "intro": "The U.S. exported **$226.05B** of electrical machinery and electronics in 2025, up 5.7% on 2024 — its single largest export chapter by value. Semiconductors and related electronics drive it: integrated circuits (8542) alone were **23%** of the total, and smartphones, network gear and other electronics (headings 8517–8542) together were well over half. Mexico and Canada, the two USMCA partners, took 38% of exports between them. In January–July 2026 exports were $148.84B, 14.3% above the same months of 2025.\n\nFor most buyers, tariffs are not the obstacle: Mexico, Canada and South Korea charge nothing under their U.S. free-trade agreements, Hong Kong is a duty-free port, and the EU now charges nothing under its 2026 framework with the U.S. The exception is **China**, the third-largest buyer, which adds an extra 10% on all U.S. goods on top of its own tariff schedule — and for chips and other electronics covered by the WTO Information Technology Agreement, China's own rate is already 0%, so the 10% is the whole story. What decides access for the chapter's most sensitive goods — advanced semiconductors and the equipment that makes them — is not a tariff at all but **U.S. export-control licensing**, covered on the Export rules page.",
   "latestYear": 2025,
   "priorYear": 2024,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
@@ -42,12 +49,17 @@
       "note": "Mexico, Canada"
     },
     {
-      "label": "TODO",
-      "value": "TODO",
-      "note": "TODO: a tariff stat, e.g. \"Top buyers charging 0%\" or \"Buyers that raised tariffs\""
+      "label": "Top buyers charging 0%",
+      "value": "6 of 12",
+      "note": "Mexico, Canada, EU, Hong Kong, South Korea, Malaysia (electronics)"
     }
   ],
-  "keyTakeaways": ["TODO"],
+  "keyTakeaways": [
+    "U.S. electrical-machinery and electronics exports reached $226.05B in 2025 — the chapter's largest value of any HTS chapter — led by integrated circuits (8542, 23%) and smartphones/network equipment (8517, 21%).",
+    "Mexico, Canada, the EU, South Korea and Hong Kong charge nothing on U.S. goods in this chapter, and none of them raised a tariff on it since January 2025; the EU's rate dropped to zero only in July 2026.",
+    "China is the only large buyer charging more than in January 2025 — an extra 10% on all U.S. goods — but its own underlying rate on chips, phones and most electronics is already 0% under the WTO Information Technology Agreement, so the 10% extra is the full cost increase.",
+    "For advanced semiconductors and chipmaking equipment (8541, 8542), U.S. export-control licensing to China — not any foreign tariff — is what actually limits where this chapter's most valuable goods can go; see the Export rules page."
+  ],
   "byYear": [
     {
       "year": 2020,
@@ -168,8 +180,8 @@
       "priorExportsUsd": 55684043464,
       "sharePct": 25.3,
       "changePct": 2.8,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 124,
@@ -178,8 +190,8 @@
       "priorExportsUsd": 28303632389,
       "sharePct": 12.2,
       "changePct": -2.3,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (CUSMA) for most goods",
+      "status": "unchanged"
     },
     {
       "countryCode": 156,
@@ -188,18 +200,8 @@
       "priorExportsUsd": 15279780707,
       "sharePct": 7.2,
       "changePct": 7.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
-    },
-    {
-      "countryCode": 490,
-      "country": "Other Asia, nes",
-      "exportsUsd": 10810206248,
-      "priorExportsUsd": 7265059505,
-      "sharePct": 4.8,
-      "changePct": 48.8,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "MFN + 10% extra on all U.S. goods",
+      "status": "raised"
     },
     {
       "countryCode": 458,
@@ -208,8 +210,8 @@
       "priorExportsUsd": 9741468491,
       "sharePct": 4.7,
       "changePct": 9.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "MFN (no U.S. FTA); 0% on electronics",
+      "status": "unchanged"
     },
     {
       "countryCode": 344,
@@ -218,8 +220,8 @@
       "priorExportsUsd": 8717220112,
       "sharePct": 3.9,
       "changePct": 1.8,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (duty-free port)",
+      "status": "unchanged"
     },
     {
       "countryCode": 276,
@@ -228,8 +230,8 @@
       "priorExportsUsd": 6175140725,
       "sharePct": 2.7,
       "changePct": 0,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
     },
     {
       "countryCode": 528,
@@ -238,8 +240,8 @@
       "priorExportsUsd": 5473909265,
       "sharePct": 2.7,
       "changePct": 12.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
     },
     {
       "countryCode": 410,
@@ -248,8 +250,8 @@
       "priorExportsUsd": 5884211820,
       "sharePct": 2.5,
       "changePct": -4.7,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
     },
     {
       "countryCode": 826,
@@ -258,8 +260,8 @@
       "priorExportsUsd": 4908863678,
       "sharePct": 2.4,
       "changePct": 12,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "UK MFN; 0% on most electronics",
+      "status": "unchanged"
     },
     {
       "countryCode": 702,
@@ -268,8 +270,8 @@
       "priorExportsUsd": 4523136417,
       "sharePct": 2.2,
       "changePct": 11.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (US–Singapore FTA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 392,
@@ -278,8 +280,8 @@
       "priorExportsUsd": 4488391776,
       "sharePct": 2.2,
       "changePct": 9.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "MFN (no U.S. FTA); 0% on most electronics",
+      "status": "unchanged"
     },
     {
       "countryCode": 76,
@@ -288,12 +290,12 @@
       "priorExportsUsd": 4415965887,
       "sharePct": 2.1,
       "changePct": 5.7,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "MFN ~16% (no U.S. FTA)",
+      "status": "unchanged"
     }
   ],
-  "othersExportsUsd": 56455526298,
-  "othersPriorExportsUsd": 53059553299,
+  "othersExportsUsd": 67265732546,
+  "othersPriorExportsUsd": 60324612804,
   "byHeading": [
     {
       "heading": "8501",
@@ -784,5 +786,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 13 buyers listed take 75% of 2025 U.S. Chapter 85 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+  "coverageNote": "The 12 buyers listed take 70% of 2025 U.S. Chapter 85 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
 }

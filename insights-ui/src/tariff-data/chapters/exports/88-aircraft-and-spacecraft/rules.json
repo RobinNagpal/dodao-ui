@@ -12,14 +12,14 @@
     "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/rules",
     "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "U.S. Export Rules for Aircraft & Spacecraft (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "What the FAA, BIS and DDTC require before you export an aircraft, spacecraft or aircraft part, and how to pay less abroad.",
+      "keywords": ["FAA export airworthiness certificate", "export aircraft parts license", "Schedule B aircraft parts", "ITAR aircraft"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what a U.S. exporter of this chapter must do before shipping, and which agencies are involved",
-  "regulationsAsOf": "2026-10-08",
+  "intro": "Most aircraft parts ship like any other EAR99 good: classify, screen, file in AES if the shipment is over $2,500. Finished aircraft and many parts need one more document before they can leave — an **FAA export airworthiness approval** — and a small slice (military aircraft and some weapons-related equipment) falls under the State Department's ITAR instead of Commerce's EAR. This page covers the civil side; a company exporting military aircraft or defense articles should start with DDTC, not the FAA or BIS steps below.",
+  "regulationsAsOf": "2026-10-19",
   "steps": [
     {
       "id": "schedule-b",
@@ -40,7 +40,7 @@
           "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 88 goods, or null"
+      "chapterNote": "The Schedule B number for a finished aircraft (8802) matches the U.S. import HTS number to six digits; the U.S. uses a fairly broad weight-based split (helicopters, aeroplanes by unladen weight) rather than a model-by-model code."
     },
     {
       "id": "screen",
@@ -57,7 +57,7 @@
           "url": "https://www.trade.gov/data-visualization/csl-search"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 88 goods, or null"
+      "chapterNote": "Screen the end user even on a straightforward parts order: a disproportionate share of Entity List and military end-user designations fall on aerospace and aviation buyers, and a part destined for a listed buyer needs a licence even if it would otherwise be EAR99."
     },
     {
       "id": "licence",
@@ -82,7 +82,7 @@
           "url": "https://www.bis.gov/licensing/classify-your-item"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 88 goods, or null"
+      "chapterNote": "Most civil aircraft and parts are EAR99 or classified under ECCN 9A991 (not listed for national-security reasons); military aircraft and many weapons-related parts and components are on the United States Munitions List (USML Category VIII) and fall under the State Department's ITAR instead of the Commerce Control List — see the DDTC note below. Unmanned aircraft (8806) have their own, separately controlled ECCNs; see the drone-specific rule below."
     },
     {
       "id": "sanctions",
@@ -99,7 +99,7 @@
           "url": "https://www.ecfr.gov/current/title-15/part-746"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 88 goods, or null"
+      "chapterNote": "Aircraft, engines and most parts are not covered by the food/medicine carve-outs in OFAC's sanctions programs, so the general embargo and licensing rules apply in full to this chapter's goods."
     },
     {
       "id": "eei",
@@ -128,46 +128,92 @@
           "url": "https://www.census.gov/foreign-trade/aes/index.html"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 88 goods, or null"
+      "chapterNote": "Because a single aircraft or engine routinely exceeds the $2,500 per-Schedule-B-number threshold, almost every shipment in this chapter needs an AES filing regardless of destination."
     }
   ],
-  "rules": [],
+  "rules": [
+    {
+      "id": "faa-export-cofa",
+      "agency": "FAA",
+      "title": "Export airworthiness approval: most finished aircraft (8802, 8806) and many parts (8807) need FAA Form 8130-3 (an authorized release certificate / airworthiness approval tag) or, for a complete aircraft, Form 8130-4 (export certificate of airworthiness) before they can leave the U.S., issued under 14 CFR Part 21 Subpart L. The exporter must also meet the importing country's own requirements, not just the FAA's.",
+      "citations": [
+        {
+          "label": "FAA: Export Airworthiness Approval Regulations & Policy",
+          "url": "https://www.faa.gov/aircraft/air_cert/international/export_aw_approval/export_aw_regs"
+        },
+        {
+          "label": "14 CFR Part 21, Subpart L",
+          "url": "https://www.ecfr.gov/current/title-14/part-21/subpart-L"
+        }
+      ]
+    },
+    {
+      "id": "ddtc-usml-viii",
+      "agency": "State Department (DDTC)",
+      "title": "Military aircraft, military aero-engines and many weapons-related aircraft parts and components are controlled under USML Category VIII (22 CFR 121.1), not the Commerce Control List; exporting them needs a DDTC licence or other ITAR authorization, registration as a manufacturer/exporter, and — for most defense articles — a Congressional notification above value thresholds. This chapter's ordinary commercial-aircraft exporter rarely needs this rule, but check it before assuming an item is EAR99 if it has any military variant or application.",
+      "citations": [
+        {
+          "label": "22 CFR 121.1 (USML Category VIII)",
+          "url": "https://www.ecfr.gov/current/title-22/chapter-I/subchapter-M/part-121"
+        },
+        {
+          "label": "DDTC: ITAR and the USML",
+          "url": "https://www.pmddtc.state.gov/ddtc_public?id=ddtc_kb_article_page&sys_id=24d528fddbfc930044f9ff621f961987"
+        }
+      ]
+    },
+    {
+      "id": "bis-uas-eccn",
+      "agency": "BIS",
+      "title": "Unmanned aircraft (heading 8806) have their own Commerce Control List entries — mainly ECCN 9A012 for non-military UAVs (with 9A120 for some other complete systems) — separate from the general aircraft classifications. A 2026 BIS rule eased controls for lower-endurance UAVs, but a drone with a range of 300 km or more, or carrying certain thermal-imaging, laser or inertial-navigation equipment, stays controlled for national-security or missile-technology reasons; a military UAV not on the USML falls under ECCN 9A610 instead. Confirm the ECCN with BIS before shipping, since it drives which destinations need a licence.",
+      "citations": [
+        {
+          "label": "ECCN 9A012 (Commerce Control List, Category 9)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    }
+  ],
   "groups": [
     {
       "heading": "8801",
       "label": "Balloons and dirigibles; gliders, hang gliders and other non-powered aircraft",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["faa-export-cofa"],
+      "note": "Non-powered aircraft (balloons, gliders) generally need the same FAA export airworthiness approval as a powered aircraft if they are certificated; most are EAR99."
     },
     {
       "heading": "8802",
       "label": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["faa-export-cofa", "ddtc-usml-viii"],
+      "note": "The FAA export airworthiness step applies in full here. Check whether the specific model or variant has a military version controlled under USML Category VIII before relying on an EAR99/9A991 classification."
     },
     {
       "heading": "8804",
       "label": "Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8805",
       "label": "Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8806",
       "label": "Unmanned aircraft",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["bis-uas-eccn"],
+      "note": "See the BIS unmanned-aircraft rule above: most commercial drones are ECCN 9A012, but range, sensors or a military end use can move a specific model to a more controlled classification."
     },
     {
       "heading": "8807",
       "label": "Parts of goods of heading 8801, 8802 or 8806",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["faa-export-cofa", "ddtc-usml-viii"],
+      "note": "Parts and components get the same FAA release (Form 8130-3) as the finished aircraft; a part built specifically for a military aircraft can fall under USML Category VIII even when the civil version of the same part is EAR99."
     }
   ],
   "savings": [

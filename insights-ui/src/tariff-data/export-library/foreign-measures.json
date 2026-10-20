@@ -2,25 +2,6 @@
   "lastCheckedAt": "2026-10-19",
   "measures": [
     {
-      "id": "eu-aircraft-truce",
-      "date": "2026-07-06",
-      "type": "tradeDeal",
-      "countries": ["European Union"],
-      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
-      "before": "0% (suspended since 2021)",
-      "now": "0% (suspension extended)",
-      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
-      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
-      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"],
-      "allGoods": false,
-      "coverage": {
-        "12": "no",
-        "85": "no",
-        "88": "yes"
-      },
-      "inForce": false
-    },
-    {
       "id": "cn-bot",
       "date": "2026-09-27",
       "type": "tradeDeal",
@@ -29,12 +10,12 @@
       "before": null,
       "now": null,
       "status": "Recommended for reduced tariffs; no Chinese tariff cut published yet",
-      "detail": "China's import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. No Chinese tariff cut has been published yet.",
+      "detail": "China's import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. No Chinese tariff cut has been published yet. Non-seed soybeans (Chapter 12's dominant export) were explicitly excluded from this list; the 10% extra tariff stays on them.",
       "sourceIds": ["cn-bot-list", "cn-board-of-trade"],
       "allGoods": false,
       "coverage": {
         "30": "partly",
-        "12": "partly",
+        "12": "no",
         "85": "partly",
         "88": "partly"
       },

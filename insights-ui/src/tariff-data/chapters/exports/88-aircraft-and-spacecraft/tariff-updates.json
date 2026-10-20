@@ -12,13 +12,13 @@
     "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/tariff-updates",
     "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — Foreign Tariff Changes on U.S. Exports",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "Foreign Tariffs on U.S. Aircraft Exports Since 2025 (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "What China, the EU, Canada and other buyers changed on U.S. aircraft, spacecraft and parts since January 2025, and what is coming.",
+      "keywords": ["China tariff on US aircraft", "Boeing Airbus tariff truce", "EU aircraft tariff suspension", "aircraft tariff 2026"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what changed for U.S. exporters of this chapter since January 2025, and the one thing to watch",
+  "intro": "The only measure that costs U.S. aircraft and spacecraft exporters money today is **China's extra 10%** on all U.S. goods, which reaches finished aircraft and most parts — and could rise back toward the 34% it started at if the rest of the suspension lapses on **January 10, 2027**. The bigger story for this chapter is the one to watch rather than pay: the **EU extended, on July 6, 2026, its suspension of the retaliatory tariffs from the 17-year Boeing/Airbus dispute**, so none of the EU's WTO-authorized countermeasures on U.S. aircraft are in force. Canada, Mexico, the UK, Japan, Switzerland and Brazil have not added any tariff on U.S. aircraft or parts since January 2025.",
   "scope": "The 9 largest markets for U.S. Chapter 88 goods (73% of 2025 exports).",
   "stats": [
     {
@@ -47,7 +47,7 @@
       "countries": ["China"],
       "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
       "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
-      "impact": "TODO: what it would mean for U.S. Chapter 88 goods",
+      "impact": "If the suspension lapses without a further extension, China's extra tariff on U.S. goods — including Chapter 88 aircraft and parts — would rise from 10% back toward the 34% level it fell to after the April 2025 peak. Talks on a further extension were reported before the end of 2026, so a lapse is not the base case, but no replacement notice has been published yet.",
       "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
       "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
     }
@@ -59,27 +59,14 @@
       "measure": "Extra tariff on all U.S. goods cut to 10%",
       "before": "0% (Jan 2025)",
       "now": "10%",
-      "appliesTo": "TODO: which Chapter 88 goods it reaches, on top of which normal rate",
-      "whatItMeans": "TODO: a worked example: what a typical shipment pays now vs January 2025",
+      "appliesTo": "All Chapter 88 goods of U.S. origin, including finished aircraft (8802), on top of China's normal rate — low on large aircraft (about 1% on the 8802.40 line found for this report) and zero on many imported aviation-maintenance parts (engines, landing gear, consumables) under China's own duty exemption for materials domestic industry cannot supply (Cai Guan Shui [2021] No. 15, in force 2021–2030). Reports from April–May 2025 said China would also exempt engines, nacelles and landing gear from the new tariff on U.S. goods specifically, but China has not published an English-language notice confirming that exact carve-out, and one legal analysis of the April 2025 announcement said the increased tariff portion would not be eligible for ordinary exemption and reduction policies — so treat relief for those parts as reported, not confirmed. Finished aircraft are not exempted either way.",
+      "whatItMeans": "A $20M shipment of U.S.-made aircraft parts pays an extra $2M under the 10% tariff, on top of whatever ordinary duty applies to that line — zero for parts that qualify for China's maintenance-materials exemption, roughly 1% for most other lines. The extra rate peaked at 125% in April 2025; 24 of those points are suspended, now until January 10, 2027 — see What's coming.",
       "effectiveFrom": "2025-05-14",
       "effectiveSourceId": "cn-sctc-may2025",
       "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
     }
   ],
   "changes": [
-    {
-      "id": "eu-aircraft-truce",
-      "date": "2026-07-06",
-      "type": "tradeDeal",
-      "countries": ["European Union"],
-      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
-      "before": "0% (suspended since 2021)",
-      "now": "0% (suspension extended)",
-      "coversChapter": "yes",
-      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
-      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
-      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
-    },
     {
       "id": "cn-bot",
       "date": "2026-09-27",
@@ -118,6 +105,19 @@
       "status": "Nothing imposed on U.S. goods; talks ongoing",
       "detail": "Brazil has published no countermeasure on U.S. goods. Its Economic Reciprocity Law (Law 15,122 of April 11, 2025) would allow them — such as import restrictions or suspending intellectual-property obligations — but none has been applied. On July 27, 2026 Brazil asked the United States for WTO consultations over U.S. tariffs on Brazilian goods, and Brazilian ministers met USTR on August 31 and September 30, 2026 to set up a working group on a possible agreement.",
       "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
+    },
+    {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "coversChapter": "yes",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
     },
     {
       "id": "mx-usmca",

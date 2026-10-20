@@ -64,12 +64,7 @@ export default function TariffChapterList({ groups }: { groups: TariffChapterLis
         />
         {exportCount > 0 && (
           <Stack direction="row" gap="sm" align="center" wrap>
-            <ToggleChip
-              label="Also has a U.S. exports report"
-              active={onlyExports}
-              onToggle={() => setOnlyExports(!onlyExports)}
-              count={exportCount}
-            />
+            <ToggleChip label="Also has a U.S. exports report" active={onlyExports} onToggle={() => setOnlyExports(!onlyExports)} count={exportCount} />
             <Text as="span" size="xs" tone="muted">
               what other countries charge on these goods when the U.S. sells them abroad
             </Text>

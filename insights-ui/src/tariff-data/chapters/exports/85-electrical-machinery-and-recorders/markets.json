@@ -12,15 +12,15 @@
     "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/markets",
     "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — Export Markets & Foreign Tariffs on U.S. Goods",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "U.S. Electrical Machinery Export Markets & Foreign Tariffs (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "What the EU, China, Canada, Mexico and other top buyers charge on U.S. electrical machinery, electronics and semiconductors, and what it takes to sell there.",
+      "keywords": ["US electronics export markets", "China tariff semiconductors", "EU tariff US electronics", "electrical machinery export tariffs by country"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what the matrix shows and what usually decides access for this chapter (tariff vs regulator)",
+  "intro": "Tariffs decide very little of where this chapter's goods can go: five of the eight largest markets charge nothing, and China's own underlying rate on most electronics is already zero under the WTO Information Technology Agreement — only its flat 10% extra duty on all U.S. goods adds cost there. What usually decides access instead is a safety or radio-equipment approval (CE marking, CCC, KC, UKCA and similar schemes below) and, for the chapter's most advanced chips and chipmaking tools, U.S. export-control licensing rather than any foreign tariff — covered on the Export rules page.",
   "tradeYear": 2025,
-  "tariffYear": 0,
+  "tariffYear": 2026,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
   "groups": [
     {
@@ -268,311 +268,311 @@
     {
       "countryCode": 484,
       "name": "Mexico",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
       "usTradeAgreement": "USMCA (T-MEC in Mexico)",
       "exportsUsd": 57245353156,
       "priorExportsUsd": 55684043464,
       "sharePct": 25.3,
       "changePct": 2.8,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 1127502248,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8502": {
           "exportsUsd": 254260974,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8503": {
           "exportsUsd": 451965677,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8504": {
           "exportsUsd": 2542562020,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8505": {
           "exportsUsd": 166676929,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8506": {
           "exportsUsd": 112851427,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8507": {
           "exportsUsd": 2718732861,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8508": {
           "exportsUsd": 99343908,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8509": {
           "exportsUsd": 94933286,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8510": {
           "exportsUsd": 29777379,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8511": {
           "exportsUsd": 700161646,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8512": {
           "exportsUsd": 667460379,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8513": {
           "exportsUsd": 8368726,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8514": {
           "exportsUsd": 74961651,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8515": {
           "exportsUsd": 260679521,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8516": {
           "exportsUsd": 396109594,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8517": {
           "exportsUsd": 6528012591,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8518": {
           "exportsUsd": 842938373,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8519": {
           "exportsUsd": 10750603,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8521": {
           "exportsUsd": 31292453,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8522": {
           "exportsUsd": 1521349,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8523": {
           "exportsUsd": 5400641272,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8524": {
           "exportsUsd": 186550682,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8525": {
           "exportsUsd": 558828244,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8526": {
           "exportsUsd": 391326634,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8527": {
           "exportsUsd": 483114219,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8528": {
           "exportsUsd": 320568325,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8529": {
           "exportsUsd": 331779781,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8530": {
           "exportsUsd": 33105640,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8531": {
           "exportsUsd": 329559238,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8532": {
           "exportsUsd": 926220687,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8533": {
           "exportsUsd": 441625638,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8534": {
           "exportsUsd": 508427990,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8535": {
           "exportsUsd": 251300937,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8536": {
           "exportsUsd": 4476547888,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8537": {
           "exportsUsd": 1684993625,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8538": {
           "exportsUsd": 2835630714,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8539": {
           "exportsUsd": 97812232,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8540": {
           "exportsUsd": 8953363,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8541": {
           "exportsUsd": 877228684,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8542": {
           "exportsUsd": 12350615437,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8543": {
           "exportsUsd": 1853594584,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8544": {
           "exportsUsd": 4981294584,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8545": {
           "exportsUsd": 16849843,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8546": {
           "exportsUsd": 65195986,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8547": {
           "exportsUsd": 158900027,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8548": {
           "exportsUsd": 90318994,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         },
         "8549": {
           "exportsUsd": 463504313,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, USMCA Tariff Schedule of Mexico (2026); certificate of origin required"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Mexico is the chapter's largest market by far — mostly smartphones, network gear, chips and cable moving through cross-border supply chains with Canada. Almost all of it enters duty-free under USMCA.",
         "mainProducts": "Integrated circuits (chips) (8542) · Smartphones and network equipment (8517)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (USMCA)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "NYCE (Normalización y Certificación Electrónica)",
+          "url": "https://www.nyce.org.mx",
+          "requirement": "NOM certification for most electrical and electronic equipment sold in Mexico (safety, EMC and, for radio equipment, IFT approval)"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Mexico import requirements",
@@ -583,311 +583,311 @@
     {
       "countryCode": 124,
       "name": "Canada",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Canada's September 2026 counter-tariff list adds a surtax on a narrower set of consumer appliances and electronics that do not claim CUSMA treatment",
       "usTradeAgreement": "USMCA (CUSMA in Canada)",
       "exportsUsd": 27643722342,
       "priorExportsUsd": 28303632389,
       "sharePct": 12.2,
       "changePct": -2.3,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 945473163,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8502": {
           "exportsUsd": 687672980,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8503": {
           "exportsUsd": 185893388,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8504": {
           "exportsUsd": 1658614878,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8505": {
           "exportsUsd": 85803705,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8506": {
           "exportsUsd": 136587319,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8507": {
           "exportsUsd": 1768250545,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8508": {
           "exportsUsd": 92896708,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8509": {
           "exportsUsd": 211525342,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8510": {
           "exportsUsd": 44300878,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8511": {
           "exportsUsd": 440011315,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8512": {
           "exportsUsd": 1001433821,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8513": {
           "exportsUsd": 60916777,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8514": {
           "exportsUsd": 71513794,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8515": {
           "exportsUsd": 277833716,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8516": {
           "exportsUsd": 725380555,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8517": {
           "exportsUsd": 4924346530,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8518": {
           "exportsUsd": 908461389,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8519": {
           "exportsUsd": 30052769,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8521": {
           "exportsUsd": 53551161,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8522": {
           "exportsUsd": 4309986,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8523": {
           "exportsUsd": 697694860,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8524": {
           "exportsUsd": 32674311,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8525": {
           "exportsUsd": 1126187627,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8526": {
           "exportsUsd": 307824902,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8527": {
           "exportsUsd": 141724700,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8528": {
           "exportsUsd": 628851769,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8529": {
           "exportsUsd": 313841374,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8530": {
           "exportsUsd": 88323152,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8531": {
           "exportsUsd": 338426664,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8532": {
           "exportsUsd": 104235193,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8533": {
           "exportsUsd": 75852262,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8534": {
           "exportsUsd": 90688081,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8535": {
           "exportsUsd": 380423867,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8536": {
           "exportsUsd": 1879439761,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8537": {
           "exportsUsd": 1756676549,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8538": {
           "exportsUsd": 416392533,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8539": {
           "exportsUsd": 180391583,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8540": {
           "exportsUsd": 25077513,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8541": {
           "exportsUsd": 225761992,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8542": {
           "exportsUsd": 833687535,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8543": {
           "exportsUsd": 675908411,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8544": {
           "exportsUsd": 2680923442,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8545": {
           "exportsUsd": 42217755,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8546": {
           "exportsUsd": 56990932,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8547": {
           "exportsUsd": 29384696,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8548": {
           "exportsUsd": 11095735,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         },
         "8549": {
           "exportsUsd": 188194424,
-          "rate": "TODO",
+          "rate": "Free (CUSMA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, CUSMA Tariff Schedule of Canada (2026); certificate of origin required"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Canada is the chapter's second-largest market — chips, phones, network gear and cable, almost all CUSMA-qualifying. A narrower list of household appliances and consumer electronics also faces Canada's September 2026 counter-tariff if it does not claim CUSMA treatment (see Tariff updates).",
         "mainProducts": "Smartphones and network equipment (8517) · Insulated wire and cable, fiber-optic cable (8544)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (CUSMA) for most goods",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Innovation, Science and Economic Development Canada (ISED)",
+          "url": "https://ised-isde.canada.ca/site/radio-equipment-certification-and-broadcasting-certification/en",
+          "requirement": "Radio equipment certification for anything that transmits (phones, network gear, Wi-Fi/Bluetooth devices); CSA or other recognized safety certification for electrical equipment generally"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Canada import requirements",
@@ -898,13 +898,13 @@
     {
       "countryCode": 97,
       "name": "European Union",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I) from July 1, 2026",
       "usTradeAgreement": null,
       "exportsUsd": 26732484181,
       "priorExportsUsd": 24844859718,
       "sharePct": 11.8,
       "changePct": 7.6,
-      "status": "TODO",
+      "status": "lowered",
       "members": [
         {
           "countryCode": 276,
@@ -945,301 +945,301 @@
       "cells": {
         "8501": {
           "exportsUsd": 843663001,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8502": {
           "exportsUsd": 209418273,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8503": {
           "exportsUsd": 169909378,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8504": {
           "exportsUsd": 1264922823,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8505": {
           "exportsUsd": 68063582,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8506": {
           "exportsUsd": 191581115,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8507": {
           "exportsUsd": 844310511,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8508": {
           "exportsUsd": 27890542,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8509": {
           "exportsUsd": 127086861,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8510": {
           "exportsUsd": 27377547,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8511": {
           "exportsUsd": 229914147,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8512": {
           "exportsUsd": 127848517,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8513": {
           "exportsUsd": 25061802,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8514": {
           "exportsUsd": 80616669,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8515": {
           "exportsUsd": 103391834,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8516": {
           "exportsUsd": 180347999,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8517": {
           "exportsUsd": 6899376086,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8518": {
           "exportsUsd": 333947768,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8519": {
           "exportsUsd": 34941779,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8521": {
           "exportsUsd": 21821624,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8522": {
           "exportsUsd": 5509061,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8523": {
           "exportsUsd": 1608794690,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8524": {
           "exportsUsd": 39418573,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8525": {
           "exportsUsd": 594639472,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8526": {
           "exportsUsd": 511609093,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8527": {
           "exportsUsd": 70152189,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8528": {
           "exportsUsd": 222298261,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8529": {
           "exportsUsd": 669319131,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8530": {
           "exportsUsd": 20681924,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8531": {
           "exportsUsd": 391719808,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8532": {
           "exportsUsd": 183961788,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8533": {
           "exportsUsd": 129219311,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8534": {
           "exportsUsd": 132721142,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8535": {
           "exportsUsd": 84414545,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8536": {
           "exportsUsd": 1437917802,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8537": {
           "exportsUsd": 1632752891,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8538": {
           "exportsUsd": 399223833,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8539": {
           "exportsUsd": 76119228,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8540": {
           "exportsUsd": 108852764,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8541": {
           "exportsUsd": 835564890,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8542": {
           "exportsUsd": 2904230272,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8543": {
           "exportsUsd": 993378680,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8544": {
           "exportsUsd": 1711567052,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8545": {
           "exportsUsd": 37104687,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8546": {
           "exportsUsd": 16485452,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8547": {
           "exportsUsd": 58257165,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8548": {
           "exportsUsd": 24897637,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         },
         "8549": {
           "exportsUsd": 20180982,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4.7% (EU MFN, pre-July 2026)",
+          "basis": "EU Combined Nomenclature headings corresponding to HS 8501–8549; Regulation (EU) 2026/1455, Annex I, from July 1, 2026"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "The EU is the chapter's largest single-bloc market. Its own MFN rates on chips, phones and most electronics were already 0% under the WTO Information Technology Agreement; the 2026 framework now zeroes out the remaining lines too, including motors, cable and appliances.",
         "mainProducts": "Smartphones and network equipment (8517) · Integrated circuits (chips) (8542)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (EU–US framework)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "CE marking under the Radio Equipment Directive / EMC Directive / Low Voltage Directive",
+          "url": "https://single-market-economy.ec.europa.eu/sectors/electrical-and-electronic-engineering-industries-eei/radio-equipment-directive-red_en",
+          "requirement": "CE marking (self-declaration or notified-body assessment, depending on the product) before sale in the EU"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: EU import requirements",
@@ -1250,311 +1250,311 @@
     {
       "countryCode": 156,
       "name": "China",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "China's MFN tariff schedule plus the 10% extra duty on all U.S.-origin goods, in force since May 2025",
       "usTradeAgreement": null,
       "exportsUsd": 16364291757,
       "priorExportsUsd": 15279780707,
       "sharePct": 7.2,
       "changePct": 7.1,
-      "status": "TODO",
+      "status": "raised",
       "cells": {
         "8501": {
           "exportsUsd": 233969233,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8502": {
           "exportsUsd": 43247801,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8503": {
           "exportsUsd": 50220886,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8504": {
           "exportsUsd": 443643025,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8505": {
           "exportsUsd": 70615141,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8506": {
           "exportsUsd": 12923840,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8507": {
           "exportsUsd": 57911962,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8508": {
           "exportsUsd": 2088541,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8509": {
           "exportsUsd": 9019402,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8510": {
           "exportsUsd": 1793628,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8511": {
           "exportsUsd": 72121639,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8512": {
           "exportsUsd": 36024306,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8513": {
           "exportsUsd": 1080623,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8514": {
           "exportsUsd": 36666755,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8515": {
           "exportsUsd": 38057980,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8516": {
           "exportsUsd": 76011941,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8517": {
           "exportsUsd": 984996665,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8518": {
           "exportsUsd": 90229790,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8519": {
           "exportsUsd": 10745819,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8521": {
           "exportsUsd": 2848858,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8522": {
           "exportsUsd": 2628753,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8523": {
           "exportsUsd": 300081199,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8524": {
           "exportsUsd": 16729339,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8525": {
           "exportsUsd": 199847153,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8526": {
           "exportsUsd": 69124550,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8527": {
           "exportsUsd": 4596299,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8528": {
           "exportsUsd": 43029739,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8529": {
           "exportsUsd": 119091943,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8530": {
           "exportsUsd": 1962002,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8531": {
           "exportsUsd": 107147269,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8532": {
           "exportsUsd": 44114323,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8533": {
           "exportsUsd": 55166645,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8534": {
           "exportsUsd": 37165526,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8535": {
           "exportsUsd": 40231459,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8536": {
           "exportsUsd": 634063311,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8537": {
           "exportsUsd": 453177924,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8538": {
           "exportsUsd": 225363785,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8539": {
           "exportsUsd": 62133885,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8540": {
           "exportsUsd": 74836374,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8541": {
           "exportsUsd": 783326162,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8542": {
           "exportsUsd": 9962293050,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN, WTO Information Technology Agreement)",
+          "basis": "China's national tariff schedule for chips, phones, storage media and related electronics (HS 8517, 8541, 8542 and similar ITA-covered lines; 0% MFN) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8543": {
           "exportsUsd": 317589334,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8544": {
           "exportsUsd": 502774694,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8545": {
           "exportsUsd": 6011917,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8546": {
           "exportsUsd": 6546862,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8547": {
           "exportsUsd": 13392801,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8548": {
           "exportsUsd": 5830499,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         },
         "8549": {
           "exportsUsd": 1817125,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "rate": "18% (representative: 8% MFN + 10% extra)",
+          "normalRate": "8% (representative MFN; varies 5–12% by subheading)",
+          "basis": "China's national tariff schedule (motors, generators, batteries, appliances; representative subheading, 2026 schedule) plus the 10% extra duty on all U.S. goods since May 2025"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "China is the chapter's third-largest market, dominated by chips. Its own MFN rate on most electronics is already 0% under the WTO Information Technology Agreement, so the 10% extra duty on all U.S. goods is the entire increase since January 2025 for those lines; motors, appliances and other electromechanical goods pay their normal (non-zero) MFN rate plus the same 10%.",
         "mainProducts": "Integrated circuits (chips) (8542) · Smartphones and network equipment (8517)",
-        "tariffNow": "TODO",
+        "tariffNow": "MFN + 10% extra on all U.S. goods",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "CCC (China Compulsory Certification), administered by CNCA",
+          "url": "https://en.cnca.gov.cn",
+          "requirement": "CCC mark required for most electrical appliances and many electronics before sale in China"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: China import requirements",
@@ -1563,628 +1563,313 @@
       }
     },
     {
-      "countryCode": 490,
-      "name": "Other Asia, nes",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
-      "usTradeAgreement": "TODO",
-      "exportsUsd": 10810206248,
-      "priorExportsUsd": 7265059505,
-      "sharePct": 4.8,
-      "changePct": 48.8,
-      "status": "TODO",
-      "cells": {
-        "8501": {
-          "exportsUsd": 42483918,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8502": {
-          "exportsUsd": 5367451,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8503": {
-          "exportsUsd": 7894669,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8504": {
-          "exportsUsd": 181955808,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8505": {
-          "exportsUsd": 4606140,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8506": {
-          "exportsUsd": 1746236,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8507": {
-          "exportsUsd": 95233369,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8508": {
-          "exportsUsd": 1414388,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8509": {
-          "exportsUsd": 1873592,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8510": {
-          "exportsUsd": 95988,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8511": {
-          "exportsUsd": 8270217,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8512": {
-          "exportsUsd": 4113947,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8513": {
-          "exportsUsd": 876974,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8514": {
-          "exportsUsd": 50486052,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8515": {
-          "exportsUsd": 8581366,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8516": {
-          "exportsUsd": 48395842,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8517": {
-          "exportsUsd": 916666579,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8518": {
-          "exportsUsd": 10290802,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8519": {
-          "exportsUsd": 1156655,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8521": {
-          "exportsUsd": 432486,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8522": {
-          "exportsUsd": 423186,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8523": {
-          "exportsUsd": 553688776,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8524": {
-          "exportsUsd": 3011803,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8525": {
-          "exportsUsd": 51420141,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8526": {
-          "exportsUsd": 18466004,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8527": {
-          "exportsUsd": 156542,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8528": {
-          "exportsUsd": 7103389,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8529": {
-          "exportsUsd": 52122499,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8530": {
-          "exportsUsd": 3004062,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8531": {
-          "exportsUsd": 22087133,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8532": {
-          "exportsUsd": 45903264,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8533": {
-          "exportsUsd": 18283180,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8534": {
-          "exportsUsd": 50762189,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8535": {
-          "exportsUsd": 20489080,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8536": {
-          "exportsUsd": 263480552,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8537": {
-          "exportsUsd": 135150557,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8538": {
-          "exportsUsd": 28193757,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8539": {
-          "exportsUsd": 44443262,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8540": {
-          "exportsUsd": 15767165,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8541": {
-          "exportsUsd": 1065014797,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8542": {
-          "exportsUsd": 6722155109,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8543": {
-          "exportsUsd": 176837771,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8544": {
-          "exportsUsd": 88333761,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8545": {
-          "exportsUsd": 862578,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8546": {
-          "exportsUsd": 12325149,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8547": {
-          "exportsUsd": 16808250,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8548": {
-          "exportsUsd": 1300466,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        },
-        "8549": {
-          "exportsUsd": 669347,
-          "rate": "TODO",
-          "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
-        }
-      },
-      "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
-        "mainProducts": "Integrated circuits (chips) (8542) · Semiconductor devices and solar cells (8541)",
-        "tariffNow": "TODO",
-        "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
-        },
-        "countryGuide": {
-          "label": "TODO",
-          "url": "TODO"
-        }
-      }
-    },
-    {
       "countryCode": 458,
       "name": "Malaysia",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "Malaysia's MFN tariff schedule (no U.S. free-trade agreement); 0% on chips, phones and most electronics, moderate rates on other electrical machinery",
       "usTradeAgreement": null,
       "exportsUsd": 10631307208,
       "priorExportsUsd": 9741468491,
       "sharePct": 4.7,
       "changePct": 9.1,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 77139533,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8502": {
           "exportsUsd": 19304574,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8503": {
           "exportsUsd": 6931669,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8504": {
           "exportsUsd": 293614472,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8505": {
           "exportsUsd": 3389595,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8506": {
           "exportsUsd": 28186927,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8507": {
           "exportsUsd": 5322748,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8508": {
           "exportsUsd": 452408,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8509": {
           "exportsUsd": 168729,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8510": {
           "exportsUsd": 255790,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8511": {
           "exportsUsd": 36543281,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8512": {
           "exportsUsd": 4229373,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8513": {
           "exportsUsd": 337752,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8514": {
           "exportsUsd": 26711625,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8515": {
           "exportsUsd": 6694659,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8516": {
           "exportsUsd": 17009128,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8517": {
           "exportsUsd": 699899025,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8518": {
           "exportsUsd": 13030776,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8519": {
           "exportsUsd": 454730,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8521": {
           "exportsUsd": 436035,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8522": {
           "exportsUsd": 41616,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8523": {
           "exportsUsd": 339049760,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8524": {
           "exportsUsd": 1496822,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8525": {
           "exportsUsd": 10772402,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8526": {
           "exportsUsd": 5074012,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8527": {
           "exportsUsd": 1580925,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8528": {
           "exportsUsd": 12317478,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8529": {
           "exportsUsd": 20661182,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8530": {
           "exportsUsd": 1602545,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8531": {
           "exportsUsd": 16802429,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8532": {
           "exportsUsd": 77216420,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8533": {
           "exportsUsd": 28820861,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8534": {
           "exportsUsd": 128761287,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8535": {
           "exportsUsd": 4951739,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8536": {
           "exportsUsd": 225883432,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8537": {
           "exportsUsd": 95423824,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8538": {
           "exportsUsd": 81330137,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8539": {
           "exportsUsd": 7715247,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8540": {
           "exportsUsd": 1913479,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8541": {
           "exportsUsd": 833603073,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8542": {
           "exportsUsd": 7156625442,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, consistent with Malaysia's WTO Information Technology Agreement commitments"
         },
         "8543": {
           "exportsUsd": 75977047,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8544": {
           "exportsUsd": 222148750,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8545": {
           "exportsUsd": 1796616,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8546": {
           "exportsUsd": 15710825,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8547": {
           "exportsUsd": 9133086,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8548": {
           "exportsUsd": 13558064,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         },
         "8549": {
           "exportsUsd": 1225879,
-          "rate": "TODO",
+          "rate": "5% (representative MFN)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Malaysia's national tariff schedule, representative rate for non-electronics lines in this chapter (WTO simple-average applied MFN: 5.3%, 2025)"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Malaysia, a major semiconductor-assembly and test hub, charges 0% MFN on chips and most electronics — consistent with its WTO Information Technology Agreement commitments — and its moderate general tariff on other electrical machinery hasn't changed since January 2025.",
         "mainProducts": "Integrated circuits (chips) (8542) · Semiconductor devices and solar cells (8541)",
-        "tariffNow": "TODO",
+        "tariffNow": "MFN (no U.S. FTA); 0% on electronics",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "SIRIM QAS International / Malaysian Communications and Multimedia Commission (MCMC)",
+          "url": "https://www.mcmc.gov.my",
+          "requirement": "SIRIM certification for electrical safety; MCMC type approval for equipment that transmits or connects to a network"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Malaysia import requirements",
@@ -2195,311 +1880,311 @@
     {
       "countryCode": 344,
       "name": "Hong Kong",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "Hong Kong duty-free port — no tariff on almost all goods, including this entire chapter",
       "usTradeAgreement": null,
       "exportsUsd": 8872639425,
       "priorExportsUsd": 8717220112,
       "sharePct": 3.9,
       "changePct": 1.8,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 14835898,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8502": {
           "exportsUsd": 22105852,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8503": {
           "exportsUsd": 4169636,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8504": {
           "exportsUsd": 140349757,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8505": {
           "exportsUsd": 3737813,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8506": {
           "exportsUsd": 6070921,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8507": {
           "exportsUsd": 10279021,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8508": {
           "exportsUsd": 1423115,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8509": {
           "exportsUsd": 2505385,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8510": {
           "exportsUsd": 300739,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8511": {
           "exportsUsd": 7457418,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8512": {
           "exportsUsd": 3514784,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8513": {
           "exportsUsd": 574750,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8514": {
           "exportsUsd": 1441387,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8515": {
           "exportsUsd": 3595072,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8516": {
           "exportsUsd": 4017918,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8517": {
           "exportsUsd": 5523895706,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8518": {
           "exportsUsd": 88527119,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8519": {
           "exportsUsd": 2877921,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8521": {
           "exportsUsd": 2362893,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8522": {
           "exportsUsd": 263870984,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8523": {
           "exportsUsd": 174254098,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8524": {
           "exportsUsd": 2141164,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8525": {
           "exportsUsd": 89555076,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8526": {
           "exportsUsd": 7449381,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8527": {
           "exportsUsd": 655000,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8528": {
           "exportsUsd": 15532614,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8529": {
           "exportsUsd": 48782811,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8530": {
           "exportsUsd": 184037,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8531": {
           "exportsUsd": 29583491,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8532": {
           "exportsUsd": 40097611,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8533": {
           "exportsUsd": 62122530,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8534": {
           "exportsUsd": 16221973,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8535": {
           "exportsUsd": 4154373,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8536": {
           "exportsUsd": 253090741,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8537": {
           "exportsUsd": 72176721,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8538": {
           "exportsUsd": 50332950,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8539": {
           "exportsUsd": 4890368,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8540": {
           "exportsUsd": 1247866,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8541": {
           "exportsUsd": 208194006,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8542": {
           "exportsUsd": 1484238261,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8543": {
           "exportsUsd": 25395305,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8544": {
           "exportsUsd": 160791473,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8545": {
           "exportsUsd": 347213,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8546": {
           "exportsUsd": 1556298,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8547": {
           "exportsUsd": 2603988,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8548": {
           "exportsUsd": 8801552,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         },
         "8549": {
           "exportsUsd": 324435,
-          "rate": "TODO",
+          "rate": "Free (duty-free port)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Hong Kong charges no customs duty on general imports; unchanged since January 2025"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Hong Kong charges no import duty on anything in this chapter — it is a duty-free port — so tariffs have never been a factor here.",
         "mainProducts": "Smartphones and network equipment (8517) · Integrated circuits (chips) (8542)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (duty-free port)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Office of the Communications Authority (OFCA)",
+          "url": "https://www.ofca.gov.hk",
+          "requirement": "Type approval for telecommunications equipment (phones, network and radio gear); most other electrical goods need no pre-market approval"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Hong Kong import requirements",
@@ -2510,311 +2195,311 @@
     {
       "countryCode": 410,
       "name": "South Korea",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
       "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
       "exportsUsd": 5604995145,
       "priorExportsUsd": 5884211820,
       "sharePct": 2.5,
       "changePct": -4.7,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 267946820,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8502": {
           "exportsUsd": 44717497,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8503": {
           "exportsUsd": 28305908,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8504": {
           "exportsUsd": 219834515,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8505": {
           "exportsUsd": 6116399,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8506": {
           "exportsUsd": 9038401,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8507": {
           "exportsUsd": 257833797,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8508": {
           "exportsUsd": 1823832,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8509": {
           "exportsUsd": 10417190,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8510": {
           "exportsUsd": 1676826,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8511": {
           "exportsUsd": 10233197,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8512": {
           "exportsUsd": 10714193,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8513": {
           "exportsUsd": 882774,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8514": {
           "exportsUsd": 64692807,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8515": {
           "exportsUsd": 33392677,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8516": {
           "exportsUsd": 49130673,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8517": {
           "exportsUsd": 280622892,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8518": {
           "exportsUsd": 196654146,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8519": {
           "exportsUsd": 1384849,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8521": {
           "exportsUsd": 705630,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8522": {
           "exportsUsd": 543252,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8523": {
           "exportsUsd": 99238202,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8524": {
           "exportsUsd": 3180449,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8525": {
           "exportsUsd": 92435524,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8526": {
           "exportsUsd": 83298785,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8527": {
           "exportsUsd": 1706035,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8528": {
           "exportsUsd": 94977467,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8529": {
           "exportsUsd": 91236314,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8530": {
           "exportsUsd": 6589973,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8531": {
           "exportsUsd": 38860314,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8532": {
           "exportsUsd": 27224496,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8533": {
           "exportsUsd": 38119483,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8534": {
           "exportsUsd": 17154829,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8535": {
           "exportsUsd": 64186005,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8536": {
           "exportsUsd": 342797455,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8537": {
           "exportsUsd": 162229821,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8538": {
           "exportsUsd": 54791942,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8539": {
           "exportsUsd": 31163658,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8540": {
           "exportsUsd": 41473227,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8541": {
           "exportsUsd": 255666004,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8542": {
           "exportsUsd": 1812211900,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8543": {
           "exportsUsd": 229696134,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8544": {
           "exportsUsd": 137033870,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8545": {
           "exportsUsd": 17649630,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8546": {
           "exportsUsd": 5177590,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8547": {
           "exportsUsd": 27685978,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8548": {
           "exportsUsd": 4995125,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         },
         "8549": {
           "exportsUsd": 327546660,
-          "rate": "TODO",
+          "rate": "Free (KORUS)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "HS 8501–8549, KORUS Tariff Schedule of Korea; most industrial tariffs eliminated by 2016"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "South Korea has charged nothing on qualifying U.S. electrical-machinery exports since KORUS phased out industrial tariffs by 2016, and that hasn't changed.",
         "mainProducts": "Integrated circuits (chips) (8542) · Switches, breakers, relays and connectors (1,000 V or less) (8536)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (KORUS)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "KC certification, administered by the Radio Research Agency (RRA)",
+          "url": "https://www.rra.go.kr/en/",
+          "requirement": "KC mark required for most electrical and electronic equipment, including radio-equipment certification for anything that transmits"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: South Korea import requirements",
@@ -2825,311 +2510,311 @@
     {
       "countryCode": 826,
       "name": "United Kingdom",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "UK Global Tariff (MFN) — no comprehensive U.S.–UK trade agreement covers this chapter",
       "usTradeAgreement": null,
       "exportsUsd": 5497342033,
       "priorExportsUsd": 4908863678,
       "sharePct": 2.4,
       "changePct": 12,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8501": {
           "exportsUsd": 224087846,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8502": {
           "exportsUsd": 38773490,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8503": {
           "exportsUsd": 39896854,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8504": {
           "exportsUsd": 214129429,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8505": {
           "exportsUsd": 18895571,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8506": {
           "exportsUsd": 28415224,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8507": {
           "exportsUsd": 196714861,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8508": {
           "exportsUsd": 3249026,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8509": {
           "exportsUsd": 9266976,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8510": {
           "exportsUsd": 7129878,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8511": {
           "exportsUsd": 194484705,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8512": {
           "exportsUsd": 9586477,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8513": {
           "exportsUsd": 2448303,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8514": {
           "exportsUsd": 15588527,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8515": {
           "exportsUsd": 14426305,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8516": {
           "exportsUsd": 26784113,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8517": {
           "exportsUsd": 1483164489,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8518": {
           "exportsUsd": 62756107,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8519": {
           "exportsUsd": 8940445,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8521": {
           "exportsUsd": 22258979,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8522": {
           "exportsUsd": 3570973,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8523": {
           "exportsUsd": 126163319,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8524": {
           "exportsUsd": 10393087,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8525": {
           "exportsUsd": 152784937,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8526": {
           "exportsUsd": 116980340,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8527": {
           "exportsUsd": 12631416,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8528": {
           "exportsUsd": 51991299,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8529": {
           "exportsUsd": 135737087,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8530": {
           "exportsUsd": 8388844,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8531": {
           "exportsUsd": 124992230,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8532": {
           "exportsUsd": 20531924,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8533": {
           "exportsUsd": 31751578,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8534": {
           "exportsUsd": 29174387,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8535": {
           "exportsUsd": 29727283,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8536": {
           "exportsUsd": 421755172,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8537": {
           "exportsUsd": 428175650,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8538": {
           "exportsUsd": 61093742,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8539": {
           "exportsUsd": 10915247,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8540": {
           "exportsUsd": 28759365,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8541": {
           "exportsUsd": 77630809,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8542": {
           "exportsUsd": 377849603,
-          "rate": "TODO",
+          "rate": "Free",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff for ITA-covered electronics (HS 8517, 8541, 8542 and similar lines); 0% MFN, inherited from EU/UK WTO Information Technology Agreement commitments"
         },
         "8543": {
           "exportsUsd": 209895402,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8544": {
           "exportsUsd": 378405583,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8545": {
           "exportsUsd": 8588835,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8546": {
           "exportsUsd": 3359421,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8547": {
           "exportsUsd": 10350361,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8548": {
           "exportsUsd": 3745662,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         },
         "8549": {
           "exportsUsd": 1000872,
-          "rate": "TODO",
+          "rate": "2.7% (representative)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "UK Global Tariff, representative rate for motors, appliances and cable in this chapter (illustrative line: HS 8516.29, UK Trade Tariff)"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "The UK has no FTA with the U.S. covering this chapter, but its Global Tariff already charges 0% on most electronics (inherited from the EU's WTO Information Technology Agreement commitments) and only a low single-digit rate on other electrical machinery — unchanged since January 2025.",
         "mainProducts": "Smartphones and network equipment (8517) · Control panels and switchboards (8537)",
-        "tariffNow": "TODO",
+        "tariffNow": "UK MFN; 0% on most electronics",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "UKCA marking",
+          "url": "https://www.gov.uk/guidance/using-the-ukca-marking",
+          "requirement": "UKCA marking (the UK's post-Brexit equivalent of CE) for most electrical and electronic equipment sold in Great Britain"
         },
         "countryGuide": {
           "label": "Country Commercial Guide: UK import requirements",
@@ -3143,52 +2828,51 @@
       "market": "Mexico",
       "heading": "8542",
       "exportsUsd": 12350615437,
-      "rate": "TODO"
+      "rate": "Free (USMCA)"
     },
     {
       "market": "China",
       "heading": "8542",
       "exportsUsd": 9962293050,
-      "rate": "TODO"
+      "rate": "10% (0% MFN + 10% extra)"
     },
     {
       "market": "Malaysia",
       "heading": "8542",
       "exportsUsd": 7156625442,
-      "rate": "TODO"
+      "rate": "Free"
     },
     {
       "market": "European Union",
       "heading": "8517",
       "exportsUsd": 6899376086,
-      "rate": "TODO"
-    },
-    {
-      "market": "Other Asia, nes",
-      "heading": "8542",
-      "exportsUsd": 6722155109,
-      "rate": "TODO"
+      "rate": "Free (EU–US framework)"
     },
     {
       "market": "Mexico",
       "heading": "8517",
       "exportsUsd": 6528012591,
-      "rate": "TODO"
+      "rate": "Free (USMCA)"
     },
     {
       "market": "Hong Kong",
       "heading": "8517",
       "exportsUsd": 5523895706,
-      "rate": "TODO"
+      "rate": "Free (duty-free port)"
     },
     {
       "market": "Mexico",
       "heading": "8523",
       "exportsUsd": 5400641272,
-      "rate": "TODO"
+      "rate": "Free (USMCA)"
     }
   ],
-  "assumptions": ["TODO: where the rates come from (schedule, year, one subheading per group) and how trade agreements and extra duties are applied"],
+  "assumptions": [
+    "Rates are grouped into two clusters per market rather than priced line by line: an \"electronics\" cluster (headings 8517–8542 covering phones, network gear, storage media, displays, cameras and semiconductors) that is largely covered by the WTO Information Technology Agreement and typically duty-free even outside a U.S. free-trade agreement, and an \"electromechanical\" cluster (motors, generators, batteries, appliances, switchgear and cable) that sees each market's ordinary, non-zero MFN rate. One representative subheading per cluster was checked for each non-FTA market; national 8–10-digit lines can differ from the representative rate.",
+    "For USMCA, CUSMA and KORUS partners (Mexico, Canada, South Korea), and for Hong Kong's duty-free port, the rate shown applies uniformly across the whole chapter.",
+    "For the EU, Regulation (EU) 2026/1455 zeroes out the chapter from July 1, 2026; before that date the EU's own MFN rate was already 0% on the electronics cluster and a low single-digit rate on the rest.",
+    "China's 10% extra duty on all U.S. goods (in force since May 2025) is added on top of China's own MFN rate for every heading in this chapter; it is not specific to electronics."
+  ],
   "sources": [
     {
       "id": "comtrade-exports",
@@ -3201,5 +2885,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 9 markets shown take 75% of 2025 U.S. Chapter 85 exports. A customs union (the EU) is one market: its members share one tariff."
+  "coverageNote": "The 8 markets shown take 94% of 2025 U.S. Chapter 85 exports. A customs union (the EU) is one market: its members share one tariff."
 }

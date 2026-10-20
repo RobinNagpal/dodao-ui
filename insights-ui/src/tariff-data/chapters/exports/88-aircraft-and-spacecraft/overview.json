@@ -12,13 +12,20 @@
     "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft",
     "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — U.S. Exports & Foreign Tariffs",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "U.S. Aircraft & Spacecraft Exports and Foreign Tariffs (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "U.S. aircraft and spacecraft exports were $164.33B in 2025, up 22.4%. Where they go, what each country charges on U.S. aircraft and parts, and which tariffs changed since January 2025.",
+      "keywords": [
+        "US aircraft exports",
+        "tariffs on US aircraft",
+        "China tariff on US aircraft",
+        "Boeing Airbus tariff dispute",
+        "HS 88 exports",
+        "US aircraft parts exports"
+      ]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: 2 short paragraphs: how much the U.S. exports and what; where tariffs matter and where they do not",
+  "intro": "The U.S. exported **$164.33B** of aircraft, spacecraft and parts in 2025, up **22.4%** on 2024 — the fastest-growing of this report's chapters so far and one of the largest single U.S. export categories. China and France were the two largest buyers, each close to 10% of the total; France's share is mostly engines and other parts (heading 8807) moving through the CFM International (GE/Safran) supply chain that feeds Airbus's own assembly lines, not finished aircraft. Published trade statistics heavily redact individual aircraft and engine sales for confidentiality, so only about **7%** of this chapter's 2025 exports can be matched to a specific HS heading or to a buyer-and-heading pair in official data (see the note under \"What the U.S. sells\" below); the totals by country and by year are complete and reliable.\n\nFor most of the largest buyers, tariffs are not the obstacle: the EU, UK, Canada, Japan, Mexico, Singapore and Brazil all charge **0%** on U.S. aircraft and parts, either under the 1979 WTO Agreement on Trade in Civil Aircraft, a free-trade agreement, or their own exemption. **China** is the one exception — its extra 10% tariff on all U.S. goods reaches finished aircraft and most parts, on top of a low ordinary rate. What usually decides access instead is FAA/EASA-style airworthiness certification, not the tariff schedule.",
   "latestYear": 2025,
   "priorYear": 2024,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
@@ -42,12 +49,17 @@
       "note": "China, France"
     },
     {
-      "label": "TODO",
-      "value": "TODO",
-      "note": "TODO: a tariff stat, e.g. \"Top buyers charging 0%\" or \"Buyers that raised tariffs\""
+      "label": "Top buyers charging 0%",
+      "value": "7 of 9",
+      "note": "EU, UK, Canada, Japan, Mexico, Singapore, Brazil — only China charges more"
     }
   ],
-  "keyTakeaways": ["TODO"],
+  "keyTakeaways": [
+    "U.S. aircraft and spacecraft exports reached $164.33B in 2025, up 22.4% — the fastest growth of any chapter in this report so far.",
+    "Seven of the nine largest buyers (the EU, UK, Canada, Japan, Mexico, Singapore and Brazil) charge 0% on U.S. aircraft and parts, under the WTO Civil Aircraft Agreement, an FTA, or their own exemption; access there turns on airworthiness certification, not tariffs.",
+    "China is the exception: its 10% extra tariff on all U.S. goods reaches finished aircraft and most parts, though some imported aviation-maintenance parts may still qualify for China's own duty exemption.",
+    "Watch January 10, 2027, when China's 24-point tariff suspension is due to end, and the EU's Boeing/Airbus tariff truce, repeatedly extended since 2021 and due for its next review after July 2026."
+  ],
   "byYear": [
     {
       "year": 2020,
@@ -103,8 +115,8 @@
       "priorExportsUsd": 11535268522,
       "sharePct": 9.7,
       "changePct": 37.7,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
+      "status": "raised"
     },
     {
       "countryCode": 251,
@@ -113,8 +125,8 @@
       "priorExportsUsd": 11252211041,
       "sharePct": 9.3,
       "changePct": 36.2,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (Civil Aircraft Agreement / EU common external tariff)",
+      "status": "unchanged"
     },
     {
       "countryCode": 276,
@@ -123,8 +135,8 @@
       "priorExportsUsd": 9576226556,
       "sharePct": 7.3,
       "changePct": 25.7,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (Civil Aircraft Agreement / EU common external tariff)",
+      "status": "unchanged"
     },
     {
       "countryCode": 826,
@@ -133,8 +145,8 @@
       "priorExportsUsd": 10522841361,
       "sharePct": 7.1,
       "changePct": 11.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (Civil Aircraft Agreement)",
+      "status": "unchanged"
     },
     {
       "countryCode": 76,
@@ -143,8 +155,8 @@
       "priorExportsUsd": 9999303850,
       "sharePct": 6.5,
       "changePct": 6.8,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (domestic exemption, Gecex Resolution 310/2022)",
+      "status": "unchanged"
     },
     {
       "countryCode": 124,
@@ -153,8 +165,8 @@
       "priorExportsUsd": 8260134956,
       "sharePct": 5.6,
       "changePct": 11.3,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (Civil Aircraft Agreement; USMCA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 484,
@@ -163,8 +175,8 @@
       "priorExportsUsd": 6307661397,
       "sharePct": 5.3,
       "changePct": 37.8,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
     },
     {
       "countryCode": 702,
@@ -173,8 +185,8 @@
       "priorExportsUsd": 6132956892,
       "sharePct": 4.2,
       "changePct": 13,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (U.S.–Singapore FTA; Singapore applies near-zero tariffs generally)",
+      "status": "unchanged"
     },
     {
       "countryCode": 392,
@@ -183,8 +195,8 @@
       "priorExportsUsd": 6100511946,
       "sharePct": 3.9,
       "changePct": 6.2,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (Civil Aircraft Agreement)",
+      "status": "unchanged"
     },
     {
       "countryCode": 784,
@@ -193,8 +205,8 @@
       "priorExportsUsd": 3932102504,
       "sharePct": 3.4,
       "changePct": 44.1,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Up to 5% (GCC Common Customs Tariff; this report could not independently confirm the published rate for this exact HS line)",
+      "status": "unchanged"
     },
     {
       "countryCode": 410,
@@ -203,8 +215,8 @@
       "priorExportsUsd": 3357796442,
       "sharePct": 2.8,
       "changePct": 35.6,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (KORUS, for qualifying goods)",
+      "status": "unchanged"
     },
     {
       "countryCode": 792,
@@ -213,8 +225,8 @@
       "priorExportsUsd": 2042117632,
       "sharePct": 2.2,
       "changePct": 79.5,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Likely free (Turkey aligns its external tariff with the EU's under their customs union; not independently confirmed for this exact HS line)",
+      "status": "unchanged"
     },
     {
       "countryCode": 458,
@@ -223,8 +235,8 @@
       "priorExportsUsd": 2209707532,
       "sharePct": 2,
       "changePct": 48.3,
-      "tariffNow": "TODO",
-      "status": "TODO"
+      "tariffNow": "Free (MFN)",
+      "status": "unchanged"
     }
   ],
   "othersExportsUsd": 50199076015,
@@ -383,5 +395,5 @@
       "url": "https://comtradeplus.un.org/"
     }
   ],
-  "coverageNote": "The 13 buyers listed take 70% of 2025 U.S. Chapter 88 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+  "coverageNote": "The 13 buyers listed take 70% of 2025 U.S. Chapter 88 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports. Chapter and country totals reconcile fully with Comtrade's partner data; the heading and subheading breakdown below is far less complete, because official statistics redact the value of individual aircraft and engine sales for confidentiality — see \"What the U.S. sells\"."
 }

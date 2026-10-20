@@ -12,13 +12,13 @@
     "path": "/industry-tariff-report/exports/chapters/12-oil-seeds-and-grains/tariff-updates",
     "h1": "HTS Chapter 12: Oil Seeds and Oleaginous Fruits; Miscellaneous Grains, Seeds and Fruit; Industrial or Medicinal Plants; Straw and Fodder — Foreign Tariff Changes on U.S. Exports",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "Chapter 12 Export Tariff Updates: China, Mexico & EU Actions on U.S. Soybeans",
+      "shortDescription": "Every foreign tariff change on U.S. Chapter 12 exports since January 2025, what's in force, and what's coming.",
+      "keywords": ["china soybean tariff 2026", "soybean tariff update", "chapter 12 tariff changes", "china soybean exclusion", "USMCA soybean tariff"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what changed for U.S. exporters of this chapter since January 2025, and the one thing to watch",
+  "intro": "China is the only foreign action that actually costs this chapter's exporters money today: on top of its normal rate, it still charges the 10% extra tariff from the 2025 U.S.–China tariff fight, now extended to January 10, 2027. The one thing to watch is China's own September 2026 goodwill tariff list — it covers corn, wheat, meat and dairy, but explicitly left out non-seed soybeans, this chapter's biggest export, so there is no published date for that 10% coming off soybeans specifically.",
   "scope": "The 9 largest markets for U.S. Chapter 12 goods (75% of 2025 exports).",
   "stats": [
     {
@@ -47,7 +47,7 @@
       "countries": ["China"],
       "title": "China's tariff exclusions for U.S. goods end",
       "whatHappens": "China's exclusions from its 2019 counter-tariffs on U.S. goods are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
-      "impact": "TODO: what it would mean for U.S. Chapter 12 goods",
+      "impact": "The exclusions mainly matter for this chapter because they waive China's older 2018–19 retaliation tariff (25%) on soybeans, not the newer 10% reciprocal tariff. If they lapse without renewal, soybeans would face roughly 3% MFN + 10% + 25%, instead of today's 3% + 10%.",
       "status": "No extension announced",
       "sourceIds": ["wh-china-deal-2025"]
     },
@@ -58,7 +58,7 @@
       "countries": ["China"],
       "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
       "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
-      "impact": "TODO: what it would mean for U.S. Chapter 12 goods",
+      "impact": "This is the 10% rate itself — the one tariff that currently costs this chapter's exporters money. If China lets the suspension lapse without a further extension, the rate on U.S. soybeans and other Chapter 12 goods could rise again toward the 2025 peak levels.",
       "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
       "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
     }
@@ -70,27 +70,14 @@
       "measure": "Extra tariff on all U.S. goods cut to 10%",
       "before": "0% (Jan 2025)",
       "now": "10%",
-      "appliesTo": "TODO: which Chapter 12 goods it reaches, on top of which normal rate",
-      "whatItMeans": "TODO: a worked example: what a typical shipment pays now vs January 2025",
+      "appliesTo": "Every Chapter 12 good sold to China, on top of its normal (MFN) rate — about 3% for non-seed soybeans (1201.90). China's older, soybean-specific 2018–19 retaliation tariff (25%) is separately waived through an exclusion process (see \"What's coming\"), so in practice soybeans currently pay the 3% MFN rate plus this 10%, not the 25%.",
+      "whatItMeans": "A $1 million shipment of soybeans to China pays about $30,000 in normal duty plus $100,000 under this measure — $130,000 total — versus $30,000 before January 2025. Had the 2018–19 tariff not been waived, the same shipment would pay an extra $250,000 on top of that.",
       "effectiveFrom": "2025-05-14",
       "effectiveSourceId": "cn-sctc-may2025",
       "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
     }
   ],
   "changes": [
-    {
-      "id": "eu-aircraft-truce",
-      "date": "2026-07-06",
-      "type": "tradeDeal",
-      "countries": ["European Union"],
-      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
-      "before": "0% (suspended since 2021)",
-      "now": "0% (suspension extended)",
-      "coversChapter": "no",
-      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
-      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
-      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
-    },
     {
       "id": "cn-bot",
       "date": "2026-09-27",
@@ -99,9 +86,9 @@
       "title": "U.S.–China Board of Trade product lists",
       "before": null,
       "now": null,
-      "coversChapter": "partly",
+      "coversChapter": "no",
       "status": "Recommended for reduced tariffs; no Chinese tariff cut published yet",
-      "detail": "China's import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. No Chinese tariff cut has been published yet.",
+      "detail": "China's import list under the U.S.–China Board of Trade “30-for-30” framework names 1,619 Chinese tariff lines that could get lower tariffs on U.S. goods. No Chinese tariff cut has been published yet. China's list covers corn, wheat, sorghum, meat, dairy and vegetable oils and meals, but explicitly excludes non-seed soybeans (HS 1201.90) — this chapter's single largest export, $16.2 billion in 2025 — so the chapter's 10% reciprocal tariff (see \"In force today\") is unaffected by this list.",
       "sourceIds": ["cn-bot-list", "cn-board-of-trade"]
     },
     {
@@ -129,6 +116,19 @@
       "status": "Nothing imposed on U.S. goods; talks ongoing",
       "detail": "Brazil has published no countermeasure on U.S. goods. Its Economic Reciprocity Law (Law 15,122 of April 11, 2025) would allow them — such as import restrictions or suspending intellectual-property obligations — but none has been applied. On July 27, 2026 Brazil asked the United States for WTO consultations over U.S. tariffs on Brazilian goods, and Brazilian ministers met USTR on August 31 and September 30, 2026 to set up a working group on a possible agreement.",
       "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
+    },
+    {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "coversChapter": "no",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
     },
     {
       "id": "mx-usmca",
@@ -231,7 +231,7 @@
       "now": null,
       "coversChapter": "partly",
       "status": "In force",
-      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S.",
+      "detail": "Executive Order 14345 implements the U.S.–Japan agreement: Japan works toward buying U.S. farm and other goods worth $8 billion a year and investing in the U.S. Soybeans and other Chapter 12 goods are among the farm goods Japan is working toward buying more of; Japan does not charge a tariff on them either way (see Markets).",
       "sourceIds": ["jp-deal"]
     },
     {

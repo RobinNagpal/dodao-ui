@@ -140,6 +140,16 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'swissmedic.ch',
   'gov.br',
   'cso.ie', // Ireland Central Statistics Office
+  'kemendag.go.id', // Indonesia Ministry of Trade
+  'plantprotection.gov.pk', // Pakistan Department of Plant Protection
+  'nyce.org.mx', // Mexico — NYCE (NOM product-certification body)
+  'mcmc.gov.my', // Malaysia Communications and Multimedia Commission
+  'ofca.gov.hk', // Hong Kong Office of the Communications Authority
+  'rra.go.kr', // Korea Radio Research Agency
+  'caa.co.uk', // UK Civil Aviation Authority
+  'caas.gov.sg', // Singapore Civil Aviation Authority
+  'gcaa.gov.ae', // UAE General Civil Aviation Authority
+  'faa.gov', // U.S. Federal Aviation Administration (export airworthiness approval)
 ];
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */

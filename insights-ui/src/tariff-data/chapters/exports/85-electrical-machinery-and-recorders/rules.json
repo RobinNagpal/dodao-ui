@@ -12,13 +12,13 @@
     "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/rules",
     "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — U.S. Export Rules & Ways to Pay Less Abroad",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "U.S. Export Rules for Electrical Machinery & Semiconductors (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "What U.S. exporters of electrical machinery, electronics and semiconductors must do before shipping, including BIS export-control licensing for advanced chips.",
+      "keywords": ["export semiconductor license", "BIS advanced computing export controls", "schedule b electronics", "export electrical machinery rules"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what a U.S. exporter of this chapter must do before shipping, and which agencies are involved",
+  "intro": "A U.S. exporter of electrical machinery and electronics follows the same five steps every exporter does. For most of this chapter — motors, appliances, cable, switchgear — that is the whole story: the goods are EAR99 and need no export license. For advanced computing chips and the equipment that makes them, it is not: a U.S. export license, not any foreign tariff, decides where the chapter's most valuable goods can go.",
   "regulationsAsOf": "2026-10-08",
   "steps": [
     {
@@ -40,7 +40,7 @@
           "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 85 goods, or null"
+      "chapterNote": "Most of this chapter's trade runs through a handful of Schedule B numbers: integrated circuits (8542), smartphones and network equipment (8517) and insulated wire and cable (8544) together were more than 55% of 2025 exports."
     },
     {
       "id": "screen",
@@ -57,7 +57,7 @@
           "url": "https://www.trade.gov/data-visualization/csl-search"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 85 goods, or null"
+      "chapterNote": null
     },
     {
       "id": "licence",
@@ -82,7 +82,7 @@
           "url": "https://www.bis.gov/licensing/classify-your-item"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 85 goods, or null"
+      "chapterNote": "This is the step that matters most for this chapter. Certain high-performance computing chips and the equipment that makes them carry ECCNs 3A090, 4A090 and 3B090 — created by BIS's October 2022 rule and tightened several times since — and need a licence for China and dozens of other destinations regardless of value. Most consumer electronics, by contrast, are EAR99 and need no licence at all."
     },
     {
       "id": "sanctions",
@@ -99,7 +99,7 @@
           "url": "https://www.ecfr.gov/current/title-15/part-746"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 85 goods, or null"
+      "chapterNote": null
     },
     {
       "id": "eei",
@@ -128,298 +128,370 @@
           "url": "https://www.census.gov/foreign-trade/aes/index.html"
         }
       ],
-      "chapterNote": "TODO: what this step means for Chapter 85 goods, or null"
+      "chapterNote": "Because many 8541/8542 shipments need a BIS licence, EEI filing is required for those at any value — not only above the $2,500 Schedule B threshold that covers most of this chapter's other goods."
     }
   ],
-  "rules": [],
+  "rules": [
+    {
+      "id": "bis-advanced-computing",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Advanced computing and semiconductor-manufacturing controls (ECCNs 3A090, 3B090, 4A090 and related software/technology entries)",
+      "citations": [
+        {
+          "label": "87 FR 62186 (Oct. 13, 2022 interim final rule)",
+          "url": "https://www.federalregister.gov/documents/2022/10/13/2022-21658/implementation-of-additional-export-controls-certain-advanced-computing-and-semiconductor"
+        },
+        {
+          "label": "15 CFR 744.23 (advanced-computing licence requirement)",
+          "url": "https://www.ecfr.gov/current/title-15/section-744.23"
+        },
+        {
+          "label": "BIS: Entity List (15 CFR 744 Supp. 4)",
+          "url": "https://www.bis.gov/entity-list"
+        }
+      ]
+    },
+    {
+      "id": "bis-encryption",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Encryption-item classification for phones and network equipment (ECCN 5A002 and related entries)",
+      "citations": [
+        {
+          "label": "15 CFR 740.17 (License Exception ENC)",
+          "url": "https://www.ecfr.gov/current/title-15/section-740.17"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    },
+    {
+      "id": "bis-dual-use-radar",
+      "agency": "Bureau of Industry and Security (BIS) / Department of State (DDTC)",
+      "title": "Dual-use and military radar, sonar and navigation controls (Commerce Control List Category 6; ITAR)",
+      "citations": [
+        {
+          "label": "15 CFR 774 Supp. 1, Category 6",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "22 CFR 121.1 (U.S. Munitions List)",
+          "url": "https://www.ecfr.gov/current/title-22/section-121.1"
+        }
+      ]
+    },
+    {
+      "id": "dot-battery",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Lithium-battery hazmat transport rules (packaging, marking and documentation)",
+      "citations": [
+        {
+          "label": "49 CFR 173.185 (lithium batteries)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.185"
+        }
+      ]
+    },
+    {
+      "id": "epa-ewaste",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Hazardous electronic-waste export notification",
+      "citations": [
+        {
+          "label": "40 CFR Part 262 Subpart H (export of hazardous waste)",
+          "url": "https://www.ecfr.gov/current/title-40/part-262/subpart-H"
+        }
+      ]
+    }
+  ],
   "groups": [
     {
       "heading": "8501",
       "label": "Electric motors and generators",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8502",
       "label": "Generating sets and rotary converters",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8503",
       "label": "Parts of motors and generators",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8504",
       "label": "Transformers, power supplies and inductors",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8505",
       "label": "Magnets and electromagnetic devices",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8506",
       "label": "Primary cells and batteries",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8507",
       "label": "Storage batteries (lithium-ion, lead-acid)",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["dot-battery"],
+      "note": "Lithium-ion and lithium-metal batteries are regulated as hazardous materials in transport (UN 3480/3481, Class 9), which requires specific packaging, marking and documentation under DOT/PHMSA rules, separate from the steps above."
     },
     {
       "heading": "8508",
       "label": "Vacuum cleaners",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8509",
       "label": "Domestic appliances with motor",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8510",
       "label": "Shavers and hair clippers",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8511",
       "label": "Ignition and starting equipment",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8512",
       "label": "Vehicle lighting and signaling",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8513",
       "label": "Portable electric lamps",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8514",
       "label": "Industrial electric furnaces",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8515",
       "label": "Welding and soldering equipment",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8516",
       "label": "Water heaters, space heaters and household heating appliances",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8517",
       "label": "Smartphones and network equipment",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["bis-encryption"],
+      "note": "Phones and network equipment with strong encryption can carry an ECCN in the 5A002 family rather than being EAR99; check the Commerce Control List before assuming a phone or router is unregulated."
     },
     {
       "heading": "8518",
       "label": "Microphones, speakers and headphones",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8519",
       "label": "Sound recording and reproducing apparatus",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8521",
       "label": "Video recorders and players",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8522",
       "label": "Parts of sound and video apparatus",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8523",
       "label": "Storage media: SSDs, cards, discs and tapes",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8524",
       "label": "Flat panel display modules",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8525",
       "label": "Cameras and transmitters",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8526",
       "label": "Radar and navigation apparatus",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["bis-dual-use-radar"],
+      "note": "Some radar, sonar and GPS-guidance items are controlled for military or dual-use reasons under Commerce Control List Category 6 or the ITAR, not just the generic licence step."
     },
     {
       "heading": "8527",
       "label": "Radio receivers",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8528",
       "label": "Monitors, projectors and televisions",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8529",
       "label": "Parts of TVs, radios, cameras and radar",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8530",
       "label": "Railway and traffic signaling equipment",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8531",
       "label": "Alarms, bells and indicator panels",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8532",
       "label": "Capacitors",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8533",
       "label": "Resistors",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8534",
       "label": "Printed circuits",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8535",
       "label": "High-voltage switchgear (over 1,000 V)",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8536",
       "label": "Switches, breakers, relays and connectors (1,000 V or less)",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8537",
       "label": "Control panels and switchboards",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8538",
       "label": "Parts of switching apparatus",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8539",
       "label": "Lamps and LED light sources",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8540",
       "label": "Electron tubes",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8541",
       "label": "Semiconductor devices and solar cells",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["bis-advanced-computing"],
+      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); see the licence step above."
     },
     {
       "heading": "8542",
       "label": "Integrated circuits (chips)",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["bis-advanced-computing"],
+      "note": "Certain high-performance GPUs, accelerators and other advanced computing chips carry ECCN 3A090 (and related 4A090/3D001/3E001 entries); the equipment and materials that make them carry ECCN 3B090 and related 4D090/4E001 entries. See the licence step above."
     },
     {
       "heading": "8543",
       "label": "Other electrical machines and apparatus",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8544",
       "label": "Insulated wire and cable, fiber-optic cable",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8545",
       "label": "Carbon and graphite electrodes and brushes",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8546",
       "label": "Electrical insulators",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8547",
       "label": "Insulating fittings and conduit",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8548",
       "label": "Electrical parts not elsewhere specified",
       "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "note": null
     },
     {
       "heading": "8549",
       "label": "Electrical and electronic waste and scrap",
-      "ruleIds": [],
-      "note": "TODO: agency rules for this group, or null when none beyond the steps"
+      "ruleIds": ["epa-ewaste"],
+      "note": "Exporting electronic waste and scrap can trigger EPA hazardous-waste export notification depending on what the scrap contains, separate from the steps above."
     }
   ],
   "savings": [

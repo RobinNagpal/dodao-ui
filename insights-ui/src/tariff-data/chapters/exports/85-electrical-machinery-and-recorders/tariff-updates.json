@@ -12,13 +12,18 @@
     "path": "/industry-tariff-report/exports/chapters/85-electrical-machinery-and-recorders/tariff-updates",
     "h1": "HTS Chapter 85: Electrical Machinery and Equipment and Parts Thereof; Sound Recorders and Reproducers, Television Image and Sound Recorders and Reproducers, and Parts and Accessories of Such Articles — Foreign Tariff Changes on U.S. Exports",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "Foreign Tariff Changes on U.S. Electronics Exports (HTS Ch. 85) | KoalaGains",
+      "shortDescription": "What China, Canada and other buyers changed on U.S. electrical machinery and electronics since January 2025, and what's still ahead.",
+      "keywords": [
+        "China tariff US electronics",
+        "Canada counter-tariff electronics",
+        "tariff changes US chips exports",
+        "foreign tariffs electrical machinery"
+      ]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what changed for U.S. exporters of this chapter since January 2025, and the one thing to watch",
+  "intro": "Two actions actually cost U.S. exporters of this chapter money today: China's 10% extra duty on all U.S. goods, in force since May 2025, and Canada's narrower September 2026 counter-tariff on a short list of consumer appliances. Everything else — the EU's move to zero, USMCA and KORUS staying in force, Switzerland's industrial-goods pledge — has made this chapter cheaper to export, not more expensive. The one thing to watch is whether China's 10% rate, and the exclusions that currently shield some U.S. goods from its older 2019 tariffs, survive past their current expiry dates.",
   "scope": "The 9 largest markets for U.S. Chapter 85 goods (75% of 2025 exports).",
   "stats": [
     {
@@ -47,7 +52,7 @@
       "countries": ["China"],
       "title": "China's tariff exclusions for U.S. goods end",
       "whatHappens": "China's exclusions from its 2019 counter-tariffs on U.S. goods are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
-      "impact": "TODO: what it would mean for U.S. Chapter 85 goods",
+      "impact": "If China does not extend the exclusions, the 2019 Section-301-response tariffs they currently excuse would apply again on top of the 10% blanket duty this chapter already pays — a new cost for electronics that are otherwise at 0% MFN, and an additional layer on top of China's ordinary rate for motors, batteries and appliances.",
       "status": "No extension announced",
       "sourceIds": ["wh-china-deal-2025"]
     },
@@ -58,7 +63,7 @@
       "countries": ["China"],
       "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
       "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
-      "impact": "TODO: what it would mean for U.S. Chapter 85 goods",
+      "impact": "If the suspension is not extended again, China's blanket extra duty on this chapter's goods would jump from 10% to 34% — the rate in effect before the May 2025 cut — on top of each heading's normal MFN rate.",
       "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
       "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
     }
@@ -70,8 +75,8 @@
       "measure": "Counter-tariffs on U.S. products (answering U.S. Section 338 tariffs)",
       "before": "0%",
       "now": "15% / 25% / 50%",
-      "appliesTo": "TODO: which Chapter 85 goods it reaches, on top of which normal rate",
-      "whatItMeans": "TODO: a worked example: what a typical shipment pays now vs January 2025",
+      "appliesTo": "A narrower list of consumer appliances within this chapter — domestic appliances with a motor (8509) and water/space heaters (8516) — that do not claim CUSMA treatment. Canada's list is dominated by steel, aluminum, dairy, furniture and clothing; it does not reach chips, phones, network equipment or industrial electrical machinery.",
+      "whatItMeans": "A $100,000 shipment of non-CUSMA-qualifying U.S. household appliances that paid nothing in January 2025 now pays roughly $15,000–$25,000 depending on the exact tariff line; the same shipment, claimed under CUSMA with a proper certificate of origin, still pays nothing.",
       "effectiveFrom": "2026-09-08",
       "effectiveSourceId": "ca-2026-list",
       "sourceIds": ["ca-2026-list"]
@@ -82,27 +87,14 @@
       "measure": "Extra tariff on all U.S. goods cut to 10%",
       "before": "0% (Jan 2025)",
       "now": "10%",
-      "appliesTo": "TODO: which Chapter 85 goods it reaches, on top of which normal rate",
-      "whatItMeans": "TODO: a worked example: what a typical shipment pays now vs January 2025",
+      "appliesTo": "Every good in this chapter, on top of China's own MFN rate. For chips, phones, storage media and other electronics already at 0% MFN under the WTO Information Technology Agreement, the 10% is the entire increase; for motors, generators, batteries and appliances it adds to China's ordinary (roughly 5–12%) rate.",
+      "whatItMeans": "A $1,000,000 shipment of U.S.-made integrated circuits that paid nothing in January 2025 now pays about $100,000. A $1,000,000 shipment of U.S. electric motors that paid roughly $80,000 (an 8% representative MFN rate) now pays about $180,000.",
       "effectiveFrom": "2025-05-14",
       "effectiveSourceId": "cn-sctc-may2025",
       "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
     }
   ],
   "changes": [
-    {
-      "id": "eu-aircraft-truce",
-      "date": "2026-07-06",
-      "type": "tradeDeal",
-      "countries": ["European Union"],
-      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
-      "before": "0% (suspended since 2021)",
-      "now": "0% (suspension extended)",
-      "coversChapter": "no",
-      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
-      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
-      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
-    },
     {
       "id": "cn-bot",
       "date": "2026-09-27",
@@ -141,6 +133,19 @@
       "status": "Nothing imposed on U.S. goods; talks ongoing",
       "detail": "Brazil has published no countermeasure on U.S. goods. Its Economic Reciprocity Law (Law 15,122 of April 11, 2025) would allow them — such as import restrictions or suspending intellectual-property obligations — but none has been applied. On July 27, 2026 Brazil asked the United States for WTO consultations over U.S. tariffs on Brazilian goods, and Brazilian ministers met USTR on August 31 and September 30, 2026 to set up a working group on a possible agreement.",
       "sourceIds": ["br-wto-2026", "br-talks-2026", "br-law"]
+    },
+    {
+      "id": "eu-aircraft-truce",
+      "date": "2026-07-06",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU extends suspension of its Boeing/Airbus-dispute retaliatory tariffs on U.S. goods",
+      "before": "0% (suspended since 2021)",
+      "now": "0% (suspension extended)",
+      "coversChapter": "no",
+      "status": "Suspended since July 11, 2021; extended by Implementing Regulation (EU) 2026/1549 from July 11, 2026",
+      "detail": "The U.S. and EU suspended, for five years from July 11, 2021, the tariffs each had imposed or threatened in their 17-year WTO dispute over Boeing and Airbus subsidies (the EU's WTO-authorized countermeasures covered up to $4 billion of U.S. goods, large civil aircraft among them, under the Cooperative Framework for Large Civil Aircraft). Implementing Regulation (EU) 2026/1549 of July 6, 2026 extends the EU's suspension past its July 10, 2026 expiry; the U.S. has not reactivated its Section 301 tariffs from the same dispute either.",
+      "sourceIds": ["eu-aircraft-truce-2021", "eu-aircraft-truce-2026"]
     },
     {
       "id": "mx-usmca",

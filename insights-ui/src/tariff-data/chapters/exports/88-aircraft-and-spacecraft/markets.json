@@ -12,15 +12,15 @@
     "path": "/industry-tariff-report/exports/chapters/88-aircraft-and-spacecraft/markets",
     "h1": "HTS Chapter 88: Aircraft, Spacecraft, and Parts Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
     "seo": {
-      "title": "TODO",
-      "shortDescription": "TODO",
-      "keywords": ["TODO"]
+      "title": "Export Markets for U.S. Aircraft & Foreign Tariffs (HTS Ch. 88) | KoalaGains",
+      "shortDescription": "What the EU, China, UK, Brazil and other top markets charge on U.S. aircraft, spacecraft and parts, and who certifies them for sale.",
+      "keywords": ["US aircraft export markets", "tariff on US aircraft by country", "aircraft certification by country"]
     },
     "lastCheckedAt": "2026-10-19"
   },
-  "intro": "TODO: what the matrix shows and what usually decides access for this chapter (tariff vs regulator)",
+  "intro": "Who buys U.S. aircraft and parts, and what they charge on it. For almost every market here, the tariff is **0%** — under the WTO Agreement on Trade in Civil Aircraft, a free-trade agreement, or the market's own exemption — so what actually decides access is **airworthiness certification**: whether the buyer's aviation authority (or the FAA, EASA or another authority it recognizes) has certified the specific aircraft or part. China is the one market that still charges a tariff beyond its ordinary rate.",
   "tradeYear": 2025,
-  "tariffYear": 0,
+  "tariffYear": 2026,
   "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
   "groups": [
     {
@@ -58,13 +58,13 @@
     {
       "countryCode": 97,
       "name": "European Union",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "WTO Agreement on Trade in Civil Aircraft (zero-for-zero), applied by the EU's common external tariff",
       "usTradeAgreement": null,
       "exportsUsd": 44647636076,
       "priorExportsUsd": 35086537441,
       "sharePct": 27.2,
       "changePct": 27.3,
-      "status": "TODO",
+      "status": "unchanged",
       "members": [
         {
           "countryCode": 251,
@@ -105,49 +105,49 @@
       "cells": {
         "8801": {
           "exportsUsd": 737063,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         },
         "8802": {
           "exportsUsd": 1294500801,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         },
         "8804": {
           "exportsUsd": 37734612,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         },
         "8805": {
           "exportsUsd": 80396721,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         },
         "8806": {
           "exportsUsd": 287507367,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         },
         "8807": {
           "exportsUsd": 1854549724,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); EU TARIC"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "U.S. aircraft and parts enter the EU duty-free under the WTO Civil Aircraft Agreement, and the EU has kept its Boeing/Airbus-dispute retaliatory tariffs suspended since 2021 — most recently extended in July 2026 — so none of its authorized countermeasures are in force. EASA type certification (or acceptance of an FAA certificate under the U.S.–EU Bilateral Aviation Safety Agreement) decides whether a specific aircraft or part can be sold here, not the tariff.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (Civil Aircraft Agreement)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "European Union Aviation Safety Agency (EASA)",
+          "url": "https://www.easa.europa.eu/en/the-agency/faqs/type-certification",
+          "requirement": "An EASA type certificate (or EASA's validation of an FAA certificate under the U.S.–EU Bilateral Aviation Safety Agreement) for the specific aircraft or part."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: EU import requirements",
@@ -158,59 +158,59 @@
     {
       "countryCode": 156,
       "name": "China",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "China's MFN rate plus its extra 10% tariff on all U.S. goods",
       "usTradeAgreement": null,
       "exportsUsd": 15888282021,
       "priorExportsUsd": 11535268522,
       "sharePct": 9.7,
       "changePct": 37.7,
-      "status": "TODO",
+      "status": "raised",
       "cells": {
         "8801": {
           "exportsUsd": 38800,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         },
         "8802": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         },
         "8804": {
           "exportsUsd": 639869,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         },
         "8805": {
           "exportsUsd": 196104,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         },
         "8806": {
           "exportsUsd": 1592431,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         },
         "8807": {
           "exportsUsd": 895244,
-          "rate": "TODO",
+          "rate": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "China customs tariff schedule (2026), representative line 8802.40; plus the State Council Tariff Commission's 2025–26 additional-tariff notices"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "China is the only large buyer charging more than it did in January 2025: a 10% extra tariff on all U.S. goods, which reaches finished aircraft and most parts on top of China's already-low ordinary rate. Deliveries of finished Boeing aircraft were paused for several weeks in 2025 amid the tariff dispute and resumed after the May 2025 Geneva truce; CAAC type-validation of the specific aircraft model is the other gate.",
         "mainProducts": "Unmanned aircraft (8806) · Parts of goods of heading 8801, 8802 or 8806 (8807)",
-        "tariffNow": "TODO",
+        "tariffNow": "+10% extra (on a low 0–4% normal rate; some maintenance parts may be exempt)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Civil Aviation Administration of China (CAAC)",
+          "url": "https://www.caac.gov.cn/en/",
+          "requirement": "CAAC validation of the aircraft's FAA (or EASA) type certificate before it can be registered and operated in China."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: China import requirements",
@@ -221,59 +221,59 @@
     {
       "countryCode": 826,
       "name": "United Kingdom",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "WTO Agreement on Trade in Civil Aircraft (zero-for-zero)",
       "usTradeAgreement": null,
       "exportsUsd": 11735646543,
       "priorExportsUsd": 10522841361,
       "sharePct": 7.1,
       "changePct": 11.5,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 208116,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         },
         "8802": {
           "exportsUsd": 22380745,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         },
         "8804": {
           "exportsUsd": 5701196,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         },
         "8805": {
           "exportsUsd": 16802307,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         },
         "8806": {
           "exportsUsd": 92746982,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         },
         "8807": {
           "exportsUsd": 459109176,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); UK Trade Tariff"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "U.S. aircraft and parts enter the UK duty-free under the Civil Aircraft Agreement, which the UK kept after Brexit. The UK Civil Aviation Authority's acceptance of FAA or EASA certification is what actually governs whether a given aircraft or part can be sold.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (Civil Aircraft Agreement)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "UK Civil Aviation Authority (CAA)",
+          "url": "https://www.caa.co.uk/aircraft-register/airworthiness/certification/",
+          "requirement": "UK CAA acceptance of the FAA (or EASA) type certificate, or its own type certificate for the aircraft or part."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: UK import requirements",
@@ -284,59 +284,59 @@
     {
       "countryCode": 76,
       "name": "Brazil",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "Domestic duty exemption for civil aircraft and parts (Gecex Resolution 310/2022); Brazil has not joined the WTO Civil Aircraft Agreement",
       "usTradeAgreement": null,
       "exportsUsd": 10679942016,
       "priorExportsUsd": 9999303850,
       "sharePct": 6.5,
       "changePct": 6.8,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 21218,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         },
         "8802": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         },
         "8804": {
           "exportsUsd": 1293517,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         },
         "8805": {
           "exportsUsd": 343666,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         },
         "8806": {
           "exportsUsd": 5454512,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         },
         "8807": {
           "exportsUsd": 151787915,
-          "rate": "TODO",
+          "rate": "Free (domestic exemption)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "Gecex Resolution 310/2022 (Mercosur CET exceptions list); Brazil NCM/TEC schedule"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Brazil is not a Civil Aircraft Agreement signatory, but Camex/Gecex Resolution 310/2022 zero-rates imports of civil aircraft (8802, 8806) and their parts (8807) that domestic industry — mainly Embraer's own supply chain — cannot supply. ANAC validation of the FAA or EASA type certificate is the other requirement.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (domestic exemption)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Agência Nacional de Aviação Civil (ANAC)",
+          "url": "https://www.gov.br/anac/pt-br/assuntos/certificacao",
+          "requirement": "ANAC validation of the aircraft's FAA or EASA type certificate before it can be registered in Brazil."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Brazil import requirements",
@@ -347,59 +347,59 @@
     {
       "countryCode": 124,
       "name": "Canada",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "WTO Agreement on Trade in Civil Aircraft (zero-for-zero); USMCA for goods that don't qualify under it",
       "usTradeAgreement": "USMCA (CUSMA in Canada)",
       "exportsUsd": 9192951415,
       "priorExportsUsd": 8260134956,
       "sharePct": 5.6,
       "changePct": 11.3,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         },
         "8802": {
           "exportsUsd": 17630345,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         },
         "8804": {
           "exportsUsd": 7175263,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         },
         "8805": {
           "exportsUsd": 8907014,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         },
         "8806": {
           "exportsUsd": 14140141,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         },
         "8807": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement / USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); USMCA Annex 2-B / Canada's tariff schedule"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Canada is both a Civil Aircraft Agreement signatory and a USMCA partner, so U.S. aircraft and parts enter duty-free either way. Transport Canada's validation of the FAA type certificate under the U.S.–Canada bilateral aviation safety agreement is the real gate.",
         "mainProducts": "Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802) · Unmanned aircraft (8806)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (Civil Aircraft Agreement / USMCA)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Transport Canada Civil Aviation",
+          "url": "https://tc.canada.ca/en/aviation/aircraft-airworthiness/aircraft-certification",
+          "requirement": "Transport Canada validation of the FAA type certificate under the U.S.–Canada bilateral aviation safety agreement."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Canada import requirements",
@@ -410,59 +410,59 @@
     {
       "countryCode": 484,
       "name": "Mexico",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "USMCA preferential rate for qualifying U.S.-origin goods",
       "usTradeAgreement": "USMCA (T-MEC in Mexico)",
       "exportsUsd": 8694394727,
       "priorExportsUsd": 6307661397,
       "sharePct": 5.3,
       "changePct": 37.8,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 99394,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         },
         "8802": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         },
         "8804": {
           "exportsUsd": 4347143,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         },
         "8805": {
           "exportsUsd": 974934,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         },
         "8806": {
           "exportsUsd": 8121333,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         },
         "8807": {
           "exportsUsd": 71299326,
-          "rate": "TODO",
+          "rate": "Free (USMCA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "USMCA Annex 2-B; Mexico's tariff schedule (TIGIE)"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Mexico is not a Civil Aircraft Agreement signatory, but USMCA gives qualifying U.S.-origin aircraft and parts a 0% rate. Qualifying is usually automatic for aircraft built in the U.S., since the product itself is the originating good. AFAC validation of the FAA certificate decides market access.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Unmanned aircraft (8806)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (USMCA)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Agencia Federal de Aviación Civil (AFAC)",
+          "url": "https://www.gob.mx/afac",
+          "requirement": "AFAC validation of the aircraft's FAA type certificate before it can be registered in Mexico."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Mexico import requirements",
@@ -473,59 +473,59 @@
     {
       "countryCode": 702,
       "name": "Singapore",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "U.S.–Singapore FTA; Singapore's own tariff schedule is already at or near zero for almost all goods",
       "usTradeAgreement": "U.S.–Singapore FTA",
       "exportsUsd": 6928889925,
       "priorExportsUsd": 6132956892,
       "sharePct": 4.2,
       "changePct": 13,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         },
         "8802": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         },
         "8804": {
           "exportsUsd": 1804957,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         },
         "8805": {
           "exportsUsd": 30818139,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         },
         "8806": {
           "exportsUsd": 1653208,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         },
         "8807": {
           "exportsUsd": 124295171,
-          "rate": "TODO",
+          "rate": "Free (FTA)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "U.S.–Singapore FTA tariff schedule; Singapore Trade Classification, Customs and Excise Duties"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "Singapore keeps tariffs at or near zero on almost everything, aircraft and parts included, and the U.S.–Singapore FTA locks that in for qualifying goods. It is also a major MRO (maintenance, repair and overhaul) hub, which is why parts volumes here are large relative to finished aircraft.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Aircraft launching gear; deck-arrestor or similar gear; ground flying trainers; parts of the foregoing articles (8805)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (FTA)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Civil Aviation Authority of Singapore (CAAS)",
+          "url": "https://www.caas.gov.sg/",
+          "requirement": "CAAS validation of the FAA (or EASA) type certificate for the aircraft or part."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Singapore import requirements",
@@ -536,59 +536,59 @@
     {
       "countryCode": 392,
       "name": "Japan",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "WTO Agreement on Trade in Civil Aircraft (zero-for-zero)",
       "usTradeAgreement": null,
       "exportsUsd": 6477864300,
       "priorExportsUsd": 6100511946,
       "sharePct": 3.9,
       "changePct": 6.2,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 115096,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         },
         "8802": {
           "exportsUsd": 341648542,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         },
         "8804": {
           "exportsUsd": 12126728,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         },
         "8805": {
           "exportsUsd": 76948101,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         },
         "8806": {
           "exportsUsd": 81693246,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         },
         "8807": {
           "exportsUsd": 1015424165,
-          "rate": "TODO",
+          "rate": "Free (Civil Aircraft Agreement)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "WTO Agreement on Trade in Civil Aircraft (2026); Japan's Customs Tariff Schedule"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "U.S. aircraft and parts enter Japan duty-free under the Civil Aircraft Agreement. JCAB validation of the FAA type certificate, under the U.S.–Japan bilateral aviation safety agreement, is what decides access.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Other aircraft (for example, helicopters, airplanes, except unmanned aircraft of heading 8806); spacecraft (including satellites) and suborbital and spacecraft launch vehicles (8802)",
-        "tariffNow": "TODO",
+        "tariffNow": "Free (Civil Aircraft Agreement)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "Japan Civil Aviation Bureau (JCAB)",
+          "url": "https://www.mlit.go.jp/koku/koku_fr10_000011.html",
+          "requirement": "JCAB validation of the aircraft's FAA type certificate under the U.S.–Japan bilateral aviation safety agreement."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: Japan import requirements",
@@ -599,59 +599,59 @@
     {
       "countryCode": 784,
       "name": "United Arab Emirates",
-      "rule": "TODO: the tariff rule that applies to U.S. goods, e.g. \"EU common external tariff (MFN)\"",
+      "rule": "GCC Common Customs Tariff",
       "usTradeAgreement": null,
       "exportsUsd": 5666104996,
       "priorExportsUsd": 3932102504,
       "sharePct": 3.4,
       "changePct": 44.1,
-      "status": "TODO",
+      "status": "unchanged",
       "cells": {
         "8801": {
           "exportsUsd": 0,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         },
         "8802": {
           "exportsUsd": 1618385,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         },
         "8804": {
           "exportsUsd": 73405630,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         },
         "8805": {
           "exportsUsd": 2039412,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         },
         "8806": {
           "exportsUsd": 10795635,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         },
         "8807": {
           "exportsUsd": 160360629,
-          "rate": "TODO",
+          "rate": "Up to 5% (not independently confirmed for this exact line)",
           "normalRate": null,
-          "basis": "TODO: the subheading, schedule year and rule the rate comes from"
+          "basis": "GCC Common Customs Tariff / UAE Federal Customs Authority tariff lookup — exact 2026 rate for this HS line not independently confirmed"
         }
       },
       "profile": {
-        "headline": "TODO: one or two sentences: what matters for a U.S. exporter in this market",
+        "headline": "The UAE applies the GCC Common Customs Tariff, whose standard rate is up to 5% of CIF value; this report could not independently confirm the published rate for the specific HS 8802/8807 lines, so check the UAE Federal Customs Authority's tariff lookup for the exact figure. The GCAA's acceptance of FAA or EASA certification, not the tariff, is what usually governs whether a given aircraft can register and fly here.",
         "mainProducts": "Parts of goods of heading 8801, 8802 or 8806 (8807) · Parachutes (including dirigible parachutes and paragliders) and rotochutes; parts thereof and accessories thereto (8804)",
-        "tariffNow": "TODO",
+        "tariffNow": "Up to 5% (not independently confirmed for this exact line)",
         "regulator": {
-          "name": "TODO",
-          "url": "TODO",
-          "requirement": "TODO: whose approval or registration is needed to sell this chapter’s goods there"
+          "name": "General Civil Aviation Authority (GCAA), UAE",
+          "url": "https://www.gcaa.gov.ae/en/pages/default.aspx",
+          "requirement": "GCAA acceptance of the FAA (or EASA) type certificate before an aircraft can be registered in the UAE."
         },
         "countryGuide": {
           "label": "Country Commercial Guide: United Arab Emirates import requirements",
@@ -665,52 +665,58 @@
       "market": "European Union",
       "heading": "8807",
       "exportsUsd": 1854549724,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "European Union",
       "heading": "8802",
       "exportsUsd": 1294500801,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "Japan",
       "heading": "8807",
       "exportsUsd": 1015424165,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "United Kingdom",
       "heading": "8807",
       "exportsUsd": 459109176,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "Japan",
       "heading": "8802",
       "exportsUsd": 341648542,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "European Union",
       "heading": "8806",
       "exportsUsd": 287507367,
-      "rate": "TODO"
+      "rate": "Free (Civil Aircraft Agreement)"
     },
     {
       "market": "United Arab Emirates",
       "heading": "8807",
       "exportsUsd": 160360629,
-      "rate": "TODO"
+      "rate": "Up to 5% (not independently confirmed for this exact line)"
     },
     {
       "market": "Brazil",
       "heading": "8807",
       "exportsUsd": 151787915,
-      "rate": "TODO"
+      "rate": "Free (domestic exemption)"
     }
   ],
-  "assumptions": ["TODO: where the rates come from (schedule, year, one subheading per group) and how trade agreements and extra duties are applied"],
+  "assumptions": [
+    "Rates reflect each market's treatment of civil aircraft and parts under the WTO Agreement on Trade in Civil Aircraft, a free-trade agreement, or the market's own exemption, applied uniformly across this chapter's six headings for that market; national 8–10-digit lines can still differ by product, so check the cited schedule for the exact line before relying on a number.",
+    "The EU is one market: its 27 members share one tariff, and its export figures include every member.",
+    "China's extra 10% applies to all U.S.-origin goods, including Chapter 88 aircraft and parts, on top of China's ordinary rate; some imported aviation-maintenance materials may be separately exempt from ordinary duty under China's own 2021 policy — see Tariff updates.",
+    "The exportsUsd figures in this matrix are far from complete for most markets and most headings, especially heading 8802 (finished aircraft): official trade statistics redact the value of individual aircraft and large-engine sales for confidentiality, so most cells capture only a small, unrepresentative slice of the real trade. Only the market-level total (this page) and the country-level total (Overview) reconcile with the chapter's real total; read the per-heading cell values as a lower bound, not a true split, and rely on the rate column, not the dollar figures, for what each market charges.",
+    "Regulatory requirements are summarised for orientation only; check the regulator's current rules for the specific aircraft or part."
+  ],
   "sources": [
     {
       "id": "comtrade-exports",
