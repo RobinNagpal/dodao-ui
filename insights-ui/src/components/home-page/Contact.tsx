@@ -16,18 +16,18 @@ export default function Contact() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submittingRef.current) return;
-    submittingRef.current = true;
 
-    const data = new FormData(e.currentTarget);
-    setStatus({ state: 'submitting' });
     try {
+      submittingRef.current = true;
+      const data = new FormData(e.currentTarget);
+      setStatus({ state: 'submitting' });
       const result = await submitContactForm({
         firstName: data.get('first-name'),
         lastName: data.get('last-name'),
         email: data.get('email'),
         phoneNumber: data.get('phone-number'),
         message: data.get('message'),
-        honeypot: data.get('company'),
+        honeypot: data.get('contact-hp'),
       });
       if (result.ok) {
         setStatus({ state: 'success' });
@@ -35,7 +35,8 @@ export default function Contact() {
       } else {
         setStatus({ state: 'error', message: result.error });
       }
-    } catch {
+    } catch (error) {
+      console.error('[Contact] Failed to submit contact form', error);
       setStatus({ state: 'error', message: 'Something went wrong. Please try again, or email contact@koalagains.com directly.' });
     } finally {
       submittingRef.current = false;
@@ -84,10 +85,11 @@ export default function Contact() {
 
             {/* Contact Form */}
             <form ref={formRef} onSubmit={handleSubmit} method="POST" className="px-6 lg:px-8">
-              {/* Honeypot: hidden from sighted users, so a non-empty value means a bot filled every field blindly. */}
+              {/* Honeypot: hidden from sighted users, so a non-empty value means a bot filled every field blindly.
+                  Named away from any recognized autofill field (e.g. "company") so browsers/password managers don't fill it for a real visitor. */}
               <input
                 type="text"
-                name="company"
+                name="contact-hp"
                 tabIndex={-1}
                 autoComplete="off"
                 aria-hidden="true"

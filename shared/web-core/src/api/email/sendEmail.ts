@@ -12,18 +12,31 @@ export interface SendEmailInput {
   html: string;
   /** Set when the recipient should be able to hit "reply" and land on someone other than `from` (e.g. a contact-form submitter). */
   replyTo?: string;
+  /**
+   * Set when `subject`/`html` carry third-party-submitted content (e.g. a contact-form
+   * visitor's name/message) that shouldn't land in production logs. Callers that only ever
+   * send our own copy (login links, report results) leave this unset and keep full production
+   * logging, which is useful for debugging.
+   */
+  containsUserSuppliedContent?: boolean;
+}
+
+// NODE_ENV alone isn't enough: a Vercel *preview* build also has NODE_ENV=production baked in,
+// so it's excluded explicitly. The app's real production host (AWS/Lightsail) never sets
+// VERCEL_ENV, so this still resolves to `true` there.
+function isRealProduction(): boolean {
+  return process.env.NODE_ENV === 'production' && process.env.VERCEL_ENV !== 'preview';
 }
 
 /**
  * Sends one HTML email through AWS SES. Like the login email, it prints the
  * email to the server log first, so it can be read in the terminal when SES
  * isn't configured locally (the send then fails and the caller logs that).
- * The body is only logged outside production — some callers (e.g. the contact
- * form) carry visitor-submitted PII that shouldn't land in production logs.
+ * That logging is skipped in production for callers marked `containsUserSuppliedContent`.
  */
-export async function sendEmail({ to, from, subject, html, replyTo }: SendEmailInput): Promise<void> {
-  console.log('Sending email to', to, 'from', from, 'subject', subject);
-  if (process.env.NODE_ENV !== 'production') {
+export async function sendEmail({ to, from, subject, html, replyTo, containsUserSuppliedContent }: SendEmailInput): Promise<void> {
+  if (!(containsUserSuppliedContent && isRealProduction())) {
+    console.log('Sending email to', to, 'from', from, 'subject', subject);
     console.log('Email body: ', html);
   }
   await ses.sendEmail({

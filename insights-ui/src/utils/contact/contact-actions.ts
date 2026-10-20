@@ -2,14 +2,47 @@
 
 import { escapeHtml, isValidEmailAddress, KOALAGAINS_FROM_ADDRESS } from '@/utils/email/koalagains-email';
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
+import { headers } from 'next/headers';
 
-/** The address shown on the homepage's "Get in Touch" section. */
-const TO_ADDRESS = 'contact@koalagains.com';
+/** The address shown on the homepage's "Get in Touch" section — same mailbox the system `from` address already uses. */
+const TO_ADDRESS = KOALAGAINS_FROM_ADDRESS;
 
 export type ContactFormResult = { ok: true } | { ok: false; error: string };
 
 function asTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+/**
+ * True for anything that isn't the untouched empty string the real form always submits for its
+ * hidden honeypot field — including a non-string value, which a direct, scripted call to this
+ * action (bypassing the DOM form entirely) could send instead.
+ */
+function isHoneypotTripped(value: unknown): boolean {
+  return typeof value !== 'string' || value.trim() !== '';
+}
+
+const RATE_LIMIT_MAX_SUBMISSIONS = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+/** submitter key -> submission timestamps (ms) within the current window. Per-process only, which is fine for blunting casual abuse of the shared SES sender. */
+const submissionsByKey = new Map<string, number[]>();
+
+/** Keyed by the first hop of X-Forwarded-For (set by the CDN/load balancer in front of this app); falls back to a shared key if that header is ever missing. */
+async function rateLimitKey(): Promise<string> {
+  const forwardedFor = (await headers()).get('x-forwarded-for');
+  return forwardedFor?.split(',')[0]?.trim() || 'unknown';
+}
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const recent = (submissionsByKey.get(key) ?? []).filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT_MAX_SUBMISSIONS) {
+    submissionsByKey.set(key, recent);
+    return true;
+  }
+  recent.push(now);
+  submissionsByKey.set(key, recent);
+  return false;
 }
 
 /** Strips characters that have no business in a one-line email header (CR/LF and other controls). */
@@ -27,7 +60,7 @@ function emailHtml(name: string, email: string, phoneNumber: string, message: st
       <p style="margin:0 0 24px;font-size:18px;font-weight:bold;">New message from the koalagains.com contact form</p>
       <p style="margin:0 0 8px;font-size:14px;"><strong>From:</strong> ${escapeHtml(name)} (${escapeHtml(email)})</p>
       ${phoneNumber ? `<p style="margin:0 0 8px;font-size:14px;"><strong>Phone:</strong> ${escapeHtml(phoneNumber)}</p>` : ''}
-      <p style="margin:24px 0 0;font-size:15px;line-height:1.5;white-space:pre-wrap;">${escapeHtml(message)}</p>
+      <p style="margin:24px 0 0;font-size:15px;line-height:1.5;">${escapeHtml(message).replace(/\n/g, '<br>')}</p>
     </div>
   </body>
 </html>`;
@@ -49,7 +82,7 @@ export async function submitContactForm(input: {
   message: unknown;
   honeypot?: unknown;
 }): Promise<ContactFormResult> {
-  if (asTrimmedString(input.honeypot) !== '') {
+  if (isHoneypotTripped(input.honeypot)) {
     return { ok: true };
   }
 
@@ -60,6 +93,10 @@ export async function submitContactForm(input: {
   }
   if (!message) {
     return { ok: false, error: 'Enter a message.' };
+  }
+
+  if (isRateLimited(await rateLimitKey())) {
+    return { ok: false, error: "You've sent several messages recently. Please wait a bit before sending another." };
   }
 
   const firstName = toHeaderSafeText(asTrimmedString(input.firstName));
@@ -74,6 +111,7 @@ export async function submitContactForm(input: {
       replyTo: email,
       subject: `New contact form message from ${name}`,
       html: emailHtml(name, email, phoneNumber, message),
+      containsUserSuppliedContent: true,
     });
     return { ok: true };
   } catch (error) {
