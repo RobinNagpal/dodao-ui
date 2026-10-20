@@ -148,7 +148,7 @@ function ChartTabsSkeleton(): JSX.Element {
 
 function BelowFoldSkeleton(): JSX.Element {
   // Reserves vertical space for the below-the-fold body (keyFactsTail, flags,
-  // goals, holdings preview, analysis sections, competition, similar etfs) so
+  // goals, competition, holdings preview, analysis sections, similar etfs) so
   // the page doesn't jump as the consolidated /full-render payload arrives.
   return (
     <div className="mb-8">
@@ -240,7 +240,6 @@ function EtfChartTabsFromPromise({ promise, etfSymbol }: { promise: Promise<EtfC
 function EtfBelowFoldBody({ promise, exchange, etf }: { promise: Promise<EtfFullRenderResponse>; exchange: string; etf: string }): JSX.Element {
   const data = use(promise);
   const { tail: keyFactsTail } = splitMarkdownAtParagraph(data.keyFacts?.keyFacts ?? null, 2);
-  const competitionAfter = data.competition ? <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} /> : null;
 
   return (
     <>
@@ -255,15 +254,11 @@ function EtfBelowFoldBody({ promise, exchange, etf }: { promise: Promise<EtfFull
 
       <EtfApplicableInvestorGoals investorGoals={data.keyFacts?.applicableInvestorGoals} />
 
+      <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} />
+
       <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 
-      <EtfAnalysisSections
-        data={data.analysis}
-        exchange={exchange}
-        symbol={etf}
-        afterPerformanceReturns={competitionAfter}
-        futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />}
-      />
+      <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />} />
 
       <div className="mx-auto max-w-7xl">
         <section className="mb-6">

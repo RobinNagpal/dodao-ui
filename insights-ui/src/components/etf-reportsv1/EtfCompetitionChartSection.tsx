@@ -28,7 +28,7 @@ export default function EtfCompetitionChartSection({ data, exchange, etf }: EtfC
   const mainEtf = data.etf;
 
   return (
-    <section id="competition">
+    <section id="competition" className="mb-8">
       <div className="bg-surface rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-border">
           <h2 className="text-xl font-bold">Competition</h2>

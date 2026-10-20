@@ -1,4 +1,5 @@
 import type { EtfCompetitionResponse } from '@/types/etf/etf-analysis-types';
+import { formatExchangeWithCountry, getCountryByExchange, isExchange } from '@/utils/countryExchangeUtils';
 import { classifyEtf, computeEtfQuadrantScores, type EtfQuadrantDataPoint } from '@/util/etf-quadrant-chart-utils';
 
 /**
@@ -23,8 +24,12 @@ export function buildEtfQuadrantDataPoints(data: EtfCompetitionResponse): EtfQua
       classification: classifyEtf(returnsScore, efficiencyScore),
       isMainEtf: true,
       exchange: data.etf.exchange,
+      aum: data.etf.aum,
+      expenseRatio: data.etf.expenseRatio,
     });
   }
+
+  const mainCountry = data.etf ? countryOf(data.etf.exchange) : undefined;
 
   for (const competitor of data.competitors) {
     const cached = competitor.etfData?.cachedScoreEntry;
@@ -38,8 +43,17 @@ export function buildEtfQuadrantDataPoints(data: EtfCompetitionResponse): EtfQua
       classification: classifyEtf(returnsScore, efficiencyScore),
       isMainEtf: false,
       exchange: competitor.etfData!.exchange,
+      aum: competitor.etfData!.aum,
+      expenseRatio: competitor.etfData!.expenseRatio,
+      foreignExchangeLabel:
+        mainCountry && countryOf(competitor.etfData!.exchange) !== mainCountry ? formatExchangeWithCountry(competitor.etfData!.exchange) : undefined,
     });
   }
 
   return points;
+}
+
+function countryOf(exchange: string): string | undefined {
+  const normalized = exchange.trim().toUpperCase();
+  return isExchange(normalized) ? getCountryByExchange(normalized) : undefined;
 }

@@ -1,5 +1,6 @@
 import EtfCompetitionQuadrantChart from '@/components/etf-reportsv1/EtfCompetitionQuadrantChart';
 import type { EtfQuadrantDataPoint } from '@/util/etf-quadrant-chart-utils';
+import { formatCompactAmount } from '@/utils/etf-display-format-utils';
 import Link from 'next/link';
 
 export interface EtfCompetitionQuadrantWithLegendProps {
@@ -24,6 +25,10 @@ function dotColor(dp: EtfQuadrantDataPoint): string {
     case 'Underperform':
       return '#fb7185';
   }
+}
+
+function formatExpenseRatio(value: number | null | undefined): string {
+  return value === null || value === undefined ? 'N/A' : `${value}%`;
 }
 
 export default function EtfCompetitionQuadrantWithLegend({
@@ -67,6 +72,7 @@ export default function EtfCompetitionQuadrantWithLegend({
                         {dp.name}
                       </span>
                       <span className={dp.isMainEtf ? 'text-amber-400 text-xs' : 'text-muted text-xs'}>({dp.symbol})</span>
+                      {dp.foreignExchangeLabel && <span className="text-muted text-xs">{dp.foreignExchangeLabel}</span>}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted mt-0.5">
                       <span>{dp.classification}</span>
@@ -74,6 +80,11 @@ export default function EtfCompetitionQuadrantWithLegend({
                       <span>Returns {dp.returnsScore.toFixed(0)}%</span>
                       <span>·</span>
                       <span>Efficiency {dp.efficiencyScore.toFixed(0)}%</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted mt-0.5">
+                      <span>AUM {formatCompactAmount(dp.aum)}</span>
+                      <span>·</span>
+                      <span>Expense Ratio {formatExpenseRatio(dp.expenseRatio)}</span>
                     </div>
                   </div>
                 </>
@@ -118,6 +129,9 @@ export default function EtfCompetitionQuadrantWithLegend({
               <th>Returns Score</th>
               <th>Efficiency Score</th>
               <th>Classification</th>
+              <th>AUM</th>
+              <th>Expense Ratio</th>
+              <th>Exchange</th>
             </tr>
           </thead>
           <tbody>
@@ -128,6 +142,9 @@ export default function EtfCompetitionQuadrantWithLegend({
                 <td>{dp.returnsScore.toFixed(0)}%</td>
                 <td>{dp.efficiencyScore.toFixed(0)}%</td>
                 <td>{dp.classification}</td>
+                <td>{formatCompactAmount(dp.aum)}</td>
+                <td>{formatExpenseRatio(dp.expenseRatio)}</td>
+                <td>{dp.exchange ?? ''}</td>
               </tr>
             ))}
           </tbody>

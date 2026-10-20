@@ -23,6 +23,7 @@ import { prisma } from '@/prisma';
 import type { EtfApplicableInvestorGoals, EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import type { EtfFinancialInfoResponse, EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { getCountryByExchange, isExchange, SupportedCountries } from '@/utils/countryExchangeUtils';
 import type { EtfMorPortfolioHoldings, PriceHistoryPoint } from '@/types/prismaTypes';
 import type { CompetitionAnalysis } from '@/types/public-equity/analysis-factors-types';
 import {
@@ -170,7 +171,7 @@ export async function getEtfFullRenderData(spaceId: string, exchange: string, et
       },
     }),
     hydrateSimilarEtfs(etfRecord.spaceId, etfRecord.similarEtfs),
-    hydrateEtfCompetitors((etfRecord.vsCompetition?.competitionAnalysisArray ?? []) as unknown as CompetitionAnalysis[]),
+    hydrateEtfCompetitors((etfRecord.vsCompetition?.competitionAnalysisArray ?? []) as unknown as CompetitionAnalysis[], etfRecord.exchange),
   ]);
 
   // Shape responses to match the original per-route payloads so the main page
@@ -273,6 +274,8 @@ export async function getEtfFullRenderData(spaceId: string, exchange: string, et
           symbol: etfRecord.symbol,
           exchange: etfRecord.exchange,
           cachedScoreEntry: scores,
+          aum: etfRecord.financialInfo?.aum ?? null,
+          expenseRatio: etfRecord.financialInfo?.expenseRatio ?? null,
           createdAt: etfRecord.createdAt,
           updatedAt: etfRecord.updatedAt,
         },
@@ -403,6 +406,7 @@ export async function getEtfCompetitionData(spaceId: string, exchange: string, e
     include: {
       vsCompetition: true,
       cachedScore: true,
+      financialInfo: { select: { aum: true, expenseRatio: true } },
     },
   });
 
@@ -411,7 +415,7 @@ export async function getEtfCompetitionData(spaceId: string, exchange: string, e
   }
 
   const competitionArray = (etfRecord.vsCompetition?.competitionAnalysisArray ?? []) as unknown as CompetitionAnalysis[];
-  const competitors = await hydrateEtfCompetitors(competitionArray);
+  const competitors = await hydrateEtfCompetitors(competitionArray, etfRecord.exchange);
 
   return {
     vsCompetition: etfRecord.vsCompetition
@@ -436,6 +440,8 @@ export async function getEtfCompetitionData(spaceId: string, exchange: string, e
             finalScore: etfRecord.cachedScore.finalScore,
           }
         : null,
+      aum: etfRecord.financialInfo?.aum ?? null,
+      expenseRatio: etfRecord.financialInfo?.expenseRatio ?? null,
       createdAt: etfRecord.createdAt,
       updatedAt: etfRecord.updatedAt,
     },
@@ -444,10 +450,14 @@ export async function getEtfCompetitionData(spaceId: string, exchange: string, e
 
 /**
  * For each LLM-produced peer, look up whether we already cover that ETF so the
- * UI can link to its report and plot its cached score on the quadrant chart.
- * Single batched query — no N+1.
+ * UI can link to its report, plot its cached score on the quadrant chart and
+ * show its AUM / expense ratio. Single batched query — no N+1.
+ *
+ * The same symbol can be listed on several exchanges (e.g. IXJ on NYSEARCA and
+ * ASX), so a match prefers the exchange the report named, then a listing in the
+ * main ETF's country, then any listing.
  */
-async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[]): Promise<EtfCompetitor[]> {
+async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], mainExchange: string): Promise<EtfCompetitor[]> {
   if (!competitionArray.length) return [];
 
   const symbolsToCheck = competitionArray.map((c) => c.companySymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);
@@ -473,15 +483,26 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[]): P
                 finalScore: true,
               },
             },
+            financialInfo: { select: { aum: true, expenseRatio: true } },
           },
         })
       : [];
 
-  const etfMap = new Map(existingEtfs.map((e) => [e.symbol.toUpperCase(), e]));
+  const listingsBySymbol = new Map<string, typeof existingEtfs>();
+  for (const e of existingEtfs) {
+    const key = e.symbol.toUpperCase();
+    listingsBySymbol.set(key, [...(listingsBySymbol.get(key) ?? []), e]);
+  }
+  const mainCountry = countryOfExchange(mainExchange);
 
   return competitionArray.map((entry) => {
     const symbolUpper = entry.companySymbol?.toUpperCase();
-    const existing = symbolUpper ? etfMap.get(symbolUpper) : undefined;
+    const listings = symbolUpper ? listingsBySymbol.get(symbolUpper) ?? [] : [];
+    const namedExchange = entry.exchangeSymbol?.trim().toUpperCase();
+    const existing =
+      listings.find((l) => l.exchange.toUpperCase() === namedExchange) ??
+      listings.find((l) => mainCountry && countryOfExchange(l.exchange) === mainCountry) ??
+      listings[0];
 
     return {
       companyName: entry.companyName,
@@ -497,8 +518,15 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[]): P
             symbol: existing.symbol,
             exchange: existing.exchange,
             cachedScoreEntry: existing.cachedScore,
+            aum: existing.financialInfo?.aum ?? null,
+            expenseRatio: existing.financialInfo?.expenseRatio ?? null,
           }
         : undefined,
     };
   });
+}
+
+function countryOfExchange(exchange: string): SupportedCountries | undefined {
+  const normalized = exchange.trim().toUpperCase();
+  return isExchange(normalized) ? getCountryByExchange(normalized) : undefined;
 }
