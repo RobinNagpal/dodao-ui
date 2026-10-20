@@ -1,5 +1,6 @@
 'use server';
 
+import { getAppConfigValue } from '@/lib/appConfig/appConfig';
 import { escapeHtml, isValidEmailAddress, KOALAGAINS_FROM_ADDRESS } from '@/utils/email/koalagains-email';
 import { sendEmail } from '@dodao/web-core/api/email/sendEmail';
 import { headers } from 'next/headers';
@@ -8,6 +9,25 @@ import { headers } from 'next/headers';
 const TO_ADDRESS = KOALAGAINS_FROM_ADDRESS;
 
 export type ContactFormResult = { ok: true } | { ok: false; error: string };
+
+/** Extra recipients from the CONTACT_FORM_FORWARD_EMAILS app setting (admin → App Settings → Contact Form). "off" disables forwarding. */
+async function forwardAddresses(): Promise<string[]> {
+  const raw = (await getAppConfigValue('CONTACT_FORM_FORWARD_EMAILS'))?.trim() ?? '';
+  if (raw === '' || raw.toLowerCase() === 'off') return [];
+
+  const seen = new Set([TO_ADDRESS.toLowerCase()]);
+  const addresses: string[] = [];
+  for (const address of raw.split(/[\s,;]+/)) {
+    if (!address || seen.has(address.toLowerCase())) continue;
+    if (!isValidEmailAddress(address)) {
+      console.warn(`[contact-actions] Skipping invalid CONTACT_FORM_FORWARD_EMAILS entry: "${address}"`);
+      continue;
+    }
+    seen.add(address.toLowerCase());
+    addresses.push(address);
+  }
+  return addresses;
+}
 
 function asTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
@@ -107,6 +127,7 @@ export async function submitContactForm(input: {
   try {
     await sendEmail({
       to: TO_ADDRESS,
+      bcc: await forwardAddresses(),
       from: KOALAGAINS_FROM_ADDRESS,
       replyTo: email,
       subject: `New contact form message from ${name}`,

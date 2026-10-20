@@ -36,6 +36,7 @@ export type AppConfigGroupId =
   | 'report-generation'
   | 'auto-generation'
   | 'payments'
+  | 'contact-form'
   | 'tariff-calculator'
   | 'scraping'
   | 'logging'
@@ -118,6 +119,11 @@ export const APP_CONFIG_GROUPS: AppConfigGroup[] = [
     description: 'Controls for buying report credits through Stripe.',
   },
   {
+    id: 'contact-form',
+    label: 'Contact Form',
+    description: 'Who receives the messages sent from the "Get in Touch" form on the homepage.',
+  },
+  {
     id: 'tariff-calculator',
     label: 'Tariff Calculator',
     description: 'Which data the public tariff calculator (/tariff-calculator) prices duties from.',
@@ -175,6 +181,14 @@ export const APP_CONFIG_DEFINITIONS: AppConfigDefinition[] = [
       'Public Stripe key (pk_live_… / pk_test_…). Not secret by design; not used by the current Checkout redirect flow, kept for client-side Stripe.js.',
     type: 'string',
     group: 'payments',
+  },
+  {
+    key: 'CONTACT_FORM_FORWARD_EMAILS',
+    label: 'Forward contact-form messages to',
+    description:
+      'Comma-separated email addresses that also receive every message sent from the homepage "Get in Touch" form, in addition to contact@koalagains.com. They are added as BCC, so a visitor who hits "reply all" never sees them. Invalid addresses are skipped (and logged). Type "off" to stop forwarding (this screen cannot save an empty value). Applies within about 30 minutes, or immediately when saved here.',
+    type: 'string',
+    group: 'contact-form',
   },
   {
     key: 'TARIFF_CALC_MEASURES_ENABLED',
