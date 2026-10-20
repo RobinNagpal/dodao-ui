@@ -19,5 +19,6 @@
   "STRIPE_CREDIT_PURCHASES_ENABLED": "false",
   "TARIFF_CALC_MEASURES_ENABLED": "",
   "LOKI_URL": "https://logs-prod-018.grafana.net",
-  "LOKI_USER_ID": "1637978"
+  "LOKI_USER_ID": "1637978",
+  "UMAMI_ANALYTICS_ENABLED": "false"
 }
