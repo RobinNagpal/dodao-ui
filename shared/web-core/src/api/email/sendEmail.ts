@@ -10,6 +10,8 @@ export interface SendEmailInput {
   from: string;
   subject: string;
   html: string;
+  /** Set when the recipient should be able to hit "reply" and land on someone other than `from` (e.g. a contact-form submitter). */
+  replyTo?: string;
 }
 
 /**
@@ -17,12 +19,13 @@ export interface SendEmailInput {
  * email to the server log first, so it can be read in the terminal when SES
  * isn't configured locally (the send then fails and the caller logs that).
  */
-export async function sendEmail({ to, from, subject, html }: SendEmailInput): Promise<void> {
+export async function sendEmail({ to, from, subject, html, replyTo }: SendEmailInput): Promise<void> {
   console.log('Sending email to', to, 'from', from, 'subject', subject);
   console.log('Email body: ', html);
   await ses.sendEmail({
     Source: from,
     Destination: { ToAddresses: [to] },
+    ReplyToAddresses: replyTo ? [replyTo] : undefined,
     Message: {
       Subject: { Data: subject },
       Body: { Html: { Data: html } },

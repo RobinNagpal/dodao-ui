@@ -1,6 +1,34 @@
+'use client';
+
+import { submitContactForm } from '@/utils/contact/contact-actions';
 import { BuildingOffice2Icon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { FormEvent, useRef, useState } from 'react';
+
+type SubmitStatus = { state: 'idle' } | { state: 'submitting' } | { state: 'success' } | { state: 'error'; message: string };
 
 export default function Contact() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<SubmitStatus>({ state: 'idle' });
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    setStatus({ state: 'submitting' });
+    const result = await submitContactForm({
+      firstName: (data.get('first-name') as string) ?? '',
+      lastName: (data.get('last-name') as string) ?? '',
+      email: (data.get('email') as string) ?? '',
+      phoneNumber: (data.get('phone-number') as string) ?? '',
+      message: (data.get('message') as string) ?? '',
+    });
+    if (result.ok) {
+      setStatus({ state: 'success' });
+      formRef.current?.reset();
+    } else {
+      setStatus({ state: 'error', message: result.error ?? 'Something went wrong. Please try again.' });
+    }
+  };
+
   return (
     <div id="contact" className="bg-surface py-8 sm:py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -42,7 +70,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Form */}
-            <form action="#" method="POST" className="px-6 lg:px-8">
+            <form ref={formRef} onSubmit={handleSubmit} className="px-6 lg:px-8">
               <div className="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                   <div>
@@ -84,6 +112,7 @@ export default function Contact() {
                         name="email"
                         type="email"
                         autoComplete="email"
+                        required
                         className="block w-full rounded-md bg-surface-2 px-3.5 py-2 text-base text-body outline outline-1 outline-border placeholder:text-muted focus:outline-2 focus:outline-indigo-600"
                       />
                     </div>
@@ -113,6 +142,7 @@ export default function Contact() {
                         id="message"
                         name="message"
                         rows={4}
+                        required
                         className="block w-full rounded-md bg-surface-2 px-3.5 py-2 text-base text-body outline outline-1 outline-border placeholder:text-muted focus:outline-2 focus:outline-indigo-600"
                         defaultValue={''}
                       />
@@ -120,12 +150,17 @@ export default function Contact() {
                   </div>
                 </div>
 
-                <div className="mt-8 flex justify-end">
+                <div className="mt-8 flex flex-col items-end gap-3">
+                  {status.state === 'success' && (
+                    <p className="text-sm text-emerald-500">Thanks — your message has been sent. We&apos;ll get back to you soon.</p>
+                  )}
+                  {status.state === 'error' && <p className="text-sm text-red-500">{status.message}</p>}
                   <button
                     type="submit"
-                    className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-text shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={status.state === 'submitting'}
+                    className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-primary-text shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Send message
+                    {status.state === 'submitting' ? 'Sending…' : 'Send message'}
                   </button>
                 </div>
               </div>
