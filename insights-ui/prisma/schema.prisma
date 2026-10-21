@@ -63,13 +63,14 @@ model User {
   // Report credits. The balance and its ledger live in Stripe (customer balance
   // transactions); the DB only maps the user to their Stripe customer.
   /// Created when the user first opens Checkout, so it is set before any payment.
-  stripeCustomerId String?                @unique @map("stripe_customer_id")
+  stripeCustomerId        String?                  @unique @map("stripe_customer_id")
   /// Set by the purchase webhook the first time a payment settles. Gates every
   /// Stripe balance call: a user who has never bought has no balance to read,
   /// so the UI can show "Buy Credits" without touching the Stripe API at all.
-  firstPurchaseAt  DateTime?              @map("first_purchase_at")
-  reportSpends     ReportSpend[]
-  creditPurchases  StripeCreditPurchase[]
+  firstPurchaseAt         DateTime?                @map("first_purchase_at")
+  reportSpends            ReportSpend[]
+  creditPurchases         StripeCreditPurchase[]
+  creditPurchaseInterests CreditPurchaseInterest[]
 
   @@unique([publicAddress, spaceId])
   @@unique([username, spaceId])
@@ -2800,6 +2801,28 @@ model StripeCreditPurchase {
 
   @@index([userId, createdAt])
   @@map("stripe_credit_purchases")
+}
+
+/// One click on "Buy" while buying is switched off (App Settings → Payments): demand we couldn't serve.
+model CreditPurchaseInterest {
+  id      String @id @default(uuid())
+  userId  String @map("user_id")
+  spaceId String @default("koala_gains") @map("space_id")
+
+  packKey       String  @map("pack_key")
+  credits       Int
+  amountInCents Int     @map("amount_in_cents")
+  /// Where the click happened: "credits-page" or "regenerate-modal".
+  source        String
+  pagePath      String? @map("page_path")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([spaceId, createdAt])
+  @@index([userId])
+  @@map("credit_purchase_interests")
 }
 
 // Official-source extra-duty data for the tariff calculator (issue #1785). Both tables are

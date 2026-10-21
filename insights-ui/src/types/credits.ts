@@ -151,6 +151,51 @@ export interface PurchasesEnabledResponse {
   enabled: boolean;
 }
 
+export type CreditPurchaseInterestSource = 'credits-page' | 'regenerate-modal';
+
+export interface RecordCreditPurchaseInterestRequest {
+  packKey: string;
+  source: CreditPurchaseInterestSource;
+  pagePath?: string;
+}
+
+export interface RecordCreditPurchaseInterestResponse {
+  recorded: boolean;
+}
+
+/** One user who clicked "Buy" while buying was switched off. */
+export interface AdminCreditInterestUserResponse {
+  userId: string;
+  name: string | null;
+  email: string | null;
+  username: string;
+  clicks: number;
+  /** Pack of the most recent click. */
+  lastPackCredits: number;
+  /** Largest pack this user clicked to buy. */
+  maxPackCredits: number;
+  firstClickAt: string;
+  lastClickAt: string;
+  /** True when the user has bought credits at some point. */
+  hasPurchased: boolean;
+}
+
+export interface AdminCreditInterestPackResponse {
+  packKey: string;
+  credits: number;
+  clicks: number;
+  users: number;
+}
+
+export interface AdminCreditInterestResponse {
+  totalClicks: number;
+  uniqueUsers: number;
+  /** Sum over users of the largest pack each one clicked: the revenue we couldn't take. */
+  potentialRevenueInCents: number;
+  packs: AdminCreditInterestPackResponse[];
+  users: AdminCreditInterestUserResponse[];
+}
+
 export interface CreateCheckoutSessionRequest {
   packKey: string;
   /**
