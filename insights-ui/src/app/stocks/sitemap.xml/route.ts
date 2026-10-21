@@ -19,7 +19,6 @@ const COUNTRIES_EXCLUDED_FROM_SITEMAP: ReadonlySet<SupportedCountries> = new Set
   SupportedCountries.Japan,
   SupportedCountries.Taiwan,
   SupportedCountries.HongKong,
-  SupportedCountries.Germany,
 ]);
 
 interface Industry {
