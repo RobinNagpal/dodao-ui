@@ -15,12 +15,11 @@ async function getHandler(_req: NextRequest, _userContext: KoalaGainsJwtTokenPay
   });
 
   const userIds = Array.from(new Set(clicks.map((click) => click.userId)));
-  const [users, buyers] = await Promise.all([
-    prisma.user.findMany({ where: { id: { in: userIds } }, select: { id: true, name: true, email: true, username: true } }),
-    prisma.user.findMany({ where: { id: { in: userIds }, firstPurchaseAt: { not: null } }, select: { id: true } }),
-  ]);
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    select: { id: true, name: true, email: true, username: true, firstPurchaseAt: true },
+  });
   const usersById = new Map(users.map((user) => [user.id, user]));
-  const buyerIds = new Set(buyers.map((user) => user.id));
 
   const byUser = new Map<string, { clicks: number; lastPackCredits: number; maxPackCredits: number; maxPackCents: number; first: Date; last: Date }>();
   const byPack = new Map<string, { clicks: number; users: Set<string> }>();
@@ -67,7 +66,7 @@ async function getHandler(_req: NextRequest, _userContext: KoalaGainsJwtTokenPay
         maxPackCredits: row.maxPackCredits,
         firstClickAt: row.first.toISOString(),
         lastClickAt: row.last.toISOString(),
-        hasPurchased: buyerIds.has(userId),
+        hasPurchased: user.firstPurchaseAt !== null,
       };
     })
     .sort((a, b) => b.lastClickAt.localeCompare(a.lastClickAt));

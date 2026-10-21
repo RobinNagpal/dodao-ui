@@ -25,9 +25,14 @@ function toUserRow(user: AdminCreditInterestUserResponse): TableRow {
     id: user.userId,
     item: user,
     columns: [
-      <TextLink key="user" href={`/admin-v1/user-credits/${user.userId}`}>
-        {user.email ?? user.name ?? user.username}
-      </TextLink>,
+      // Only buyers have a credit history to open.
+      user.hasPurchased ? (
+        <TextLink key="user" href={`/admin-v1/user-credits/${user.userId}`}>
+          {user.email ?? user.name ?? user.username}
+        </TextLink>
+      ) : (
+        user.email ?? user.name ?? user.username
+      ),
       user.name ?? '—',
       String(user.clicks),
       `${user.lastPackCredits} credits`,

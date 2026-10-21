@@ -35,7 +35,7 @@ async function postHandler(req: NextRequest, userContext: DoDaoJwtTokenPayload):
       credits: pack.credits,
       amountInCents: pack.amountInCents,
       source: body.source,
-      pagePath: body.pagePath ? body.pagePath.slice(0, MAX_PAGE_PATH_LENGTH) : null,
+      pagePath: typeof body.pagePath === 'string' && body.pagePath ? body.pagePath.slice(0, MAX_PAGE_PATH_LENGTH) : null,
     },
   });
 
