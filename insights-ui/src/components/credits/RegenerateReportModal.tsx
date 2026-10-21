@@ -107,17 +107,13 @@ export default function RegenerateReportModal({
             <Text size="sm">
               Regenerating the {reportLabel} report costs {formatCredits(CREDITS_PER_REPORT)}. You have {formatCredits(credits)}.
             </Text>
-            <Text size="xs" tone="muted">
-              {purchasesEnabled === false ? "Buying credits isn't available right now." : 'Pick a pack below. After you pay, you will come right back here.'}
-            </Text>
+            {purchasesEnabled !== false && (
+              <Text size="xs" tone="muted">
+                Pick a pack below. After you pay, you will come right back here.
+              </Text>
+            )}
           </Stack>
-          {purchasesEnabled === false ? (
-            <Button variant="contained" onClick={onClose}>
-              Close
-            </Button>
-          ) : (
-            <BuyCreditsPanel layout="list" />
-          )}
+          <BuyCreditsPanel layout="list" source="regenerate-modal" />
         </Stack>
       );
     }

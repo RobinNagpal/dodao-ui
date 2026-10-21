@@ -22,6 +22,7 @@ const stocksReportsSection: AdminNavSection = {
     { name: 'Missing Reports', href: '/admin-v1/missing-reports' },
     { name: 'Claude Reports', href: '/admin-v1/claude-reports' },
     { name: 'User Credits', href: '/admin-v1/user-credits' },
+    { name: 'Credit Purchase Interest', href: '/admin-v1/credit-interest' },
   ],
 };
 
