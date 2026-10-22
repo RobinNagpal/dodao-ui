@@ -17,7 +17,7 @@ export interface SiteMapUrl {
 
 /**
  * ETF exchanges excluded from every sitemap — the exchanges of `ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY`
- * (UK: retired from search; Germany: hidden until its reports are generated). The pages stay live
+ * (UK: retired from search). The pages stay live
  * (HTTP 200); we just don't want Google to (re)discover them via the sitemaps. Used as a Prisma
  * `exchange notIn` filter across every ETF sitemap query. The main sitemap (`etfs/sitemap.xml`)
  * additionally drops those countries' listing/browse pages.
