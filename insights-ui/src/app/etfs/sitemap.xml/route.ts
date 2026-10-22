@@ -35,7 +35,7 @@ async function generateEtfUrls(): Promise<SiteMapUrl[]> {
     if (option.value !== '') assetClassValueToKey.set(option.value, option.value);
   }
 
-  // UK and Germany ETF pages stay live but are kept out of the sitemap (see
+  // UK ETF pages stay live but are kept out of the sitemap (see
   // ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY / SITEMAP_EXCLUDED_ETF_EXCHANGES) — skip their listing/browse sections here.
   const sitemapCountries = ETF_SUPPORTED_COUNTRIES.filter((country) => !ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY.includes(country));
 

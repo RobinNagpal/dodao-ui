@@ -5,7 +5,7 @@ import { ALL_ETF_COUNTRIES, EtfBrowseSection, etfBasePath, etfCountryDisplayName
 
 /**
  * Countries we still cross-link to from the "Also view" switcher. `ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY`
- * (UK, Germany) is intentionally excluded: those ETF pages stay live (they don't 404), but we don't
+ * (UK) is intentionally excluded: those ETF pages stay live (they don't 404), but we don't
  * surface them from other listing pages or the home page, so Google doesn't (re)discover them via
  * internal links. They are also dropped from the sitemaps (see `etfSitemapUtils.ts` / `etfs/sitemap.xml`).
  */
