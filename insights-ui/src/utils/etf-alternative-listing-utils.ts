@@ -5,10 +5,10 @@ import { Prisma } from '@prisma/client';
 import { permanentRedirect } from 'next/navigation';
 
 /**
- * One `etfs` row per share class (ISIN). The same share class traded on another exchange or in
- * another currency is not its own row but an entry in that row's `alternativeListings`
- * (e.g. LSE:CSPX lists { XETRA, SXR8 } and { LSE, CSP1 }). These helpers map an alternative
- * exchange/symbol back to the ETF that owns it.
+ * A listing of the same share class (same ISIN) on another exchange or in another currency is
+ * an entry in an ETF's `alternativeListings` rather than its own row (e.g. LSE:CSPX lists
+ * { XETRA, SXR8 }). Listings that already had a report keep their own row (LSE:CSP1).
+ * These helpers map an alternative exchange/symbol back to the ETF that owns it.
  */
 
 export interface EtfListingIdentity {

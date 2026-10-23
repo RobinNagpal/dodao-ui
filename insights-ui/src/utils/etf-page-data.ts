@@ -496,7 +496,7 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], ma
         })
       : [];
 
-  // A competitor named by a ticker that is now another fund's alternative listing (e.g. LSE:SWDA,
+  // A competitor named by a ticker that is now another fund's alternative listing (e.g. XETRA:EUNL,
   // folded into LSE:IWDA) still links to that fund.
   const foundSymbols = new Set(existingEtfs.map((e) => e.symbol.toUpperCase()));
   const missingSymbols = [...new Set(symbolsToCheck.filter((s) => !foundSymbols.has(s)))];
