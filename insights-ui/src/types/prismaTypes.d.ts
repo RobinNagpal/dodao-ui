@@ -308,6 +308,18 @@ export interface EtfMorRiskPeriodData {
 export type EtfMorRiskPeriods = Record<EtfMorRiskPeriod, EtfMorRiskPeriodData>;
 
 // --------------------------------
+// ETF alternative listings (etfs.alternative_listings)
+// --------------------------------
+
+/** Another exchange/symbol the same share class (same ISIN) trades under, e.g. { exchange: 'XETRA', symbol: 'SXR8' }. */
+export interface EtfAlternativeListing {
+  exchange: string;
+  symbol: string;
+}
+
+export type EtfAlternativeListings = EtfAlternativeListing[];
+
+// --------------------------------
 // ETF portfolio scraper JSON types (/portfolio — etf-portfolio.ts)
 // --------------------------------
 
@@ -468,6 +480,7 @@ declare global {
     type EtfMorPortfolioFixedIncomeStyle = EtfMorPortfolioFixedIncomeStyle;
     type EtfMorPortfolioSectorExposure = EtfMorPortfolioSectorExposure;
     type EtfMorPortfolioBondBreakdown = EtfMorPortfolioBondBreakdown;
+    type EtfAlternativeListings = EtfAlternativeListings;
     type EtfMorPortfolioHoldings = EtfMorPortfolioHoldings;
 
     // Tariff chapter report JSON shapes
