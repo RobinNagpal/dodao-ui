@@ -3,6 +3,7 @@ import { prisma } from '@/prisma';
 import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { isExchange } from '@/utils/countryExchangeUtils';
 import { revalidateAllEtfPageTagsOnly } from '@/utils/etf-cache-utils';
+import { normalizeEtfIsin } from '@/utils/etf-isin-utils';
 import { isEtfAnalyzerInfoUsable, ScrapeEtfAnalyzerInfoResult, ScrapeSectionError, scrapeEtfAnalyzerInfo } from '@/utils/stock-analyzer';
 import { ETF_ANALYZER_INFO_REFRESHABLE_FIELDS, EtfAnalyzerInfoFieldKey } from '@/utils/stock-analyzer/etf-analyzer-info-parser';
 import { generateEtfStockAnalyzeUrl } from '@/utils/stockAnalyzeUrlValidation';
@@ -47,7 +48,7 @@ async function postHandler(
 
   const etfRecord = await prisma.etf.findFirstOrThrow({
     where: { spaceId, symbol, exchange: ex },
-    select: { id: true, symbol: true },
+    select: { id: true, symbol: true, isin: true },
   });
 
   const etfUrl: string = generateEtfStockAnalyzeUrl(etfRecord.symbol, ex);
@@ -67,6 +68,12 @@ async function postHandler(
     update: { symbol: etfRecord.symbol, ...data },
     create: { etf: { connect: { id: etfRecord.id } }, symbol: etfRecord.symbol, ...data },
   });
+
+  // Keep the share-class key on the ETF in step, so later imports fold other listings of it in.
+  const isin = normalizeEtfIsin(data.isinNumber);
+  if (isin && isin !== etfRecord.isin) {
+    await prisma.etf.update({ where: { id: etfRecord.id }, data: { isin } });
+  }
 
   // Every per-ETF page (main + 6 sub-pages) reads this row: category, issuer,
   // asset class, returns, risk ratios…
