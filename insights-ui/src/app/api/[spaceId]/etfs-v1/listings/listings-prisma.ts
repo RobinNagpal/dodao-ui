@@ -15,7 +15,8 @@ import type { EtfGroupingPreview, EtfGroupingPreviewItem, EtfProvidersPreview, E
 import { canonicalizeCategory, expandCategoryAliases } from '@/utils/etf-category-aliases';
 import { ETF_OTHERS_GROUP_KEY, getAllEtfGroups, getCategoriesForGroupKey, getEtfGroupByKey } from '@/utils/etf-categorization-utils';
 import { ETF_ASSET_CLASS_OPTIONS, parseNumericStringValue } from '@/utils/etf-filter-utils';
-import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
+import { etfListedInCountryWhere } from '@/utils/etf-alternative-listing-utils';
+import { EtfSupportedCountry } from '@/utils/etfCountryExchangeUtils';
 
 export type { EtfGroupingPreview, EtfGroupingPreviewItem, EtfProvidersPreview, EtfUncategorizedPreview };
 
@@ -58,7 +59,7 @@ async function loadRawEtfRows(
 
   const where = {
     ...baseWhere,
-    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(country ? { AND: [etfListedInCountryWhere(country)] } : {}),
     ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
   };
 
@@ -215,7 +216,7 @@ export async function fetchUncategorizedEtfPreview(
   };
   const where = {
     ...baseWhere,
-    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(country ? { AND: [etfListedInCountryWhere(country)] } : {}),
     ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
   };
 
@@ -268,7 +269,7 @@ async function fetchEtfsMissingStockAnalyzerField(
   const where = {
     spaceId,
     OR: [{ stockAnalyzerInfo: { is: null } }, ...missing],
-    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(country ? { AND: [etfListedInCountryWhere(country)] } : {}),
     ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
   };
 
@@ -313,7 +314,7 @@ export async function fetchEtfProvidersForCountry(spaceId: string, country?: Etf
   const baseWhere = { spaceId, stockAnalyzerInfo: { is: { issuer: { not: null } } } };
   const where = {
     ...baseWhere,
-    ...(country ? { exchange: { in: getEtfExchangesByCountry(country) } } : {}),
+    ...(country ? { AND: [etfListedInCountryWhere(country)] } : {}),
     ...(includeUnpopulated ? {} : POPULATED_ETF_WHERE),
   };
 

@@ -12,6 +12,7 @@ import { generateBreadcrumbJsonLdFromCrumbs, generateEtfCompetitionArticleJsonLd
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { getEtfCompetitionData, getEtfFastData } from '@/utils/etf-page-data';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { cache } from 'react';
@@ -73,6 +74,7 @@ export default async function EtfCompetitionPage({ params }: { params: RoutePara
     fetchEtfSimilarEtfs(exchangeUpper, etfUpper),
   ]);
   if (!data || !data.etf) {
+    await redirectAlternativeEtfListing(exchangeUpper, etfUpper, 'competition');
     notFound();
   }
 

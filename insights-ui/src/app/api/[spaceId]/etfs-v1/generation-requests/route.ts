@@ -4,6 +4,7 @@ import { KoalaGainsJwtTokenPayload } from '@/types/auth';
 import { LLMProvider } from '@/types/llmConstants';
 import { EtfGenerationRequestStatus, EtfReportType } from '@/types/etf/etf-analysis-types';
 import { ensureMorDataForAnalysis } from '@/utils/etf-analysis-reports/mor-scrape-utils';
+import { etfOwnOrAlternativeListingWhere } from '@/utils/etf-alternative-listing-utils';
 import { upsertEtfGenerationRequest } from '@/utils/etf-analysis-reports/etf-generation-request-utils';
 import { calculateEtfPendingSteps } from '@/utils/etf-analysis-reports/etf-report-steps-statuses';
 import { parsePageSizeParam, parseSkipParam } from '@/utils/pagination-param-utils';
@@ -180,13 +181,10 @@ async function postHandler(
       throw new Error('ETF with symbol and exchange is required for each generation request');
     }
 
+    // An alternative listing (e.g. XETRA:SXR8) resolves to the ETF that owns it, so no duplicate report is generated.
     const etfRecord = await prisma.etf.findFirstOrThrow({
-      where: {
-        spaceId,
-        symbol: etf.symbol.toUpperCase(),
-        exchange: etf.exchange.toUpperCase(),
-      },
-      select: { id: true },
+      where: etfOwnOrAlternativeListingWhere(spaceId, etf.exchange, etf.symbol),
+      select: { id: true, exchange: true, symbol: true },
     });
 
     const needsMorData =
@@ -199,8 +197,9 @@ async function postHandler(
       await ensureMorDataForAnalysis({
         etfId: etfRecord.id,
         spaceId,
-        exchange: etf.exchange,
-        symbol: etf.symbol,
+        // The owning ETF's own listing: the scrape callback looks the ETF up by exchange/symbol.
+        exchange: etfRecord.exchange,
+        symbol: etfRecord.symbol,
       });
     }
 

@@ -1395,6 +1395,8 @@ export function createEtfSearchFilter(spaceId: string, filters: EtfFilterParams)
       { name: { startsWith: searchTerm, mode: 'insensitive' } },
       { symbol: { contains: searchTerm, mode: 'insensitive' } },
       { name: { contains: searchTerm, mode: 'insensitive' } },
+      // Exact alternative ticker: the same share class listed elsewhere (e.g. XETRA:SXR8 → LSE:CSPX).
+      { alternativeListings: { array_contains: [{ symbol: searchTerm.toUpperCase() }] } },
     ];
   }
 

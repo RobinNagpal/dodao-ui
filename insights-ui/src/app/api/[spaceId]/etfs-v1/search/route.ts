@@ -3,6 +3,8 @@ import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/wit
 import { Prisma } from '@prisma/client';
 import { NextRequest } from 'next/server';
 import { parseLimitParam } from '@/utils/pagination-param-utils';
+import { toEtfAlternativeListings } from '@/utils/etf-alternative-listing-utils';
+import type { EtfAlternativeListing } from '@/types/prismaTypes';
 
 /** Upper bound for the `limit` param; the query fetches up to 4× this before ranking. */
 const MAX_SEARCH_LIMIT = 50;
@@ -15,6 +17,8 @@ export interface EtfSearchResult {
   cachedScoreEntry: {
     finalScore: number;
   } | null;
+  /** Set when the query is one of this fund's alternative tickers (e.g. "SXR8" finds LSE:CSPX). */
+  matchedAlternativeListing?: EtfAlternativeListing;
 }
 
 export interface EtfSearchResponse {
@@ -44,6 +48,8 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       { name: { startsWith: searchTerm, mode: 'insensitive' } },
       { symbol: { contains: searchTerm, mode: 'insensitive' } },
       { name: { contains: searchTerm, mode: 'insensitive' } },
+      // Exact alternative ticker: the same share class listed elsewhere (e.g. XETRA:SXR8 → LSE:CSPX).
+      { alternativeListings: { array_contains: [{ symbol: searchTerm.toUpperCase() }] } },
     ],
   };
 
@@ -58,6 +64,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       name: true,
       symbol: true,
       exchange: true,
+      alternativeListings: true,
       cachedScore: {
         select: { finalScore: true },
       },
@@ -65,13 +72,18 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
     take: fetchLimit,
   });
 
+  const searchUpperTerm = searchTerm.toUpperCase();
+  const matchedAlternative = (etf: (typeof etfs)[number]): EtfAlternativeListing | undefined =>
+    toEtfAlternativeListings(etf.alternativeListings).find((l) => l.symbol.toUpperCase() === searchUpperTerm);
+
   const results: EtfSearchResult[] = etfs
     .sort((a, b) => {
       const searchUpper = searchTerm.toUpperCase();
       const searchLower = searchTerm.toLowerCase();
 
-      const aSymbolExact = a.symbol.toUpperCase() === searchUpper;
-      const bSymbolExact = b.symbol.toUpperCase() === searchUpper;
+      // An exact alternative ticker ranks with exact symbol matches.
+      const aSymbolExact = a.symbol.toUpperCase() === searchUpper || !!matchedAlternative(a);
+      const bSymbolExact = b.symbol.toUpperCase() === searchUpper || !!matchedAlternative(b);
       if (aSymbolExact && !bSymbolExact) return -1;
       if (!aSymbolExact && bSymbolExact) return 1;
 
@@ -116,6 +128,7 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
       symbol: etf.symbol,
       exchange: etf.exchange,
       cachedScoreEntry: etf.cachedScore ? { finalScore: etf.cachedScore.finalScore } : null,
+      ...(matchedAlternative(etf) ? { matchedAlternativeListing: matchedAlternative(etf) } : {}),
     }));
 
   return { results, totalCount: results.length, query: searchTerm };

@@ -3,6 +3,7 @@
  * pages (via `src/utils/etf-data-utils.ts`), which call it in-process instead of over HTTP.
  */
 import type { EtfListingItem, EtfListingResponse } from '@/app/api/[spaceId]/etfs-v1/listing/route';
+import { etfListedInCountryWhere, toEtfAlternativeListings } from '@/utils/etf-alternative-listing-utils';
 import { prisma } from '@/prisma';
 import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import {
@@ -72,6 +73,7 @@ function toEtfListingItem(etf: any): EtfListingItem {
     hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
     hasMorRiskInfo: !!etf.morRiskInfo,
     hasMorPeopleInfo: !!etf.morPeopleInfo,
+    alternativeListings: toEtfAlternativeListings(etf.alternativeListings),
   };
 }
 
@@ -113,11 +115,10 @@ export async function getEtfListingData(spaceId: string, searchParams: URLSearch
   // Country is a route-level filter (mapped to an exchange list); not part of the
   // user-facing filter chips so it lives outside the ALL_ETF_PARAM_KEYS set.
   const countryParam = searchParams.get('country')?.trim();
-  if (countryParam && isEtfSupportedCountry(countryParam)) {
-    const exchanges = getEtfExchangesByCountry(countryParam);
-    if (exchanges.length > 0) {
-      etfWhere.exchange = { in: exchanges };
-    }
+  if (countryParam && isEtfSupportedCountry(countryParam) && getEtfExchangesByCountry(countryParam).length > 0) {
+    // Wrapped in AND so it composes with the search filter's OR.
+    const existingAnd = Array.isArray(etfWhere.AND) ? etfWhere.AND : etfWhere.AND ? [etfWhere.AND] : [];
+    etfWhere.AND = [...existingAnd, etfListedInCountryWhere(countryParam)];
   }
 
   const financialFilter = createEtfFinancialFilter(filters);

@@ -12,6 +12,7 @@ import { generateBreadcrumbJsonLdFromCrumbs, generateEtfHoldingsMetadata } from 
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { cache, Suspense } from 'react';
 import { getEtfFastData, getEtfPortfolioHoldingsData } from '@/utils/etf-page-data';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
@@ -72,7 +73,10 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
     fetchHoldings(exchange, symbol),
     fetchEtfSimilarEtfs(exchange, symbol),
   ]);
-  if (!etfData) notFound();
+  if (!etfData) {
+    await redirectAlternativeEtfListing(exchange, symbol, 'holdings');
+    notFound();
+  }
 
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
 

@@ -79,6 +79,9 @@ function EtfCard({ etf }: { etf: EtfListingItem }): JSX.Element {
       </div>
 
       <h3 className="text-heading text-sm font-medium mb-3 line-clamp-2 min-h-[2.5rem]">{etf.name}</h3>
+      {etf.alternativeListings.length > 0 && (
+        <p className="text-xs text-muted -mt-2 mb-3 truncate">Also {etf.alternativeListings.map((l) => `${l.symbol} (${l.exchange})`).join(', ')}</p>
+      )}
 
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div>
