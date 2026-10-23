@@ -6,15 +6,19 @@
 -- report into one primary row per ISIN: they become entries in its `alternative_listings`, their
 -- user data moves onto it and the rows are deleted.
 --
--- A duplicate that has a report (a cached score or any category result) is never deleted: it
--- stays its own row, so one ISIN can still have several rows and `isin` is indexed, not unique.
+-- A duplicate that has any report (cached score, category or factor result, key facts, competition,
+-- future returns, or a report-generated date) is never deleted: it stays its own row, so one ISIN
+-- can still have several rows and `isin` is indexed, not unique. If a duplicate that would be
+-- deleted has a generation request still open, the migration stops instead of deleting it.
 --
 -- Primary row per ISIN: has a report > has a cached score > created earliest (by day) > higher
 -- trading volume > id. Rows without a valid ISIN are left alone.
 --
--- Runs as one transaction: any failure leaves the database exactly as it was.
+-- Prisma applies this file as one transaction (no BEGIN/COMMIT here, so a failure is recorded with
+-- its real error): any failure leaves the database exactly as it was.
 
-BEGIN;
+-- Fail fast instead of queueing behind a long-running query on `etfs`.
+SET lock_timeout = '10s';
 
 -- AlterTable
 ALTER TABLE "etfs" ADD COLUMN     "alternative_listings" JSONB NOT NULL DEFAULT '[]',
@@ -38,8 +42,13 @@ WITH ranked AS (
   FROM (
     SELECT e."id", e."space_id", e."isin", e."exchange", e."symbol", e."created_at", f."volume",
            EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id") AS "has_score",
-           (EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id")
-            OR EXISTS (SELECT 1 FROM "etf_category_analysis_results" c WHERE c."etf_id" = e."id")) AS "has_report"
+           (e."last_report_generated_at" IS NOT NULL
+            OR EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_category_analysis_results" c WHERE c."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_analysis_category_factor_results" c WHERE c."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_key_facts_reports" c WHERE c."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_vs_competition" c WHERE c."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_future_returns" c WHERE c."etf_id" = e."id")) AS "has_report"
     FROM "etfs" e
     LEFT JOIN "etf_financial_info" f ON f."etf_id" = e."id"
     WHERE e."isin" IS NOT NULL
@@ -51,6 +60,19 @@ FROM ranked d
 JOIN ranked p ON p."space_id" = d."space_id" AND p."isin" = d."isin" AND p.rn = 1
 WHERE d.rn > 1
   AND NOT d."has_report";
+
+-- A report being generated for a row we are about to delete would be lost mid-flight: stop instead.
+-- Pause ETF generation, let open requests finish, then deploy again.
+DO $$
+DECLARE open_count integer;
+BEGIN
+  SELECT count(*) INTO open_count
+  FROM "etf_generation_requests" g JOIN "_etf_duplicates" d ON d."id" = g."etf_id"
+  WHERE g."status" NOT IN ('Completed', 'Failed');
+  IF open_count > 0 THEN
+    RAISE EXCEPTION 'ETF ISIN migration: % open generation request(s) on duplicate ETFs that would be deleted', open_count;
+  END IF;
+END $$;
 
 -- 3. The duplicates become alternative listings of the kept row.
 UPDATE "etfs" p
@@ -115,7 +137,9 @@ DELETE FROM "etf_scenario_etf_links" l
 USING "_etf_duplicates" d
 WHERE (l."etf_id" = d."id" OR (l."space_id" = d."space_id" AND l."symbol" = d."symbol" AND l."exchange" = d."exchange"))
   AND (EXISTS (SELECT 1 FROM "etf_scenario_etf_links" k
-               WHERE k."scenario_id" = l."scenario_id" AND k."role" = l."role" AND k."symbol" = d."primary_symbol" AND k."id" <> l."id")
+               WHERE k."scenario_id" = l."scenario_id" AND k."role" = l."role" AND k."symbol" = d."primary_symbol" AND k."id" <> l."id"
+                 AND NOT EXISTS (SELECT 1 FROM "_etf_duplicates" kd
+                                 WHERE k."etf_id" = kd."id" OR (k."space_id" = kd."space_id" AND k."symbol" = kd."symbol" AND k."exchange" = kd."exchange")))
        OR EXISTS (SELECT 1 FROM "etf_scenario_etf_links" o JOIN "_etf_duplicates" od ON (o."etf_id" = od."id" OR (o."space_id" = od."space_id" AND o."symbol" = od."symbol" AND o."exchange" = od."exchange"))
                   WHERE od."primary_id" = d."primary_id" AND o."scenario_id" = l."scenario_id" AND o."role" = l."role" AND o."id" < l."id"));
 
@@ -151,5 +175,3 @@ CREATE INDEX "etfs_alternative_listings_idx" ON "etfs" USING GIN ("alternative_l
 
 -- CreateIndex
 CREATE INDEX "etfs_space_id_isin_idx" ON "etfs"("space_id", "isin");
-
-COMMIT;
