@@ -3,6 +3,7 @@
  * pages (via `src/utils/etf-data-utils.ts`), which call it in-process instead of over HTTP.
  */
 import type { EtfListingItem, EtfListingResponse } from '@/app/api/[spaceId]/etfs-v1/listing/route';
+import { toEtfAlternativeListings } from '@/utils/etf-alternative-listing-utils';
 import { prisma } from '@/prisma';
 import { ETF_OTHERS_GROUP_KEY } from '@/utils/etf-categorization-utils';
 import {
@@ -72,6 +73,7 @@ function toEtfListingItem(etf: any): EtfListingItem {
     hasMorAnalyzerInfo: !!etf.morAnalyzerInfo,
     hasMorRiskInfo: !!etf.morRiskInfo,
     hasMorPeopleInfo: !!etf.morPeopleInfo,
+    alternativeListings: toEtfAlternativeListings(etf.alternativeListings),
   };
 }
 

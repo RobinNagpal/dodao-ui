@@ -38,6 +38,10 @@ on:
         description: "Apply pending migrations even if they contain destructive SQL (DROP/TRUNCATE/type change). Review the SQL first."
         type: boolean
         default: false
+      flush_etfs_cache:
+        description: "After the new version is live, flush /etfs/* from CloudFront (e.g. after a migration that removed or renamed ETF pages)."
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -279,3 +283,15 @@ jobs:
           done
           echo "::error::Smoke check failed against https://$DIRECT_HOST/api/health"
           exit 1
+
+      # Cached /etfs/* pages live for 6 days, so a deploy that removes or renames ETF pages (merged
+      # duplicate listings now redirect) would otherwise keep serving the old copies. Same
+      # distribution and credentials as the manual "Flush CloudFront cache" workflow.
+      - name: Flush /etfs/* from CloudFront
+        if: ${{ inputs.flush_etfs_cache == true }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.KOALA_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.KOALA_AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id EZI5H8FKNE9R1 --paths "/etfs/*" \
+            --query 'Invalidation.[Id,Status]' --output text

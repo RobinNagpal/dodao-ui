@@ -34,6 +34,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { redirectAlternativeEtfListing, toEtfAlternativeListings } from '@/utils/etf-alternative-listing-utils';
 import { cache, Suspense, use } from 'react';
 
 /**
@@ -280,8 +281,12 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
   // a promise to Suspense'd children below — server streams the shell HTML
   // first, then streams the body once /full-render resolves.
   const etfData = await fetchEtfFast(exchange, etf);
-  if (!etfData) notFound();
+  if (!etfData) {
+    await redirectAlternativeEtfListing(exchange, etf);
+    notFound();
+  }
 
+  const alternativeListings = toEtfAlternativeListings(etfData.alternativeListings);
   const fullRenderPromise = fetchEtfFullRender(exchange, etf);
   const chartDataPromise = fetchEtfChartData(exchange, etf);
 
@@ -368,6 +373,11 @@ export default async function EtfDetailsPage({ params }: { params: RouteParams }
               <span className="text-sm font-medium text-muted">{formatExchangeWithCountry(etfData.exchange)}</span>
             </div>
           </div>
+          {alternativeListings.length > 0 && (
+            <p className="text-sm text-muted -mt-2 mb-4">
+              Also listed as {alternativeListings.map((l) => `${l.symbol} (${formatExchangeWithCountry(l.exchange)})`).join(', ')}
+            </p>
+          )}
 
           <EtfMetadataBadges
             exchange={etfData.exchange}

@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { etfOwnOrAlternativeListingWhere } from '@/utils/etf-alternative-listing-utils';
 import { ReportTargetRequest } from '@/types/credits';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SECTIONS_REGENERATE_FLAGS } from '@/utils/analysis-reports/generation-request-utils';
@@ -57,8 +58,9 @@ export async function resolveReportTarget(target: ReportTargetRequest): Promise<
     };
   }
 
+  // An alternative listing (e.g. XETRA:SXR8) is charged against the ETF that owns it.
   const etf = await prisma.etf.findFirstOrThrow({
-    where: { spaceId: KoalaGainsSpaceId, symbol, exchange },
+    where: etfOwnOrAlternativeListingWhere(KoalaGainsSpaceId, exchange, symbol),
     select: { id: true, lastReportGeneratedAt: true },
   });
 

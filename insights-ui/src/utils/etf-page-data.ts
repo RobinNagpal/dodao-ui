@@ -33,6 +33,7 @@ import {
   type EtfPerformanceMetricsPayload,
 } from '@/utils/etf-performance-metrics-utils';
 import { ensureEtfPriceHistoryIsFresh } from '@/utils/etf-price-history-utils';
+import { toEtfAlternativeListings } from '@/utils/etf-alternative-listing-utils';
 import { hydrateSimilarEtfs } from '@/utils/etf-similar-etfs-utils';
 
 /* ------------------------------------------------------------------ */
@@ -466,6 +467,24 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], ma
 
   const symbolsToCheck = competitionArray.map((c) => c.companySymbol?.toUpperCase()).filter((symbol): symbol is string => !!symbol);
 
+  const competitorSelect = {
+    id: true,
+    name: true,
+    symbol: true,
+    exchange: true,
+    alternativeListings: true,
+    cachedScore: {
+      select: {
+        performanceAndReturnsScore: true,
+        costEfficiencyAndTeamScore: true,
+        riskAnalysisScore: true,
+        futurePerformanceOutlookScore: true,
+        finalScore: true,
+      },
+    },
+    financialInfo: { select: { aum: true, expenseRatio: true } },
+  } as const;
+
   const existingEtfs =
     symbolsToCheck.length > 0
       ? await prisma.etf.findMany({
@@ -473,29 +492,35 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], ma
             spaceId: KoalaGainsSpaceId,
             symbol: { in: symbolsToCheck },
           },
-          select: {
-            id: true,
-            name: true,
-            symbol: true,
-            exchange: true,
-            cachedScore: {
-              select: {
-                performanceAndReturnsScore: true,
-                costEfficiencyAndTeamScore: true,
-                riskAnalysisScore: true,
-                futurePerformanceOutlookScore: true,
-                finalScore: true,
-              },
-            },
-            financialInfo: { select: { aum: true, expenseRatio: true } },
-          },
+          select: competitorSelect,
         })
       : [];
 
-  const listingsBySymbol = new Map<string, typeof existingEtfs>();
-  for (const e of existingEtfs) {
-    const key = e.symbol.toUpperCase();
-    listingsBySymbol.set(key, [...(listingsBySymbol.get(key) ?? []), e]);
+  // A competitor named by a ticker that is now another fund's alternative listing (e.g. LSE:SWDA,
+  // folded into LSE:IWDA) still links to that fund.
+  const foundSymbols = new Set(existingEtfs.map((e) => e.symbol.toUpperCase()));
+  const missingSymbols = [...new Set(symbolsToCheck.filter((s) => !foundSymbols.has(s)))];
+  const owners =
+    missingSymbols.length > 0
+      ? await prisma.etf.findMany({
+          where: { spaceId: KoalaGainsSpaceId, OR: missingSymbols.map((symbol) => ({ alternativeListings: { array_contains: [{ symbol }] } })) },
+          select: competitorSelect,
+        })
+      : [];
+
+  // Candidates per named symbol; `matchExchange` is the exchange the name trades on there (the fund's
+  // own, or the alternative listing's), `etf` the record the entry links to.
+  type CompetitorCandidate = { matchExchange: string; etf: (typeof existingEtfs)[number] };
+  const listingsBySymbol = new Map<string, CompetitorCandidate[]>();
+  const addCandidate = (symbol: string, candidate: CompetitorCandidate): void => {
+    const key = symbol.toUpperCase();
+    listingsBySymbol.set(key, [...(listingsBySymbol.get(key) ?? []), candidate]);
+  };
+  for (const e of existingEtfs) addCandidate(e.symbol, { matchExchange: e.exchange, etf: e });
+  for (const owner of owners) {
+    for (const alt of toEtfAlternativeListings(owner.alternativeListings)) {
+      if (missingSymbols.includes(alt.symbol.toUpperCase())) addCandidate(alt.symbol, { matchExchange: alt.exchange, etf: owner });
+    }
   }
   const mainCountry = countryOfExchange(mainExchange);
 
@@ -504,9 +529,10 @@ async function hydrateEtfCompetitors(competitionArray: CompetitionAnalysis[], ma
     const listings = symbolUpper ? listingsBySymbol.get(symbolUpper) ?? [] : [];
     const namedExchange = entry.exchangeSymbol?.trim().toUpperCase() ?? '';
     const namedCountry = countryOfExchange(namedExchange);
-    const existing = namedCountry
-      ? listings.find((l) => l.exchange.toUpperCase() === namedExchange) ?? listings.find((l) => countryOfExchange(l.exchange) === namedCountry)
-      : listings.find((l) => mainCountry && countryOfExchange(l.exchange) === mainCountry) ?? listings[0];
+    const match = namedCountry
+      ? listings.find((l) => l.matchExchange.toUpperCase() === namedExchange) ?? listings.find((l) => countryOfExchange(l.matchExchange) === namedCountry)
+      : listings.find((l) => mainCountry && countryOfExchange(l.matchExchange) === mainCountry) ?? listings[0];
+    const existing = match?.etf;
 
     return {
       companyName: entry.companyName,
