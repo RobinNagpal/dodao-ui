@@ -184,7 +184,7 @@ async function postHandler(
     // An alternative listing (e.g. XETRA:SXR8) resolves to the ETF that owns it, so no duplicate report is generated.
     const etfRecord = await prisma.etf.findFirstOrThrow({
       where: etfOwnOrAlternativeListingWhere(spaceId, etf.exchange, etf.symbol),
-      select: { id: true },
+      select: { id: true, exchange: true, symbol: true },
     });
 
     const needsMorData =
@@ -197,8 +197,9 @@ async function postHandler(
       await ensureMorDataForAnalysis({
         etfId: etfRecord.id,
         spaceId,
-        exchange: etf.exchange,
-        symbol: etf.symbol,
+        // The owning ETF's own listing: the scrape callback looks the ETF up by exchange/symbol.
+        exchange: etfRecord.exchange,
+        symbol: etfRecord.symbol,
       });
     }
 

@@ -168,6 +168,15 @@ jobs:
           fi
           TAG="$(git rev-parse --short HEAD)"
           IMAGE="$REGISTRY/$ECR_REPOSITORY:$TAG"
+          # The app repo is IMMUTABLE, so a re-run of a commit whose image was already pushed (e.g.
+          # a dispatch that failed after the push, with its migration already applied) would fail
+          # here. Reuse that image instead; the static-asset step below needs it loaded locally.
+          if aws ecr describe-images --repository-name "$ECR_REPOSITORY" --image-ids imageTag="$TAG" >/dev/null 2>&1; then
+            echo "Image $TAG is already in ECR; reusing it instead of rebuilding."
+            docker pull "$IMAGE"
+            echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           # Rewritten every run, so it lives in the MUTABLE -buildcache repo (the app repo is
           # IMMUTABLE and would reject the second push). See container.tf.
           CACHE="$REGISTRY/$ECR_REPOSITORY-buildcache:cache"
@@ -283,6 +292,23 @@ jobs:
           done
           echo "::error::Smoke check failed against https://$DIRECT_HOST/api/health"
           exit 1
+
+      # The health check above never renders an ETF page. Before throwing away the cached /etfs/*
+      # copies, prove the new code serves them: a fund page and a sub-page return 200, and a
+      # folded alternative listing permanently redirects to its fund.
+      - name: Smoke check ETF pages (direct host)
+        if: ${{ inputs.flush_etfs_cache == true }}
+        run: |
+          check() {
+            got=$(curl -s -o /dev/null --compressed -H 'Accept-Encoding: gzip, deflate, br' -w '%{http_code} %{redirect_url}' "https://$DIRECT_HOST$1")
+            echo "$1 -> $got"
+            # $2 is a glob, matched unquoted.
+            # shellcheck disable=SC2254
+            case "$got" in $2) ;; *) echo "::error::$1 returned '$got', expected '$2'"; exit 1 ;; esac
+          }
+          check /etfs/LSE/CSPX '200*'
+          check /etfs/LSE/CSPX/holdings '200*'
+          check /etfs/XETRA/SXR8/holdings '308 */etfs/LSE/CSPX/holdings'
 
       # Cached /etfs/* pages live for 6 days, so a deploy that removes or renames ETF pages (merged
       # duplicate listings now redirect) would otherwise keep serving the old copies. Same

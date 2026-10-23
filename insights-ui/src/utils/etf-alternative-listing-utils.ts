@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
+import { EtfSupportedCountry, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
 import type { EtfAlternativeListing, EtfAlternativeListings } from '@/types/prismaTypes';
 import { Prisma } from '@prisma/client';
 import { permanentRedirect } from 'next/navigation';
@@ -27,6 +28,16 @@ export function etfOwnOrAlternativeListingWhere(spaceId: string, exchange: strin
   const ex = exchange.trim().toUpperCase();
   const sym = symbol.trim().toUpperCase();
   return { spaceId, OR: [{ exchange: ex, symbol: sym }, { alternativeListings: { array_contains: [{ exchange: ex, symbol: sym }] } }] };
+}
+
+/**
+ * Where-clause for an ETF traded in a country: listed on one of its exchanges itself, or through an
+ * alternative listing (e.g. LSE:CSPX shows under Germany through XETRA:SXR8). Its card still links
+ * to the ETF's own page.
+ */
+export function etfListedInCountryWhere(country: EtfSupportedCountry): Prisma.EtfWhereInput {
+  const exchanges = getEtfExchangesByCountry(country);
+  return { OR: [{ exchange: { in: exchanges } }, ...exchanges.map((exchange) => ({ alternativeListings: { array_contains: [{ exchange }] } }))] };
 }
 
 /** The ETF that lists `exchange:symbol` as an alternative listing, or null. */
