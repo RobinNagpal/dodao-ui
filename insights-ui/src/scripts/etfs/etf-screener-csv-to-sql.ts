@@ -7,11 +7,17 @@
  *
  * The generated SQL runs in a single transaction and is safe to re-run: ETFs are matched on
  * (space_id, symbol, exchange) and child rows on etf_id, so existing rows are updated instead of duplicated.
+ *
+ * One record per share class: a listing whose ISIN already belongs to another ETF (e.g. XETRA:SXR8
+ * for LSE:CSPX), or that is already some ETF's alternative listing, is not inserted. It is added to
+ * that ETF's `alternative_listings` instead, and its screener data is skipped so it never
+ * overwrites the owning ETF's. Every inserted or refreshed ETF gets its `isin`.
  */
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import Papa from 'papaparse';
+import { normalizeEtfIsin } from '@/utils/etf-isin-utils';
 import { SPACE_ID, parseArgs } from './lib';
 
 type CsvRow = Record<string, string>;
@@ -178,11 +184,12 @@ function etfIdSubquery(symbol: string, exchange: string): string {
   return `(SELECT "id" FROM "etfs" WHERE "space_id" = ${sqlText(SPACE_ID)} AND "symbol" = ${sqlText(symbol)} AND "exchange" = ${sqlText(exchange)})`;
 }
 
-function upsertChildRow(table: string, columns: string[], values: string[]): string {
+/** Upserts a child row keyed on etf_id; a no-op when the listing has no `etfs` row of its own. */
+function upsertChildRow(table: string, columns: string[], etfId: string, values: string[]): string {
   const allColumns = ['id', 'etf_id', ...columns, 'created_at', 'updated_at'];
   const updates = [...columns, 'updated_at'].map((c) => `${ident(c)} = EXCLUDED.${ident(c)}`).join(', ');
   return (
-    `INSERT INTO ${ident(table)} (${allColumns.map(ident).join(', ')}) VALUES (${values.join(', ')}, NOW(), NOW())\n` +
+    `INSERT INTO ${ident(table)} (${allColumns.map(ident).join(', ')}) SELECT ${values.join(', ')}, NOW(), NOW() WHERE ${etfId} IS NOT NULL\n` +
     `  ON CONFLICT ("etf_id") DO UPDATE SET ${updates};`
   );
 }
@@ -191,28 +198,52 @@ function buildEtfStatements(row: CsvRow, exchange: string): string[] {
   const symbol = toSymbol(row['Symbol']);
   const name = cleanCell(row['Fund Name']) ?? symbol;
   const inception = cleanCell(row['Inception']);
+  const isin = normalizeEtfIsin(row['ISIN Number']);
   const etfId = etfIdSubquery(symbol, exchange);
+  const space = sqlText(SPACE_ID);
+
+  // This exchange/symbol as an `alternative_listings` entry, and the checks that decide whether it
+  // gets its own row: it already has one, it is already another ETF's alternative listing, or its
+  // ISIN already belongs to another ETF.
+  const listing = `jsonb_build_array(jsonb_build_object('exchange', ${sqlText(exchange)}, 'symbol', ${sqlText(symbol)}))`;
+  const hasOwnRow = `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "symbol" = ${sqlText(symbol)} AND "exchange" = ${sqlText(exchange)})`;
+  const isAlternativeListing = `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "alternative_listings" @> ${listing})`;
+  const isinTaken = isin ? `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "isin" = ${sqlText(isin)})` : 'FALSE';
 
   const etf =
-    `INSERT INTO "etfs" ("id", "symbol", "name", "exchange", "inception", "space_id", "created_at", "updated_at") ` +
-    `VALUES (${sqlText(randomUUID())}, ${sqlText(symbol)}, ${sqlText(name)}, ${sqlText(exchange)}, ${sqlText(inception)}, ${sqlText(
-      SPACE_ID
-    )}, NOW(), NOW())\n` +
-    `  ON CONFLICT ("space_id", "symbol", "exchange") DO UPDATE SET "name" = EXCLUDED."name", "inception" = EXCLUDED."inception", "updated_at" = EXCLUDED."updated_at";`;
+    `INSERT INTO "etfs" ("id", "symbol", "name", "exchange", "inception", "isin", "space_id", "created_at", "updated_at") ` +
+    `SELECT ${sqlText(randomUUID())}, ${sqlText(symbol)}, ${sqlText(name)}, ${sqlText(exchange)}, ${sqlText(inception)}, ${sqlText(
+      isin
+    )}, ${space}, NOW(), NOW()\n` +
+    `  WHERE ${hasOwnRow} OR NOT (${isAlternativeListing} OR ${isinTaken})\n` +
+    `  ON CONFLICT ("space_id", "symbol", "exchange") DO UPDATE SET "name" = EXCLUDED."name", "inception" = EXCLUDED."inception", ` +
+    `"isin" = COALESCE(EXCLUDED."isin", "etfs"."isin"), "updated_at" = EXCLUDED."updated_at";`;
+
+  // Not inserted because its ISIN belongs to another ETF: record it as that ETF's alternative listing.
+  // When several rows share the ISIN (duplicates that already had reports), the one that already
+  // holds alternative listings wins, then the one with a report, then the oldest.
+  const alternative = isin
+    ? `UPDATE "etfs" SET "alternative_listings" = "alternative_listings" || ${listing}, "updated_at" = NOW()\n` +
+      `  WHERE "id" = (SELECT o."id" FROM "etfs" o WHERE o."space_id" = ${space} AND o."isin" = ${sqlText(isin)}\n` +
+      `                ORDER BY jsonb_array_length(o."alternative_listings") > 0 DESC, EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = o."id") DESC, o."created_at", o."id" LIMIT 1)\n` +
+      `  AND NOT ${hasOwnRow} AND NOT ${isAlternativeListing};`
+    : null;
 
   const financialInfo = upsertChildRow(
     'etf_financial_info',
     FINANCIAL_INFO_COLUMNS.map((c) => c.column),
+    etfId,
     [sqlText(randomUUID()), etfId, ...FINANCIAL_INFO_COLUMNS.map((c) => toSqlValue(row, c, symbol))]
   );
 
-  const stockAnalyzerInfo = upsertChildRow(
-    'etf_stock_analyzer_info',
-    ['symbol', ...STOCK_ANALYZER_COLUMNS.map((c) => c.column)],
-    [sqlText(randomUUID()), etfId, sqlText(symbol), ...STOCK_ANALYZER_COLUMNS.map((c) => toSqlValue(row, c, symbol))]
-  );
+  const stockAnalyzerInfo = upsertChildRow('etf_stock_analyzer_info', ['symbol', ...STOCK_ANALYZER_COLUMNS.map((c) => c.column)], etfId, [
+    sqlText(randomUUID()),
+    etfId,
+    sqlText(symbol),
+    ...STOCK_ANALYZER_COLUMNS.map((c) => toSqlValue(row, c, symbol)),
+  ]);
 
-  return [`-- ${symbol}: ${name}`, etf, financialInfo, stockAnalyzerInfo, ''];
+  return [`-- ${symbol}: ${name}${isin ? ` (${isin})` : ''}`, etf, ...(alternative ? [alternative] : []), financialInfo, stockAnalyzerInfo, ''];
 }
 
 async function main() {
@@ -253,7 +284,8 @@ async function main() {
   const lines = [
     `-- Generated by src/scripts/etfs/etf-screener-csv-to-sql.ts on ${new Date().toISOString()}`,
     `-- Source: ${path.basename(file)} | exchange: ${exchange} | space: ${SPACE_ID} | ETFs: ${rows.length}`,
-    `-- Upserts into etfs, etf_financial_info and etf_stock_analyzer_info. Safe to re-run.`,
+    `-- Upserts into etfs, etf_financial_info and etf_stock_analyzer_info. Listings of a share class (ISIN) that`,
+    `-- another ETF already owns are added to its alternative_listings instead. Safe to re-run.`,
     '',
     'BEGIN;',
     '',
