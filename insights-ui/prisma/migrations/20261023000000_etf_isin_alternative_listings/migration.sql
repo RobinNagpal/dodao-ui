@@ -1,12 +1,16 @@
--- One true record per ETF share class.
+-- ETF share classes listed more than once.
 --
 -- The same share class (same ISIN) is often listed more than once: on LSE and XETRA, or on one
--- exchange in two currencies (e.g. LSE GBP and USD lines). Each listing was its own `etfs` row
--- with its own reports. This migration keeps one row per (space_id, isin), records the other
--- listings in `alternative_listings`, moves user data onto the kept row and deletes the rest.
+-- exchange in two currencies (e.g. LSE GBP and USD lines). Each listing was its own `etfs` row.
+-- This migration records the ISIN on every ETF and folds the duplicate listings that have NO
+-- report into one primary row per ISIN: they become entries in its `alternative_listings`, their
+-- user data moves onto it and the rows are deleted.
 --
--- Kept row per ISIN: has a report > created earliest (by day) > higher trading volume > id.
--- Rows without a valid ISIN are left alone (a NULL isin never conflicts).
+-- A duplicate that has a report (a cached score or any category result) is never deleted: it
+-- stays its own row, so one ISIN can still have several rows and `isin` is indexed, not unique.
+--
+-- Primary row per ISIN: has a report > has a cached score > created earliest (by day) > higher
+-- trading volume > id. Rows without a valid ISIN are left alone.
 --
 -- Runs as one transaction: any failure leaves the database exactly as it was.
 
@@ -23,26 +27,30 @@ FROM "etf_stock_analyzer_info" a
 WHERE a."etf_id" = e."id"
   AND upper(trim(a."isin_number")) ~ '^[A-Z]{2}[A-Z0-9]{9}[0-9]$';
 
--- 2. Duplicates and the row each one folds into.
+-- 2. Duplicates without a report and the primary row each one folds into.
 CREATE TEMP TABLE "_etf_duplicates" AS
 WITH ranked AS (
-  SELECT e."id", e."space_id", e."isin", e."exchange", e."symbol",
+  SELECT x.*,
          row_number() OVER (
-           PARTITION BY e."space_id", e."isin"
-           ORDER BY EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id") DESC,
-                    date_trunc('day', e."created_at"),
-                    f."volume" DESC NULLS LAST,
-                    e."id"
+           PARTITION BY x."space_id", x."isin"
+           ORDER BY x."has_report" DESC, x."has_score" DESC, date_trunc('day', x."created_at"), x."volume" DESC NULLS LAST, x."id"
          ) AS rn
-  FROM "etfs" e
-  LEFT JOIN "etf_financial_info" f ON f."etf_id" = e."id"
-  WHERE e."isin" IS NOT NULL
+  FROM (
+    SELECT e."id", e."space_id", e."isin", e."exchange", e."symbol", e."created_at", f."volume",
+           EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id") AS "has_score",
+           (EXISTS (SELECT 1 FROM "etf_cached_scores" s WHERE s."etf_id" = e."id")
+            OR EXISTS (SELECT 1 FROM "etf_category_analysis_results" c WHERE c."etf_id" = e."id")) AS "has_report"
+    FROM "etfs" e
+    LEFT JOIN "etf_financial_info" f ON f."etf_id" = e."id"
+    WHERE e."isin" IS NOT NULL
+  ) x
 )
 SELECT d."id", d."space_id", d."exchange", d."symbol",
        p."id" AS "primary_id", p."exchange" AS "primary_exchange", p."symbol" AS "primary_symbol"
 FROM ranked d
 JOIN ranked p ON p."space_id" = d."space_id" AND p."isin" = d."isin" AND p.rn = 1
-WHERE d.rn > 1;
+WHERE d.rn > 1
+  AND NOT d."has_report";
 
 -- 3. The duplicates become alternative listings of the kept row.
 UPDATE "etfs" p
@@ -132,8 +140,8 @@ SET "symbol" = d."primary_symbol", "exchange" = d."primary_exchange", "updated_a
 FROM "_etf_duplicates" d
 WHERE s."space_id" = d."space_id" AND s."symbol" = d."symbol" AND s."exchange" = d."exchange";
 
--- 8. Delete the duplicates. Their reports, MOR/financial data, price history and generation
---    requests cascade with them; the kept row has its own.
+-- 8. Delete the folded duplicates. None has a report; their MOR/financial data, price history and
+--    generation requests cascade with them.
 DELETE FROM "etfs" e USING "_etf_duplicates" d WHERE e."id" = d."id";
 
 DROP TABLE "_etf_duplicates";
@@ -142,6 +150,6 @@ DROP TABLE "_etf_duplicates";
 CREATE INDEX "etfs_alternative_listings_idx" ON "etfs" USING GIN ("alternative_listings" jsonb_path_ops);
 
 -- CreateIndex
-CREATE UNIQUE INDEX "etfs_space_id_isin_key" ON "etfs"("space_id", "isin");
+CREATE INDEX "etfs_space_id_isin_idx" ON "etfs"("space_id", "isin");
 
 COMMIT;
