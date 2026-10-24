@@ -3,7 +3,7 @@
  * the ETFs into `etfs`, `etf_financial_info` and `etf_stock_analyzer_info`.
  *
  * Usage:
- *   yarn etfs:csv-to-sql --file public/screener-etf-2026-10-19.csv --exchange XETRA [--out path/to/output.sql]
+ *   yarn etfs:csv-to-sql --file public/screener-etf-2026-10-19.csv --exchange XETRA [--min-aum 100000000] [--out path/to/output.sql]
  *
  * The generated SQL runs in a single transaction and is safe to re-run: ETFs are matched on
  * (space_id, symbol, exchange) and child rows on etf_id, so existing rows are updated instead of duplicated.
@@ -12,6 +12,11 @@
  * for LSE:CSPX), or that is already some ETF's alternative listing, is not inserted. It is added to
  * that ETF's `alternative_listings` instead, and its screener data is skipped so it never
  * overwrites the owning ETF's. Every inserted or refreshed ETF gets its `isin`.
+ *
+ * Size floor: a listing whose "Assets" value is below `--min-aum` is not inserted, though an existing
+ * row for it is still refreshed. XETRA defaults to 100M (euros), because the small XETRA-only funds
+ * were removed by migration 20261024000000_remove_small_unreported_xetra_etfs and must not come back.
+ * Pass `--min-aum 0` to import everything. Listings with no parseable "Assets" value are not filtered.
  */
 import { randomUUID } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -21,6 +26,8 @@ import { normalizeEtfIsin } from '@/utils/etf-isin-utils';
 import { SPACE_ID, parseArgs } from './lib';
 
 type CsvRow = Record<string, string>;
+
+const DEFAULT_MIN_AUM: Record<string, number> = { XETRA: 100_000_000 };
 
 // text: stored as-is. float: parsed number. float2: parsed number rounded to 2 decimals.
 // int / bigint: parsed integer. Percent signs and thousands separators are stripped before parsing.
@@ -175,6 +182,16 @@ function toSqlValue(row: CsvRow, mapping: ColumnMapping, symbol: string): string
   }
 }
 
+/** Screener "Assets" as a number: plain ("27339531") or abbreviated ("$190.08M"). Null when unparseable. */
+function parseAum(raw: string | undefined): number | null {
+  const value = cleanCell(raw);
+  if (value === null) return null;
+  const match = value.replace(/[$€£,\s]/g, '').match(/^([0-9]+(?:\.[0-9]+)?)([KMBT])?$/i);
+  if (!match) return null;
+  const multiplier: Record<string, number> = { K: 1e3, M: 1e6, B: 1e9, T: 1e12 };
+  return Number(match[1]) * (match[2] ? multiplier[match[2].toUpperCase()] : 1);
+}
+
 function toSymbol(raw: string): string {
   // Screener symbols are prefixed with the exchange code, e.g. "ETR:SXR8".
   return raw.trim().split(':').pop()!.trim().toUpperCase();
@@ -194,7 +211,7 @@ function upsertChildRow(table: string, columns: string[], etfId: string, values:
   );
 }
 
-function buildEtfStatements(row: CsvRow, exchange: string): string[] {
+function buildEtfStatements(row: CsvRow, exchange: string, minAum: number): string[] {
   const symbol = toSymbol(row['Symbol']);
   const name = cleanCell(row['Fund Name']) ?? symbol;
   const inception = cleanCell(row['Inception']);
@@ -209,13 +226,17 @@ function buildEtfStatements(row: CsvRow, exchange: string): string[] {
   const hasOwnRow = `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "symbol" = ${sqlText(symbol)} AND "exchange" = ${sqlText(exchange)})`;
   const isAlternativeListing = `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "alternative_listings" @> ${listing})`;
   const isinTaken = isin ? `EXISTS (SELECT 1 FROM "etfs" WHERE "space_id" = ${space} AND "isin" = ${sqlText(isin)})` : 'FALSE';
+  // Below the size floor a listing is only refreshed if it already has a row, never inserted.
+  const aum = parseAum(row['Assets']);
+  const belowMinAum = aum !== null && aum < minAum;
+  const insertCondition = belowMinAum ? hasOwnRow : `${hasOwnRow} OR NOT (${isAlternativeListing} OR ${isinTaken})`;
 
   const etf =
     `INSERT INTO "etfs" ("id", "symbol", "name", "exchange", "inception", "isin", "space_id", "created_at", "updated_at") ` +
     `SELECT ${sqlText(randomUUID())}, ${sqlText(symbol)}, ${sqlText(name)}, ${sqlText(exchange)}, ${sqlText(inception)}, ${sqlText(
       isin
     )}, ${space}, NOW(), NOW()\n` +
-    `  WHERE ${hasOwnRow} OR NOT (${isAlternativeListing} OR ${isinTaken})\n` +
+    `  WHERE ${insertCondition}\n` +
     `  ON CONFLICT ("space_id", "symbol", "exchange") DO UPDATE SET "name" = EXCLUDED."name", "inception" = EXCLUDED."inception", ` +
     `"isin" = COALESCE(EXCLUDED."isin", "etfs"."isin"), "updated_at" = EXCLUDED."updated_at";`;
 
@@ -243,7 +264,8 @@ function buildEtfStatements(row: CsvRow, exchange: string): string[] {
     ...STOCK_ANALYZER_COLUMNS.map((c) => toSqlValue(row, c, symbol)),
   ]);
 
-  return [`-- ${symbol}: ${name}${isin ? ` (${isin})` : ''}`, etf, ...(alternative ? [alternative] : []), financialInfo, stockAnalyzerInfo, ''];
+  const comment = `-- ${symbol}: ${name}${isin ? ` (${isin})` : ''}${belowMinAum ? ' [below --min-aum: refresh only]' : ''}`;
+  return [comment, etf, ...(alternative ? [alternative] : []), financialInfo, stockAnalyzerInfo, ''];
 }
 
 async function main() {
@@ -251,7 +273,12 @@ async function main() {
   const file = typeof args.file === 'string' ? args.file : '';
   const exchange = typeof args.exchange === 'string' ? args.exchange.trim().toUpperCase() : '';
   if (!file || !exchange) {
-    console.error('Usage: yarn etfs:csv-to-sql --file <screener.csv> --exchange <EXCHANGE> [--out <output.sql>]');
+    console.error('Usage: yarn etfs:csv-to-sql --file <screener.csv> --exchange <EXCHANGE> [--min-aum <assets>] [--out <output.sql>]');
+    process.exit(1);
+  }
+  const minAum = typeof args['min-aum'] === 'string' ? Number(args['min-aum']) : DEFAULT_MIN_AUM[exchange] ?? 0;
+  if (!Number.isFinite(minAum) || minAum < 0) {
+    console.error(`--min-aum must be a non-negative number, got "${args['min-aum']}"`);
     process.exit(1);
   }
   const out = typeof args.out === 'string' ? args.out : file.replace(/\.csv$/i, '') + '.sql';
@@ -283,13 +310,13 @@ async function main() {
 
   const lines = [
     `-- Generated by src/scripts/etfs/etf-screener-csv-to-sql.ts on ${new Date().toISOString()}`,
-    `-- Source: ${path.basename(file)} | exchange: ${exchange} | space: ${SPACE_ID} | ETFs: ${rows.length}`,
+    `-- Source: ${path.basename(file)} | exchange: ${exchange} | space: ${SPACE_ID} | ETFs: ${rows.length} | min AUM: ${minAum}`,
     `-- Upserts into etfs, etf_financial_info and etf_stock_analyzer_info. Listings of a share class (ISIN) that`,
     `-- another ETF already owns are added to its alternative_listings instead. Safe to re-run.`,
     '',
     'BEGIN;',
     '',
-    ...rows.flatMap((row) => buildEtfStatements(row, exchange)),
+    ...rows.flatMap((row) => buildEtfStatements(row, exchange, minAum)),
     'COMMIT;',
     '',
   ];
@@ -300,6 +327,8 @@ async function main() {
     console.warn(`${invalidValues.length} non-numeric value(s) stored as NULL:`);
     invalidValues.slice(0, 20).forEach((msg) => console.warn(`  ${msg}`));
   }
+  const belowFloor = minAum > 0 ? rows.filter((row) => (parseAum(row['Assets']) ?? Infinity) < minAum).length : 0;
+  if (belowFloor > 0) console.log(`${belowFloor} listing(s) below --min-aum ${minAum}: refreshed if they already exist, never inserted.`);
   console.log(`Wrote ${rows.length} ETFs (${rows.length * 3} upserts) to ${out}`);
 }
 
