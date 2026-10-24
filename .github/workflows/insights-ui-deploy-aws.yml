@@ -294,8 +294,9 @@ jobs:
           exit 1
 
       # The health check above never renders an ETF page. Before throwing away the cached /etfs/*
-      # copies, prove the new code serves them: a fund page and a sub-page return 200, and a
-      # folded alternative listing permanently redirects to its fund.
+      # copies, prove the new code serves them: a fund page and a sub-page return 200, a
+      # folded alternative listing permanently redirects to its fund, and a small XETRA fund
+      # removed by 20261024000000_remove_small_unreported_xetra_etfs is gone.
       - name: Smoke check ETF pages (direct host)
         if: ${{ inputs.flush_etfs_cache == true }}
         run: |
@@ -309,6 +310,7 @@ jobs:
           check /etfs/LSE/CSPX '200*'
           check /etfs/LSE/CSPX/holdings '200*'
           check /etfs/XETRA/SXR8/holdings '308 */etfs/LSE/CSPX/holdings'
+          check /etfs/XETRA/XAIG '404*'
 
       # Cached /etfs/* pages live for 6 days, so a deploy that removes or renames ETF pages (merged
       # duplicate listings now redirect) would otherwise keep serving the old copies. Same
