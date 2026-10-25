@@ -15,7 +15,7 @@
  *
  * Size floor: a listing whose "Assets" value is below `--min-aum` is not inserted, though an existing
  * row for it is still refreshed. XETRA defaults to 100M (euros), because the small XETRA-only funds
- * were removed by migration 20261024000000_remove_small_unreported_xetra_etfs and must not come back.
+ * were removed by prisma/data-sql/etfs/20261025-remove-small-unreported-xetra-etfs.sql and must not come back.
  * Pass `--min-aum 0` to import everything. Listings with no parseable "Assets" value are not filtered.
  */
 import { randomUUID } from 'node:crypto';
