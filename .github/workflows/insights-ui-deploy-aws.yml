@@ -296,7 +296,7 @@ jobs:
       # The health check above never renders an ETF page. Before throwing away the cached /etfs/*
       # copies, prove the new code serves them: a fund page and a sub-page return 200, a
       # folded alternative listing permanently redirects to its fund, and a small XETRA fund
-      # removed by 20261024000000_remove_small_unreported_xetra_etfs is gone.
+      # removed by prisma/data-sql/etfs/20261025-remove-small-unreported-xetra-etfs.sql is gone.
       - name: Smoke check ETF pages (direct host)
         if: ${{ inputs.flush_etfs_cache == true }}
         run: |
