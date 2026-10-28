@@ -13,6 +13,7 @@ import {
   NUMERIC_FILTER_DEFS,
   DATE_FILTER_DEFS,
   MULTI_SELECT_FILTER_DEFS,
+  EXCHANGE_FILTER_DEF,
   parseMultiSelectParam,
   FilterParamKey,
   FilterType,
@@ -32,6 +33,8 @@ interface StockFiltersModalProps {
   topSection?: StockFiltersTopSection;
   /** Label of the apply button; defaults to "Apply Filters". */
   applyLabel?: string;
+  /** Exchanges offered in the Exchange filter; it is hidden when fewer than two. */
+  exchanges?: ReadonlyArray<string>;
 }
 
 /**
@@ -41,7 +44,15 @@ interface StockFiltersModalProps {
  * stock pages push it into query params, while client-side screens (e.g. the
  * admin generation-requests page) keep it in React state.
  */
-export default function StockFiltersModal({ open, initialSelected, onApply, onClose, topSection, applyLabel }: StockFiltersModalProps): JSX.Element | null {
+export default function StockFiltersModal({
+  open,
+  initialSelected,
+  onApply,
+  onClose,
+  topSection,
+  applyLabel,
+  exchanges,
+}: StockFiltersModalProps): JSX.Element | null {
   if (!open) return null;
 
   // Remount the content whenever the incoming selection changes so every control
@@ -58,6 +69,7 @@ export default function StockFiltersModal({ open, initialSelected, onApply, onCl
           onClose={onClose}
           topSection={topSection}
           applyLabel={applyLabel}
+          exchanges={exchanges}
         />
       </div>
     </FullPageModal>
@@ -72,6 +84,8 @@ export interface StockFiltersPanelProps {
   topSection?: StockFiltersTopSection;
   /** Label of the apply button; defaults to "Apply Filters". */
   applyLabel?: string;
+  /** Exchanges offered in the Exchange filter; it is hidden when fewer than two. */
+  exchanges?: ReadonlyArray<string>;
 }
 
 /**
@@ -79,7 +93,14 @@ export interface StockFiltersPanelProps {
  * apply. Rendered inside {@link StockFiltersModal}, or inline by screens that
  * show the form before the first search.
  */
-export function StockFiltersPanel({ initialSelected, onApply, onClose, topSection, applyLabel = 'Apply Filters' }: StockFiltersPanelProps): JSX.Element {
+export function StockFiltersPanel({
+  initialSelected,
+  onApply,
+  onClose,
+  topSection,
+  applyLabel = 'Apply Filters',
+  exchanges = [],
+}: StockFiltersPanelProps): JSX.Element {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFiltersMap>(() => ({ ...initialSelected }));
 
   const handleCategoryChange = (category: (typeof CATEGORY_OPTIONS)[number], threshold: string): void => {
@@ -129,6 +150,24 @@ export function StockFiltersPanel({ initialSelected, onApply, onClose, topSectio
   return (
     <div className="space-y-6">
       {topSection && <div>{topSection(selectedFilters, handleValueChange)}</div>}
+
+      {/* Exchange Section — only when the page spans more than one exchange */}
+      {exchanges.length > 1 && (
+        <div>
+          <h3 className="text-body text-sm mb-1">Exchange</h3>
+          <p className="text-muted text-xs mb-3">Match stocks listed on any of the selected exchanges</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <MultiSelectFilterControl
+              id={EXCHANGE_FILTER_DEF.paramKey}
+              label={EXCHANGE_FILTER_DEF.label}
+              options={EXCHANGE_FILTER_DEF.options.filter((option) => exchanges.includes(option.value))}
+              value={parseMultiSelectParam(selectedFilters[EXCHANGE_FILTER_DEF.paramKey], EXCHANGE_FILTER_DEF)}
+              onChange={(values) => handleMultiSelectChange(EXCHANGE_FILTER_DEF.paramKey, values)}
+              placeholder="All exchanges"
+            />
+          </div>
+        </div>
+      )}
 
       <div>
         <p className="text-body text-sm mb-4">Select minimum thresholds for category analysis factors and total score</p>

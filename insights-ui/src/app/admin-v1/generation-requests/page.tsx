@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGenerateReports } from '@/hooks/useGenerateReports';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ReportType } from '@/types/ticker-typesv1';
+import { EXCHANGES } from '@/utils/countryExchangeUtils';
 import { type SelectedFiltersMap } from '@/utils/ticker-filter-utils';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
@@ -315,7 +316,9 @@ export default function GenerationRequestsPage(): JSX.Element {
             onReloadRequest={handleReloadRequest}
             note={completedNote}
             emptyMessage={hasCompletedFilters ? 'No completed requests match the selected filters.' : 'No completed requests.'}
-            toolbar={<ClientStockFilters selected={completedFilters} onChange={handleCompletedFiltersChange} resultSummary={completedSummary} />}
+            toolbar={
+              <ClientStockFilters selected={completedFilters} onChange={handleCompletedFiltersChange} resultSummary={completedSummary} exchanges={EXCHANGES} />
+            }
             footer={
               canLoadMoreCompleted ? (
                 <Button onClick={handleLoadMoreCompleted} variant="outlined" disabled={completedLoading}>

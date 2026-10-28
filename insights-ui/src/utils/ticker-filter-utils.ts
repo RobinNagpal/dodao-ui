@@ -6,6 +6,7 @@ import {
   STABILITY_RESILIENCE_VERDICT_LABELS,
   StabilityResilienceVerdict,
 } from '@/types/ticker-typesv1';
+import { EXCHANGES } from '@/utils/countryExchangeUtils';
 import { NextRequest } from 'next/server';
 import { ReadonlyURLSearchParams } from 'next/navigation';
 // Generic numeric-filter primitives (operator encoding, K/M/B/T parsing, Prisma
@@ -34,6 +35,7 @@ export enum FilterType {
   REPORT_DATE_TO = 'reportDateTo',
   MANAGEMENT_ALIGNMENT = 'managementAlignment',
   STABILITY_RESILIENCE = 'stabilityResilience',
+  EXCHANGE = 'exchange',
 }
 
 // Enum for parameter keys to ensure consistency
@@ -53,6 +55,8 @@ export enum FilterParamKey {
   REPORT_DATE_TO = 'reportDateTo',
   MANAGEMENT_ALIGNMENT = 'managementAlignment',
   STABILITY_RESILIENCE = 'stabilityResilience',
+  /** Comma-separated exchanges (e.g. `NASDAQ,NYSE`); a stock on any of them matches. */
+  EXCHANGE = 'exchange',
 }
 
 // Type for search parameters
@@ -126,8 +130,8 @@ export interface AppliedDateFilter extends AppliedFilterBase {
   raw: string;
 }
 
-// Filter types backed by a report verdict the user picks from a fixed list.
-export type MultiSelectFilterType = FilterType.MANAGEMENT_ALIGNMENT | FilterType.STABILITY_RESILIENCE;
+// Filter types the user picks one or more values for from a fixed list (exchanges, report verdicts).
+export type MultiSelectFilterType = FilterType.EXCHANGE | FilterType.MANAGEMENT_ALIGNMENT | FilterType.STABILITY_RESILIENCE;
 
 // Interface for multi-select verdict filters (a stock matches any selected value)
 export interface AppliedMultiSelectFilter extends AppliedFilterBase {
@@ -168,6 +172,7 @@ export interface FilterParams {
   [FilterParamKey.REPORT_DATE_TO]?: string;
   [FilterParamKey.MANAGEMENT_ALIGNMENT]?: string;
   [FilterParamKey.STABILITY_RESILIENCE]?: string;
+  [FilterParamKey.EXCHANGE]?: string;
 }
 
 /** ----- Constants (readonly) ----- */
@@ -407,6 +412,21 @@ export const MULTI_SELECT_FILTER_DEFS: ReadonlyArray<MultiSelectFilterDef> = [
 ] as const;
 
 /**
+ * The exchange filter. Kept out of {@link MULTI_SELECT_FILTER_DEFS} because the
+ * modal shows it on its own, limited to the exchanges of the page's country,
+ * rather than in the report-verdicts section.
+ */
+export const EXCHANGE_FILTER_DEF: MultiSelectFilterDef = {
+  type: FilterType.EXCHANGE,
+  paramKey: FilterParamKey.EXCHANGE,
+  label: 'Exchange',
+  options: EXCHANGES.map((exchange) => ({ value: exchange, label: exchange })),
+};
+
+/** Every list-backed filter: parsed, chipped, cleared and matched the same way. */
+export const LIST_FILTER_DEFS: ReadonlyArray<MultiSelectFilterDef> = [EXCHANGE_FILTER_DEF, ...MULTI_SELECT_FILTER_DEFS];
+
+/**
  * Split a comma-separated verdict param into the recognized options only,
  * de-duplicated and kept in the definition's order. An unknown value (a stale
  * bookmark, a hand-edited URL) is dropped rather than filtering on nothing.
@@ -509,8 +529,8 @@ export function getAppliedFiltersFromGetter(getParam: FilterParamGetter): Applie
     }
   }
 
-  // Report verdicts (management alignment, stability resilience)
-  for (const def of MULTI_SELECT_FILTER_DEFS) {
+  // Exchanges and report verdicts (management alignment, stability resilience)
+  for (const def of LIST_FILTER_DEFS) {
     const values: string[] = parseMultiSelectParam(getParam(def.paramKey), def);
     if (values.length > 0) {
       const labels: string = values.map((v) => def.options.find((o) => o.value === v)?.label ?? v).join(', ');
@@ -630,7 +650,7 @@ export function clearAllFilterParams(searchParams: ReadonlyURLSearchParams): URL
   for (const def of DATE_FILTER_DEFS) {
     params.delete(def.paramKey);
   }
-  for (const def of MULTI_SELECT_FILTER_DEFS) {
+  for (const def of LIST_FILTER_DEFS) {
     params.delete(def.paramKey);
   }
   return params;
@@ -693,7 +713,7 @@ export const hasFiltersApplied = (sp?: SearchParams): boolean =>
   Boolean(toScalar(sp?.[FilterParamKey.SEARCH])) ||
   NUMERIC_FILTER_DEFS.some((def) => Boolean(toScalar(sp?.[def.paramKey]))) ||
   DATE_FILTER_DEFS.some((def) => Boolean(parseIsoDateParam(toScalar(sp?.[def.paramKey])))) ||
-  MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(toScalar(sp?.[def.paramKey]), def).length > 0);
+  LIST_FILTER_DEFS.some((def) => parseMultiSelectParam(toScalar(sp?.[def.paramKey]), def).length > 0);
 
 /** ----- Client-side (in-browser) Filtering ----- */
 
@@ -704,6 +724,7 @@ export const hasFiltersApplied = (sp?: SearchParams): boolean =>
  */
 export interface FilterableTicker {
   symbol: string;
+  exchange?: string | null;
   name?: string | null;
   /** Per-category AI scores, keyed the same way as {@link CATEGORY_OPTIONS}. */
   categoryScores?: Partial<Record<TickerAnalysisCategory, number | null>> | null;
@@ -721,6 +742,7 @@ export interface FilterableTicker {
 
 /** Which {@link FilterableTicker} field each verdict filter reads. */
 const MULTI_SELECT_FILTER_FIELDS: Record<string, (ticker: FilterableTicker) => string | null> = {
+  [FilterParamKey.EXCHANGE]: (ticker) => ticker.exchange ?? null,
   [FilterParamKey.MANAGEMENT_ALIGNMENT]: (ticker) => ticker.managementAlignment ?? null,
   [FilterParamKey.STABILITY_RESILIENCE]: (ticker) => ticker.stabilityResilience ?? null,
 };
@@ -783,8 +805,8 @@ export function matchesSelectedFilters(ticker: FilterableTicker, selected: Selec
     if (!matchesNumericCriteria(value, criteria)) return false;
   }
 
-  // Report verdicts — a stock matches when its verdict is any of the selected ones.
-  for (const def of MULTI_SELECT_FILTER_DEFS) {
+  // Exchanges and report verdicts — a stock matches when its value is any of the selected ones.
+  for (const def of LIST_FILTER_DEFS) {
     const values: string[] = parseMultiSelectParam(selected[def.paramKey], def);
     if (values.length === 0) continue;
     const verdict: string | null = MULTI_SELECT_FILTER_FIELDS[def.paramKey](ticker);
@@ -862,6 +884,7 @@ export function parseFilterParamsFromSearchParams(searchParams: URLSearchParams)
     [FilterParamKey.REPORT_DATE_TO]: searchParams.get(FilterParamKey.REPORT_DATE_TO) || undefined,
     [FilterParamKey.MANAGEMENT_ALIGNMENT]: searchParams.get(FilterParamKey.MANAGEMENT_ALIGNMENT) || undefined,
     [FilterParamKey.STABILITY_RESILIENCE]: searchParams.get(FilterParamKey.STABILITY_RESILIENCE) || undefined,
+    [FilterParamKey.EXCHANGE]: searchParams.get(FilterParamKey.EXCHANGE) || undefined,
   };
 }
 
@@ -896,11 +919,11 @@ export function createTickerFilter(
   filters: FilterParams,
   cacheFilter: Prisma.TickerV1CachedScoreWhereInput
 ): Prisma.TickerV1WhereInput {
-  // Base ticker filter
-  const tickerFilter: Prisma.TickerV1WhereInput = {
-    spaceId,
-    ...exchangeFilter,
-  };
+  // Base ticker filter. Picked exchanges narrow the page's own exchange scope
+  // (e.g. a country's exchanges) rather than replace it.
+  const exchanges = getSelectedVerdicts(filters, FilterParamKey.EXCHANGE);
+  const tickerFilter: Prisma.TickerV1WhereInput =
+    exchanges.length > 0 ? { spaceId, AND: [exchangeFilter, { exchange: { in: exchanges } }] } : { spaceId, ...exchangeFilter };
 
   // Apply search filter if provided
   if (filters[FilterParamKey.SEARCH] && filters[FilterParamKey.SEARCH].trim()) {
@@ -953,7 +976,7 @@ export function createTickerFilter(
 
 /** The recognized verdict values selected for one multi-select filter. */
 export function getSelectedVerdicts(filters: FilterParams, paramKey: FilterParamKey): string[] {
-  const def = MULTI_SELECT_FILTER_DEFS.find((d) => d.paramKey === paramKey);
+  const def = LIST_FILTER_DEFS.find((d) => d.paramKey === paramKey);
   if (!def) return [];
   return parseMultiSelectParam(filters[paramKey], def);
 }
@@ -1047,7 +1070,7 @@ export function hasFiltersAppliedServer(
   const hasSearchFilter = !!filters[FilterParamKey.SEARCH]?.trim();
   const hasNumericFilter = NUMERIC_FILTER_DEFS.some((def) => !!filters[def.paramKey]?.trim());
   const hasDateFilter = DATE_FILTER_DEFS.some((def) => !!parseIsoDateParam(filters[def.paramKey]));
-  const hasVerdictFilter = MULTI_SELECT_FILTER_DEFS.some((def) => parseMultiSelectParam(filters[def.paramKey], def).length > 0);
+  const hasVerdictFilter = LIST_FILTER_DEFS.some((def) => parseMultiSelectParam(filters[def.paramKey], def).length > 0);
 
   return hasScoreFilters || hasSearchFilter || hasNumericFilter || hasDateFilter || hasVerdictFilter;
 }

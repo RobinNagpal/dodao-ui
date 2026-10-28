@@ -163,7 +163,8 @@ export function createTickerSearchWhere(spaceId: string, params: TickerSearchPar
   }
   if (params.businessAndMoatBefore) and.push(categoryStaleBefore(TickerAnalysisCategory.BusinessAndMoat, params.businessAndMoatBefore));
   if (params.fairValueBefore) and.push(categoryStaleBefore(TickerAnalysisCategory.FairValue, params.fairValueBefore));
-  if (and.length > 0) where.AND = and;
+  // Keep any `AND` `createTickerFilter` already set (e.g. the exchange filter).
+  if (and.length > 0) where.AND = [...(Array.isArray(where.AND) ? where.AND : where.AND ? [where.AND] : []), ...and];
 
   return where;
 }
