@@ -8,6 +8,7 @@ export function toFilterableTicker(request: TickerV1GenerationRequestWithTicker)
 
   return {
     symbol: ticker.symbol,
+    exchange: ticker.exchange,
     name: ticker.name,
     categoryScores: scores
       ? {

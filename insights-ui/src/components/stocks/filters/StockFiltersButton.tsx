@@ -15,13 +15,15 @@ interface StockFiltersButtonProps {
   topSection?: StockFiltersTopSection;
   /** Label of the modal's apply button; defaults to "Apply Filters". */
   applyLabel?: string;
+  /** Exchanges offered in the modal's Exchange filter. */
+  exchanges?: ReadonlyArray<string>;
 }
 
 /**
  * "Filters" trigger + the stock filter modal, driven purely by props. Both the
  * URL-driven stock pages and client-side screens build on this.
  */
-export default function StockFiltersButton({ selected, onApply, activeCount, topSection, applyLabel }: StockFiltersButtonProps): JSX.Element {
+export default function StockFiltersButton({ selected, onApply, activeCount, topSection, applyLabel, exchanges }: StockFiltersButtonProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const badgeCount: number = activeCount ?? Object.values(selected).filter((v) => v && v.length > 0).length;
@@ -50,6 +52,7 @@ export default function StockFiltersButton({ selected, onApply, activeCount, top
         onClose={() => setIsModalOpen(false)}
         topSection={topSection}
         applyLabel={applyLabel}
+        exchanges={exchanges}
       />
     </>
   );

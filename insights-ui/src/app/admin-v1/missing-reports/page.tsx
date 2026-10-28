@@ -376,8 +376,6 @@ export default function MissingReportsPage(): JSX.Element {
   );
 
   const extraChips: ExtraFilterChip[] = [];
-  if (applied[TickerSearchParamKey.EXCHANGE])
-    extraChips.push({ paramKey: TickerSearchParamKey.EXCHANGE, label: `Exchange: ${applied[TickerSearchParamKey.EXCHANGE]}` });
   const missingTypes = parseMissingReportTypesParam(applied[TickerSearchParamKey.MISSING_REPORT_TYPES]);
   if (missingTypes.length > 0) {
     const label =

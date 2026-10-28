@@ -38,6 +38,8 @@ interface ClientStockFiltersProps {
    * modal instead and turn this off; the search term then shows as a chip.
    */
   showSearchBox?: boolean;
+  /** Exchanges offered in the modal's Exchange filter. */
+  exchanges?: ReadonlyArray<string>;
 }
 
 /**
@@ -53,6 +55,7 @@ export default function ClientStockFilters({
   applyLabel,
   extraChips = [],
   showSearchBox = true,
+  exchanges,
 }: ClientStockFiltersProps): JSX.Element {
   const appliedFilters: AppliedFilter[] = useMemo<AppliedFilter[]>(() => getAppliedFiltersFromSelected(selected), [selected]);
 
@@ -92,7 +95,14 @@ export default function ClientStockFilters({
           </div>
         )}
 
-        <StockFiltersButton selected={selected} onApply={onChange} activeCount={chipCount} topSection={topSection} applyLabel={applyLabel} />
+        <StockFiltersButton
+          selected={selected}
+          onApply={onChange}
+          activeCount={chipCount}
+          topSection={topSection}
+          applyLabel={applyLabel}
+          exchanges={exchanges}
+        />
 
         {resultSummary && <span className="text-sm text-muted">{resultSummary}</span>}
       </div>

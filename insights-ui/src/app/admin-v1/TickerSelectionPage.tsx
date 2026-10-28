@@ -83,8 +83,6 @@ export default function TickerSelectionPage({ renderActionComponent, refreshButt
     industries?.flatMap((i) => i.subIndustries).find((s) => s.subIndustryKey === subIndustryKey)?.name ?? subIndustryKey;
 
   const extraChips: ExtraFilterChip[] = [];
-  if (applied[TickerSearchParamKey.EXCHANGE])
-    extraChips.push({ paramKey: TickerSearchParamKey.EXCHANGE, label: `Exchange: ${applied[TickerSearchParamKey.EXCHANGE]}` });
   if (applied[TickerSearchParamKey.INDUSTRY_KEY]) {
     extraChips.push({ paramKey: TickerSearchParamKey.INDUSTRY_KEY, label: `Industry: ${industryName(applied[TickerSearchParamKey.INDUSTRY_KEY])}` });
   }

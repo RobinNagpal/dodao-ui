@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import StockFiltersButton from '@/components/stocks/filters/StockFiltersButton';
+import { COUNTRY_TO_EXCHANGES, toSupportedCountry } from '@/utils/countryExchangeUtils';
 
 import {
   getAppliedFilters,
@@ -12,13 +13,20 @@ import {
   type SelectedFiltersMap,
 } from '@/utils/ticker-filter-utils';
 
+interface FiltersButtonProps {
+  /** The page's country; its exchanges are offered in the Exchange filter. */
+  country?: string;
+}
+
 /** URL-driven stock filters: applying navigates to the `/stocks-filtered` variant of the current page. */
-export default function FiltersButton(): JSX.Element {
+export default function FiltersButton({ country }: FiltersButtonProps): JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
   const currentFilters: AppliedFilter[] = getAppliedFilters(searchParams);
+  const supportedCountry = toSupportedCountry(country);
+  const exchanges = supportedCountry ? COUNTRY_TO_EXCHANGES[supportedCountry] : [];
 
   const onApplyFilters = (selected: SelectedFiltersMap): void => {
     const nextParams: URLSearchParams = applySelectedFiltersToParams(searchParams, selected);
@@ -40,5 +48,7 @@ export default function FiltersButton(): JSX.Element {
     }
   };
 
-  return <StockFiltersButton selected={buildInitialSelected(currentFilters)} onApply={onApplyFilters} activeCount={currentFilters.length} />;
+  return (
+    <StockFiltersButton selected={buildInitialSelected(currentFilters)} onApply={onApplyFilters} activeCount={currentFilters.length} exchanges={exchanges} />
+  );
 }
