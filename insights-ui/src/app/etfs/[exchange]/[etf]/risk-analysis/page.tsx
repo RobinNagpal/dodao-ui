@@ -12,6 +12,7 @@ import { getEtfFundCategoryHierarchy } from '@/utils/etf-categorization-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { cache } from 'react';
 
@@ -72,7 +73,10 @@ export default async function RiskAnalysisPage({ params }: { params: RouteParams
   const symbol = rawEtf.toUpperCase();
 
   const [{ categoryResult, etf }, similarEtfs] = await Promise.all([fetchCategoryData(exchange, symbol), fetchEtfSimilarEtfs(exchange, symbol)]);
-  if (!etf) notFound();
+  if (!etf) {
+    await redirectAlternativeEtfListing(exchange, symbol, CATEGORY_SLUG);
+    notFound();
+  }
   if (!categoryResult) notFound();
 
   // Sibling slugs are not on the critical path — pass the promise to a Suspense

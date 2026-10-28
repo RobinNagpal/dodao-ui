@@ -7,6 +7,7 @@ import { buildEtfReportSubpageBreadcrumbs } from '@/utils/etf-breadcrumbs-utils'
 import { generateBreadcrumbJsonLdFromCrumbs } from '@/utils/etf-metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { notFound } from 'next/navigation';
+import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { getEtfFastData, getEtfMorInfoData } from '@/utils/etf-page-data';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 
@@ -89,7 +90,10 @@ export default async function EtfFinancialDataPage({ params }: { params: RoutePa
 
   const [etfData, morData] = await Promise.all([fetchEtfData(exchange, etfSymbol), fetchMorInfo(exchange, etfSymbol)]);
 
-  if (!etfData) notFound();
+  if (!etfData) {
+    await redirectAlternativeEtfListing(exchange, etfSymbol, 'financial-data');
+    notFound();
+  }
 
   const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
     exchange,

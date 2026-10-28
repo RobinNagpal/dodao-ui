@@ -1406,6 +1406,14 @@ model Etf {
   // date shown on the ETF page.
   lastReportGeneratedAt DateTime? @map("last_report_generated_at")
 
+  // ISIN of the fund share class. A listing of the same share class on another
+  // exchange or in another currency is an entry in `alternativeListings` rather
+  // than its own ETF (e.g. LSE:CSPX with [{ XETRA, SXR8 }]). Not unique: listings
+  // that already had their own report when ISINs were introduced kept their row.
+  isin                String? @map("isin")
+  /// [EtfAlternativeListings]
+  alternativeListings Json    @default("[]") @map("alternative_listings") @db.JsonB
+
   financialInfo     EtfFinancialInfo?
   stockAnalyzerInfo EtfStockAnalyzerInfo?
   morAnalyzerInfo   EtfMorAnalyzerInfo?
@@ -1426,7 +1434,9 @@ model Etf {
   notes                         EtfNote[]
 
   @@unique([spaceId, symbol, exchange])
+  @@index([spaceId, isin])
   @@index([symbol])
+  @@index([alternativeListings(ops: JsonbPathOps)], type: Gin)
   @@map("etfs")
 }
 

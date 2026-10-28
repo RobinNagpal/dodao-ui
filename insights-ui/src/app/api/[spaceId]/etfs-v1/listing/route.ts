@@ -1,6 +1,7 @@
 import { getEtfListingData } from '@/app/api/[spaceId]/etfs-v1/listing/listing-prisma';
 import { shouldIncludeUnpopulatedForRequest } from '@/utils/etf-listing-visibility';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
+import type { EtfAlternativeListings } from '@/types/prismaTypes';
 import { NextRequest } from 'next/server';
 
 export interface EtfListingItem {
@@ -23,6 +24,8 @@ export interface EtfListingItem {
   hasMorAnalyzerInfo: boolean;
   hasMorRiskInfo: boolean;
   hasMorPeopleInfo: boolean;
+  /** Other tickers of the same share class (e.g. SXR8 on XETRA for LSE:CSPX). */
+  alternativeListings: EtfAlternativeListings;
 }
 
 export interface EtfListingResponse {

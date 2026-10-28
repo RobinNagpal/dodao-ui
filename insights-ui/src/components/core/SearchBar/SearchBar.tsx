@@ -30,6 +30,8 @@ export interface SearchResult {
   cachedScoreEntry: {
     finalScore: number;
   } | null;
+  /** ETF results: set when the query is one of the fund's alternative tickers (e.g. "SXR8" finds LSE:CSPX). */
+  matchedAlternativeListing?: { exchange: string; symbol: string };
 }
 
 /** A result carrying the kind of table it came from, so a combined list can render/route each row. */
@@ -90,7 +92,7 @@ function matchRank(result: SearchResult, term: string): number {
   const name = result.name.toLowerCase();
   const upper = term.toUpperCase();
   const lower = term.toLowerCase();
-  if (symbol === upper) return 0;
+  if (symbol === upper || result.matchedAlternativeListing?.symbol.toUpperCase() === upper) return 0;
   if (symbol.startsWith(upper)) return 1;
   if (name.startsWith(lower)) return 2;
   if (symbol.includes(upper)) return 3;
@@ -318,6 +320,11 @@ export default function SearchBar({
           {result.symbol}
         </p>
         <p className="text-sm font-medium text-break break-words text-heading truncate min-w-0 flex-1">{result.name}</p>
+        {result.matchedAlternativeListing && (
+          <p className="text-xs text-muted whitespace-nowrap shrink-0">
+            also {result.matchedAlternativeListing.symbol} on {result.matchedAlternativeListing.exchange}
+          </p>
+        )}
         <p className="text-xs font-medium text-muted whitespace-nowrap shrink-0 ml-2">{formatExchangeWithCountry(result.exchange)}</p>
       </div>
     );

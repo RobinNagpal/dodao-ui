@@ -1,4 +1,5 @@
 import { prisma } from '@/prisma';
+import { etfOwnOrAlternativeListingWhere } from '@/utils/etf-alternative-listing-utils';
 import { revalidateEtfScenarioBySlugTag, revalidateEtfScenarioListingTag } from '@/utils/etf-scenario-cache-utils';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
@@ -50,12 +51,13 @@ async function postHandler(
   }
 
   // Resolve etfId via (symbol, exchange) so dual-listed ETFs map to the
-  // correct row. Unresolved links still save (etfId=null) — the public
+  // correct row; an alternative listing (e.g. XETRA:SXR8) resolves to the ETF
+  // that owns it. Unresolved links still save (etfId=null) — the public
   // detail view renders them as plain pills.
   let resolvedEtfId: string | null = body.etfId ?? null;
   if (!resolvedEtfId) {
     const etf = await prisma.etf.findFirst({
-      where: { spaceId: KoalaGainsSpaceId, symbol, exchange },
+      where: etfOwnOrAlternativeListingWhere(KoalaGainsSpaceId, exchange, symbol),
       select: { id: true },
     });
     resolvedEtfId = etf?.id ?? null;
