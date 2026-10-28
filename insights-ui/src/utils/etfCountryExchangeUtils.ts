@@ -27,15 +27,6 @@ export const ETF_SUPPORTED_COUNTRIES: EtfSupportedCountry[] = [
   SupportedCountries.Germany,
 ];
 
-/**
- * Countries whose ETF pages are live but kept out of discovery — every ETF sitemap and the
- * "Also view" country switcher skip them.
- *  - UK: being retired from search; the pages stay live (HTTP 200) so already-indexed URLs don't 404.
- *  - Germany: newly imported (XETRA); hidden until its ETFs have generated reports, so Google isn't
- *    pointed at thousands of thin pages. Remove it from this list once the reports are in.
- */
-export const ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY: ReadonlyArray<EtfSupportedCountry> = [SupportedCountries.UK, SupportedCountries.Germany];
-
 export const isEtfSupportedCountry = (val: string): val is EtfSupportedCountry => {
   return (ETF_SUPPORTED_COUNTRIES as readonly string[]).includes(val);
 };
