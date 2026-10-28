@@ -1,7 +1,7 @@
 import { prisma } from '@/prisma';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY, getEtfExchangesByCountry } from '@/utils/etfCountryExchangeUtils';
+import { ETF_EXCHANGE_TO_COUNTRY, ETF_SUPPORTED_COUNTRIES, EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
@@ -16,13 +16,23 @@ export interface SiteMapUrl {
 }
 
 /**
- * ETF exchanges excluded from every sitemap — the exchanges of `ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY`
- * (UK: retired from search). The pages stay live
- * (HTTP 200); we just don't want Google to (re)discover them via the sitemaps. Used as a Prisma
- * `exchange notIn` filter across every ETF sitemap query. The main sitemap (`etfs/sitemap.xml`)
- * additionally drops those countries' listing/browse pages.
+ * ETF countries with at least one generated report (cachedScore present), in `ETF_SUPPORTED_COUNTRIES`
+ * order. The main sitemap (`etfs/sitemap.xml`) only lists a country's listing/browse pages once it
+ * has a report, so a newly imported country isn't advertised while all its pages are thin.
  */
-export const SITEMAP_EXCLUDED_ETF_EXCHANGES: string[] = ETF_COUNTRIES_HIDDEN_FROM_DISCOVERY.flatMap((country) => getEtfExchangesByCountry(country));
+export async function getEtfCountriesWithReports(): Promise<EtfSupportedCountry[]> {
+  const rows = await prisma.etf.groupBy({
+    by: ['exchange'],
+    where: { spaceId: KoalaGainsSpaceId, cachedScore: { isNot: null } },
+  });
+  const countries = new Set(
+    rows
+      .map((row) => row.exchange)
+      .filter(isEtfExchange)
+      .map((exchange) => ETF_EXCHANGE_TO_COUNTRY[exchange])
+  );
+  return ETF_SUPPORTED_COUNTRIES.filter((country) => countries.has(country));
+}
 
 /** Stream a list of URLs into an XML sitemap response — shared by every ETF sitemap route. */
 export async function buildEtfSitemapResponse(urls: SiteMapUrl[]): Promise<NextResponse<Buffer>> {
@@ -65,7 +75,6 @@ export async function buildEtfCategoryReportSitemap(categoryKey: EtfAnalysisCate
       categoryKey,
       // The sub-page renders overallAnalysisDetails; an empty body is a thin page.
       overallAnalysisDetails: { not: '' },
-      etf: { is: { exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES } } },
     },
     select: {
       updatedAt: true,
@@ -94,7 +103,6 @@ export async function buildEtfCompetitionSitemap(): Promise<NextResponse<Buffer>
     where: {
       spaceId: KoalaGainsSpaceId,
       overallAnalysisDetails: { not: '' },
-      etf: { is: { exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES } } },
     },
     select: {
       updatedAt: true,
@@ -123,7 +131,6 @@ export async function buildEtfHoldingsSitemap(): Promise<NextResponse<Buffer>> {
     where: {
       spaceId: KoalaGainsSpaceId,
       morPortfolioInfo: { is: { holdings: { not: Prisma.DbNull } } },
-      exchange: { notIn: SITEMAP_EXCLUDED_ETF_EXCHANGES },
     },
     select: {
       symbol: true,
