@@ -19,6 +19,9 @@ Blocked: SEO/backlink tools (Ahrefs, Semrush, MJ12, DotBot, …) and AI-training
 (GPTBot, ClaudeBot, CCBot, Bytespider, Amazonbot, Meta-ExternalAgent, …).
 **Not** blocked: search engines (Googlebot, Bingbot, …) and AI search/user-fetch agents
 (OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-SearchBot, Claude-User).
+Also **not** opted out: `Google-Extended` and `Applebot-Extended`. They are robots.txt-only tokens
+(Google/Apple crawl with Googlebot/Applebot anyway), so blocking them saves no server load — it only
+removes us from Gemini / Apple Intelligence. Gemini is our largest AI-assistant referrer.
 
 CloudFront forwards the viewer User-Agent (AllViewer origin request policy) but does not key the
 cache on it, which is why the 403 is `no-store`. Pages already in CloudFront's cache are still

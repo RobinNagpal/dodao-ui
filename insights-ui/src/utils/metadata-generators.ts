@@ -197,6 +197,39 @@ export const generateDailyMoversListMetadata = (country: string, type: DailyMove
 // Daily stock mover details metadata generator
 // ────────────────────────────────────────────────────────────────────────────────
 
+// Google shows ~60 characters of a title; longer loser titles drop the date.
+const MAX_SEO_TITLE_LENGTH = 60;
+
+// Legal-entity suffixes stripped from company names in loser titles (", Inc.", " Corporation", …).
+const COMPANY_SUFFIX_PATTERN = /,?\s+(inc\.?|incorporated|corp\.?|corporation|company|co\.?|ltd\.?|limited|plc|llc|l\.?p\.?|n\.v\.|s\.a\.|sa|ag|se)$/i;
+
+const shortCompanyName = (name: string): string => {
+  let short = name.trim();
+  while (COMPANY_SUFFIX_PATTERN.test(short)) {
+    short = short.replace(COMPANY_SUFFIX_PATTERN, '').trim();
+  }
+  return short || name;
+};
+
+/**
+ * Loser headline built from stored fields (not the AI title) to match "why is X stock dropping" searches,
+ * e.g. "Why Inhibrx Biosciences (INBX) Stock Dropped 23.4% on Oct 28, 2026".
+ * Used as the page H1 and JSON-LD headline; `getLoserSeoTitle` is the `<title>` variant.
+ */
+export const getLoserHeadline = (mover: TopGainerWithTicker | TopLoserWithTicker, includeDate: boolean = true): string => {
+  const pct = Number(Math.abs(mover.percentageChange).toFixed(1));
+  const headline = `Why ${shortCompanyName(mover.name)} (${mover.symbol}) Stock Dropped ${pct}%`;
+  if (!includeDate) return headline;
+  const date = new Date(mover.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  return `${headline} on ${date}`;
+};
+
+/** Loser `<title>`: the full headline, or without the date when it would be too long for Google. */
+export const getLoserSeoTitle = (mover: TopGainerWithTicker | TopLoserWithTicker): string => {
+  const full = getLoserHeadline(mover);
+  return full.length <= MAX_SEO_TITLE_LENGTH ? full : getLoserHeadline(mover, false);
+};
+
 export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoserWithTicker, type: DailyMoverType, moverId: string): Metadata => {
   const isGainer = type === DailyMoverType.GAINER;
   const typeLabel = isGainer ? 'Gainer' : 'Loser';
@@ -204,7 +237,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
   const changeDirection = isGainer ? 'up' : 'down';
   const absPercentage = Math.abs(mover.percentageChange).toFixed(2);
 
-  const title = mover.title || `${mover.name} (${mover.symbol}) - Top ${typeLabel} Analysis`;
+  const title = isGainer ? mover.title || `${mover.name} (${mover.symbol}) - Top ${typeLabel} Analysis` : getLoserSeoTitle(mover);
   const description =
     mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`;
 
@@ -277,7 +310,7 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
   return {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
-    headline: mover.title || `${mover.ticker.name} (${mover.ticker.symbol}) - Top ${typeLabel} Analysis`,
+    headline: isGainer ? mover.title || `${mover.ticker.name} (${mover.ticker.symbol}) - Top ${typeLabel} Analysis` : getLoserHeadline(mover),
     description:
       mover.metaDescription ||
       mover.oneLineExplanation ||
