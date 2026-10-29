@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma';
-import { GeminiModel, LLMProvider, getDefaultGeminiModel } from '@/types/llmConstants';
+import { GeminiModel, LLMProvider } from '@/types/llmConstants';
 import { DailyMoverInputJson, StockDataInScreenerResponse } from '@/types/daily-stock-movers';
 import { GenerationRequestStatus } from '@/types/ticker-typesv1';
 import { getLLMResponseForPromptViaInvocationViaLambda } from '@/utils/analysis-reports/llm-callback-lambda-utils';
@@ -63,6 +63,7 @@ export function prepareDailyMoverInputJson(stock: StockDataInScreenerResponse): 
     name: stock.companyName,
     symbol: stock.symbol,
     percentageChange: stock.percentChange,
+    date: new Date().toISOString().split('T')[0],
   };
 }
 
@@ -88,7 +89,7 @@ async function generateDailyMoverAnalysis(
       inputJson,
       promptKey: 'US/public-equities-v1/daily-movers',
       llmProvider: LLMProvider.GEMINI_WITH_GROUNDING,
-      model: GeminiModel.GEMINI_3_1_PRO_PREVIEW,
+      model: GeminiModel.GEMINI_3_8_FLASH,
       requestFrom: 'ui',
     },
     // reportType is optional for daily movers
@@ -149,6 +150,16 @@ export async function processDailyMover(spaceId: string, stock: StockDataInScree
   }
 }
 
+// Gemini grounding sometimes cites `vertexaisearch.cloud.google.com/grounding-api-redirect/...` URLs,
+// which expire. Keep the source name and drop the link: "[Reuters](https://vertexaisearch...)" → "Reuters".
+// When told not to link them, the model also writes bare "([Reuters])", which renders with literal brackets.
+const GROUNDING_REDIRECT_LINK_PATTERN = /\[([^\]]+)\]\(https?:\/\/vertexaisearch\.cloud\.google\.com\/[^)\s]*\)/g;
+const BARE_BRACKETED_SOURCE_PATTERN = /\(\[([^\]]+)\]\)/g;
+
+export function stripGroundingRedirectLinks(markdown: string): string {
+  return markdown.replace(GROUNDING_REDIRECT_LINK_PATTERN, '$1').replace(BARE_BRACKETED_SOURCE_PATTERN, '($1)');
+}
+
 /**
  * Saves daily mover LLM response
  */
@@ -166,7 +177,7 @@ export async function saveDailyMoverResponse(
     title: response.title,
     metaDescription: response.metaDescription,
     oneLineExplanation: response.oneLineExplanation,
-    detailedExplanation: response.detailedExplanation,
+    detailedExplanation: stripGroundingRedirectLinks(response.detailedExplanation),
     status: GenerationRequestStatus.Completed,
     updatedAt: new Date(),
   };
