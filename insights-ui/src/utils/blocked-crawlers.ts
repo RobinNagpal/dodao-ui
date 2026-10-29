@@ -10,6 +10,8 @@
  * Deliberately NOT blocked: search engines (Googlebot, Bingbot, DuckDuckBot, Applebot,
  * YandexBot) and AI *search / user-fetch* agents (OAI-SearchBot, ChatGPT-User,
  * PerplexityBot, Claude-SearchBot, Claude-User) — those drive visitors and citations.
+ * Google-Extended / Applebot-Extended are also left out on purpose: they are robots.txt-only
+ * tokens (no extra crawl load) and Google-Extended governs Gemini grounding, our top AI referrer.
  */
 export const BLOCKED_CRAWLER_USER_AGENTS: readonly string[] = [
   // SEO / backlink tools
@@ -38,12 +40,6 @@ export const BLOCKED_CRAWLER_USER_AGENTS: readonly string[] = [
   'Timpibot',
   'omgili',
 ];
-
-/**
- * robots.txt-only opt-out tokens. These never appear in a request's User-Agent (Google and
- * Apple crawl with their normal bots), so they only make sense in robots.txt.
- */
-export const ROBOTS_ONLY_OPT_OUT_TOKENS: readonly string[] = ['Google-Extended', 'Applebot-Extended'];
 
 const BLOCKED_UA_PATTERN = new RegExp(BLOCKED_CRAWLER_USER_AGENTS.join('|'), 'i');
 

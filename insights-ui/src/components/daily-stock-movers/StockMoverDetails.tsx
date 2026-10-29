@@ -2,6 +2,9 @@ import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-mov
 import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import { parseMarkdown } from '@/util/parse-markdown';
+import { getLoserHeadline } from '@/utils/metadata-generators';
+import Stack from '@/components/ui/containers/Stack';
+import Text from '@/components/ui/Text';
 import Link from 'next/link';
 
 interface StockMoverDetailsProps {
@@ -13,7 +16,9 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
   // <body> always carries `.dark`, so `dark:` variants would win in BOTH themes;
   // instead keep the dark-tuned `-400` shade and let the `badge-tone-*` hooks
   // darken it in light mode via `.page-theme-light` (page-theme-light.scss).
-  const changeColorClass = type === DailyMoverType.GAINER ? 'badge-tone-success text-green-400' : 'badge-tone-danger text-red-400';
+  const isGainer = type === DailyMoverType.GAINER;
+  const changeColorClass = isGainer ? 'badge-tone-success text-green-400' : 'badge-tone-danger text-red-400';
+  const headline = isGainer ? mover.title : getLoserHeadline(mover);
 
   const articleDate = new Date(mover.createdAt);
   const formattedDate = articleDate.toLocaleDateString('en-US', {
@@ -31,8 +36,22 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div className="flex-1">
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-color mb-2" itemProp="headline">
-                {mover.ticker.name} <span className="text-muted-foreground">({mover.ticker.symbol})</span>
+                {isGainer && !mover.title ? (
+                  <>
+                    {mover.ticker.name} <span className="text-muted-foreground">({mover.ticker.symbol})</span>
+                  </>
+                ) : (
+                  headline
+                )}
               </h1>
+              {/* Losers get a code-built "Why … Dropped" H1, so the AI title (which carries the reason) sits below it. */}
+              {!isGainer && mover.title && (
+                <Stack mb="sm">
+                  <Text size="lg" weight="medium" itemProp="alternativeHeadline">
+                    {mover.title}
+                  </Text>
+                </Stack>
+              )}
               <div className="flex flex-wrap items-center gap-2 md:gap-3 text-sm">
                 <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
                   {mover.ticker.exchange}
@@ -61,15 +80,6 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
 
         {/* Article Body */}
         <div className="prose prose-invert max-w-none">
-          {mover.title && (
-            <section className="mb-6">
-              <h2 className="text-xl font-semibold text-color mb-3">Analysis Title</h2>
-              <p className="text-color" itemProp="description">
-                {mover.title}
-              </p>
-            </section>
-          )}
-
           {mover.oneLineExplanation && (
             <section className="mb-6">
               <h2 className="text-xl font-semibold text-color mb-3">Executive Summary</h2>
