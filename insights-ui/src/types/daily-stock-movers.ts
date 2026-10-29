@@ -57,6 +57,8 @@ export interface DailyMoverInputJson {
   name: string;
   symbol: string;
   percentageChange: string;
+  /** UTC date (YYYY-MM-DD) the move was recorded, so the model searches for the right trading day. */
+  date: string;
 }
 
 // LLM Response for daily movers

@@ -11,7 +11,11 @@ properties:
   percentageChange:
     type: string
     description: 'The 1-day percentage price change including the sign, e.g. "+8.4%" or "-5.2%".'
+  date:
+    type: string
+    description: 'UTC date (YYYY-MM-DD) the move was recorded; the move happened in the trading session on or just before it.'
 required:
   - name
   - symbol
   - percentageChange
+  - date
