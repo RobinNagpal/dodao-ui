@@ -14,7 +14,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { cache, Suspense } from 'react';
-import { getEtfFastData, getEtfPortfolioHoldingsData, isEtfHoldingsConfirmedEmpty } from '@/utils/etf-page-data';
+import { getEtfFastData, getEtfPortfolioHoldingsData, isEtfHoldingsPageThin } from '@/utils/etf-page-data';
 import { etfListingRobots } from '@/utils/etf-listing-noindex';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 
@@ -61,12 +61,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     /* keep generic */
   }
 
-  // A fund that reports no holdings renders only "No holdings data available": keep it out of the index
-  // (it is also left out of the holdings sitemap).
+  // With no more holdings than the ETF main page already previews, this page repeats it (or says
+  // "No holdings data available"): keep it out of the index, as the holdings sitemap does.
   const { holdings } = await fetchHoldings(exchange, symbol);
   return {
     ...generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime }),
-    ...etfListingRobots(isEtfHoldingsConfirmedEmpty(holdings)),
+    ...etfListingRobots(isEtfHoldingsPageThin(holdings)),
   };
 }
 

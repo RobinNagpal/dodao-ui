@@ -6,6 +6,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ALL_SUPPORTED_COUNTRIES, SupportedCountries } from '@/utils/countryExchangeUtils';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
+import { LIVE_TICKER_WHERE } from '@/utils/stock-sitemap-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,9 +69,7 @@ async function getAllTickers(): Promise<SitemapTicker[]> {
   return prisma.tickerV1.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
-      isDeleted: false,
-      movedExchange: null,
-      movedSymbol: null,
+      ...LIVE_TICKER_WHERE,
       cachedScoreEntry: { isNot: null },
     },
     select: {

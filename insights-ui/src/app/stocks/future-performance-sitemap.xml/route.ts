@@ -5,6 +5,7 @@ import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { LIVE_TICKER_WHERE } from '@/utils/stock-sitemap-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,6 +22,8 @@ async function generateFuturePerformanceUrls(): Promise<SiteMapUrl[]> {
   const futurePerformanceRecords = await prisma.tickerV1CategoryAnalysisResult.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
+      // Deleted tickers 404 and moved ones redirect: list live tickers only.
+      ticker: { is: LIVE_TICKER_WHERE },
       categoryKey: TickerAnalysisCategory.FutureGrowth,
       // Both sections rendered by TickerCategoryReport must have content;
       // either being empty produces a thin page (GSC "Crawled - currently not indexed").

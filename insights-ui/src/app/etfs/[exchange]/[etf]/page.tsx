@@ -25,7 +25,7 @@ import type { EtfFinancialInfoResponse } from '@/types/etf/etf-detail-response-t
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCountryByExchange, SupportedCountries, formatExchangeWithCountry, toExchange } from '@/utils/countryExchangeUtils';
 import { generateEtfDetailMetadata, generateEtfDetailArticleJsonLd, generateEtfDetailBreadcrumbJsonLd } from '@/utils/etf-metadata-generators';
-import { getEtfChartData, getEtfFastData, getEtfFullRenderData } from '@/utils/etf-page-data';
+import { ETF_HOLDINGS_PREVIEW_LIMIT, getEtfChartData, getEtfFastData, getEtfFullRenderData } from '@/utils/etf-page-data';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { splitMarkdownAtParagraph } from '@/utils/etf-display-format-utils';
 import { RadarSkeleton } from '@/app/stocks/[exchange]/[ticker]/RadarSkeleton';
@@ -210,8 +210,6 @@ function buildBreadcrumbs(etfData: EtfFastResponse): BreadcrumbsOjbect[] {
   return breadcrumbs;
 }
 
-const HOLDINGS_PREVIEW_LIMIT = 10;
-
 /* ----- Suspense'd children — each `use(promise)` to suspend on /full-render ----- */
 
 function EtfAboutSection({ promise }: { promise: Promise<EtfFullRenderResponse> }): JSX.Element | null {
@@ -257,7 +255,7 @@ function EtfBelowFoldBody({ promise, exchange, etf }: { promise: Promise<EtfFull
 
       <EtfCompetitionChartSection data={data.competition} exchange={exchange} etf={etf} />
 
-      <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
+      <EtfHoldings data={data.portfolioHoldings.holdings} maxRows={ETF_HOLDINGS_PREVIEW_LIMIT} viewMoreHref={`/etfs/${exchange}/${etf}/holdings`} />
 
       <EtfAnalysisSections data={data.analysis} exchange={exchange} symbol={etf} futureOutlookTop={<EtfKeyMetrics metrics={data.keyMetrics} />} />
 

@@ -92,19 +92,50 @@ export async function getEtfMorInfoData(spaceId: string, exchange: string, etf: 
 /*  /portfolio-holdings                                                */
 /* ------------------------------------------------------------------ */
 
-/**
- * Portfolio rows with at least one holding. The scraper stores `{ summary, columns, holdings: [] }` when
- * a fund reports none, and the holdings page then only says "No holdings data available", so the
- * holdings sitemap and the related-sections nav skip those rows.
- */
-export const ETF_HAS_HOLDINGS_WHERE: Prisma.EtfMorPortfolioInfoWhereInput = {
-  holdings: { not: Prisma.DbNull },
-  NOT: { holdings: { path: ['holdings'], equals: [] } },
-};
+/** Holdings the ETF main page previews; it links to the full holdings page only when a fund lists more. */
+export const ETF_HOLDINGS_PREVIEW_LIMIT = 10;
 
-/** True only when holdings loaded and list no rows; `null` (missing row or failed load) is not "empty". */
-export function isEtfHoldingsConfirmedEmpty(holdings: EtfMorPortfolioHoldings | null): boolean {
-  return holdings !== null && !(Array.isArray(holdings.holdings) && holdings.holdings.length > 0);
+/**
+ * The portfolio row (aliased `p`) lists more holdings than the main page previews. A holdings page with
+ * fewer only repeats that preview (or says "No holdings data available" when the scraper stored an empty
+ * list), so it is left out of the holdings sitemap and the related-sections nav, and marked noindex.
+ * CASE keeps jsonb_array_length off non-array values whatever order Postgres evaluates the conditions in.
+ */
+const ETF_HAS_FULL_HOLDINGS_PAGE_SQL = Prisma.sql`(CASE WHEN jsonb_typeof(p.holdings -> 'holdings') = 'array' THEN jsonb_array_length(p.holdings -> 'holdings') ELSE 0 END) > ${ETF_HOLDINGS_PREVIEW_LIMIT}`;
+
+/** The ETF ids, of those given, whose holdings page shows more than the main page's preview. */
+export async function getEtfIdsWithFullHoldingsPage(etfIds: string[]): Promise<string[]> {
+  if (etfIds.length === 0) return [];
+  const rows = await prisma.$queryRaw<{ etfId: string }[]>`
+    SELECT p.etf_id AS "etfId" FROM etf_mor_portfolio_info p
+    WHERE p.etf_id IN (${Prisma.join(etfIds)}) AND ${ETF_HAS_FULL_HOLDINGS_PAGE_SQL}`;
+  return rows.map((row) => row.etfId);
+}
+
+/** Whether this ETF's holdings page shows more than the main page's preview. */
+export async function etfHasFullHoldingsPage(etfId: string): Promise<boolean> {
+  return (await getEtfIdsWithFullHoldingsPage([etfId])).length > 0;
+}
+
+export interface EtfWithFullHoldingsPage {
+  symbol: string;
+  exchange: string;
+  updatedAt: Date;
+  createdAt: Date;
+  portfolioUpdatedAt: Date;
+}
+
+/** Every ETF whose holdings page shows more than the main page's preview (the holdings sitemap). */
+export async function getEtfsWithFullHoldingsPage(spaceId: string): Promise<EtfWithFullHoldingsPage[]> {
+  return prisma.$queryRaw<EtfWithFullHoldingsPage[]>`
+    SELECT e.symbol, e.exchange, e.updated_at AS "updatedAt", e.created_at AS "createdAt", p.updated_at AS "portfolioUpdatedAt"
+    FROM etfs e JOIN etf_mor_portfolio_info p ON p.etf_id = e.id
+    WHERE e.space_id = ${spaceId} AND ${ETF_HAS_FULL_HOLDINGS_PAGE_SQL}`;
+}
+
+/** True when holdings loaded and list no more than the main page's preview; `null` (missing row or failed load) is not thin. */
+export function isEtfHoldingsPageThin(holdings: EtfMorPortfolioHoldings | null): boolean {
+  return holdings !== null && !(Array.isArray(holdings.holdings) && holdings.holdings.length > ETF_HOLDINGS_PREVIEW_LIMIT);
 }
 
 export async function getEtfPortfolioHoldingsData(spaceId: string, exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {

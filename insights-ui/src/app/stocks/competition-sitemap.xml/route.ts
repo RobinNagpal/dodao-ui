@@ -4,6 +4,7 @@ import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { LIVE_TICKER_WHERE } from '@/utils/stock-sitemap-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +21,8 @@ async function generateCompetitionUrls(): Promise<SiteMapUrl[]> {
   const competitionRecords = await prisma.tickerV1VsCompetition.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
+      // Deleted tickers 404 and moved ones redirect: list live tickers only.
+      ticker: { is: LIVE_TICKER_WHERE },
       // The competition page renders `overallAnalysisDetails` (Comprehensive Analysis)
       // and the competitorTickers cards — `summary` is never displayed. Filter on the
       // field that actually drives the rendered body.
