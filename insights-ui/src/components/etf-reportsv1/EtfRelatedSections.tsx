@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
+import { etfHasFullHoldingsPage, getEtfIdsWithFullHoldingsPage } from '@/utils/etf-page-data';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import RelatedSectionsNav from '@/components/ui/sections/RelatedSectionsNav';
@@ -38,7 +39,7 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
   const etfRecord = await prisma.etf.findFirst({ where, select: { id: true } });
   if (!etfRecord) return [];
 
-  const [analysisRows, competitionRow, holdingsRow] = await Promise.all([
+  const [analysisRows, competitionRow, hasHoldingsPage] = await Promise.all([
     prisma.etfCategoryAnalysisResult.findMany({
       where: {
         spaceId: KoalaGainsSpaceId,
@@ -52,10 +53,7 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
       where: { spaceId: KoalaGainsSpaceId, etfId: etfRecord.id, overallAnalysisDetails: { not: '' } },
       select: { id: true },
     }),
-    prisma.etfMorPortfolioInfo.findFirst({
-      where: { etfId: etfRecord.id },
-      select: { id: true },
-    }),
+    etfHasFullHoldingsPage(etfRecord.id),
   ]);
 
   const available = new Set<string>();
@@ -64,7 +62,7 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
     if (slug) available.add(slug);
   }
   if (competitionRow) available.add('competition');
-  if (holdingsRow) available.add('holdings');
+  if (hasHoldingsPage) available.add('holdings');
 
   return Array.from(available);
 }
@@ -105,10 +103,7 @@ export async function filterEtfPeersWithSlug(peers: ReadonlyArray<{ symbol: stri
   const etfIds = Array.from(keyByEtfId.keys());
 
   const withReport = async (): Promise<string[]> => {
-    if (slug === 'holdings') {
-      const rows = await prisma.etfMorPortfolioInfo.findMany({ where: { etfId: { in: etfIds } }, select: { etfId: true } });
-      return rows.map((row) => row.etfId);
-    }
+    if (slug === 'holdings') return getEtfIdsWithFullHoldingsPage(etfIds);
     if (slug === 'competition') {
       const rows = await prisma.etfVsCompetition.findMany({
         where: { spaceId: KoalaGainsSpaceId, etfId: { in: etfIds }, overallAnalysisDetails: { not: '' } },

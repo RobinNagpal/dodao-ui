@@ -2,9 +2,9 @@ import { prisma } from '@/prisma';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ETF_EXCHANGE_TO_COUNTRY, ETF_SUPPORTED_COUNTRIES, EtfSupportedCountry, isEtfExchange } from '@/utils/etfCountryExchangeUtils';
+import { getEtfsWithFullHoldingsPage } from '@/utils/etf-page-data';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
-import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
 
@@ -124,33 +124,18 @@ export async function buildEtfCompetitionSitemap(): Promise<NextResponse<Buffer>
 /**
  * Sitemap for the ETF holdings sub-pages (/etfs/{exchange}/{symbol}/holdings). Unlike the analysis
  * sub-pages, the holdings page does not call notFound() when data is missing — it renders an empty
- * table — so gate on the backing EtfMorPortfolioInfo.holdings JSON being present to avoid thin pages.
+ * table — so gate on the backing EtfMorPortfolioInfo.holdings JSON listing at least one holding.
  */
 export async function buildEtfHoldingsSitemap(): Promise<NextResponse<Buffer>> {
-  const etfs = await prisma.etf.findMany({
-    where: {
-      spaceId: KoalaGainsSpaceId,
-      morPortfolioInfo: { is: { holdings: { not: Prisma.DbNull } } },
-    },
-    select: {
-      symbol: true,
-      exchange: true,
-      updatedAt: true,
-      createdAt: true,
-      // Prefer the portfolio refresh time for lastmod, fall back to the ETF row's updatedAt.
-      morPortfolioInfo: { select: { updatedAt: true } },
-    },
-  });
+  const etfs = await getEtfsWithFullHoldingsPage(KoalaGainsSpaceId);
 
-  const urls: SiteMapUrl[] = etfs.map((etf) => {
-    const lastmodDate = etf.morPortfolioInfo?.updatedAt ?? etf.updatedAt;
-    return {
-      url: `/etfs/${etf.exchange}/${etf.symbol}/holdings`,
-      changefreq: 'weekly',
-      priority: 0.6,
-      lastmod: delayedSitemapLastmod(lastmodDate, etf.createdAt),
-    };
-  });
+  // lastmod follows the portfolio refresh time.
+  const urls: SiteMapUrl[] = etfs.map((etf) => ({
+    url: `/etfs/${etf.exchange}/${etf.symbol}/holdings`,
+    changefreq: 'weekly',
+    priority: 0.6,
+    lastmod: delayedSitemapLastmod(etf.portfolioUpdatedAt, etf.createdAt),
+  }));
 
   return buildEtfSitemapResponse(urls);
 }

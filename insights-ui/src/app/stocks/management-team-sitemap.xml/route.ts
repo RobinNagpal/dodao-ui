@@ -4,6 +4,7 @@ import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { NextResponse } from 'next/server';
 import { SitemapStream, streamToPromise } from 'sitemap';
+import { LIVE_TICKER_WHERE } from '@/utils/stock-sitemap-utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +21,8 @@ async function generateManagementTeamUrls(): Promise<SiteMapUrl[]> {
   const records = await prisma.tickerV1ManagementTeamReport.findMany({
     where: {
       spaceId: KoalaGainsSpaceId,
+      // Deleted tickers 404 and moved ones redirect: list live tickers only.
+      ticker: { is: LIVE_TICKER_WHERE },
       // The management-team page renders both `summary` and `detailedAnalysis`
       // as markdown sections; either being empty makes the page thin.
       summary: { not: '' },
