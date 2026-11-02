@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { getEtfWhereClause } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
+import { ETF_HAS_HOLDINGS_WHERE } from '@/utils/etf-page-data';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { EtfAnalysisCategory } from '@/types/etf/etf-analysis-types';
 import RelatedSectionsNav from '@/components/ui/sections/RelatedSectionsNav';
@@ -53,7 +54,7 @@ export async function fetchEtfAvailableSlugs(exchange: string, symbol: string): 
       select: { id: true },
     }),
     prisma.etfMorPortfolioInfo.findFirst({
-      where: { etfId: etfRecord.id },
+      where: { etfId: etfRecord.id, ...ETF_HAS_HOLDINGS_WHERE },
       select: { id: true },
     }),
   ]);

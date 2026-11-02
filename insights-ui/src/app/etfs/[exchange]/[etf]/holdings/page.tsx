@@ -14,7 +14,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { redirectAlternativeEtfListing } from '@/utils/etf-alternative-listing-utils';
 import { cache, Suspense } from 'react';
-import { getEtfFastData, getEtfPortfolioHoldingsData } from '@/utils/etf-page-data';
+import { getEtfFastData, getEtfPortfolioHoldingsData, isEtfHoldingsConfirmedEmpty } from '@/utils/etf-page-data';
+import { etfListingRobots } from '@/utils/etf-listing-noindex';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 
 export const dynamic = 'force-dynamic';
@@ -33,13 +34,13 @@ const fetchEtf = cache(async (exchange: string, etf: string): Promise<EtfFastRes
   }
 });
 
-async function fetchHoldings(exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
+const fetchHoldings = cache(async (exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> => {
   try {
     return await ssrRequestData(() => getEtfPortfolioHoldingsData(KoalaGainsSpaceId, exchange, etf));
   } catch {
     return { holdings: null, updatedAt: null };
   }
-}
+});
 
 export async function generateMetadata({ params }: { params: RouteParams }): Promise<Metadata> {
   const { exchange: rawExchange, etf: rawEtf } = await params;
@@ -60,7 +61,13 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
     /* keep generic */
   }
 
-  return generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime });
+  // A fund that reports no holdings renders only "No holdings data available": keep it out of the index
+  // (it is also left out of the holdings sitemap).
+  const { holdings } = await fetchHoldings(exchange, symbol);
+  return {
+    ...generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime }),
+    ...etfListingRobots(isEtfHoldingsConfirmedEmpty(holdings)),
+  };
 }
 
 export default async function EtfHoldingsPage({ params }: { params: RouteParams }): Promise<JSX.Element> {

@@ -20,6 +20,7 @@ import type { EtfFastResponse, EtfWithRelations } from '@/app/api/[spaceId]/etfs
 import type { PriceHistoryResponse } from '@/app/api/[spaceId]/tickers-v1/exchange/[exchange]/[ticker]/price-history/route';
 import { getEtfWhereClause, serializeBigIntFields } from '@/app/api/[spaceId]/etfs-v1/etfApiUtils';
 import { prisma } from '@/prisma';
+import { Prisma } from '@prisma/client';
 import type { EtfApplicableInvestorGoals, EtfCompetitionResponse, EtfCompetitor, EtfKeyFactsFlagAssessment } from '@/types/etf/etf-analysis-types';
 import type { EtfFinancialInfoResponse, EtfScoresResponse } from '@/types/etf/etf-detail-response-types';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
@@ -90,6 +91,21 @@ export async function getEtfMorInfoData(spaceId: string, exchange: string, etf: 
 /* ------------------------------------------------------------------ */
 /*  /portfolio-holdings                                                */
 /* ------------------------------------------------------------------ */
+
+/**
+ * Portfolio rows with at least one holding. The scraper stores `{ summary, columns, holdings: [] }` when
+ * a fund reports none, and the holdings page then only says "No holdings data available", so the
+ * holdings sitemap and the related-sections nav skip those rows.
+ */
+export const ETF_HAS_HOLDINGS_WHERE: Prisma.EtfMorPortfolioInfoWhereInput = {
+  holdings: { not: Prisma.DbNull },
+  NOT: { holdings: { path: ['holdings'], equals: [] } },
+};
+
+/** True only when holdings loaded and list no rows; `null` (missing row or failed load) is not "empty". */
+export function isEtfHoldingsConfirmedEmpty(holdings: EtfMorPortfolioHoldings | null): boolean {
+  return holdings !== null && !(Array.isArray(holdings.holdings) && holdings.holdings.length > 0);
+}
 
 export async function getEtfPortfolioHoldingsData(spaceId: string, exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
   const whereClause = getEtfWhereClause({ spaceId, exchange, etf });
