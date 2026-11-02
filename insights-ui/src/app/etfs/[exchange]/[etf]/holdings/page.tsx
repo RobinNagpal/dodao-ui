@@ -34,11 +34,12 @@ const fetchEtf = cache(async (exchange: string, etf: string): Promise<EtfFastRes
   }
 });
 
-const fetchHoldings = cache(async (exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> => {
+/** `null` when the load failed, so a transient error never marks the page noindex. */
+const fetchHoldings = cache(async (exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse | null> => {
   try {
     return await ssrRequestData(() => getEtfPortfolioHoldingsData(KoalaGainsSpaceId, exchange, etf));
   } catch {
-    return { holdings: null, updatedAt: null };
+    return null;
   }
 });
 
@@ -63,10 +64,10 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   // With no more holdings than the ETF main page already previews, this page repeats it (or says
   // "No holdings data available"): keep it out of the index, as the holdings sitemap does.
-  const { holdings } = await fetchHoldings(exchange, symbol);
+  const holdingsResponse = await fetchHoldings(exchange, symbol);
   return {
     ...generateEtfHoldingsMetadata({ etfName, symbol, exchange, createdTime, updatedTime }),
-    ...etfListingRobots(isEtfHoldingsPageThin(holdings)),
+    ...etfListingRobots(holdingsResponse !== null && isEtfHoldingsPageThin(holdingsResponse.holdings)),
   };
 }
 
@@ -87,7 +88,7 @@ export default async function EtfHoldingsPage({ params }: { params: RouteParams 
 
   const availableSlugsPromise = fetchEtfAvailableSlugs(exchange, symbol);
 
-  const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse;
+  const { holdings, updatedAt: holdingsUpdatedAt } = holdingsResponse ?? { holdings: null, updatedAt: null };
 
   const breadcrumbs = buildEtfReportSubpageBreadcrumbs({
     exchange,

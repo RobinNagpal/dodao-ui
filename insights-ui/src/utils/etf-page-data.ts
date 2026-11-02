@@ -133,9 +133,9 @@ export async function getEtfsWithFullHoldingsPage(spaceId: string): Promise<EtfW
     WHERE e.space_id = ${spaceId} AND ${ETF_HAS_FULL_HOLDINGS_PAGE_SQL}`;
 }
 
-/** True when holdings loaded and list no more than the main page's preview; `null` (missing row or failed load) is not thin. */
+/** True when the loaded holdings (`null`: no portfolio data) list no more than the main page's preview. */
 export function isEtfHoldingsPageThin(holdings: EtfMorPortfolioHoldings | null): boolean {
-  return holdings !== null && !(Array.isArray(holdings.holdings) && holdings.holdings.length > ETF_HOLDINGS_PREVIEW_LIMIT);
+  return !(holdings !== null && Array.isArray(holdings.holdings) && holdings.holdings.length > ETF_HOLDINGS_PREVIEW_LIMIT);
 }
 
 export async function getEtfPortfolioHoldingsData(spaceId: string, exchange: string, etf: string): Promise<EtfPortfolioHoldingsResponse> {
