@@ -33,7 +33,6 @@ const siteColumns = [
     links: [
       { name: 'Model or no model', href: '/robotics/model-or-no-model' },
       ...roboticsAreas.map((area) => ({ name: area.name, href: `/robotics/${area.slug}` })),
-      { name: 'Robotics services', href: '/robotics' },
     ],
   },
   {

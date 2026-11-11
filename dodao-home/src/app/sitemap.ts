@@ -41,7 +41,7 @@ function findPageRoutes(dir: string, segments: string[] = []): string[] {
 
 function priorityFor(route: string): number {
   if (route === '/') return 1.0;
-  if (route === '/robotics' || route.startsWith('/robotics/') || route.startsWith('/home-section/dodao-io/products')) return 0.8;
+  if (route.startsWith('/robotics/') || route.startsWith('/home-section/dodao-io/products')) return 0.8;
   return 0.7;
 }
 

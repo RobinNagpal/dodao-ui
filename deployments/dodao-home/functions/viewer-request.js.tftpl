@@ -5,14 +5,36 @@
 //     preserving path and query string.
 //  2. A trailing slash (other than "/") 301s to the slash-less URL, which is the
 //     canonical form every page, sitemap entry and <link rel=canonical> uses.
-//  3. `next build` (output: 'export', trailingSlash: false) writes each route as
-//     <route>.html, so an extension-less path such as /robotics or
+//  3. Retired pages 301 to their replacement (see REDIRECTS), so old links and
+//     search results don't land on the 404 page.
+//  4. `next build` (output: 'export', trailingSlash: false) writes each route as
+//     <route>.html, so an extension-less path such as /robotics/perception or
 //     /home-section/dodao-io/products/tidbitshub is served from that .html
 //     object. Paths whose last segment has a dot (/_next/static/..., /robots.txt,
 //     /robotics/poster.pdf, the RSC *.txt payloads) are real files and pass
 //     through. "/" is served by the distribution's default_root_object.
 var APEX = "${domain_name}";
 var WWW = "www.${domain_name}";
+
+// Retired path -> where it lives now. Keys are slash-less (step 2 runs first).
+var REDIRECTS = {
+  // The old robotics services page; its content now lives on the home page.
+  "/robotics": "/",
+  // Retired case studies (new ones will replace them) and the products overview.
+  "/home-section/dodao-io/products": "/",
+  "/home-section/dodao-io/products/hplc-autosampler": "/",
+  "/home-section/dodao-io/products/ketchup-hplc-workflow": "/",
+  // Old robotics service pages, superseded by the /robotics/[area] pages.
+  "/home-section/dodao-io/services/simulation-setup": "/robotics/simulation",
+  "/home-section/dodao-io/services/simulation-digital-twins": "/robotics/simulation",
+  "/home-section/dodao-io/services/synthetic-data": "/robotics/simulation",
+  "/home-section/dodao-io/services/computer-vision": "/robotics/perception",
+  "/home-section/dodao-io/services/robotics-hardware": "/robotics/integration",
+  "/home-section/dodao-io/services/robotics-software": "/robotics/integration",
+  // Old AI / DeFi service pages, folded into the services still listed.
+  "/home-section/dodao-io/services/ai-llm-dev": "/home-section/dodao-io/services/custom-ai-agent-dev",
+  "/home-section/dodao-io/services/defi-tooling": "/home-section/dodao-io/services/smart-contract",
+};
 
 function queryString(querystring) {
   var parts = [];
@@ -54,6 +76,10 @@ function handler(event) {
   if (uri.length > 1 && uri.endsWith("/")) {
     var trimmed = uri.replace(/\/+$/, "");
     return redirect((trimmed === "" ? "/" : trimmed) + queryString(request.querystring));
+  }
+
+  if (Object.prototype.hasOwnProperty.call(REDIRECTS, uri)) {
+    return redirect(REDIRECTS[uri] + queryString(request.querystring));
   }
 
   var lastSegment = uri.substring(uri.lastIndexOf("/") + 1);
