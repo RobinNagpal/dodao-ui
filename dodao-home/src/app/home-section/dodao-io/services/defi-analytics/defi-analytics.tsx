@@ -347,7 +347,7 @@ function DefiAnalytics() {
       </div>
 
       {/* Why DoDAO */}
-      <div className="bg-surface py-20 sm:py-24">
+      <div className="bg-bg py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-heading sm:text-4xl">Why protocol teams pick DoDAO</h2>
@@ -356,7 +356,7 @@ function DefiAnalytics() {
 
           <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {whyDodao.map((b) => (
-              <div key={b.title} className="flex flex-col rounded-2xl bg-bg p-6 ring-1 ring-border">
+              <div key={b.title} className="flex flex-col rounded-2xl bg-surface p-6 ring-1 ring-border">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-text shadow-lg">
                   <b.icon className="h-6 w-6" aria-hidden="true" />
                 </span>

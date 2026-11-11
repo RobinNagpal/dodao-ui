@@ -1,11 +1,13 @@
 import { CONTACT_MAILTO } from '@/components/home/DoDAOHome/components/DoDAOHomeHero';
 import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import LoopingVideo from '@/components/home/DoDAOHome/components/LoopingVideo';
-import { ActionLink, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
+import { ActionLink, Bullet, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
 import StartProject from '@/components/home/DoDAOHome/components/StartProject';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import UseCaseCard from '../use-cases/UseCaseCard';
+import { useCases } from '../use-cases/useCases';
 import { AreaMedia, RoboticsArea, roboticsAreas } from './roboticsAreas';
 
 // Full class names so Tailwind can see them.
@@ -30,17 +32,10 @@ function HeroMedia({ media }: { media: AreaMedia }) {
   );
 }
 
-function Bullet({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="flex gap-3 text-base leading-7 text-body">
-      <span className="mt-[11px] h-1.5 w-1.5 flex-none rounded-full bg-primary" aria-hidden="true" />
-      {children}
-    </li>
-  );
-}
-
 export default function RoboticsAreaPage({ area }: { area: RoboticsArea }) {
   const otherAreas = roboticsAreas.filter((a) => a.slug !== area.slug);
+  // Every use case, the ones that draw on this area first, so the row is always full.
+  const sortedUseCases = [...useCases].sort((a, b) => Number(b.relatedAreas.includes(area.slug)) - Number(a.relatedAreas.includes(area.slug)));
 
   return (
     <div>
@@ -78,7 +73,7 @@ export default function RoboticsAreaPage({ area }: { area: RoboticsArea }) {
         </div>
       </section>
 
-      {/* Figures from our notes */}
+      {/* Figures from our docs */}
       <section className="border-y border-border bg-surface">
         <dl className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-border px-4 sm:px-6 md:grid-cols-3 md:divide-x md:divide-y-0 lg:px-8">
           {area.facts.map((fact) => (
@@ -193,20 +188,9 @@ export default function RoboticsAreaPage({ area }: { area: RoboticsArea }) {
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <h2 className="font-display text-3xl font-semibold text-heading">What you get</h2>
-            <ul className="mt-8 space-y-3">
-              {area.deliverables.map((item) => (
-                <li key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-5 text-base text-heading ring-1 ring-border">
-                  <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-none text-accent" aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
             {area.docLinks.length > 0 && (
-              <div className="mt-8">
-                <p className="text-sm font-medium text-muted">Read more in our notes</p>
+              <div className="mt-10">
+                <p className="text-sm font-medium text-muted">Read more in our docs</p>
                 <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
                   {area.docLinks.map((doc) => (
                     <li key={doc.href}>
@@ -225,6 +209,31 @@ export default function RoboticsAreaPage({ area }: { area: RoboticsArea }) {
               </div>
             )}
           </div>
+          <div>
+            <h2 className="font-display text-3xl font-semibold text-heading">What you get</h2>
+            <ul className="mt-8 space-y-3">
+              {area.deliverables.map((item) => (
+                <li key={item} className="flex items-start gap-3 rounded-2xl bg-surface p-5 text-base text-heading ring-1 ring-border">
+                  <CheckCircleIcon className="mt-0.5 h-5 w-5 flex-none text-accent" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Use cases; follows the tools section on the same background, so no top padding */}
+      <section className="bg-bg pb-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionIntro title="See it in our use cases" />
+          <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {sortedUseCases.map((useCase, index) => (
+              <li key={useCase.slug} className={index === sortedUseCases.length - 1 ? 'sm:col-span-2 lg:col-span-1' : ''}>
+                <UseCaseCard useCase={useCase} />
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

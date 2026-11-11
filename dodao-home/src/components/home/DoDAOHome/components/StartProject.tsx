@@ -29,7 +29,7 @@ export default function StartProject() {
               Email info@dodao.com
             </ActionLink>
             <ActionLink href="https://docs.dodao.io" external size="lg" variant="onColor">
-              Read our robotics notes
+              Read our docs
             </ActionLink>
           </div>
         </div>

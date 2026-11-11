@@ -26,7 +26,7 @@ type Service = {
 const services: Service[] = [
   {
     num: '01',
-    title: 'Custom smart contract development',
+    title: 'Smart contract development',
     what: 'Bespoke contracts written from scratch to fit your protocol.',
     how: 'Solidity (or Vyper) tailored to your business logic, with the right access control, accounting, and upgrade story baked in from day one.',
     example: 'A new DeFi product? We ship the contract that handles deposits, transactions, and rewards distribution under your specific rules.',

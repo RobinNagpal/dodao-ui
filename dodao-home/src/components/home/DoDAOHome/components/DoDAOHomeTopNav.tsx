@@ -1,17 +1,15 @@
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import {
+  AcademicCapIcon,
+  ArrowPathIcon,
   Bars3Icon,
   BeakerIcon,
+  FunnelIcon,
   XMarkIcon,
   CodeBracketIcon,
   ChartBarIcon,
   CpuChipIcon,
-  PresentationChartLineIcon,
-  ComputerDesktopIcon,
-  BuildingOfficeIcon,
-  UserGroupIcon,
   LifebuoyIcon,
-  ChatBubbleLeftEllipsisIcon,
   ShieldCheckIcon,
   EyeIcon,
   LightBulbIcon,
@@ -20,6 +18,7 @@ import {
   WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline';
 import { roboticsAreas as areas } from '@/components/robotics-page/areas/roboticsAreas';
+import { useCases as allUseCases } from '@/components/robotics-page/use-cases/useCases';
 import { CONTACT_MAILTO } from './DoDAOHomeHero';
 
 interface MenuItem {
@@ -29,61 +28,24 @@ interface MenuItem {
   icon: React.ComponentType<React.ComponentProps<'svg'>>;
 }
 
-const products = [
+const products: MenuItem[] = [
   {
     name: 'KoalaGains',
     description: 'AI Agents that read filings, score projects, and give clear investing insights on crowdfunding and REITs.',
     href: '/home-section/dodao-io/products/koalagains',
     icon: ChartBarIcon,
   },
-
   {
     name: 'DeFi Alerts',
     description: 'Real-time alerts on yields, rates, and position health across leading DeFi protocols and chains.',
     href: '/home-section/dodao-io/products/defi-alerts',
     icon: ShieldCheckIcon,
   },
-];
-
-const educationAreas = [
   {
-    name: 'AI Agent Bootcamp',
-    description: 'Hands-on training in AI agent design and deployment.',
-    href: '/home-section/dodao-io/education/ai-agent-bootcamp',
-    icon: CpuChipIcon,
-  },
-  {
-    name: 'Prompt Engineering Guide',
-    description: 'Learn prompt crafting and optimization techniques.',
-    href: '/home-section/dodao-io/education/prompt-engineering-guide',
-    icon: ChatBubbleLeftEllipsisIcon,
-  },
-  {
-    name: 'Blockchain Bootcamp',
-    description: 'Comprehensive training from basics to advanced blockchain technologies.',
-    href: '/home-section/dodao-io/education/blockchain-bootcamp',
-    icon: PresentationChartLineIcon,
-  },
-  {
-    name: 'Educational Content',
-    description: 'Customized educational websites to enhance learning.',
-    href: '/home-section/dodao-io/education/educational-content',
-    icon: ComputerDesktopIcon,
-  },
-];
-
-const researchAreas = [
-  {
-    name: 'Real World Assets',
-    description: 'Explore the integration of real-world assets on blockchain.',
-    href: '/home-section/dodao-io/research/real-world-assets',
-    icon: BuildingOfficeIcon,
-  },
-  {
-    name: 'How Credit Unions Can Attract Gen Z',
-    description: 'Strategies for credit unions to connect with Gen Z members.',
-    href: '/home-section/dodao-io/research/credit-union',
-    icon: UserGroupIcon,
+    name: 'Tidbits Hub',
+    description: 'Short step-by-step lessons, one-minute videos and clickable demos that teach a product in minutes.',
+    href: '/home-section/dodao-io/products/tidbitshub',
+    icon: AcademicCapIcon,
   },
 ];
 
@@ -105,20 +67,18 @@ const roboticsAreas: MenuItem[] = [
   ...areas.map((area) => ({ name: area.name, description: area.summary, href: `/robotics/${area.slug}`, icon: areaIcons[area.slug] })),
 ];
 
-const roboticsServices = [
-  {
-    name: 'Simulation Setup',
-    description: 'Gazebo and Isaac Sim worlds, modeled for your exact use case.',
-    href: '/robotics#simulation-setup',
-    icon: BeakerIcon,
-  },
-  {
-    name: 'Synthetic Data',
-    description: 'Labeled images from simulation to train YOLO and other vision models.',
-    href: '/robotics#synthetic-data',
-    icon: EyeIcon,
-  },
-];
+const useCaseIcons: Record<string, MenuItem['icon']> = {
+  'test-tube-pouring': FunnelIcon,
+  'tube-uncapping': ArrowPathIcon,
+  'glass-racking': BeakerIcon,
+};
+
+const useCases: MenuItem[] = allUseCases.map((useCase) => ({
+  name: useCase.name,
+  description: useCase.summary,
+  href: `/robotics/use-cases/${useCase.slug}`,
+  icon: useCaseIcons[useCase.slug] ?? BeakerIcon,
+}));
 
 const aiAgentServices = [
   {
@@ -226,29 +186,17 @@ export default function DoDAOHomeTopNav() {
 
         {/* Desktop menus (CSS-only via hover / focus-within) */}
         <div className="hidden items-center gap-x-2 lg:flex">
-          <DesktopDropdown label="Robotics" panelClassName="w-[40rem]">
-            <div className="grid grid-cols-2 gap-2">
-              <MenuColumn title="Capabilities" items={roboticsAreas} />
-              <div>
-                <MenuColumn title="Services" items={roboticsServices} />
-              </div>
-            </div>
+          <DesktopDropdown label="Robotics" panelClassName="w-[24rem]">
+            <MenuColumn title="Capabilities" items={roboticsAreas} />
+          </DesktopDropdown>
+          <DesktopDropdown label="Use Cases" panelClassName="w-[24rem]">
+            <MenuColumn title="Built end to end, in simulation" items={useCases} />
           </DesktopDropdown>
           <DesktopDropdown label="AI & Web3" panelClassName="w-[40rem]">
             <div className="grid grid-cols-2 gap-2">
               <MenuColumn title="Products" items={products} />
               <MenuColumn title="Services" items={[...aiAgentServices, ...blockchainServices]} />
             </div>
-          </DesktopDropdown>
-          <DesktopDropdown label="Education">
-            {educationAreas.map((item) => (
-              <MenuLink key={item.name} item={item} />
-            ))}
-          </DesktopDropdown>
-          <DesktopDropdown label="Research">
-            {researchAreas.map((item) => (
-              <MenuLink key={item.name} item={item} />
-            ))}
           </DesktopDropdown>
           <a
             href="https://docs.dodao.io"
@@ -277,10 +225,9 @@ export default function DoDAOHomeTopNav() {
             </summary>
             <div className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-border bg-surface px-4 py-6 sm:px-6">
               <div className="space-y-1">
-                <MobileGroup title="Robotics" items={[...roboticsAreas, ...roboticsServices]} />
+                <MobileGroup title="Robotics" items={roboticsAreas} />
+                <MobileGroup title="Use Cases" items={useCases} />
                 <MobileGroup title="AI & Web3" items={aiAndWeb3} />
-                <MobileGroup title="Education" items={educationAreas} />
-                <MobileGroup title="Research" items={researchAreas} />
                 <a
                   href="https://docs.dodao.io"
                   target="_blank"

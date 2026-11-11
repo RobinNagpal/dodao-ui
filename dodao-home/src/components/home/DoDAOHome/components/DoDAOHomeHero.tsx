@@ -97,8 +97,8 @@ export default function DoDAOHomeHero() {
                   <ActionLink href={CONTACT_MAILTO} size="lg">
                     Start a project
                   </ActionLink>
-                  <ActionLink href="#capabilities" size="lg" variant="onColor">
-                    See what we build
+                  <ActionLink href="#use-cases" size="lg" variant="onColor">
+                    See our use cases
                   </ActionLink>
                 </div>
               </div>

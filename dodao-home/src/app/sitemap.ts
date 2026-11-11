@@ -1,4 +1,5 @@
 import { roboticsAreas } from '@/components/robotics-page/areas/roboticsAreas';
+import { useCases } from '@/components/robotics-page/use-cases/useCases';
 import { SITE_URL } from '@/utils/siteConfig';
 import fs from 'fs';
 import type { MetadataRoute } from 'next';
@@ -14,6 +15,7 @@ const APP_DIR = path.join(process.cwd(), 'src', 'app');
  */
 const DYNAMIC_ROUTES: Record<string, string[]> = {
   '/robotics/[area]': roboticsAreas.map((area) => `/robotics/${area.slug}`),
+  '/robotics/use-cases/[slug]': useCases.map((useCase) => `/robotics/use-cases/${useCase.slug}`),
 };
 
 function expandDynamicRoute(route: string): string[] {

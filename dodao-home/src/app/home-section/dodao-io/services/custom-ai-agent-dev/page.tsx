@@ -1,3 +1,4 @@
+import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import CustomAiAgentDev from './custom-ai-agent-dev';
@@ -44,8 +45,11 @@ export const metadata: Metadata = {
 
 export default function CustomAiAgentDevPage() {
   return (
-    <PageWrapper>
-      <CustomAiAgentDev />
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <CustomAiAgentDev />
+      </PageWrapper>
+      <Footer showSiteLinks />
+    </>
   );
 }

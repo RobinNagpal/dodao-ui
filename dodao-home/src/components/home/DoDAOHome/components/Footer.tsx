@@ -1,4 +1,5 @@
 import { roboticsAreas } from '@/components/robotics-page/areas/roboticsAreas';
+import { useCases } from '@/components/robotics-page/use-cases/useCases';
 
 const navigation = {
   social: [
@@ -36,6 +37,10 @@ const siteColumns = [
     ],
   },
   {
+    title: 'Use cases',
+    links: useCases.map((useCase) => ({ name: useCase.name, href: `/robotics/use-cases/${useCase.slug}` })),
+  },
+  {
     title: 'Products',
     links: [
       { name: 'KoalaGains', href: '/home-section/dodao-io/products/koalagains' },
@@ -46,7 +51,7 @@ const siteColumns = [
   {
     title: 'Learn',
     links: [
-      { name: 'Robotics notes', href: 'https://docs.dodao.io' },
+      { name: 'Docs', href: 'https://docs.dodao.io' },
       { name: 'AI Agent Bootcamp', href: '/home-section/dodao-io/education/ai-agent-bootcamp' },
       { name: 'Blockchain Bootcamp', href: '/home-section/dodao-io/education/blockchain-bootcamp' },
       { name: 'Research', href: '/home-section/dodao-io/research/real-world-assets' },
@@ -56,7 +61,7 @@ const siteColumns = [
 
 /**
  * Site footer. `showSiteLinks` adds the dodao.io link columns (logo, robotics,
- * products, learning); without it this is the slim copyright + social bar
+ * use cases, products, learning); without it this is the slim copyright + social bar
  * used by Tidbits Hub.
  */
 export function Footer({ showSiteLinks = false }: { showSiteLinks?: boolean }) {
@@ -67,8 +72,8 @@ export function Footer({ showSiteLinks = false }: { showSiteLinks?: boolean }) {
       </h2>
       <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-8">
         {showSiteLinks && (
-          <div className="grid grid-cols-2 gap-10 py-14 md:grid-cols-4">
-            <div className="col-span-2 md:col-span-1">
+          <div className="grid grid-cols-2 gap-10 py-14 md:grid-cols-3 lg:grid-cols-5">
+            <div className="col-span-2 md:col-span-3 lg:col-span-1">
               <img src="/brand/dodao-logo-dark.svg" alt="DoDAO" className="h-8 w-auto" />
               <p className="mt-4 max-w-xs text-sm leading-6 text-muted">Robotics engineering for manipulation, from simulation to the floor.</p>
               <a href="mailto:info@dodao.com" className="mt-3 inline-block text-sm font-medium text-link hover:underline">

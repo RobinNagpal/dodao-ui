@@ -1,3 +1,4 @@
+import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
 import MaintenanceSupport from './maintenance-support';
@@ -35,8 +36,11 @@ export const metadata: Metadata = {
 
 export default function MaintenanceSupportPage() {
   return (
-    <PageWrapper>
-      <MaintenanceSupport />
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <MaintenanceSupport />
+      </PageWrapper>
+      <Footer showSiteLinks />
+    </>
   );
 }

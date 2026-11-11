@@ -5,13 +5,15 @@ import { Footer } from './components/Footer';
 import HowWeHelp from './components/HowWeHelp';
 import ModelOrCodeMap from './components/ModelOrCodeMap';
 import StartProject from './components/StartProject';
+import UseCases from './components/UseCases';
 import WhatWeBuild from './components/WhatWeBuild';
 
 export default function DoDAOHome() {
   return (
     <div>
-      {/* Robotics first: what we do, how we help, and the model-vs-code call */}
+      {/* Robotics first: what we do, the work that proves it, how we help, and the model-vs-code call */}
       <DoDAOHomeHero />
+      <UseCases />
       <HowWeHelp />
       <ModelOrCodeMap />
 
