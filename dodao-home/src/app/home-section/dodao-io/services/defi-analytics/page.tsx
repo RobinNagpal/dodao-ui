@@ -1,3 +1,4 @@
+import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import DefiAnalytics from './defi-analytics';
 import { Metadata } from 'next';
@@ -48,9 +49,12 @@ export const metadata: Metadata = {
 
 function DefiAnalyticsPage() {
   return (
-    <PageWrapper>
-      <DefiAnalytics />
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <DefiAnalytics />
+      </PageWrapper>
+      <Footer showSiteLinks />
+    </>
   );
 }
 

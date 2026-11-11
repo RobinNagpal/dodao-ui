@@ -82,9 +82,9 @@ const content: ProductPageContent = {
   name: 'Tidbits Hub',
   lead: 'Bite-sized, interactive learning that helps companies educate their customers. Short steps, clickable demos and one-minute videos make complex product knowledge easy to grasp in minutes.',
   highlights: ['Bite-sized tidbits', 'Clickable demos', 'White-labeled sites'],
-  primaryCta: { label: 'Get started', href: 'https://tidbitshub.org/' },
-  secondaryCta: { label: 'See a live demo', href: 'https://alchemix.tidbitshub.org/' },
-  preview: { image: Tidbits, alt: 'Tidbits Hub learning platform preview', url: 'tidbitshub.org' },
+  primaryCta: { label: 'Get started', href: 'mailto:info@dodao.com?subject=Tidbits%20Hub' },
+  secondaryCta: { label: 'Open Tidbits Hub for Alchemix', href: 'https://alchemix.tidbitshub.org/' },
+  preview: { image: Tidbits, alt: 'Tidbits Hub built for Alchemix: lessons on alAssets and the Transmuter', url: 'alchemix.tidbitshub.org' },
   story: {
     title: 'Why we built Tidbits Hub',
     lead: 'Long documents slow onboarding down. Tidbits Hub replaces them with short, focused lessons.',

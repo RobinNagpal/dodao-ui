@@ -14,8 +14,9 @@ resource "aws_cloudfront_origin_access_control" "web" {
   signing_protocol                  = "sigv4"
 }
 
-# Redirects www to the apex and maps clean URLs (/robotics) onto the exported
-# objects (/robotics.html). See functions/viewer-request.js.tftpl.
+# Redirects www to the apex, 301s retired pages (/robotics) to their
+# replacement, and maps clean URLs (/robotics/perception) onto the exported
+# objects (/robotics/perception.html). See functions/viewer-request.js.tftpl.
 resource "aws_cloudfront_function" "viewer_request" {
   name    = "${var.app_name}-viewer-request"
   runtime = "cloudfront-js-2.0"

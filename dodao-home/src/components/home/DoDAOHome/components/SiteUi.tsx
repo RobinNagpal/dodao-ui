@@ -64,3 +64,13 @@ export function SectionIntro({ title, lead, kicker, align = 'left', children }: 
     </div>
   );
 }
+
+/** A list item with a small primary-colored dot, for short lists of facts. */
+export function Bullet({ children }: { children: ReactNode }) {
+  return (
+    <li className="flex gap-3 text-base leading-7 text-body">
+      <span className="mt-[11px] h-1.5 w-1.5 flex-none rounded-full bg-primary" aria-hidden="true" />
+      {children}
+    </li>
+  );
+}

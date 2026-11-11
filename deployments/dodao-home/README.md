@@ -87,7 +87,7 @@ hosted zone.
 
    ```bash
    CF=$(terraform output -raw cloudfront_domain_name)
-   curl -sI --compressed --resolve dodao.io:443:$(dig +short "$CF" | head -1) https://dodao.io/robotics
+   curl -sI --compressed --resolve dodao.io:443:$(dig +short "$CF" | head -1) https://dodao.io/robotics/perception
    ```
 
 6. **DNS cut-over** — point `dodao.io` and `www.dodao.io` at CloudFront. Check the current

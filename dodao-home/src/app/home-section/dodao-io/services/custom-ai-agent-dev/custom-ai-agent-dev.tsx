@@ -291,7 +291,7 @@ function CustomAiAgentDev() {
       </div>
 
       {/* How an AI Agent Works — vertical zigzag timeline */}
-      <div className="relative overflow-hidden bg-surface py-20 sm:py-24">
+      <div className="relative overflow-hidden bg-bg py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-xs uppercase tracking-widest font-semibold text-primary">The seven-stage loop</p>

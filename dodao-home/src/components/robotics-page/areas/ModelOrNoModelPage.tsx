@@ -68,7 +68,7 @@ export default function ModelOrNoModelPage() {
             </span>
             <span className="text-accent">Model or no model</span>
           </nav>
-          <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.04] text-heading sm:text-6xl">Model or no model?</h1>
+          <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.04] text-heading sm:text-6xl">Learned models only where they beat code</h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-body">
             Learned models handle variety but can surprise you. Programmed approaches are predictable but break when something changes. We make the call
             separately for each stage of a task, and we show you the evidence.

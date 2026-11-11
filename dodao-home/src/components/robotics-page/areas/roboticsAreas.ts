@@ -59,10 +59,10 @@ export const roboticsAreas: RoboticsArea[] = [
     lead: 'We model your robot, parts, cameras and cell in the simulator that suits the job. The same world then produces labeled training data and runs the tests every model has to pass before it touches hardware.',
     heroMedia: {
       kind: 'video',
-      src: '/robotics/robotics_video_2.mp4',
+      src: '/robotics/demos/dual-arm-sim-vs-real.mp4',
       alt: 'The same dual-arm motion running in simulation and on the real robot cell, side by side',
     },
-    cardImage: '/robotics/robotics_sim.jpg',
+    cardImage: '/robotics/demos/franka-arm-simulation.jpg',
     capabilities: [
       {
         name: 'Simulation setup and worlds',
@@ -119,10 +119,10 @@ export const roboticsAreas: RoboticsArea[] = [
     lead: 'Cameras, calibration and models that tell the arm where each part is and which way it faces: in clutter, under changing light, and on parts that shine or are see-through.',
     heroMedia: {
       kind: 'video',
-      src: '/robotics/robotics_video_1.mp4',
+      src: '/robotics/demos/synthetic-data-renders.mp4',
       alt: 'Grid of rendered images of a container, each with different lighting, colors and background, used to train a detector',
     },
-    cardImage: '/robotics/clips/lab-vials.jpg',
+    cardImage: '/robotics/stock-footage/lab-vials.jpg',
     capabilities: [
       {
         name: 'Robot perception and vision',
@@ -173,11 +173,11 @@ export const roboticsAreas: RoboticsArea[] = [
     lead: 'Getting a grip on real parts, moving without collisions, and keeping two arms out of each other’s way, within the speed and force limits a shared workspace needs.',
     heroMedia: {
       kind: 'video',
-      src: '/robotics/clips/cluttered-picking.mp4',
-      poster: '/robotics/clips/cluttered-picking.jpg',
+      src: '/robotics/stock-footage/cluttered-picking.mp4',
+      poster: '/robotics/stock-footage/cluttered-picking.jpg',
       alt: 'A robot gripper picking leaves from a cluttered tray',
     },
-    cardImage: '/robotics/stock/pick-and-place.jpg',
+    cardImage: '/robotics/stock-photos/pick-and-place.jpg',
     capabilities: [
       {
         name: 'Grasping solutions',
@@ -244,11 +244,11 @@ export const roboticsAreas: RoboticsArea[] = [
     heroMedia: {
       kind: 'pair',
       items: [
-        { src: '/robotics/sim_robot.png', alt: 'A UR robot arm picking a can in simulation', label: 'Simulation' },
-        { src: '/robotics/real_robot.png', alt: 'The same UR robot arm picking a can on a real table', label: 'Real arm' },
+        { src: '/robotics/demos/ur-arm-pick-simulation.png', alt: 'A UR robot arm picking a can in simulation', label: 'Simulation' },
+        { src: '/robotics/demos/ur-arm-pick-real.png', alt: 'The same UR robot arm picking a can on a real table', label: 'Real arm' },
       ],
     },
-    cardImage: '/robotics/clips/seedling-gripper.jpg',
+    cardImage: '/robotics/stock-footage/seedling-gripper.jpg',
     capabilities: [
       {
         name: 'Learned models for arms',
@@ -311,11 +311,11 @@ export const roboticsAreas: RoboticsArea[] = [
     lead: 'The software that ties robot, sensors and plant systems together, and the arm, gripper, cameras and compute chosen with evidence rather than from a catalogue.',
     heroMedia: {
       kind: 'video',
-      src: '/robotics/clips/factory-arm.mp4',
-      poster: '/robotics/clips/factory-arm.jpg',
+      src: '/robotics/stock-footage/factory-arm.mp4',
+      poster: '/robotics/stock-footage/factory-arm.jpg',
       alt: 'An industrial robot arm working in an automated production cell',
     },
-    cardImage: '/robotics/stock/industrial-cell.jpg',
+    cardImage: '/robotics/stock-photos/industrial-cell.jpg',
     capabilities: [
       {
         name: 'ROS and middleware integration',

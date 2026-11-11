@@ -1,3 +1,4 @@
+import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import SmartContract from './smart-contract';
 import { Metadata } from 'next';
@@ -48,9 +49,12 @@ export const metadata: Metadata = {
 
 function SmartContractPage() {
   return (
-    <PageWrapper>
-      <SmartContract />
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <SmartContract />
+      </PageWrapper>
+      <Footer showSiteLinks />
+    </>
   );
 }
 

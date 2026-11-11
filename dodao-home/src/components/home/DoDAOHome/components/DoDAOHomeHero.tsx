@@ -6,29 +6,29 @@ export const CONTACT_MAILTO = 'mailto:info@dodao.com?subject=Robotics%20project'
 // Placeholder stock footage (Mixkit free licence) until our own cell footage replaces it.
 const clips: HeroClip[] = [
   {
-    src: '/robotics/clips/lab-vials.mp4',
-    poster: '/robotics/clips/lab-vials.jpg',
+    src: '/robotics/stock-footage/lab-vials.mp4',
+    poster: '/robotics/stock-footage/lab-vials.jpg',
     label: 'Lab automation',
     caption: 'Vials placed into racks',
     tag: 'Lab robots that handle fragile glassware',
   },
   {
-    src: '/robotics/clips/cluttered-picking.mp4',
-    poster: '/robotics/clips/cluttered-picking.jpg',
+    src: '/robotics/stock-footage/cluttered-picking.mp4',
+    poster: '/robotics/stock-footage/cluttered-picking.jpg',
     label: 'Picking from clutter',
     caption: 'Soft, mixed items in a tray',
     tag: 'Vision models that find parts in clutter',
   },
   {
-    src: '/robotics/clips/industrial-cell.mp4',
-    poster: '/robotics/clips/industrial-cell.jpg',
+    src: '/robotics/stock-footage/industrial-cell.mp4',
+    poster: '/robotics/stock-footage/industrial-cell.jpg',
     label: 'Industrial cells',
     caption: 'Arms working in a shared cell',
     tag: 'Multi-arm cells planned in simulation first',
   },
   {
-    src: '/robotics/clips/gripper.mp4',
-    poster: '/robotics/clips/gripper.jpg',
+    src: '/robotics/stock-footage/gripper.mp4',
+    poster: '/robotics/stock-footage/gripper.jpg',
     label: 'Grasp design',
     caption: 'Gripper, fingertips and force',
     tag: 'Grippers and grasps matched to your parts',
@@ -97,8 +97,8 @@ export default function DoDAOHomeHero() {
                   <ActionLink href={CONTACT_MAILTO} size="lg">
                     Start a project
                   </ActionLink>
-                  <ActionLink href="#capabilities" size="lg" variant="onColor">
-                    See what we build
+                  <ActionLink href="#use-cases" size="lg" variant="onColor">
+                    See our use cases
                   </ActionLink>
                 </div>
               </div>
