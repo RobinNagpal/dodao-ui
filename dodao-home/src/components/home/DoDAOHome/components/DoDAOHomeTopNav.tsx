@@ -221,7 +221,7 @@ export default function DoDAOHomeTopNav() {
       <nav aria-label="Global" className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
         <a href="/" className="-m-1.5 flex-none p-1.5">
           <span className="sr-only">DoDAO</span>
-          <img alt="DoDAO logo" src="/dodao-logo-dark.svg" className="h-7 w-auto" />
+          <img alt="DoDAO logo" src="/brand/dodao-logo-dark.svg" className="h-7 w-auto" />
         </a>
 
         {/* Desktop menus (CSS-only via hover / focus-within) */}

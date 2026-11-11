@@ -47,8 +47,8 @@ export default function EngagementSteps() {
           <SectionIntro title="How a project runs" lead="Five stages, each ending in something you can review before we move on." />
           <div className="mt-10 overflow-hidden rounded-3xl bg-viewport ring-1 ring-border shadow-[0_30px_80px_-30px_rgb(var(--primary-rgb)/0.6)]">
             <LoopingVideo
-              src="/robotics/clips/factory-arm.mp4"
-              poster="/robotics/clips/factory-arm.jpg"
+              src="/robotics/stock-footage/factory-arm.mp4"
+              poster="/robotics/stock-footage/factory-arm.jpg"
               label="A robot arm working in a production cell"
               className="aspect-[4/3] w-full object-cover"
             />

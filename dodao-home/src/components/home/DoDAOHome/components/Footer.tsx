@@ -69,7 +69,7 @@ export function Footer({ showSiteLinks = false }: { showSiteLinks?: boolean }) {
         {showSiteLinks && (
           <div className="grid grid-cols-2 gap-10 py-14 md:grid-cols-4">
             <div className="col-span-2 md:col-span-1">
-              <img src="/dodao-logo-dark.svg" alt="DoDAO" className="h-8 w-auto" />
+              <img src="/brand/dodao-logo-dark.svg" alt="DoDAO" className="h-8 w-auto" />
               <p className="mt-4 max-w-xs text-sm leading-6 text-muted">Robotics engineering for manipulation, from simulation to the floor.</p>
               <a href="mailto:info@dodao.com" className="mt-3 inline-block text-sm font-medium text-link hover:underline">
                 info@dodao.com

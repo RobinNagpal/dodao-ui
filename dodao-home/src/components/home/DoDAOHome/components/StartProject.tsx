@@ -7,7 +7,12 @@ export default function StartProject() {
     <section id="contact" className="relative isolate scroll-mt-20 overflow-hidden bg-viewport">
       <div className="absolute inset-0 -z-10" aria-hidden="true">
         {/* Placeholder stock footage (Mixkit free licence) */}
-        <LoopingVideo src="/robotics/clips/industrial-cell.mp4" poster="/robotics/clips/industrial-cell.jpg" label="" className="h-full w-full object-cover" />
+        <LoopingVideo
+          src="/robotics/stock-footage/industrial-cell.mp4"
+          poster="/robotics/stock-footage/industrial-cell.jpg"
+          label=""
+          className="h-full w-full object-cover"
+        />
         <div className="absolute inset-0 bg-viewport/80" />
         <div className="absolute inset-0 bg-gradient-to-r from-viewport via-viewport/80 to-primary/30" />
       </div>
