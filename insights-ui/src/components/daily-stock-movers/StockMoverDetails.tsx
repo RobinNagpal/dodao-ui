@@ -1,4 +1,4 @@
-import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
+import { DailyMoverHistoryItem, TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { getCountryByExchange, toExchange } from '@/utils/countryExchangeUtils';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import { parseMarkdown } from '@/util/parse-markdown';
@@ -6,13 +6,16 @@ import { getLoserHeadline } from '@/utils/metadata-generators';
 import Stack from '@/components/ui/containers/Stack';
 import Text from '@/components/ui/Text';
 import Link from 'next/link';
+import NewerMoveBanner from '@/components/daily-stock-movers/NewerMoveBanner';
 
 interface StockMoverDetailsProps {
   mover: TopGainerWithTicker | TopLoserWithTicker;
   type: DailyMoverType;
+  /** Other moves for the same ticker (newest first); a newer one shows a banner above the article. */
+  tickerMoves?: DailyMoverHistoryItem[];
 }
 
-export default function StockMoverDetails({ mover, type }: StockMoverDetailsProps) {
+export default function StockMoverDetails({ mover, type, tickerMoves = [] }: StockMoverDetailsProps) {
   // <body> always carries `.dark`, so `dark:` variants would win in BOTH themes;
   // instead keep the dark-tuned `-400` shade and let the `badge-tone-*` hooks
   // darken it in light mode via `.page-theme-light` (page-theme-light.scss).
@@ -29,6 +32,8 @@ export default function StockMoverDetails({ mover, type }: StockMoverDetailsProp
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <NewerMoveBanner moves={tickerMoves} currentCreatedAt={mover.createdAt} />
+
       {/* Main Article Content */}
       <article className="bg-surface rounded-lg shadow-sm border border-color p-6 md:p-8" itemScope itemType="https://schema.org/NewsArticle">
         {/* Article Header */}

@@ -203,7 +203,7 @@ const MAX_SEO_TITLE_LENGTH = 60;
 // Legal-entity suffixes stripped from company names in loser titles (", Inc.", " Corporation", …).
 const COMPANY_SUFFIX_PATTERN = /,?\s+(inc\.?|incorporated|corp\.?|corporation|company|co\.?|ltd\.?|limited|plc|llc|l\.?p\.?|n\.v\.|s\.a\.|sa|ag|se)$/i;
 
-const shortCompanyName = (name: string): string => {
+export const shortCompanyName = (name: string): string => {
   let short = name.trim();
   while (COMPANY_SUFFIX_PATTERN.test(short)) {
     short = short.replace(COMPANY_SUFFIX_PATTERN, '').trim();
@@ -211,21 +211,34 @@ const shortCompanyName = (name: string): string => {
   return short || name;
 };
 
+/** Fields the code-built mover headlines need; full mover rows and the history items both fit. */
+type MoverHeadlineFields = { name: string; symbol: string; percentageChange: number; createdAt: Date | string; title?: string | null };
+
+/** Move date as shown in headlines and the move history, e.g. "Oct 28, 2026" (UTC, the day the move was recorded). */
+export const formatMoverDate = (createdAt: Date | string): string =>
+  new Date(createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
 /**
  * Loser headline built from stored fields (not the AI title) to match "why is X stock dropping" searches,
  * e.g. "Why Inhibrx Biosciences (INBX) Stock Dropped 23.4% on Oct 28, 2026".
  * Used as the page H1 and JSON-LD headline; `getLoserSeoTitle` is the `<title>` variant.
  */
-export const getLoserHeadline = (mover: TopGainerWithTicker | TopLoserWithTicker, includeDate: boolean = true): string => {
+export const getLoserHeadline = (mover: MoverHeadlineFields, includeDate: boolean = true): string => {
   const pct = Number(Math.abs(mover.percentageChange).toFixed(1));
   const headline = `Why ${shortCompanyName(mover.name)} (${mover.symbol}) Stock Dropped ${pct}%`;
   if (!includeDate) return headline;
-  const date = new Date(mover.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-  return `${headline} on ${date}`;
+  return `${headline} on ${formatMoverDate(mover.createdAt)}`;
+};
+
+/** The H1 of a mover page: the code-built "Why … Dropped" headline for losers, the AI title for gainers. */
+export const getMoverHeadline = (mover: MoverHeadlineFields, type: DailyMoverType): string => {
+  if (type === DailyMoverType.LOSER) return getLoserHeadline(mover);
+  const pct = Number(Math.abs(mover.percentageChange).toFixed(1));
+  return mover.title || `${shortCompanyName(mover.name)} (${mover.symbol}) Stock Rose ${pct}% on ${formatMoverDate(mover.createdAt)}`;
 };
 
 /** Loser `<title>`: the full headline, or without the date when it would be too long for Google. */
-export const getLoserSeoTitle = (mover: TopGainerWithTicker | TopLoserWithTicker): string => {
+export const getLoserSeoTitle = (mover: MoverHeadlineFields): string => {
   const full = getLoserHeadline(mover);
   return full.length <= MAX_SEO_TITLE_LENGTH ? full : getLoserHeadline(mover, false);
 };
