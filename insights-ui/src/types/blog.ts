@@ -8,6 +8,8 @@ export interface BlogInterface {
   seoImage?: string;
   bannerImage?: string;
   author?: string;
+  /** YYYY-MM-DD of the last content revision; used as the modified date (meta, JSON-LD, sitemap lastmod). */
+  updated?: string;
 }
 
 export interface BlogInterfaceWithId extends BlogInterface {

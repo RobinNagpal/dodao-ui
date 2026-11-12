@@ -24,11 +24,12 @@ async function generateBlogUrls(): Promise<SiteMapUrl[]> {
   const posts = await getPostsData();
 
   posts.forEach((post) => {
+    const lastmod = post.updated ?? post.datetime;
     urls.push({
       url: `/blogs/${post.id}`,
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: post.datetime && post.datetime !== 'Unknown Date' ? post.datetime : undefined,
+      lastmod: lastmod && lastmod !== 'Unknown Date' ? lastmod : undefined,
     });
   });
 
