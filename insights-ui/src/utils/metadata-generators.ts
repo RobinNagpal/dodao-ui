@@ -237,6 +237,37 @@ export const getMoverHeadline = (mover: MoverHeadlineFields, type: DailyMoverTyp
   return mover.title || `${shortCompanyName(mover.name)} (${mover.symbol}) Stock Rose ${pct}% on ${formatMoverDate(mover.createdAt)}`;
 };
 
+// Day the v3 daily-movers prompt went live (#1910). Pages generated from then on already get a clean AI
+// description (dated, no "-9.16%"), so only older pages go through `cleanLegacyMoverDescription`.
+const V3_MOVER_PROMPT_START = new Date('2026-10-29T00:00:00Z');
+
+/**
+ * Pre-v3 AI descriptions read "fell -9.16% today": "today" is wrong once the day has passed (most clicks come
+ * days or weeks later) and the minus after "fell" is a double negative. Old rows can't be regenerated, so this
+ * rewrites them at render time: "today" → "on Oct 5, 2026", "today's" → "the", and the sign before a percentage
+ * is dropped. Descriptions of pages created on/after the v3 prompt are returned unchanged.
+ */
+export const cleanLegacyMoverDescription = (description: string, createdAt: Date | string): string => {
+  if (new Date(createdAt) >= V3_MOVER_PROMPT_START) return description;
+  const date = formatMoverDate(createdAt);
+  return description
+    .replace(/(^|[\s(])[-+](\d+(?:\.\d+)?\s?(?:%|percent\b))/gi, '$1$2')
+    .replace(/\btoday['’]s\b/g, 'the')
+    .replace(/\bToday['’]s\b/g, 'The')
+    .replace(/\btoday\b/g, `on ${date}`)
+    .replace(/\bToday\b/g, `On ${date}`);
+};
+
+/** Size of the per-mover share card (`app/og/daily-movers/v1/[type]/[moverId]/route.tsx`). */
+export const MOVER_CARD_SIZE = { width: 1200, height: 630 };
+
+/**
+ * Absolute URL of a mover's share card, used as og:image, twitter:image and the NewsArticle image.
+ * The `v1` path segment is the card design version: when the design changes, move the route to `v2`
+ * so CDN/social caches (which keep a card for years) fetch the new one.
+ */
+export const getMoverCardImageUrl = (type: DailyMoverType, moverId: string): string => `https://koalagains.com/og/daily-movers/v1/${type}/${moverId}`;
+
 /** Loser `<title>`: the full headline, or without the date when it would be too long for Google. */
 export const getLoserSeoTitle = (mover: MoverHeadlineFields): string => {
   const full = getLoserHeadline(mover);
@@ -251,12 +282,15 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
   const absPercentage = Math.abs(mover.percentageChange).toFixed(2);
 
   const title = isGainer ? mover.title || `${mover.name} (${mover.symbol}) - Top ${typeLabel} Analysis` : getLoserSeoTitle(mover);
-  const description =
-    mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`;
+  const description = cleanLegacyMoverDescription(
+    mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`,
+    mover.createdAt
+  );
 
   const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${type}s/details/${moverId}`;
 
   const createdIso = new Date(mover.createdAt).toISOString();
+  const cardImageUrl = getMoverCardImageUrl(type, moverId);
 
   const keywords = [
     mover.name,
@@ -294,7 +328,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       authors: ['KoalaGains'],
       section: 'Stock Market Analysis',
       tags: keywords,
-      images: ['https://koalagains.com/koalagain_logo.png'],
+      images: [{ url: cardImageUrl, ...MOVER_CARD_SIZE, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -302,9 +336,11 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       description,
       site: '@koalagains',
       creator: '@koalagains',
-      images: ['https://koalagains.com/koalagain_logo.png'],
+      images: [cardImageUrl],
     },
     keywords,
+    // Lets Google show the share card as a large image (Discover, Top Stories) instead of a thumbnail.
+    robots: { index: true, follow: true, 'max-image-preview': 'large' },
   };
 };
 
@@ -324,11 +360,13 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: isGainer ? mover.title || `${mover.ticker.name} (${mover.ticker.symbol}) - Top ${typeLabel} Analysis` : getLoserHeadline(mover),
-    description:
+    description: cleanLegacyMoverDescription(
       mover.metaDescription ||
-      mover.oneLineExplanation ||
-      `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}% - Comprehensive analysis and insights`,
-    image: ['https://koalagains.com/koalagain_logo.png'],
+        mover.oneLineExplanation ||
+        `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}% - Comprehensive analysis and insights`,
+      mover.createdAt
+    ),
+    image: [getMoverCardImageUrl(type, moverId)],
     datePublished: mover.createdAt,
     dateModified: mover.createdAt,
     author: {
