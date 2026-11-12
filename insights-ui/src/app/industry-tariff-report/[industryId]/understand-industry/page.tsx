@@ -8,6 +8,12 @@ import { fetchIndustryUnderstandIndustryMetadata } from '@/utils/tariff-reports/
 import { tariffReportTag } from '@/utils/tariff-report-tags';
 import { Metadata } from 'next';
 import { isValidTariffIndustryId } from '@/utils/tariff-reports/tariff-input-validation';
+import { getChapterSlugForOldUrl } from '@/utils/tariff-reports/seeded-chapter-reports';
+import { chapterCoverHref } from '@/utils/tariff-reports/chapter-route-helpers';
+import Stack from '@/components/ui/containers/Stack';
+import NoticeCallout from '@/components/ui/NoticeCallout';
+import Text from '@/components/ui/Text';
+import TextLink from '@/components/ui/TextLink';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: Promise<{ industryId: string }> }): Promise<Metadata> {
@@ -20,10 +26,13 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
   // Malformed / unknown industry: the `[industryId]` layout logs the rejection; 404 silently here.
   if (!isValidTariffIndustryId(industryId)) notFound();
 
-  // Fetch the report data
-  const reportResponse = await fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
-    next: { tags: [tariffReportTag(industryId)] },
-  });
+  // Fetch the report data, and the chapter this legacy industry maps to (for the link to its tariff pages)
+  const [reportResponse, chapterSlug] = await Promise.all([
+    fetch(`${getBaseUrlForServerSidePages()}/api/industry-tariff-reports/${industryId}`, {
+      next: { tags: [tariffReportTag(industryId)] },
+    }),
+    getChapterSlugForOldUrl(industryId),
+  ]);
   let report: IndustryTariffReport | null = null;
 
   if (reportResponse.ok) {
@@ -49,6 +58,18 @@ export default async function UnderstandIndustryPage({ params }: { params: Promi
           </PrivateWrapper>
         </div>
       </div>
+
+      {/* This page is the industry analysis; the chapter pages carry the current tariff rates and import data. */}
+      {chapterSlug && (
+        <Stack mb="lg">
+          <NoticeCallout tone="info">
+            <Text as="span" size="inherit" tone="inherit">
+              Tariff rates and import data for this industry:{' '}
+            </Text>
+            <TextLink href={chapterCoverHref(chapterSlug)}>HS Chapter {chapterSlug.split('-')[0]} →</TextLink>
+          </NoticeCallout>
+        </Stack>
+      )}
 
       {/* SEO Warning Banner for Admins */}
       {isSeoMissing && (
