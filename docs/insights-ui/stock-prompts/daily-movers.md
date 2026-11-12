@@ -1,4 +1,4 @@
-# Daily Movers Prompt (v3)
+# Daily Movers Prompt (v3.1)
 
 Prompt key: `US/public-equities-v1/daily-movers` (space `koala_gains`). Used for both top gainers and top losers on `/daily-top-movers`.
 
@@ -12,6 +12,17 @@ Prompt key: `US/public-equities-v1/daily-movers` (space `koala_gains`). Used for
 - `metaDescription`: the meta and og/twitter description.
 - `oneLineExplanation`: the "Executive Summary" section.
 - `detailedExplanation`: markdown rendered under the H2 "Comprehensive Analysis", so its sections use `###` headings.
+
+## What changed in v3.1 (title only)
+
+Title rules tightened after reviewing the v3 titles. The rest of the prompt is unchanged.
+
+- Ticker in parentheses, never square brackets: "in brackets" was ambiguous, and 12 of 27 v3 gainer titles used "[CROX]".
+- Write the name once when it equals the ticker (no "IREN (IREN)").
+- Add "Stock" after the ticker when it fits in 60 characters (only 5 of 27 v3 titles had it, though people search "X stock").
+- No hype adjectives in the title ("blowout", "big", "major", …).
+
+These are formatting rules for the shared `title` field. They matter most for gainers, where `title` is the H1 and `<title>`. For losers, `title` is only the subheading under the code-built H1, and parentheses there keep it consistent with the H1.
 
 ## What changed from v2
 
@@ -63,7 +74,10 @@ WRITING STYLE
 OUTPUT FIELDS
 
 title (max 60 characters)
-- Include the company name (drop "Inc.", "Corp." etc.) and the ticker in brackets, the direction and the main reason.
+- Include the company name (drop "Inc.", "Corp." etc.), the ticker in parentheses, the direction and the main reason. Use parentheses like "(RKLB)", never square brackets like "[RKLB]".
+- If the company name is the same as the ticker, write it once: "IREN Stock Rises 20% on ...", not "IREN (IREN) ...".
+- Add the word "Stock" after the ticker when the title still fits in 60 characters.
+- No hype adjectives in the title, such as "blowout", "big", "major", "massive" or "huge".
 - Example: "Rocket Lab (RKLB) Stock Rises 12% on New NASA Contract".
 - Do not include the date or the word "today".
 

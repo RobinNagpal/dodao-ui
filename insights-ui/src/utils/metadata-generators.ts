@@ -203,7 +203,7 @@ const MAX_SEO_TITLE_LENGTH = 60;
 // Legal-entity suffixes stripped from company names in loser titles (", Inc.", " Corporation", …).
 const COMPANY_SUFFIX_PATTERN = /,?\s+(inc\.?|incorporated|corp\.?|corporation|company|co\.?|ltd\.?|limited|plc|llc|l\.?p\.?|n\.v\.|s\.a\.|sa|ag|se)$/i;
 
-const shortCompanyName = (name: string): string => {
+export const shortCompanyName = (name: string): string => {
   let short = name.trim();
   while (COMPANY_SUFFIX_PATTERN.test(short)) {
     short = short.replace(COMPANY_SUFFIX_PATTERN, '').trim();
@@ -211,21 +211,65 @@ const shortCompanyName = (name: string): string => {
   return short || name;
 };
 
+/** Fields the code-built mover headlines need; full mover rows and the history items both fit. */
+type MoverHeadlineFields = { name: string; symbol: string; percentageChange: number; createdAt: Date | string; title?: string | null };
+
+/** Move date as shown in headlines and the move history, e.g. "Oct 28, 2026" (UTC, the day the move was recorded). */
+export const formatMoverDate = (createdAt: Date | string): string =>
+  new Date(createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
 /**
  * Loser headline built from stored fields (not the AI title) to match "why is X stock dropping" searches,
  * e.g. "Why Inhibrx Biosciences (INBX) Stock Dropped 23.4% on Oct 28, 2026".
  * Used as the page H1 and JSON-LD headline; `getLoserSeoTitle` is the `<title>` variant.
  */
-export const getLoserHeadline = (mover: TopGainerWithTicker | TopLoserWithTicker, includeDate: boolean = true): string => {
+export const getLoserHeadline = (mover: MoverHeadlineFields, includeDate: boolean = true): string => {
   const pct = Number(Math.abs(mover.percentageChange).toFixed(1));
   const headline = `Why ${shortCompanyName(mover.name)} (${mover.symbol}) Stock Dropped ${pct}%`;
   if (!includeDate) return headline;
-  const date = new Date(mover.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-  return `${headline} on ${date}`;
+  return `${headline} on ${formatMoverDate(mover.createdAt)}`;
 };
 
+/** The H1 of a mover page: the code-built "Why … Dropped" headline for losers, the AI title for gainers. */
+export const getMoverHeadline = (mover: MoverHeadlineFields, type: DailyMoverType): string => {
+  if (type === DailyMoverType.LOSER) return getLoserHeadline(mover);
+  const pct = Number(Math.abs(mover.percentageChange).toFixed(1));
+  return mover.title || `${shortCompanyName(mover.name)} (${mover.symbol}) Stock Rose ${pct}% on ${formatMoverDate(mover.createdAt)}`;
+};
+
+// Day the v3 daily-movers prompt went live (#1910). Pages generated from then on already get a clean AI
+// description (dated, no "-9.16%"), so only older pages go through `cleanLegacyMoverDescription`.
+const V3_MOVER_PROMPT_START = new Date('2026-10-29T00:00:00Z');
+
+/**
+ * Pre-v3 AI descriptions read "fell -9.16% today": "today" is wrong once the day has passed (most clicks come
+ * days or weeks later) and the minus after "fell" is a double negative. Old rows can't be regenerated, so this
+ * rewrites them at render time: "today" → "on Oct 5, 2026", "today's" → "the", and the sign before a percentage
+ * is dropped. Descriptions of pages created on/after the v3 prompt are returned unchanged.
+ */
+export const cleanLegacyMoverDescription = (description: string, createdAt: Date | string): string => {
+  if (new Date(createdAt) >= V3_MOVER_PROMPT_START) return description;
+  const date = formatMoverDate(createdAt);
+  return description
+    .replace(/(^|[\s(])[-+](\d+(?:\.\d+)?\s?(?:%|percent\b))/gi, '$1$2')
+    .replace(/\btoday['’]s\b/g, 'the')
+    .replace(/\bToday['’]s\b/g, 'The')
+    .replace(/\btoday\b/g, `on ${date}`)
+    .replace(/\bToday\b/g, `On ${date}`);
+};
+
+/** Size of the per-mover share card (`app/og/daily-movers/v1/[type]/[moverId]/route.tsx`). */
+export const MOVER_CARD_SIZE = { width: 1200, height: 630 };
+
+/**
+ * Absolute URL of a mover's share card, used as og:image, twitter:image and the NewsArticle image.
+ * The `v1` path segment is the card design version: when the design changes, move the route to `v2`
+ * so CDN/social caches (which keep a card for years) fetch the new one.
+ */
+export const getMoverCardImageUrl = (type: DailyMoverType, moverId: string): string => `https://koalagains.com/og/daily-movers/v1/${type}/${moverId}`;
+
 /** Loser `<title>`: the full headline, or without the date when it would be too long for Google. */
-export const getLoserSeoTitle = (mover: TopGainerWithTicker | TopLoserWithTicker): string => {
+export const getLoserSeoTitle = (mover: MoverHeadlineFields): string => {
   const full = getLoserHeadline(mover);
   return full.length <= MAX_SEO_TITLE_LENGTH ? full : getLoserHeadline(mover, false);
 };
@@ -238,12 +282,15 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
   const absPercentage = Math.abs(mover.percentageChange).toFixed(2);
 
   const title = isGainer ? mover.title || `${mover.name} (${mover.symbol}) - Top ${typeLabel} Analysis` : getLoserSeoTitle(mover);
-  const description =
-    mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`;
+  const description = cleanLegacyMoverDescription(
+    mover.metaDescription || mover.oneLineExplanation || `${mover.name} ${changeVerb} ${absPercentage}% - Comprehensive analysis and insights`,
+    mover.createdAt
+  );
 
   const canonicalUrl = `https://koalagains.com/daily-top-movers/top-${type}s/details/${moverId}`;
 
   const createdIso = new Date(mover.createdAt).toISOString();
+  const cardImageUrl = getMoverCardImageUrl(type, moverId);
 
   const keywords = [
     mover.name,
@@ -281,7 +328,7 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       authors: ['KoalaGains'],
       section: 'Stock Market Analysis',
       tags: keywords,
-      images: ['https://koalagains.com/koalagain_logo.png'],
+      images: [{ url: cardImageUrl, ...MOVER_CARD_SIZE, alt: title }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -289,9 +336,11 @@ export const generateStockMoverMetadata = (mover: TopGainerWithTicker | TopLoser
       description,
       site: '@koalagains',
       creator: '@koalagains',
-      images: ['https://koalagains.com/koalagain_logo.png'],
+      images: [cardImageUrl],
     },
     keywords,
+    // Lets Google show the share card as a large image (Discover, Top Stories) instead of a thumbnail.
+    robots: { index: true, follow: true, 'max-image-preview': 'large' },
   };
 };
 
@@ -311,11 +360,13 @@ export const generateStockMoverArticleSchema = (mover: TopGainerWithTicker | Top
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: isGainer ? mover.title || `${mover.ticker.name} (${mover.ticker.symbol}) - Top ${typeLabel} Analysis` : getLoserHeadline(mover),
-    description:
+    description: cleanLegacyMoverDescription(
       mover.metaDescription ||
-      mover.oneLineExplanation ||
-      `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}% - Comprehensive analysis and insights`,
-    image: ['https://koalagains.com/koalagain_logo.png'],
+        mover.oneLineExplanation ||
+        `${mover.ticker.name} ${isGainer ? 'gained' : 'lost'} ${absPercentage}% - Comprehensive analysis and insights`,
+      mover.createdAt
+    ),
+    image: [getMoverCardImageUrl(type, moverId)],
     datePublished: mover.createdAt,
     dateModified: mover.createdAt,
     author: {
