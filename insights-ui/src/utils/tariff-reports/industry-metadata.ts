@@ -9,11 +9,18 @@ import type { Metadata } from 'next';
 
 const SITE_ORIGIN = 'https://koalagains.com';
 
-// Industry routes still serve content for click-through traffic, but their canonical points at the
-// chapter URL so search engines consolidate ranking on the chapter route. Falls back to the industry
-// URL only when no chapter row maps to the legacy industry slug.
+// Legacy industry sections whose content no longer matches the chapter page, so they are their own
+// canonical. Since the October 2026 chapter migration, the legacy `understand-industry` page is an
+// industry and supply-chain analysis while the chapter's `understand-industry` is import statistics,
+// and Google was already ignoring the canonical to the chapter. These pages stay out of the sitemap.
+const SELF_CANONICAL_SECTIONS: ReadonlySet<string> = new Set(['understand-industry']);
+
+// Industry routes still serve content for click-through traffic. Most sections' canonical points at
+// the chapter URL so search engines consolidate ranking on the chapter route (industry-areas and
+// final-conclusion go further and 308 to it). Falls back to the industry URL when the section is in
+// SELF_CANONICAL_SECTIONS or no chapter row maps to the legacy industry slug.
 async function resolveCanonicalUrl(industryId: string, sectionSlug: string | null): Promise<string> {
-  const chapterSlug = await getChapterSlugForOldUrl(industryId);
+  const chapterSlug = sectionSlug && SELF_CANONICAL_SECTIONS.has(sectionSlug) ? null : await getChapterSlugForOldUrl(industryId);
   if (chapterSlug) {
     const path = sectionSlug ? chapterSectionHref(chapterSlug, sectionSlug) : chapterCoverHref(chapterSlug);
     return `${SITE_ORIGIN}${path}`;
