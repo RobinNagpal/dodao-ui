@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: { params: Promise<{ blogSlug:
         images: ['https://koalagains.com/koalagain_logo.png'],
         type: 'article',
         publishedTime: blogData.datetime,
-        modifiedTime: blogData.datetime,
+        modifiedTime: blogData.updated ?? blogData.datetime,
         authors: [authorName],
         section: blogData.category?.title,
         tags: blogData.seoKeywords,
@@ -110,7 +110,7 @@ export default async function PostPage({ params }: { params: Promise<{ blogSlug:
     description: data.abstract,
     image: ogImageUrl,
     datePublished: data.datetime,
-    dateModified: data.datetime,
+    dateModified: data.updated ?? data.datetime,
     author: data.author ? { '@type': 'Person', name: data.author } : { '@type': 'Organization', name: 'KoalaGains', url: 'https://koalagains.com' },
     publisher: {
       '@type': 'Organization',

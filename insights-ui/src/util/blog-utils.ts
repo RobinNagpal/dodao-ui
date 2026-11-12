@@ -46,6 +46,7 @@ export async function getPostsData(length?: number): Promise<BlogInterfaceWithId
       bannerImage: postMetadata.bannerImage,
       seoKeywords: postMetadata.seoKeywords || [],
       author: postMetadata.author,
+      updated: postMetadata.updated,
     };
   });
 
