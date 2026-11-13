@@ -8,7 +8,7 @@ import {
   extractPerformanceTimestamps,
   fetchPerformanceByExchange,
   getPerformanceOrRedirect,
-  truncateForMeta,
+  fitMetaDescription,
 } from '@/utils/performance-page-utils';
 import { getCountryByExchange, USExchanges, CanadaExchanges, IndiaExchanges, UKExchanges } from '@/utils/countryExchangeUtils';
 import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
@@ -34,14 +34,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let industryName: string = '';
   let createdTime: string;
   let updatedTime: string;
 
   try {
     const data = await fetchPerformanceByExchange(exchange, ticker, DATA_SLUG, CATEGORY);
     companyName = data.ticker?.name ?? companyName;
-    industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
     const timestamps = extractPerformanceTimestamps(data);
     createdTime = timestamps.createdTime;
     updatedTime = timestamps.updatedTime;
@@ -53,11 +51,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   const year = new Date().getFullYear();
 
-  const shortDesc = truncateForMeta(
-    `Detailed historical performance analysis of ${companyName} (${ticker})${
-      industryName ? ` in the ${industryName} industry` : ''
-    }. Evaluate earnings growth, revenue trends, return on equity, and other key historical metrics.`
-  );
+  const firstSentence = `Past performance analysis of ${companyName} (${ticker}).`;
+  const shortDesc = fitMetaDescription(`${firstSentence} Covers earnings growth, revenue trends and return on equity.`, firstSentence);
 
   const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}/${PAGE_SLUG}`;
 

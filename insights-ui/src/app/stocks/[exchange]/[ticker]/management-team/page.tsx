@@ -10,6 +10,7 @@ import { getTickerV1WithMissingReports } from '@/utils/ticker-v1-page-data';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateManagementTeamArticleSchema, generateManagementTeamBreadcrumbSchema } from '@/utils/metadata-generators';
+import { fitMetaDescription } from '@/utils/performance-page-utils';
 import { TickerV1FastResponse } from '@/utils/ticker-v1-model-utils';
 import { parseMarkdown } from '@/util/parse-markdown';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
@@ -26,11 +27,6 @@ import { cache, Suspense } from 'react';
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
-
-function truncateForMeta(text: string, maxLength: number = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
 
 /**
  * Ticker row — the `tickers-v1/exchange/[exchange]/[ticker]` API query, called in-process (no
@@ -94,14 +90,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let industryName: string = '';
   let createdTime: string;
   let updatedTime: string;
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
     companyName = data?.name ?? companyName;
-    industryName = data?.industry?.name || data?.industryKey || '';
     const report = data?.managementTeamReports?.[0];
     const createdAt = report?.createdAt || data?.createdAt || new Date();
     const updatedAt = report?.updatedAt || data?.updatedAt || new Date();
@@ -114,11 +108,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   }
 
   const year = new Date().getFullYear();
-  const shortDesc = truncateForMeta(
-    `Management team experience and alignment analysis for ${companyName} (${ticker})${
-      industryName ? ` in the ${industryName} industry` : ''
-    }. Leadership tenure, insider ownership, compensation alignment, and insider trading activity.`
-  );
+  const firstSentence = `Management team analysis of ${companyName} (${ticker}).`;
+  const shortDesc = fitMetaDescription(`${firstSentence} Covers leadership, insider ownership, CEO pay and insider trading.`, firstSentence);
   const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}/management-team`;
   const keywords: string[] = [
     `${companyName} management team`,
