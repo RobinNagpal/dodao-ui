@@ -3,7 +3,7 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CreateFavouriteEtfRequest, FavouriteEtfResponse, UpdateFavouriteEtfRequest } from '@/types/etf-user';
 import Button from '@dodao/web-core/components/core/buttons/Button';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -121,7 +121,7 @@ export default function AddEditEtfFavouriteModal({
   };
 
   return (
-    <FullPageModal
+    <ThemedFullPageModal
       open={isOpen}
       onClose={onClose}
       title={viewOnly ? `Favourite: ${etfName} (${etfSymbol})` : favouriteEtf ? 'Edit Favourite' : `Add ${etfName} (${etfSymbol}) to Favourites`}
@@ -201,6 +201,6 @@ export default function AddEditEtfFavouriteModal({
         deleteButtonText="Delete Favourite"
         confirmationText="DELETE"
       />
-    </FullPageModal>
+    </ThemedFullPageModal>
   );
 }

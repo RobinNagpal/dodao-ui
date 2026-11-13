@@ -1,6 +1,6 @@
 'use client';
 
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import { UserTickerTagResponse, CreateUserTickerTagRequest, UpdateUserTickerTagRequest } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -124,7 +124,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
 
   return (
     <>
-      <FullPageModal open={isOpen} onClose={onClose} title="Manage Tags" className="w-full max-w-2xl">
+      <ThemedFullPageModal open={isOpen} onClose={onClose} title="Manage Tags" className="w-full max-w-2xl">
         <div className="p-4 space-y-4 text-left">
           {/* Create New Tag Form - Only show when showAddForm is true */}
           {showAddForm && (
@@ -259,7 +259,7 @@ export default function ManageTagsModal({ isOpen, onClose, tags, onTagsChange }:
             </div>
           </div>
         </div>
-      </FullPageModal>
+      </ThemedFullPageModal>
 
       <ConfirmationModal
         open={showDeleteConfirm}

@@ -1,6 +1,6 @@
 'use client';
 
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import { UserListResponse, CreateUserListRequest, UpdateUserListRequest } from '@/types/ticker-user';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -115,7 +115,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
 
   return (
     <>
-      <FullPageModal open={isOpen} onClose={onClose} title="Manage Lists" className="w-full max-w-2xl">
+      <ThemedFullPageModal open={isOpen} onClose={onClose} title="Manage Lists" className="w-full max-w-2xl">
         <div className="p-4 space-y-4 text-left">
           {/* Create New List Form - Only show when showAddForm is true */}
           {showAddForm && (
@@ -229,7 +229,7 @@ export default function ManageListsModal({ isOpen, onClose, lists, onListsChange
             </div>
           </div>
         </div>
-      </FullPageModal>
+      </ThemedFullPageModal>
 
       <ConfirmationModal
         open={showDeleteConfirm}

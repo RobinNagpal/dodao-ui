@@ -1,6 +1,7 @@
 'use client';
 
 import { PageThemeContext, type PageTheme } from '@/components/theme/page-theme-context';
+import { portalThemeLightCss } from '@/components/theme/use-portal-theme';
 import { lightThemeColors, themeColors } from '@/util/theme-colors';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
@@ -73,6 +74,14 @@ export default function ThemeProvider({ children }: { children: ReactNode }): JS
   };
 
   const isDark = theme === 'dark';
+
+  // Keep <body>'s own background in step with the theme. The wrapper below paints the light page
+  // over it, but Chrome picks the page scrollbar's colors (and paints the overscroll area) from
+  // <body>'s background — left dark, the light page gets a dark scrollbar.
+  useEffect(() => {
+    document.body.style.backgroundColor = isDark ? 'var(--bg-color)' : (lightThemeColors as Record<string, string>)['--bg-color'];
+  }, [isDark]);
+
   const paletteStyle: CSSProperties = {
     ...(isDark ? themeColors : lightThemeColors),
     backgroundColor: 'var(--bg-color)',
@@ -89,6 +98,8 @@ export default function ThemeProvider({ children }: { children: ReactNode }): JS
   // `dark:` variants can't be used here because <body> always carries `.dark`.
   return (
     <PageThemeContext.Provider value={theme}>
+      {/* Light-palette class for portaled modals/menus (see `usePortalTheme`); inert until a portal opts in. */}
+      <style dangerouslySetInnerHTML={{ __html: portalThemeLightCss }} />
       <div style={paletteStyle} className={`text-color min-h-screen ${isDark ? '' : 'page-theme-light'}`}>
         {children}
 

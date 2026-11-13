@@ -4,6 +4,7 @@ import { EMPTY_ETF_GROUPS_INDEX, fetchEtfGroupsIndex } from '@/utils/etf-listing
 import { groupsIndexRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfListingBreadcrumbJsonLd, generateEtfListingJsonLd, generateEtfListingMetadata } from '@/utils/etf-metadata-generators';
 import type { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,16 +16,19 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function EtfsPage() {
   const data = (await fetchEtfGroupsIndex(SupportedCountries.US)) ?? EMPTY_ETF_GROUPS_INDEX;
   return (
-    <EtfGroupsIndex
-      country={SupportedCountries.US}
-      data={data}
-      title="US ETFs"
-      headSlot={
-        <>
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />
-          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingBreadcrumbJsonLd()) }} />
-        </>
-      }
-    />
+    <>
+      <EtfGroupsIndex
+        country={SupportedCountries.US}
+        data={data}
+        title="US ETFs"
+        headSlot={
+          <>
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingJsonLd()) }} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfListingBreadcrumbJsonLd()) }} />
+          </>
+        }
+      />
+      <SiteFooter />
+    </>
   );
 }

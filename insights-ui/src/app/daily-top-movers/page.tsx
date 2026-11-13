@@ -7,6 +7,7 @@ import { getCachedDailyMoverAvailableDates, getCachedDailyMovers } from '@/utils
 import { generateDailyMoversOverviewBreadcrumbSchema, generateDailyMoversOverviewMetadata } from '@/utils/metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 const COUNTRY = 'US';
 const DAYS_TO_SHOW = 5;
@@ -44,18 +45,21 @@ export default async function DailyTopMoversPage() {
   const breadcrumbs = [{ name: `Top Gainers & Losers in ${COUNTRY}`, href: '/daily-top-movers', current: true }];
 
   return (
-    <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+    <>
+      <PageWrapper>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
 
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
-        }}
-      />
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
 
-      <DailyMoversOverview country={COUNTRY} gainersByDate={gainersByDate} losersByDate={losersByDate} />
-    </PageWrapper>
+        <DailyMoversOverview country={COUNTRY} gainersByDate={gainersByDate} losersByDate={losersByDate} />
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }

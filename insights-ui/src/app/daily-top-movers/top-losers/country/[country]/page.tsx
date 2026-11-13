@@ -7,6 +7,7 @@ import { getCachedDailyMoverAvailableDates, getCachedDailyMovers } from '@/utils
 import { generateCountryMoversBreadcrumbSchema, generateDailyMoversListMetadata } from '@/utils/metadata-generators';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 interface PageProps {
   params: Promise<{ country: string }>;
@@ -34,18 +35,21 @@ export default async function DailyTopLosersPage({ params }: PageProps) {
   ];
 
   return (
-    <PageWrapper>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+    <>
+      <PageWrapper>
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
 
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema),
-        }}
-      />
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema),
+          }}
+        />
 
-      <StockMoversTable movers={topLosers} type={DailyMoverType.LOSER} country={country} availableDates={availableDates} />
-    </PageWrapper>
+        <StockMoversTable movers={topLosers} type={DailyMoverType.LOSER} country={country} availableDates={availableDates} />
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }

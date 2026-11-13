@@ -9,6 +9,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Calculator, ChevronRight, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -70,81 +71,84 @@ export default async function HtsCodesIndexPage() {
   ];
 
   return (
-    <PageWrapper>
-      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
-      <div className="text-color">
-        <header className="mb-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">HTS Code Sections &amp; Chapters</h1>
-            <ToolPills
-              links={[
-                {
-                  href: '/tariff-reports',
-                  label: 'Tariff Reports',
-                  description: 'Industry tariff-impact analysis tied to these HTS chapters: rate changes, country breakdowns, and outlook.',
-                  icon: <FileText className="h-4 w-4" />,
-                  tone: 'indigo',
-                },
-                {
-                  href: '/tariff-calculator',
-                  label: 'Tariff Calculator',
-                  description: 'Once you have the right HTS code, plug it in to estimate the full landed duty cost.',
-                  icon: <Calculator className="h-4 w-4" />,
-                  tone: 'emerald',
-                },
-              ]}
-            />
-          </div>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            The Harmonized Tariff Schedule of the United States (HTSUS) groups every imported good into 22 sections, each split into chapters. Pick a chapter to
-            view its full HTS code list with duty rates, units of measure, and official notes.
-          </p>
-        </header>
+    <>
+      <PageWrapper>
+        <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
+        <div className="text-color">
+          <header className="mb-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">HTS Code Sections &amp; Chapters</h1>
+              <ToolPills
+                links={[
+                  {
+                    href: '/tariff-reports',
+                    label: 'Tariff Reports',
+                    description: 'Industry tariff-impact analysis tied to these HTS chapters: rate changes, country breakdowns, and outlook.',
+                    icon: <FileText className="h-4 w-4" />,
+                    tone: 'indigo',
+                  },
+                  {
+                    href: '/tariff-calculator',
+                    label: 'Tariff Calculator',
+                    description: 'Once you have the right HTS code, plug it in to estimate the full landed duty cost.',
+                    icon: <Calculator className="h-4 w-4" />,
+                    tone: 'emerald',
+                  },
+                ]}
+              />
+            </div>
+            <p className="mt-3 max-w-3xl text-muted-foreground">
+              The Harmonized Tariff Schedule of the United States (HTSUS) groups every imported good into 22 sections, each split into chapters. Pick a chapter
+              to view its full HTS code list with duty rates, units of measure, and official notes.
+            </p>
+          </header>
 
-        {sections.length === 0 ? (
-          <div className="text-center py-16 background-color rounded-lg border border-color">
-            <h2 className="text-lg font-medium">No HTS sections available yet</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Check back soon — the section and chapter index will appear here once it&apos;s loaded.</p>
-          </div>
-        ) : (
-          <div className="space-y-10">
-            {sections.map((section) => {
-              const range = chapterRange(section.chapters);
-              return (
-                <section key={section.id}>
-                  <div className="border-b border-color pb-2 mb-4">
-                    <h2 className="text-xl font-semibold text-primary">
-                      <span className="font-mono tabular-nums mr-3">Section {section.romanNumeral}</span>
-                      {section.title}
-                    </h2>
-                    {range && <p className="mt-1 text-sm text-muted-foreground">{range}</p>}
-                  </div>
-                  {section.chapters.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No chapters loaded for this section yet.</p>
-                  ) : (
-                    <ul className="space-y-2">
-                      {section.chapters.map((chapter) => (
-                        <li key={chapter.id}>
-                          <Link
-                            href={chapterDetailHref(section.number, chapter.number, chapter.title)}
-                            className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary hover:bg-block-bg-color hover:shadow-md"
-                          >
-                            <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0 group-hover:text-primary">
-                              {chapter.number.toString().padStart(2, '0')}
-                            </span>
-                            <span className="font-medium flex-1 group-hover:text-primary">{chapter.title}</span>
-                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-primary" />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </PageWrapper>
+          {sections.length === 0 ? (
+            <div className="text-center py-16 background-color rounded-lg border border-color">
+              <h2 className="text-lg font-medium">No HTS sections available yet</h2>
+              <p className="mt-2 text-sm text-muted-foreground">Check back soon — the section and chapter index will appear here once it&apos;s loaded.</p>
+            </div>
+          ) : (
+            <div className="space-y-10">
+              {sections.map((section) => {
+                const range = chapterRange(section.chapters);
+                return (
+                  <section key={section.id}>
+                    <div className="border-b border-color pb-2 mb-4">
+                      <h2 className="text-xl font-semibold text-primary">
+                        <span className="font-mono tabular-nums mr-3">Section {section.romanNumeral}</span>
+                        {section.title}
+                      </h2>
+                      {range && <p className="mt-1 text-sm text-muted-foreground">{range}</p>}
+                    </div>
+                    {section.chapters.length === 0 ? (
+                      <p className="text-sm text-muted-foreground">No chapters loaded for this section yet.</p>
+                    ) : (
+                      <ul className="space-y-2">
+                        {section.chapters.map((chapter) => (
+                          <li key={chapter.id}>
+                            <Link
+                              href={chapterDetailHref(section.number, chapter.number, chapter.title)}
+                              className="group flex items-center gap-3 rounded-lg border border-color background-color px-4 py-3 transition hover:border-primary hover:bg-block-bg-color hover:shadow-md"
+                            >
+                              <span className="font-mono text-sm text-muted-foreground tabular-nums w-8 shrink-0 group-hover:text-primary">
+                                {chapter.number.toString().padStart(2, '0')}
+                              </span>
+                              <span className="font-medium flex-1 group-hover:text-primary">{chapter.title}</span>
+                              <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-primary" />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }

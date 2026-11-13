@@ -17,6 +17,7 @@ import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/B
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Calculator, FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 async function fetchTariffReportsListing(): Promise<TariffReportListingItem[]> {
   const url = `${getBaseUrlForServerSidePages()}/api/tariff-reports/listing`;
@@ -192,70 +193,73 @@ export default async function TariffReportsPage() {
   ];
 
   return (
-    <PageWrapper>
-      <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
+    <>
+      <PageWrapper>
+        <BreadcrumbsWithJsonLd breadcrumbs={breadcrumbs} />
 
-      <div className="text-color">
-        <header className="mb-10">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
-            <div className="flex flex-wrap items-center gap-2">
-              <ToolPills
-                links={[
-                  {
-                    href: '/tariff-calculator',
-                    label: 'Tariff Calculator',
-                    description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
-                    icon: <Calculator className="h-4 w-4" />,
-                    tone: 'indigo',
-                  },
-                  {
-                    href: '/hts-codes',
-                    label: 'HTS Code Browser',
-                    description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
-                    icon: <ListTree className="h-4 w-4" />,
-                    tone: 'emerald',
-                  },
-                ]}
-              />
-              <TariffReportsPageActions />
+        <div className="text-color">
+          <header className="mb-10">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Tariff Reports by HTS Chapter</h1>
+              <div className="flex flex-wrap items-center gap-2">
+                <ToolPills
+                  links={[
+                    {
+                      href: '/tariff-calculator',
+                      label: 'Tariff Calculator',
+                      description: 'Estimate US import duty: base HTS rate plus Section 232, 301, IEEPA, and processing fees.',
+                      icon: <Calculator className="h-4 w-4" />,
+                      tone: 'indigo',
+                    },
+                    {
+                      href: '/hts-codes',
+                      label: 'HTS Code Browser',
+                      description: 'Browse every HTSUS section and chapter to find the code you need before you calculate.',
+                      icon: <ListTree className="h-4 w-4" />,
+                      tone: 'emerald',
+                    },
+                  ]}
+                />
+                <TariffReportsPageActions />
+              </div>
             </div>
-          </div>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            Every chapter report covers{' '}
-            <Text as="span" weight="semibold" tone="white">
-              U.S. imports
-            </Text>
-            : what the U.S. charges on that chapter&apos;s goods coming in — today&apos;s rates, recent changes, rates by country of origin and ways to lower
-            the duty. A growing number of chapters also have a{' '}
-            <Text as="span" weight="semibold" tone="white">
-              U.S. exports
-            </Text>{' '}
-            report: the reverse direction, covering what other countries charge on those same goods when U.S. companies sell them abroad. Look for the
-            &quot;Also has a U.S. exports report&quot; filter below, or the{' '}
-            <Text as="span" weight="medium" tone="white">
-              U.S. imports
-            </Text>{' '}
-            /{' '}
-            <Text as="span" weight="medium" tone="white">
-              U.S. exports
-            </Text>{' '}
-            link groups on a chapter&apos;s row. Search by chapter number or product, or browse by section below.
-          </p>
-        </header>
+            <p className="mt-3 max-w-3xl text-muted-foreground">
+              Every chapter report covers{' '}
+              <Text as="span" weight="semibold" tone="white">
+                U.S. imports
+              </Text>
+              : what the U.S. charges on that chapter&apos;s goods coming in — today&apos;s rates, recent changes, rates by country of origin and ways to lower
+              the duty. A growing number of chapters also have a{' '}
+              <Text as="span" weight="semibold" tone="white">
+                U.S. exports
+              </Text>{' '}
+              report: the reverse direction, covering what other countries charge on those same goods when U.S. companies sell them abroad. Look for the
+              &quot;Also has a U.S. exports report&quot; filter below, or the{' '}
+              <Text as="span" weight="medium" tone="white">
+                U.S. imports
+              </Text>{' '}
+              /{' '}
+              <Text as="span" weight="medium" tone="white">
+                U.S. exports
+              </Text>{' '}
+              link groups on a chapter&apos;s row. Search by chapter number or product, or browse by section below.
+            </p>
+          </header>
 
-        {rows.length === 0 ? (
-          <div className="rounded-2xl border border-border bg-bg py-12 text-center">
-            <FileText className="mx-auto h-12 w-12 text-muted" />
-            <h3 className="mt-4 text-lg font-medium text-heading">No tariff reports available</h3>
-            <p className="mt-2 text-sm text-muted">Tariff reports will appear here once they are created.</p>
-          </div>
-        ) : (
-          <section className="mb-14">
-            <TariffChapterList groups={groupChapters(rows, sections, approach2Cards)} />
-          </section>
-        )}
-      </div>
-    </PageWrapper>
+          {rows.length === 0 ? (
+            <div className="rounded-2xl border border-border bg-bg py-12 text-center">
+              <FileText className="mx-auto h-12 w-12 text-muted" />
+              <h3 className="mt-4 text-lg font-medium text-heading">No tariff reports available</h3>
+              <p className="mt-2 text-sm text-muted">Tariff reports will appear here once they are created.</p>
+            </div>
+          ) : (
+            <section className="mb-14">
+              <TariffChapterList groups={groupChapters(rows, sections, approach2Cards)} />
+            </section>
+          )}
+        </div>
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }
