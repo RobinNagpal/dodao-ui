@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { usePortalTheme } from '@/components/theme/use-portal-theme';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ArrowsUpDownIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon, CheckIcon } from '@heroicons/react/20/solid';
 import {
@@ -19,6 +20,8 @@ export default function EtfSortButton(): JSX.Element {
   const pathname = usePathname();
 
   const applied = getAppliedEtfSort(searchParams);
+  // The menu is portaled to <body>, outside the themed wrapper, so apply the palette to it directly.
+  const portalThemeClass = usePortalTheme();
 
   const navigate = (field: EtfSortField | null, order: EtfSortOrder): void => {
     const nextParams = applyEtfSortToParams(searchParams, field, order);
@@ -57,7 +60,7 @@ export default function EtfSortButton(): JSX.Element {
       <MenuItems
         portal={true}
         anchor={{ to: 'bottom end', gap: 8 }}
-        className="z-30 w-60 rounded-lg bg-surface border border-border shadow-xl focus:outline-none p-2"
+        className={`z-30 w-60 rounded-lg bg-surface border border-border shadow-xl focus:outline-none p-2 ${portalThemeClass}`}
       >
         <div className="px-2 py-1.5 text-muted text-[11px] font-semibold uppercase tracking-wider">Sort by</div>
         {ETF_SORT_FIELD_DEFS.map((def) => {

@@ -12,7 +12,7 @@ import { CreateTickerNoteRequest } from '@/app/api/[spaceId]/users/ticker-notes/
 import { UpdateTickerNoteRequest } from '@/app/api/[spaceId]/users/ticker-notes/[noteId]/route';
 import { TickerV1Notes } from '@prisma/client';
 import DeleteConfirmationModal from '@/app/admin-v1/industry-management/DeleteConfirmationModal';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import MarkdownEditor from '@/components/Markdown/MarkdownEditor';
 import { parseMarkdown } from '@/util/parse-markdown';
 
@@ -126,7 +126,7 @@ export default function AddEditNotesModal({
   };
 
   return (
-    <FullPageModal
+    <ThemedFullPageModal
       open={isOpen}
       onClose={onClose}
       title={viewOnly ? `Notes for ${tickerName} (${tickerSymbol})` : existingNote ? 'Edit Note' : `Add Note for ${tickerName} (${tickerSymbol})`}
@@ -220,6 +220,6 @@ export default function AddEditNotesModal({
         deleteButtonText="Delete Note"
         confirmationText="DELETE"
       />
-    </FullPageModal>
+    </ThemedFullPageModal>
   );
 }

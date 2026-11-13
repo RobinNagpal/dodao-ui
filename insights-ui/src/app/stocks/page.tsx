@@ -4,6 +4,7 @@ import { IndustriesResponse } from '@/types/api/ticker-industries';
 import { SupportedCountries } from '@/utils/countryExchangeUtils';
 import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { getCachedCountryIndustries } from '@/utils/stocks-data-utils';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,12 +20,15 @@ export default async function StocksPage() {
   const data: IndustriesResponse = await getCachedCountryIndustries(SupportedCountries.US, WEEK);
 
   return (
-    <IndustryWithStocksPageLayout
-      title="US Stocks by Industry"
-      description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
-      currentCountry="US"
-    >
-      <CompactSubIndustriesGrid data={data} />
-    </IndustryWithStocksPageLayout>
+    <>
+      <IndustryWithStocksPageLayout
+        title="US Stocks by Industry"
+        description="Explore US stocks across NASDAQ, NYSE, and AMEX exchanges organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis."
+        currentCountry="US"
+      >
+        <CompactSubIndustriesGrid data={data} />
+      </IndustryWithStocksPageLayout>
+      <SiteFooter />
+    </>
   );
 }

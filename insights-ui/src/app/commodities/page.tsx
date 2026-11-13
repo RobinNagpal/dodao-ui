@@ -9,6 +9,7 @@ import { fetchCommodityListing } from '@/utils/commodity-analysis-reports/commod
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,28 +27,31 @@ export default async function CommoditiesIndexPage(): Promise<JSX.Element> {
   const breadcrumbs: BreadcrumbsOjbect[] = [{ name: 'Commodities', href: '/commodities', current: true }];
 
   return (
-    <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingBreadcrumbJsonLd()) }} />
+    <>
+      <PageWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateCommodityListingBreadcrumbJsonLd()) }} />
 
-      <div className="overflow-x-auto">
-        <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
-      </div>
-
-      <div className="w-full mb-8">
-        <h1 className="text-2xl font-bold text-heading mb-4">Commodities</h1>
-        <p className="text-body text-md mb-4">{COMMODITIES_DESCRIPTION}</p>
-      </div>
-
-      {commodities.length === 0 ? (
-        <p className="text-muted">No commodities are available yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 items-start">
-          {groups.map((group) => (
-            <CommodityGroupCard key={group} group={group} commodities={commodities.filter((c) => c.commodityGroup === group)} />
-          ))}
+        <div className="overflow-x-auto">
+          <Breadcrumbs breadcrumbs={breadcrumbs} hideHomeIcon={true} mobileBackOnly={true} />
         </div>
-      )}
-    </PageWrapper>
+
+        <div className="w-full mb-8">
+          <h1 className="text-2xl font-bold text-heading mb-4">Commodities</h1>
+          <p className="text-body text-md mb-4">{COMMODITIES_DESCRIPTION}</p>
+        </div>
+
+        {commodities.length === 0 ? (
+          <p className="text-muted">No commodities are available yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 items-start">
+            {groups.map((group) => (
+              <CommodityGroupCard key={group} group={group} commodities={commodities.filter((c) => c.commodityGroup === group)} />
+            ))}
+          </div>
+        )}
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }

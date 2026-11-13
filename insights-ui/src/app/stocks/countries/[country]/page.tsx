@@ -8,6 +8,7 @@ import { generateCountryStocksMetadata } from '@/utils/metadata-generators';
 import { parseStockCountryParam, resolveStockCountryParam } from '@/utils/stock-country-route-utils';
 import { getCachedCountryIndustries } from '@/utils/stocks-data-utils';
 import type { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export async function generateMetadata(props: { params: Promise<{ country: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -50,23 +51,29 @@ export default async function CountryStocksPage({ params: paramsPromise }: PageP
     );
 
     return (
-      <IndustryWithStocksPageLayout
-        title={`${country} Stocks`}
-        description={`Explore top 100 performing ${country} stocks with detailed financial reports and AI-driven analysis.`}
-        currentCountry={country}
-      >
-        <AllStocksGridForCountry stocks={allStocks} countryName={country} />
-      </IndustryWithStocksPageLayout>
+      <>
+        <IndustryWithStocksPageLayout
+          title={`${country} Stocks`}
+          description={`Explore top 100 performing ${country} stocks with detailed financial reports and AI-driven analysis.`}
+          currentCountry={country}
+        >
+          <AllStocksGridForCountry stocks={allStocks} countryName={country} />
+        </IndustryWithStocksPageLayout>
+        <SiteFooter />
+      </>
     );
   }
 
   return (
-    <IndustryWithStocksPageLayout
-      title={`${country} Stocks by Industry`}
-      description={`Explore ${country} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
-      currentCountry={country}
-    >
-      <CountryIndustriesGrid data={data} countryName={country} />
-    </IndustryWithStocksPageLayout>
+    <>
+      <IndustryWithStocksPageLayout
+        title={`${country} Stocks by Industry`}
+        description={`Explore ${country} stocks organized by industry. View top-performing companies in each sector with detailed financial reports and AI-driven analysis.`}
+        currentCountry={country}
+      >
+        <CountryIndustriesGrid data={data} countryName={country} />
+      </IndustryWithStocksPageLayout>
+      <SiteFooter />
+    </>
   );
 }

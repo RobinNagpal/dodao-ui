@@ -4,6 +4,7 @@ import { EMPTY_ETF_GROUPS_INDEX, fetchEtfGroupsIndex } from '@/utils/etf-listing
 import { groupsIndexRobots } from '@/utils/etf-listing-noindex';
 import { generateEtfCountryListingBreadcrumbJsonLd, generateEtfCountryListingMetadata } from '@/utils/etf-metadata-generators';
 import type { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,10 +24,15 @@ export default async function CountryEtfsPage({ params }: PageProps) {
   const decoded = resolveEtfCountryParam(country, '/etfs');
   const data = (await fetchEtfGroupsIndex(decoded)) ?? EMPTY_ETF_GROUPS_INDEX;
   return (
-    <EtfGroupsIndex
-      country={decoded}
-      data={data}
-      headSlot={<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfCountryListingBreadcrumbJsonLd(decoded)) }} />}
-    />
+    <>
+      <EtfGroupsIndex
+        country={decoded}
+        data={data}
+        headSlot={
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfCountryListingBreadcrumbJsonLd(decoded)) }} />
+        }
+      />
+      <SiteFooter />
+    </>
   );
 }

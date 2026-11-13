@@ -13,6 +13,7 @@ import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { PopoverGroup } from '@headlessui/react';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import KoalaGainsLogo from '@/components/ui/KoalaGainsLogo';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
@@ -88,7 +89,7 @@ export default function TopNav() {
 
               {/* Mobile: app icon, Desktop: full logo */}
               <Image alt="KoalaGains icon" src="/images/android-icon-512x512.png" className="h-8 w-auto sm:hidden" width={32} height={32} />
-              <Image alt="KoalaGains logo" src="/koalagain_logo.png" className="hidden sm:block h-8 w-auto" width={160} height={32} />
+              <KoalaGainsLogo className="hidden sm:block" />
             </Link>
             {/* Search only where the main nav links are hidden, so the two never collide. */}
             {(isStocksRoute || isEtfsRoute) && (

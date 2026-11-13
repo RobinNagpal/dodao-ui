@@ -7,6 +7,7 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { FileText, ListTree } from 'lucide-react';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const dynamic = 'force-dynamic';
 
@@ -67,44 +68,47 @@ const JSON_LD = {
 
 export default function TariffCalculatorPage() {
   return (
-    <PageWrapper>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
-      <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
+    <>
+      <PageWrapper>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
+        <BreadcrumbsWithJsonLd breadcrumbs={BREADCRUMBS} />
 
-      <CalculatorThemeScope>
-        <header className="mb-8">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">US Tariff &amp; Duty Calculator</h1>
-            <ToolPills
-              links={[
-                {
-                  href: '/hts-codes',
-                  label: 'HTS Code Browser',
-                  description: 'Open the full HTSUS section + chapter catalog to confirm the exact code for what you ship.',
-                  icon: <ListTree className="h-4 w-4" />,
-                  tone: 'emerald',
-                },
-                {
-                  href: '/tariff-reports',
-                  label: 'Tariff Reports',
-                  description: 'Industry-level tariff impact analysis — context behind the rates this calculator returns.',
-                  icon: <FileText className="h-4 w-4" />,
-                  tone: 'indigo',
-                },
-              ]}
-            />
-          </div>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            Search for what you ship and see what it costs to bring into the US. We add the base rate plus Section 232 and Section 301 duties, and the usual
-            port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
-          </p>
-        </header>
+        <CalculatorThemeScope>
+          <header className="mb-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">US Tariff &amp; Duty Calculator</h1>
+              <ToolPills
+                links={[
+                  {
+                    href: '/hts-codes',
+                    label: 'HTS Code Browser',
+                    description: 'Open the full HTSUS section + chapter catalog to confirm the exact code for what you ship.',
+                    icon: <ListTree className="h-4 w-4" />,
+                    tone: 'emerald',
+                  },
+                  {
+                    href: '/tariff-reports',
+                    label: 'Tariff Reports',
+                    description: 'Industry-level tariff impact analysis — context behind the rates this calculator returns.',
+                    icon: <FileText className="h-4 w-4" />,
+                    tone: 'indigo',
+                  },
+                ]}
+              />
+            </div>
+            <p className="mt-3 max-w-3xl text-muted-foreground">
+              Search for what you ship and see what it costs to bring into the US. We add the base rate plus Section 232 and Section 301 duties, and the usual
+              port and processing fees. Pick the country you ship from and the date your goods arrive to get the final cost.
+            </p>
+          </header>
 
-        {/* CalculatorClient reads ?hts=&country=&value=&qty= deep-link params via useSearchParams. */}
-        <Suspense fallback={null}>
-          <CalculatorClient />
-        </Suspense>
-      </CalculatorThemeScope>
-    </PageWrapper>
+          {/* CalculatorClient reads ?hts=&country=&value=&qty= deep-link params via useSearchParams. */}
+          <Suspense fallback={null}>
+            <CalculatorClient />
+          </Suspense>
+        </CalculatorThemeScope>
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }
