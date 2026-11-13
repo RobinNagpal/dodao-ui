@@ -83,7 +83,7 @@ export default function SiteFooter(): React.JSX.Element {
               <KoalaGainsLogo />
             </Link>
             <p className="max-w-xs text-sm leading-6 text-muted">
-              AI-powered investment research on stocks, ETFs, commodities and US tariffs — clear scores and plain-English analysis.
+              AI-powered investment research on stocks, ETFs, commodities and US tariffs, with clear scores and plain-English analysis.
             </p>
             <div className="flex gap-5">
               {socialLinks.map((item) => (
@@ -125,7 +125,7 @@ export default function SiteFooter(): React.JSX.Element {
           <p>
             Copyright &copy; {new Date().getFullYear()} <span className="font-semibold text-heading">KoalaGains.com</span>. All rights reserved.
           </p>
-          <p className="md:text-right">AI-generated research for informational purposes only — not financial advice.</p>
+          <p className="md:text-right">AI-generated research for informational purposes only. Not financial advice.</p>
         </div>
       </div>
     </footer>
