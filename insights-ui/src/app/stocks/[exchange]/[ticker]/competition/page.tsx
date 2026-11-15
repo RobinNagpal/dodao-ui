@@ -9,6 +9,7 @@ import { getTickerCompetition } from '@/utils/ticker-v1-page-data';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { generateCompetitionArticleSchema, generateCompetitionBreadcrumbSchema } from '@/utils/metadata-generators';
+import { fitMetaDescription } from '@/utils/performance-page-utils';
 import { BreadcrumbsOjbect } from '@dodao/web-core/components/core/breadcrumbs/BreadcrumbsWithChevrons';
 import SimilarTickersSection from '@/components/ticker-reportsv1/SimilarTickersSection';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
@@ -24,12 +25,6 @@ export const dynamic = 'force-dynamic';
 
 /** Route params (strict) */
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
-
-/** Helpers */
-function truncateForMeta(text: string, maxLength: number = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
 
 /**
  * Competition data for a specific exchange+ticker — the `competition-tickers` API query, called
@@ -90,14 +85,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let industryName: string = '';
   let competitionCreatedTime: string;
   let competitionUpdatedTime: string;
 
   try {
     const data = await fetchCompetitionByExchange(exchange, ticker);
     companyName = data.ticker?.name ?? companyName;
-    industryName = data.ticker?.industry?.name || data.ticker?.industryKey || '';
 
     // Use competition table dates
     const createdAt = data.vsCompetition?.createdAt || data.ticker?.createdAt || new Date();
@@ -113,11 +106,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
 
   const year = new Date().getFullYear();
 
-  const shortDesc: string = truncateForMeta(
-    `Detailed competitive analysis of ${companyName} (${ticker})${
-      industryName ? ` in the ${industryName} industry` : ''
-    }. Compare ${companyName} against its key competitors across market position, financials, and growth prospects.`
-  );
+  const firstSentence: string = `Competition analysis of ${companyName} (${ticker}).`;
+  const shortDesc: string = fitMetaDescription(`${firstSentence} Compares it with key competitors on position, financials and growth.`, firstSentence);
 
   const canonicalUrl: string = `https://koalagains.com/stocks/${exchange}/${ticker}/competition`;
 

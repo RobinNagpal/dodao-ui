@@ -6,6 +6,7 @@ import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { CanadaExchanges, getCountryByExchange, IndiaExchanges, SupportedCountries, UKExchanges, USExchanges } from '@/utils/countryExchangeUtils';
 import { ssrRequestData } from '@/utils/ssr-data-cache';
 import { generateStabilityArticleSchema, generateStabilityBreadcrumbSchema } from '@/utils/metadata-generators';
+import { fitMetaDescription } from '@/utils/performance-page-utils';
 import { enforceDeletedTicker } from '@/utils/ticker-deleted-handler';
 import { enforceMovedRedirect } from '@/utils/ticker-moved-redirect';
 import { getTickerV1WithMissingReports } from '@/utils/ticker-v1-page-data';
@@ -25,11 +26,6 @@ const PAGE_SLUG = 'stability';
 export const dynamic = 'force-dynamic';
 
 export type RouteParams = Promise<Readonly<{ exchange: string; ticker: string }>>;
-
-function truncateForMeta(text: string, maxLength: number = 155): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '…';
-}
 
 /**
  * Ticker row — the `tickers-v1/exchange/[exchange]/[ticker]` API query, called in-process (no
@@ -75,14 +71,12 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   const { exchange, ticker } = { exchange: routeParams.exchange.toUpperCase(), ticker: routeParams.ticker.toUpperCase() };
 
   let companyName: string = ticker;
-  let industryName: string = '';
   let createdTime: string;
   let updatedTime: string;
 
   try {
     const data = await fetchTickerByExchange(exchange, ticker);
     companyName = data?.name ?? companyName;
-    industryName = data?.industry?.name || data?.industryKey || '';
     const report = data?.stabilityReports?.[0];
     const createdAt = report?.createdAt || data?.createdAt || new Date();
     const updatedAt = report?.updatedAt || data?.updatedAt || new Date();
@@ -95,11 +89,8 @@ export async function generateMetadata({ params }: { params: RouteParams }): Pro
   }
 
   const year = new Date().getFullYear();
-  const shortDesc = truncateForMeta(
-    `What happens to ${companyName} (${ticker})${
-      industryName ? ` in the ${industryName} industry` : ''
-    } if the market drops 5%, 15% or 30% — expected price, industry impact, and company impact in each scenario.`
-  );
+  const firstSentence = `What happens to ${companyName} (${ticker}) if the market drops 5%, 15% or 30%`;
+  const shortDesc = fitMetaDescription(`${firstSentence}: expected price and impact in each scenario.`, `${firstSentence}.`);
   const canonicalUrl = `https://koalagains.com/stocks/${exchange}/${ticker}/${PAGE_SLUG}`;
   const keywords: string[] = [
     `${companyName} stability`,

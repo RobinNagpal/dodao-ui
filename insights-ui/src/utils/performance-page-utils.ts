@@ -18,6 +18,14 @@ export function truncateForMeta(text: string, maxLength: number = 155): string {
 }
 
 /**
+ * Meta description for a stock tab page: `full` when it fits in `maxLength`, otherwise `short` (its
+ * first sentence), so long company names drop a whole sentence instead of being cut mid-sentence.
+ */
+export function fitMetaDescription(full: string, short: string, maxLength: number = 155): string {
+  return full.length <= maxLength ? full : truncateForMeta(short, maxLength);
+}
+
+/**
  * Performance data for a specific exchange+ticker — the same query the `{dataSlug}` API route
  * serves, called in-process (no self-fetch; see `src/utils/ssr-data-cache.ts`).
  *

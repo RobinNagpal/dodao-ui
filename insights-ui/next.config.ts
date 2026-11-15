@@ -22,7 +22,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@heroicons/react', '@headlessui/react', '@react-icons/all-files'],
   },
-  /* config options here */
+  // Crawlers that get <title>, meta description and rel=canonical in <head> instead of streamed into
+  // <body>. Next.js 15.5's default list (copied below; setting this replaces it) leaves out Googlebot,
+  // so pages with slow generateMetadata (tariff chapters, stock industries) sent their canonical in
+  // <body>, where Google ignores it: URL Inspection found no canonical on tariff /tariff-updates and
+  // /understand-industry pages. Cost: Googlebot waits for generateMetadata before the first byte.
+  htmlLimitedBots:
+    /Googlebot|[\w-]+-Google|Google-[\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight/i,
   sassOptions: {
     silenceDeprecations: ['legacy-js-api'],
     // This allows you to use variables defined `"app/styles/variables.scss` to be used in scss module files without
