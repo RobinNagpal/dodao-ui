@@ -1,5 +1,6 @@
 'use client';
 
+import { usePortalTheme } from '@/components/theme/use-portal-theme';
 import { cn } from '@/lib/utils';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
@@ -26,6 +27,8 @@ export interface LinkMenuProps {
  * because the menu's items only render while it is open.
  */
 export default function LinkMenu({ label, items, className }: LinkMenuProps): React.JSX.Element {
+  // The list is portaled to <body>, outside the themed wrapper, so apply the palette to it directly.
+  const portalThemeClass = usePortalTheme();
   return (
     <Menu as="div" className={cn('relative inline-block text-left', className)}>
       <MenuButton className="inline-flex min-h-9 items-center gap-1 rounded-md border border-border bg-surface-2 px-3 text-sm font-medium text-body hover:text-heading data-[open]:text-heading">
@@ -35,7 +38,7 @@ export default function LinkMenu({ label, items, className }: LinkMenuProps): Re
       <MenuItems
         portal={true}
         anchor={{ to: 'bottom end', gap: 6, padding: 16 }}
-        className="z-30 w-60 rounded-lg border border-border bg-surface p-1 shadow-xl focus:outline-none"
+        className={cn('z-30 w-60 rounded-lg border border-border bg-surface p-1 shadow-xl focus:outline-none', portalThemeClass)}
       >
         {items.map((item) => (
           <MenuItem key={item.href}>

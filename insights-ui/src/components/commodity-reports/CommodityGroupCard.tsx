@@ -34,7 +34,7 @@ export default function CommodityGroupCard({
           {group}
         </h3>
       </div>
-      <div className="absolute top-2 right-2 z-10 text-[13px] text-heading bg-primary px-2 py-0.5 rounded-full" aria-label={countLabel} title={countLabel}>
+      <div className="absolute top-2 right-2 z-10 text-[13px] text-primary-text bg-primary px-2 py-0.5 rounded-full" aria-label={countLabel} title={countLabel}>
         {countLabel}
       </div>
 

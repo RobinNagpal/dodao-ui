@@ -1,6 +1,6 @@
 import BlogsGrid from '@/components/blogs/BlogsGrid';
 import Contact from '@/components/home-page/Contact';
-import { Footer } from '@/components/home-page/Footer';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 import { Hero } from '@/components/home-page/Hero';
 import KoalagainsOfferings from '@/components/home-page/KoalagainsOfferings';
 import KoalaGainsPlatform from '@/components/home-page/KoalaGainsPlatform';
@@ -185,7 +185,7 @@ export default async function Home() {
       <KoalaGainsPlatform />
       <BlogsGrid posts={posts} showViewAllButton={true} showCategoryButtons={false} />
       <Contact />
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

@@ -14,7 +14,7 @@ import {
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import Checkboxes, { CheckboxItem } from '@dodao/web-core/components/core/checkboxes/Checkboxes';
 import Input from '@dodao/web-core/components/core/input/Input';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import { usePostData } from '@dodao/web-core/ui/hooks/fetch/usePostData';
 import { usePutData } from '@dodao/web-core/ui/hooks/fetch/usePutData';
 import { useDeleteData } from '@dodao/web-core/ui/hooks/fetch/useDeleteData';
@@ -434,7 +434,7 @@ export default function AddEditFavouriteModal({
   );
 
   return (
-    <FullPageModal
+    <ThemedFullPageModal
       open={isOpen}
       onClose={onClose}
       title={viewOnly ? `Favourite: ${tickerName} (${tickerSymbol})` : favouriteTicker ? 'Edit Favourite' : `Add ${tickerName} (${tickerSymbol}) to Favourites`}
@@ -451,6 +451,6 @@ export default function AddEditFavouriteModal({
         deleteButtonText="Delete Favourite"
         confirmationText="DELETE"
       />
-    </FullPageModal>
+    </ThemedFullPageModal>
   );
 }

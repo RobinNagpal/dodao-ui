@@ -2,6 +2,7 @@ import BlogsGrid from '@/components/blogs/BlogsGrid';
 import { getPostsData } from '@/util/blog-utils';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { Metadata } from 'next';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 
 export const metadata: Metadata = {
   title: 'KoalaGains Blog – REITs, Crowdfunding & Investment Insights',
@@ -53,8 +54,11 @@ export default async function BlogsPage() {
   const posts = await getPostsData();
 
   return (
-    <PageWrapper>
-      <BlogsGrid posts={posts} />
-    </PageWrapper>
+    <>
+      <PageWrapper>
+        <BlogsGrid posts={posts} />
+      </PageWrapper>
+      <SiteFooter />
+    </>
   );
 }

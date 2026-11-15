@@ -29,8 +29,9 @@ export interface ReportFooterTag {
 }
 
 export interface ReportFooterProps {
-  modifiedDate: Date;
-  formattedModifiedDate: string;
+  /** When omitted (with `formattedModifiedDate`), the "Last updated" line is left out and the tags stay right-aligned. */
+  modifiedDate?: Date;
+  formattedModifiedDate?: string;
   tags?: ReportFooterTag[];
   className?: string;
 }
@@ -38,22 +39,27 @@ export interface ReportFooterProps {
 /**
  * Report footer: "Last updated by KoalaGains on {date}" (with schema.org
  * author/dateModified) plus a row of category tag pills. Shared by the stock
- * and ETF category reports, competition views, and management-team page.
+ * and ETF category reports, competition views, management-team page, and the
+ * tariff chapter pages.
  */
 export default function ReportFooter({ modifiedDate, formattedModifiedDate, tags, className }: ReportFooterProps): React.JSX.Element {
   return (
     <footer className={cn('mt-8 pt-6 border-t border-border', className)}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="text-sm text-muted-foreground">
-          <span>Last updated by </span>
-          <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-            <span itemProp="name">KoalaGains</span>
-          </span>
-          <span> on </span>
-          <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-            {formattedModifiedDate}
-          </time>
-        </div>
+        {modifiedDate && formattedModifiedDate ? (
+          <div className="text-sm text-muted-foreground">
+            <span>Last updated by </span>
+            <span itemProp="author" itemScope itemType="https://schema.org/Organization">
+              <span itemProp="name">KoalaGains</span>
+            </span>
+            <span> on </span>
+            <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
+              {formattedModifiedDate}
+            </time>
+          </div>
+        ) : (
+          <div />
+        )}
         {tags && tags.length > 0 && (
           <div className="flex gap-2">
             {tags.map((t, i) => (

@@ -11,6 +11,7 @@ import { CountryTariffRenderer } from '@/components/industry-tariff/renderers/Co
 import { FinalConclusionRenderer } from '@/components/industry-tariff/renderers/FinalConclusionRenderer';
 import { TariffEngineeringRenderer } from '@/components/industry-tariff/renderers/TariffEngineeringRenderer';
 import { UnderstandIndustryRenderer } from '@/components/industry-tariff/renderers/UnderstandIndustryRenderer';
+import ReportFooter from '@/components/ui/sections/ReportFooter';
 import type { ChapterTariffReportResponse } from '@/app/api/industry-tariff-reports/chapters/[chapterSlug]/route';
 import { getMarkdownContentForIndustryAreas } from '@/scripts/industry-tariff-reports/render-tariff-markdown';
 import { ReportType, type IndustryTariffReport, type PageSeoDetails, type TariffReportSeoDetails } from '@/scripts/industry-tariff-reports/tariff-types';
@@ -239,32 +240,14 @@ export function ChapterArticle({
         {ratesAsOf && <ChapterKeyTerms terms={approach2PageGlossaryTerms(prototype, chapter.slug, currentSlug, direction)} />}
         {children}
         {ratesAsOf && <ChapterNextPageNav chapter={chapter} currentSlug={currentSlug} direction={direction} />}
-        <footer className="mt-8 pt-6 border-t border-color">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            {modifiedDate && formattedModifiedDate ? (
-              <div className="text-sm text-muted-foreground">
-                <span>Last updated by </span>
-                <span itemProp="author" itemScope itemType="https://schema.org/Organization">
-                  <span itemProp="name">KoalaGains</span>
-                </span>
-                <span> on </span>
-                <time dateTime={modifiedDate.toISOString()} itemProp="dateModified">
-                  {formattedModifiedDate}
-                </time>
-              </div>
-            ) : (
-              <div />
-            )}
-            <div className="flex gap-2">
-              <span className="inline-flex items-center rounded-full bg-blue-100 dark:bg-blue-900 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:text-blue-300">
-                Tariff Report
-              </span>
-              <span className="inline-flex items-center rounded-full bg-teal-100 dark:bg-teal-900 px-2.5 py-0.5 text-xs font-medium text-teal-800 dark:text-teal-300">
-                {footerLabel}
-              </span>
-            </div>
-          </div>
-        </footer>
+        <ReportFooter
+          modifiedDate={modifiedDate ?? undefined}
+          formattedModifiedDate={formattedModifiedDate ?? undefined}
+          tags={[
+            { label: 'Tariff Report', tone: 'family' },
+            { label: footerLabel, tone: 'competitive' },
+          ]}
+        />
       </article>
     </div>
   );

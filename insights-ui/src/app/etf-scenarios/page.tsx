@@ -6,6 +6,7 @@ import { EtfScenarioListingResponse } from '@/app/api/[spaceId]/etf-scenarios/li
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { ETF_SCENARIO_LISTING_TAG } from '@/utils/etf-scenario-cache-utils';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 import {
   generateEtfScenarioListingMetadata,
   generateEtfScenarioListingJsonLd,
@@ -41,32 +42,35 @@ export default async function EtfScenariosPage() {
   const data = await fetchScenarioListing();
 
   return (
-    <EtfScenarioPageLayout
-      title="ETF Market Scenarios"
-      description="A dated playbook of recurring market scenarios that meaningfully move specific ETF categories — with winners, losers, historical analogs, and a qualitative probability outlook."
-      rightButton={<EtfScenariosPageActions />}
-    >
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingBreadcrumbJsonLd()) }} />
-      {data.scenarios.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              generateEtfScenarioListingItemListJsonLd(
-                data.scenarios.map((s) => ({
-                  slug: s.slug,
-                  title: s.title,
-                  scenarioNumber: s.scenarioNumber,
-                }))
-              )
-            ),
-          }}
-        />
-      )}
-      <Suspense fallback={null}>
-        <EtfScenarioListingGrid data={data} />
-      </Suspense>
-    </EtfScenarioPageLayout>
+    <>
+      <EtfScenarioPageLayout
+        title="ETF Market Scenarios"
+        description="A dated playbook of recurring market scenarios that meaningfully move specific ETF categories — with winners, losers, historical analogs, and a qualitative probability outlook."
+        rightButton={<EtfScenariosPageActions />}
+      >
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateEtfScenarioListingBreadcrumbJsonLd()) }} />
+        {data.scenarios.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                generateEtfScenarioListingItemListJsonLd(
+                  data.scenarios.map((s) => ({
+                    slug: s.slug,
+                    title: s.title,
+                    scenarioNumber: s.scenarioNumber,
+                  }))
+                )
+              ),
+            }}
+          />
+        )}
+        <Suspense fallback={null}>
+          <EtfScenarioListingGrid data={data} />
+        </Suspense>
+      </EtfScenarioPageLayout>
+      <SiteFooter />
+    </>
   );
 }

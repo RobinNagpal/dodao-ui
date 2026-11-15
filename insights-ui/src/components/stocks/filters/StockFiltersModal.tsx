@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import NumericFilterControl from '@/components/etfs/NumericFilterControl';
 import DateFilterControl from '@/components/ui/DateFilterControl';
 import MultiSelectFilterControl from '@/components/ui/MultiSelectFilterControl';
@@ -60,7 +60,7 @@ export default function StockFiltersModal({
   const contentKey: string = JSON.stringify(initialSelected);
 
   return (
-    <FullPageModal open={open} onClose={onClose} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
+    <ThemedFullPageModal open={open} onClose={onClose} title="Filter Tickers" fullWidth={false} className="max-w-5xl">
       <div className="px-6 py-2">
         <StockFiltersPanel
           key={contentKey}
@@ -72,7 +72,7 @@ export default function StockFiltersModal({
           exchanges={exchanges}
         />
       </div>
-    </FullPageModal>
+    </ThemedFullPageModal>
   );
 }
 

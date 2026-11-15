@@ -6,6 +6,7 @@ import StockScenarioPageLayout from '@/components/stock-scenarios/StockScenarioP
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getBaseUrlForServerSidePages } from '@/utils/getBaseUrlForServerSidePages';
 import { STOCK_SCENARIO_LISTING_TAG } from '@/utils/stock-scenario-cache-utils';
+import SiteFooter from '@/components/ui/sections/SiteFooter';
 import {
   generateStockScenarioListingBreadcrumbJsonLd,
   generateStockScenarioListingItemListJsonLd,
@@ -41,32 +42,35 @@ export default async function StockScenariosPage() {
   const data = await fetchScenarioListing();
 
   return (
-    <StockScenarioPageLayout
-      title="Stock Market Scenarios"
-      description="A dated playbook of recurring market scenarios that meaningfully move specific stocks — with winners, losers, historical analogs, and a qualitative probability outlook. Filter by country to narrow in on a single market."
-      rightButton={<StockScenariosPageActions />}
-    >
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStockScenarioListingJsonLd()) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStockScenarioListingBreadcrumbJsonLd()) }} />
-      {data.scenarios.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(
-              generateStockScenarioListingItemListJsonLd(
-                data.scenarios.map((s) => ({
-                  slug: s.slug,
-                  title: s.title,
-                  scenarioNumber: s.scenarioNumber,
-                }))
-              )
-            ),
-          }}
-        />
-      )}
-      <Suspense fallback={null}>
-        <StockScenarioListingGrid data={data} />
-      </Suspense>
-    </StockScenarioPageLayout>
+    <>
+      <StockScenarioPageLayout
+        title="Stock Market Scenarios"
+        description="A dated playbook of recurring market scenarios that meaningfully move specific stocks — with winners, losers, historical analogs, and a qualitative probability outlook. Filter by country to narrow in on a single market."
+        rightButton={<StockScenariosPageActions />}
+      >
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStockScenarioListingJsonLd()) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStockScenarioListingBreadcrumbJsonLd()) }} />
+        {data.scenarios.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                generateStockScenarioListingItemListJsonLd(
+                  data.scenarios.map((s) => ({
+                    slug: s.slug,
+                    title: s.title,
+                    scenarioNumber: s.scenarioNumber,
+                  }))
+                )
+              ),
+            }}
+          />
+        )}
+        <Suspense fallback={null}>
+          <StockScenarioListingGrid data={data} />
+        </Suspense>
+      </StockScenarioPageLayout>
+      <SiteFooter />
+    </>
   );
 }

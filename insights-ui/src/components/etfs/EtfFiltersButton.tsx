@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import FullPageModal from '@dodao/web-core/components/core/modals/FullPageModal';
+import ThemedFullPageModal from '@/components/theme/ThemedFullPageModal';
 import { AdjustmentsHorizontalIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import NumericFilterControl from '@/components/etfs/NumericFilterControl';
 
@@ -61,11 +61,11 @@ export default function EtfFiltersButton(): JSX.Element {
         {currentFilters.length > 0 && <span className="bg-primary px-2 py-0.5 font-bold rounded-full text-xs animate-pulse">{currentFilters.length}</span>}
       </button>
       {isModalOpen && (
-        <FullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter ETFs" fullWidth={false} className="max-w-6xl">
+        <ThemedFullPageModal open={isModalOpen} onClose={() => setIsModalOpen(false)} title="Filter ETFs" fullWidth={false} className="max-w-6xl">
           <div className="px-4 py-2">
             <EtfFilterModalContent key={modalKey} initialSelected={buildInitialEtfSelected(currentFilters)} onClose={() => setIsModalOpen(false)} />
           </div>
-        </FullPageModal>
+        </ThemedFullPageModal>
       )}
     </>
   );
