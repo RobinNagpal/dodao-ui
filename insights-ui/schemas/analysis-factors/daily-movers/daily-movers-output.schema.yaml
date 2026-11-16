@@ -4,7 +4,7 @@ additionalProperties: false
 properties:
   title:
     type: string
-    description: 'Article title, max 60 characters: company name (no Inc./Corp.), ticker in brackets, direction and main reason. No date.'
+    description: 'Article title, max 60 characters: company name (no Inc./Corp.), ticker in parentheses (never square brackets; written once if it equals the name), "Stock" when it fits, direction and main reason. No hype adjectives, no date.'
   metaDescription:
     type: string
     description: 'SEO meta description, 140-160 characters, one sentence: name, ticker, percentage move, main reason.'

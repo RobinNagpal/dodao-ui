@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma';
 import { DailyMoverType } from '@/types/daily-mover-constants';
-import { TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
+import { DailyMoverHistoryItem, TopGainerWithTicker, TopLoserWithTicker } from '@/types/daily-stock-movers';
 import { buildDateWhereClause } from '@/utils/daily-movers-date-utils';
 import { buildTickerWhereClause } from '@/utils/daily-stock-movers';
 import { getDailyMoversByCountryTag } from '@/utils/ticker-v1-cache-utils';
@@ -71,6 +71,31 @@ export async function getDailyTopLosers(spaceId: string, country: string | null,
     include: { ticker: true },
     orderBy: [{ createdAt: 'desc' }, { percentageChange: 'asc' }],
   });
+}
+
+/** Most moves listed in a mover page's "other big moves" history. */
+export const TICKER_MOVE_HISTORY_LIMIT = 10;
+
+/**
+ * Other gainer and loser pages for the same ticker (excluding `currentMoverId`), newest first, for the move
+ * history and "Newer move" banner on a mover details page. Only moves whose analysis has been generated (have
+ * a title) are listed, so the history never links to an empty page.
+ */
+export async function getTickerMoveHistory(spaceId: string, tickerId: string, currentMoverId: string): Promise<DailyMoverHistoryItem[]> {
+  const query = {
+    where: { spaceId, tickerId, id: { not: currentMoverId }, AND: [{ title: { not: null } }, { title: { not: '' } }] },
+    select: { id: true, name: true, symbol: true, title: true, percentageChange: true, createdAt: true },
+    orderBy: { createdAt: 'desc' as const },
+    take: TICKER_MOVE_HISTORY_LIMIT,
+  };
+  const [gainers, losers] = await Promise.all([prisma.dailyTopGainer.findMany(query), prisma.dailyTopLoser.findMany(query)]);
+
+  return [
+    ...gainers.map((m) => ({ ...m, type: DailyMoverType.GAINER, createdAt: m.createdAt.toISOString() })),
+    ...losers.map((m) => ({ ...m, type: DailyMoverType.LOSER, createdAt: m.createdAt.toISOString() })),
+  ]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, TICKER_MOVE_HISTORY_LIMIT);
 }
 
 /**

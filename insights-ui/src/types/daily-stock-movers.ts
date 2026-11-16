@@ -41,15 +41,31 @@ export interface TopLoserWithTicker extends DailyTopLoser {
   ticker: TickerV1;
 }
 
+/** One other gainer/loser page for the same ticker, shown in a mover page's move history. */
+export interface DailyMoverHistoryItem {
+  id: string;
+  type: DailyMoverType;
+  name: string;
+  symbol: string;
+  title: string | null;
+  percentageChange: number;
+  /** ISO timestamp the move was recorded. */
+  createdAt: string;
+}
+
 // Response with related movers
 export interface TopGainerWithRelated {
   mover: TopGainerWithTicker;
   relatedMovers: TopGainerWithTicker[];
+  /** Other gainer and loser pages for the same ticker, newest first (max 10). */
+  tickerMoves: DailyMoverHistoryItem[];
 }
 
 export interface TopLoserWithRelated {
   mover: TopLoserWithTicker;
   relatedMovers: TopLoserWithTicker[];
+  /** Other gainer and loser pages for the same ticker, newest first (max 10). */
+  tickerMoves: DailyMoverHistoryItem[];
 }
 
 // Input JSON for daily movers LLM

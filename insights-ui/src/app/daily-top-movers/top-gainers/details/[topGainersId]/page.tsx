@@ -1,11 +1,12 @@
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
-import { TopGainerWithRelated } from '@/types/daily-stock-movers';
+import { DailyMoverHistoryItem, TopGainerWithRelated } from '@/types/daily-stock-movers';
 import { DailyMoverType } from '@/types/daily-mover-constants';
 import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import Link from 'next/link';
 import StockMoverDetails from '@/components/daily-stock-movers/StockMoverDetails';
 import RelatedDailyMovers from '@/components/daily-stock-movers/RelatedDailyMovers';
+import TickerMoveHistory from '@/components/daily-stock-movers/TickerMoveHistory';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Metadata } from 'next';
 import { generateStockMoverMetadata, generateStockMoverArticleSchema, generateStockMoverBreadcrumbSchema } from '@/utils/metadata-generators';
@@ -81,6 +82,8 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
   }
 
   const { mover: topGainer, relatedMovers } = data;
+  // Responses cached before the move history existed have no `tickerMoves`.
+  const tickerMoves: DailyMoverHistoryItem[] = data.tickerMoves ?? [];
 
   // Generate structured data
   const articleSchema = generateStockMoverArticleSchema(topGainer, DailyMoverType.GAINER, topGainersId);
@@ -106,9 +109,10 @@ export default async function TopGainerDetailsPage({ params }: PageProps) {
         }}
       />
 
-      <StockMoverDetails mover={topGainer} type={DailyMoverType.GAINER} />
+      <StockMoverDetails mover={topGainer} type={DailyMoverType.GAINER} tickerMoves={tickerMoves} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <TickerMoveHistory companyName={topGainer.ticker.name} symbol={topGainer.ticker.symbol} moves={tickerMoves} />
         <RelatedDailyMovers movers={relatedMovers} type={DailyMoverType.GAINER} />
       </div>
     </PageWrapper>

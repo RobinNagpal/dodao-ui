@@ -1,5 +1,6 @@
 import { prisma } from '@/prisma';
 import { TopGainerWithRelated } from '@/types/daily-stock-movers';
+import { getTickerMoveHistory } from '@/utils/daily-movers-data';
 import { withErrorHandlingV2 } from '@dodao/web-core/api/helpers/middlewares/withErrorHandling';
 import { NextRequest } from 'next/server';
 
@@ -27,27 +28,32 @@ async function getHandler(req: NextRequest, context: { params: Promise<{ spaceId
   const endOfDay = new Date(moverDate.getFullYear(), moverDate.getMonth(), moverDate.getDate() + 1);
 
   // Fetch 3 other gainers from the same date, excluding current one
-  const relatedMovers = await prisma.dailyTopGainer.findMany({
-    where: {
-      spaceId,
-      id: { not: topGainersId },
-      createdAt: {
-        gte: startOfDay,
-        lt: endOfDay,
+  // ...and, in parallel, the other gainer/loser pages for the same ticker (move history + "Newer move" banner)
+  const [relatedMovers, tickerMoves] = await Promise.all([
+    prisma.dailyTopGainer.findMany({
+      where: {
+        spaceId,
+        id: { not: topGainersId },
+        createdAt: {
+          gte: startOfDay,
+          lt: endOfDay,
+        },
       },
-    },
-    include: {
-      ticker: true,
-    },
-    orderBy: {
-      percentageChange: 'desc',
-    },
-    take: 3,
-  });
+      include: {
+        ticker: true,
+      },
+      orderBy: {
+        percentageChange: 'desc',
+      },
+      take: 3,
+    }),
+    getTickerMoveHistory(spaceId, topGainer.tickerId, topGainersId),
+  ]);
 
   return {
     mover: topGainer,
     relatedMovers,
+    tickerMoves,
   };
 }
 
