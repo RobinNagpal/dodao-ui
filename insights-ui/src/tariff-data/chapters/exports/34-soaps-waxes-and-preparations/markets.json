@@ -1,0 +1,861 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 34,
+    "padded": "34",
+    "slug": "34-soaps-waxes-and-preparations",
+    "title": "Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/34-soaps-waxes-and-preparations/markets",
+    "h1": "HTS Chapter 34: Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Soap, Detergents & Lubricants by Country (HTS Ch. 34) | KoalaGains",
+      "shortDescription": "What Canada, the EU, Mexico, China, Brazil, Japan, Singapore and Korea charge on U.S. soap, detergents, lubricants, waxes and candles, and the chemical registration each requires.",
+      "keywords": [
+        "tariff on US soap by country",
+        "China tariff on US lubricants",
+        "EU tariff on US detergents",
+        "Brazil tariff lubricants",
+        "REACH registration detergents",
+        "HS 34 tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Who buys U.S. soap, detergents, lubricants, waxes, polishes and candles, **what** they buy and **what they charge** on it. The matrix shows each market's tariff on U.S.-origin goods for the seven Chapter 34 product groups, next to the value the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. Canada, Mexico, Singapore, Korea and, since July 1, 2026, the EU charge nothing on qualifying U.S. goods, Japan charges only on lubricants, and Brazil charges the Mercosur tariff of up to 18%. China is the costly one, with its 10% extra tariff and 2018–2019 counter-tariffs. For detergents and lubricants the other gate is chemical and product registration in the buyer's market, named in each profile below.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "3401",
+      "label": "Soap & skin-washing preparations",
+      "shortLabel": "Soap"
+    },
+    {
+      "heading": "3402",
+      "label": "Surfactants, detergents & cleaners",
+      "shortLabel": "Detergents"
+    },
+    {
+      "heading": "3403",
+      "label": "Lubricating preparations",
+      "shortLabel": "Lubricants"
+    },
+    {
+      "heading": "3404",
+      "label": "Artificial & prepared waxes",
+      "shortLabel": "Waxes"
+    },
+    {
+      "heading": "3405",
+      "label": "Polishes & scouring preparations",
+      "shortLabel": "Polishes"
+    },
+    {
+      "heading": "3406",
+      "label": "Candles",
+      "shortLabel": "Candles"
+    },
+    {
+      "heading": "3407",
+      "label": "Modeling pastes & dental waxes",
+      "shortLabel": "Modeling pastes"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (United States Tariff, 0% on qualifying U.S. goods); Canada's 2025 surtax on U.S. soaps was repealed from September 1, 2025, and its 2026 surtax order lists no Chapter 34 goods",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3112772566,
+      "priorExportsUsd": 3045317928,
+      "sharePct": 37,
+      "changePct": 2.2,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "3401": {
+          "exportsUsd": 594616342,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3401.11.90 and 3401.30.00: MFN 6.5%, United States Tariff Free. The 25% surtax of SOR/2025-66 applied from March 4 to August 31, 2025"
+        },
+        "3402": {
+          "exportsUsd": 1709079833,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3402.50.90, 3402.90.99 and 3402.42.90: MFN 6.5%, United States Tariff Free"
+        },
+        "3403": {
+          "exportsUsd": 566731540,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3403.99.90 and 3403.19.99: MFN 6.5% (some items Free), United States Tariff Free"
+        },
+        "3404": {
+          "exportsUsd": 89790083,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3404.90.90: MFN 6.5%, United States Tariff Free"
+        },
+        "3405": {
+          "exportsUsd": 55004272,
+          "rate": "Free (CUSMA)",
+          "normalRate": "5.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3405.90.00: MFN 5.5%, United States Tariff Free"
+        },
+        "3406": {
+          "exportsUsd": 76417227,
+          "rate": "Free (CUSMA)",
+          "normalRate": "5.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3406.00.90: MFN 5.5%, United States Tariff Free"
+        },
+        "3407": {
+          "exportsUsd": 21133269,
+          "rate": "Free (CUSMA)",
+          "normalRate": "Free–6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026: 3407.00.10 and 3407.00.20 MFN 6.5%, 3407.00.90 Free; United States Tariff Free"
+        }
+      },
+      "profile": {
+        "headline": "Canada buys 37% of U.S. Chapter 34 exports and charges nothing on goods that qualify for CUSMA. U.S. soaps paid a 25% surtax from March 4 to August 31, 2025; nothing in the chapter is on Canada's September 2026 counter-tariff list.",
+        "mainProducts": "Surfactants, detergents & cleaners (3402) · Soap & skin-washing preparations (3401)",
+        "tariffNow": "Free (CUSMA); 2025 25% soap surtax removed",
+        "regulator": {
+          "name": "Environment and Climate Change Canada (New Substances, Phosphorus Concentration Regulations) and Health Canada",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-89-501/",
+          "requirement": "A chemical not on the Domestic Substances List must be notified under the New Substances Notification Regulations before import; household laundry detergents and dish-washing compounds may contain no more than 0.5% phosphorus by weight, and toilet soaps sold as cosmetics need a Health Canada Cosmetic Notification."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists all of Chapter 34) from July 1, 2026 to December 31, 2029, replacing the EU common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 957135499,
+      "priorExportsUsd": 890878351,
+      "sharePct": 11.4,
+      "changePct": 7.4,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 247922778,
+          "priorExportsUsd": 229236829,
+          "changePct": 8.2
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 240786724,
+          "priorExportsUsd": 246331024,
+          "changePct": -2.3
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 207576508,
+          "priorExportsUsd": 192513895,
+          "changePct": 7.8
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 75216066,
+          "priorExportsUsd": 71707870,
+          "changePct": 4.9
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 48655536,
+          "priorExportsUsd": 33575073,
+          "changePct": 44.9
+        }
+      ],
+      "cells": {
+        "3401": {
+          "exportsUsd": 55613721,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34), from July 1, 2026 to December 31, 2029; WITS/TRAINS MFN 0% for bar soap 3401.11 and 4% for liquid skin cleansers 3401.30 (2023) before that date"
+        },
+        "3402": {
+          "exportsUsd": 468580855,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 4% for 3402.50, 3402.90 and 3402.42 (2023) before July 1, 2026"
+        },
+        "3403": {
+          "exportsUsd": 210270969,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4.6–6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 4.6% for 3403.99 and 4.6–6.5% for 3403.19 (2023) before July 1, 2026"
+        },
+        "3404": {
+          "exportsUsd": 96185383,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 0% for 3404.90 (2023), so the rate did not change"
+        },
+        "3405": {
+          "exportsUsd": 103348859,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 0% for 3405.90 (2023)"
+        },
+        "3406": {
+          "exportsUsd": 13244582,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 0% for 3406.00 (2023)"
+        },
+        "3407": {
+          "exportsUsd": 9891130,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (Chapter 34); WITS/TRAINS MFN 0% for 3407.00 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The EU charges nothing on U.S. soap, detergents, lubricants, waxes and candles since July 1, 2026, down from 4% on detergents and 4.6–6.5% on lubricants. Its 2025 counter-tariff list named nearly the whole chapter but was never applied.",
+        "mainProducts": "Surfactants, detergents & cleaners (3402) · Lubricating preparations (3403)",
+        "tariffNow": "Free (EU–US framework since July 2026)",
+        "regulator": {
+          "name": "European Chemicals Agency (REACH, CLP) and the Detergents Regulation",
+          "url": "https://echa.europa.eu/regulations/reach/understanding-reach",
+          "requirement": "Substances imported at 1 tonne a year or more must be registered under REACH by the EU importer or an Only Representative of the U.S. maker, mixtures must be classified and labelled under CLP, and surfactants in detergents must meet the biodegradability rules of Regulation (EC) No 648/2004."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff (0% on qualifying U.S. goods); Mexico's general rates of 3–25% apply only to goods that do not qualify",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 858818655,
+      "priorExportsUsd": 900806519,
+      "sharePct": 10.2,
+      "changePct": -4.7,
+      "status": "unchanged",
+      "cells": {
+        "3401": {
+          "exportsUsd": 119852838,
+          "rate": "Free (USMCA)",
+          "normalRate": "15–25% (MFN)",
+          "basis": "LIGIE: 3401.11.01 15%; 3401.19.99, 3401.20.01 and 3401.30.01 raised to 25% by the December 29, 2025 decree; USMCA 0% for qualifying U.S. goods"
+        },
+        "3402": {
+          "exportsUsd": 300947504,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% (MFN)",
+          "basis": "LIGIE (DOF June 7, 2022): 3402.50.99 6%, 3402.42.99 6%, 3402.90.99 3%; USMCA 0%"
+        },
+        "3403": {
+          "exportsUsd": 328515116,
+          "rate": "Free (USMCA)",
+          "normalRate": "3–6% (MFN)",
+          "basis": "LIGIE: 3403.99.99 6%, 3403.19.99 3%; USMCA 0%"
+        },
+        "3404": {
+          "exportsUsd": 66173866,
+          "rate": "Free (USMCA)",
+          "normalRate": "5–6% (MFN)",
+          "basis": "LIGIE: 3404.90.99 6%, 3404.90.01 (polyethylene waxes) 5%; USMCA 0%"
+        },
+        "3405": {
+          "exportsUsd": 22564002,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% (MFN)",
+          "basis": "LIGIE: 3405.90.99 15% (3405.40.01 raised to 25% from January 1, 2026); USMCA 0%"
+        },
+        "3406": {
+          "exportsUsd": 15027083,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% (MFN)",
+          "basis": "LIGIE: 3406.00.01 20%; USMCA 0%"
+        },
+        "3407": {
+          "exportsUsd": 5738246,
+          "rate": "Free (USMCA)",
+          "normalRate": "Free–5% (MFN)",
+          "basis": "LIGIE: 3407.00.99 5%, dental waxes and plaster preparations Free; USMCA 0%"
+        }
+      },
+      "profile": {
+        "headline": "Mexico charges nothing on U.S. Chapter 34 goods that qualify for USMCA. Its general rate on soaps went up to 25% on January 1, 2026, which matters only for goods that do not meet the USMCA rules of origin.",
+        "mainProducts": "Lubricating preparations (3403) · Surfactants, detergents & cleaners (3402)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS and the Ministry of Economy (NOM-189-SSA1/SCFI-2018)",
+          "url": "https://platiica.economia.gob.mx/normalizacion/?p=244175",
+          "requirement": "Household cleaning products such as detergents and dish soaps must be labelled and packaged under NOM-189-SSA1/SCFI-2018, in force since December 13, 2019; confirm any further permit with the importer of record."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule (2026), plus the 10% extra duty on all U.S. goods (since May 2025) and its 2018–2019 counter-tariffs on U.S. goods (answering U.S. Section 301), which apply unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 500463581,
+      "priorExportsUsd": 549139788,
+      "sharePct": 5.9,
+      "changePct": -8.9,
+      "status": "raised",
+      "cells": {
+        "3401": {
+          "exportsUsd": 31884915,
+          "rate": "6.5% + 10% + 10–25%",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China 2026 tariff: MFN 6.5% on 3401; + 10% on all U.S. goods; + 2019 counter-tariff of 25% on bar soap 3401.11 and 3401.20, 10% on liquid skin cleansers 3401.30 (Announcement No. 3 of 2019) unless excluded"
+        },
+        "3402": {
+          "exportsUsd": 147635923,
+          "rate": "6.5% + 10% + 5–25%",
+          "normalRate": "6.5% (MFN)",
+          "basis": "MFN 6.5% on 3402; + 10%; + counter-tariff of 25% on non-ionic 3402.42 (List 2, 2018), 20% on washing powder 3402.50.10, 10% on 3402.50.90 and 3402.90, 5% on anionic and cationic surfactants, unless excluded"
+        },
+        "3403": {
+          "exportsUsd": 183059237,
+          "rate": "10% + 10% + 25%",
+          "normalRate": "10% (MFN)",
+          "basis": "MFN 10% on 3403; + 10%; + 25% counter-tariff on 3403.19 and 3403.99 (List 2, from August 23, 2018) and on 3403.91 (20% on 3403.11); their product exclusion ended February 28, 2025"
+        },
+        "3404": {
+          "exportsUsd": 75145734,
+          "rate": "10% + 10% + 5–10%",
+          "normalRate": "10% (MFN)",
+          "basis": "MFN 10% on 3404; + 10%; + counter-tariff of 10% on 3404.90 and 5% on polyethylene glycol waxes 3404.20 (Announcement No. 3 of 2019) unless excluded"
+        },
+        "3405": {
+          "exportsUsd": 56595426,
+          "rate": "6.5% + 10% + 10–20%",
+          "normalRate": "6.5% (MFN)",
+          "basis": "MFN 6.5% on 3405; + 10%; + counter-tariff of 10% on 3405.20–3405.90 and 20% on shoe polish 3405.10 unless excluded"
+        },
+        "3406": {
+          "exportsUsd": 2218578,
+          "rate": "6.5% + 10% + 7.5%",
+          "normalRate": "6.5% (MFN)",
+          "basis": "MFN 6.5% on 3406.00; + 10%; + counter-tariffs of 5% (2019 Annex 4) and 2.5% (September 2019 list, halved in February 2020) unless excluded"
+        },
+        "3407": {
+          "exportsUsd": 3923768,
+          "rate": "6.5–10% + 10% + 10–25%",
+          "normalRate": "6.5–10% (MFN)",
+          "basis": "MFN 6.5% on dental waxes and plaster preparations, 10% on other modelling pastes (3407.0090); + 10%; + counter-tariff of 10% on 3407.0010, 25% on 3407.0020 and 20% on 3407.0090 unless excluded"
+        }
+      },
+      "profile": {
+        "headline": "China is the most expensive large market: U.S. lubricating preparations pay about 45% and non-ionic surfactants and bar soap 41.5%, after their product exclusion lapsed in February 2025. U.S. sales there fell 9% in 2025 and another 20% in January–August 2026.",
+        "mainProducts": "Lubricating preparations (3403) · Surfactants, detergents & cleaners (3402)",
+        "tariffNow": "MFN 6.5–10% + 10% extra + counter-tariffs of 5–25%",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment (new chemical substance registration, Order No. 12)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/202608/t20260804_1163416.html",
+          "requirement": "A chemical substance not on China's inventory, such as a new surfactant or lubricant base stock, needs environmental-management registration before import; from August 15, 2026 MEE no longer accepts record-filing for new substances and uses a simplified registration instead."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Mercosur common external tariff (MFN); no trade agreement with the U.S. and no counter-tariff on U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 251893858,
+      "priorExportsUsd": 242337614,
+      "sharePct": 3,
+      "changePct": 3.9,
+      "status": "unchanged",
+      "cells": {
+        "3401": {
+          "exportsUsd": 4497403,
+          "rate": "18%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN (Mercosur common external tariff) 18% on 3401.11, 3401.19, 3401.20 and 3401.30 (2023)"
+        },
+        "3402": {
+          "exportsUsd": 162169586,
+          "rate": "2–18%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 18% on retail washing preparations (HS 2017 3402.20), 14% on non-ionic surfactants (3402.13), 2–18% on 3402.90 (2023)"
+        },
+        "3403": {
+          "exportsUsd": 61196120,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 14% on 3403.19 and 3403.99 (2023)"
+        },
+        "3404": {
+          "exportsUsd": 19893551,
+          "rate": "2–14%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 2–14% (average 9.5%) on 3404.90 (2023)"
+        },
+        "3405": {
+          "exportsUsd": 3214350,
+          "rate": "16%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 16% on 3405.90 (2023)"
+        },
+        "3406": {
+          "exportsUsd": 673545,
+          "rate": "16%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 16% on 3406.00 (2023)"
+        },
+        "3407": {
+          "exportsUsd": 249303,
+          "rate": "16%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 16% on 3407.00 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Brazil has no trade agreement with the U.S., so U.S. goods pay the Mercosur tariff: 14% on lubricants, 18% on soaps and retail detergents. It has imposed no counter-tariff on U.S. goods.",
+        "mainProducts": "Surfactants, detergents & cleaners (3402) · Lubricating preparations (3403)",
+        "tariffNow": "2–18% (Mercosur tariff)",
+        "regulator": {
+          "name": "ANVISA (household cleaning products) and ANP (lubricants)",
+          "url": "https://www.gov.br/anvisa/pt-br/assuntos/saneantes",
+          "requirement": "Household cleaning products (saneantes) such as detergents must be notified to or registered with ANVISA before sale, and lubricating oils and greases must be registered with the ANP by the producer or importer under Resolution ANP 804/2019."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff; the U.S.–Japan agreement did not change Japan's tariffs on these goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 238210466,
+      "priorExportsUsd": 213505268,
+      "sharePct": 2.8,
+      "changePct": 11.6,
+      "status": "unchanged",
+      "cells": {
+        "3401": {
+          "exportsUsd": 23684126,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3401.11–3401.30 (2023)"
+        },
+        "3402": {
+          "exportsUsd": 129965986,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3402.31–3402.90 (2023)"
+        },
+        "3403": {
+          "exportsUsd": 39917542,
+          "rate": "3.1–4.4%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 3.1% on 3403.99, 3.2% on 3403.19 and 4.4% on textile-treatment preparations 3403.11 and 3403.91 (2023)"
+        },
+        "3404": {
+          "exportsUsd": 25948665,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3404.20 and 3404.90 (2023)"
+        },
+        "3405": {
+          "exportsUsd": 14504243,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3405.10–3405.90 (2023)"
+        },
+        "3406": {
+          "exportsUsd": 780144,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3406.00 (2023)"
+        },
+        "3407": {
+          "exportsUsd": 3409760,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on 3407.00 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan charges nothing on U.S. soap, detergents, waxes, polishes and candles and 3.1–4.4% on lubricating preparations. Exports there rose 12% in 2025.",
+        "mainProducts": "Surfactants, detergents & cleaners (3402) · Lubricating preparations (3403)",
+        "tariffNow": "Free; 3.1–4.4% on lubricants",
+        "regulator": {
+          "name": "METI, MHLW and MOE (Chemical Substances Control Law)",
+          "url": "https://www.meti.go.jp/policy/chemical_management/english/",
+          "requirement": "A new chemical substance must be notified and evaluated before manufacture or import under the Chemical Substances Control Law, and imported existing substances are reported by volume."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "Singapore charges no import duty on these goods (MFN 0%); the U.S.–Singapore FTA also gives 0%",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 215819869,
+      "priorExportsUsd": 199459746,
+      "sharePct": 2.6,
+      "changePct": 8.2,
+      "status": "unchanged",
+      "cells": {
+        "3401": {
+          "exportsUsd": 17399095,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3401 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3402": {
+          "exportsUsd": 79908429,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3402 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3403": {
+          "exportsUsd": 81345018,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3403 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3404": {
+          "exportsUsd": 6813776,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3404 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3405": {
+          "exportsUsd": 28022642,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3405 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3406": {
+          "exportsUsd": 1481920,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3406 line (2023); the U.S.–Singapore FTA also gives 0%"
+        },
+        "3407": {
+          "exportsUsd": 848989,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN 0% on every 3407 line (2023); the U.S.–Singapore FTA also gives 0%"
+        }
+      },
+      "profile": {
+        "headline": "Singapore charges nothing on any Chapter 34 good, and much of what it buys, especially lubricants, is re-exported across Southeast Asia.",
+        "mainProducts": "Lubricating preparations (3403) · Surfactants, detergents & cleaners (3402)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "National Environment Agency (hazardous substances)",
+          "url": "https://www.nea.gov.sg/our-services/pollution-control/chemical-safety/hazardous-substances",
+          "requirement": "Hazardous substances listed under the Environmental Protection and Management Act need an NEA licence and import permit; most finished soaps, detergents and lubricants are not on the list."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS FTA preferential tariff (0% on qualifying U.S. goods); MFN of 2–8% for goods that do not qualify",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 201974037,
+      "priorExportsUsd": 238731332,
+      "sharePct": 2.4,
+      "changePct": -15.4,
+      "status": "unchanged",
+      "cells": {
+        "3401": {
+          "exportsUsd": 30098353,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0% for qualifying U.S. goods; WITS/TRAINS MFN 6.5% on 3401.11–3401.30 (2023)"
+        },
+        "3402": {
+          "exportsUsd": 82312305,
+          "rate": "Free (KORUS)",
+          "normalRate": "5–8% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 5–6.5% on 3402.50 and 3402.90, 2–8% on 3402.42, 8% on anionic and cationic surfactants (2023)"
+        },
+        "3403": {
+          "exportsUsd": 35230451,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 6.5% on 3403.19 and 3403.99 (2023)"
+        },
+        "3404": {
+          "exportsUsd": 11841428,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 6.5% on 3404.90 (2023)"
+        },
+        "3405": {
+          "exportsUsd": 32100984,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 6.5% on 3405.90 (2023)"
+        },
+        "3406": {
+          "exportsUsd": 2989253,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 6.5% on 3406.00 (2023)"
+        },
+        "3407": {
+          "exportsUsd": 7401263,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "KORUS 0%; WITS/TRAINS MFN 6.5% on 3407.00 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Korea charges nothing on U.S. Chapter 34 goods that qualify for KORUS, against an MFN rate of 6.5–8%. Exports there fell 15% in 2025.",
+        "mainProducts": "Surfactants, detergents & cleaners (3402) · Lubricating preparations (3403)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Environment (K-REACH and household chemical products)",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-standards-trade",
+          "requirement": "New chemical substances, and existing substances imported at 1 tonne a year or more, must be registered under K-REACH, usually through a Korean importer or only representative; household detergents and cleaners also need a safety check under Korea's household chemical products law."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "3402",
+      "exportsUsd": 1709079833,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3401",
+      "exportsUsd": 594616342,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3403",
+      "exportsUsd": 566731540,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "3402",
+      "exportsUsd": 468580855,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3403",
+      "exportsUsd": 328515116,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3402",
+      "exportsUsd": 300947504,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "3403",
+      "exportsUsd": 210270969,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "China",
+      "heading": "3403",
+      "exportsUsd": 183059237,
+      "rate": "10% + 10% + 25%"
+    }
+  ],
+  "assumptions": [
+    "Rates are for 2026, one representative six-digit subheading per product group, usually the one with the largest 2025 U.S. exports (shown under each cell): Canada from the CBSA Customs Tariff 2026, the EU from Regulation (EU) 2026/1455, Mexico from its LIGIE schedule as amended by the December 29, 2025 decree, and China from its 2026 Customs Tariff. Brazil, Japan, Korea and Singapore, and the EU's pre-July 2026 rates, are WITS/TRAINS MFN applied rates for 2023, the latest year available. National 8–10-digit lines can differ.",
+    "The EU is one market: its 27 members share one tariff, and its export figures include every member. Regulation (EU) 2026/1455 zeroes out all of Chapter 34 from July 1, 2026 to December 31, 2029, on proof of U.S. origin; the normal-rate column shows the rate the EU charged before then. The Commission can suspend the cut.",
+    "Canada, Mexico (USMCA) and Korea (KORUS) apply 0% to U.S.-origin goods that meet the agreement's rules of origin; the normal-rate column shows the MFN rate for goods that do not qualify.",
+    "China's cells add three layers: its MFN rate, its 2018–2019 counter-tariffs on U.S. goods (the List 2 rate of 2018 or the June 2019 rate, plus any September 2019 rate, halved in February 2020) and the 10% extra duty on all U.S. goods. An importer holding a market-based exclusion (valid until December 31, 2026) pays only the MFN rate plus 10%. A further 24 points of the extra duty are suspended until January 10, 2027.",
+    "Pure lubricating oils with 70% or more petroleum oil are classified in heading 2710 (Chapter 27), not here; Chapter 34 lubricants are greases, synthetic and silicone lubricants and preparations with less than 70% petroleum oil.",
+    "Rates are import duties only; VAT, GST and excise are left out. Regulatory requirements are summarised for orientation; check the regulator's current rules for the specific product."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 34, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-cbsa-ch34",
+      "publisher": "Canada Border Services Agency",
+      "citation": "CBSA Customs Tariff 2026, ch. 34",
+      "document": "Departmental Consolidation of the Customs Tariff 2026",
+      "title": "Customs Tariff 2026, Chapter 34 (MFN and United States Tariff rates)",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch34-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-66",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-66",
+      "document": "Order",
+      "title": "United States Surtax Order (2025-1): 25% surtax from March 4, 2025 (schedule lists soap tariff items 3401.11.10 to 3401.30.00)",
+      "signed": "2025-03-03",
+      "published": "2025-03-12",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors66-eng.html"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America (Annex I lists all of Chapter 34)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, June 7, 2022",
+      "document": "Decree",
+      "title": "Decreto por el que se expide la Ley de los Impuestos Generales de Importación y de Exportación (LIGIE tariff schedule, Chapter 34)",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5654292&fecha=07/06/2022"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación (3401.19.99, 3401.20.01, 3401.30.01 and 3405.40.01 to 25%)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 12 of 2025",
+      "document": "Customs Tariff of the PRC (2026)",
+      "title": "中华人民共和国进出口税则（2026）: Chapter 34 MFN rates 6.5% (3401, 3402, 3405, 3406, most of 3407) and 10% (3403, 3404, 3407.0090)",
+      "signed": "2025-12-31",
+      "published": "2025-12-31",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251231_3981044.htm"
+    },
+    {
+      "id": "cn-2018-list2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2018",
+      "document": "Announcement with List 2 (25%)",
+      "title": "国务院关税税则委员会关于对原产于美国约160亿美元进口商品加征关税的公告 (25% from August 23, 2018; items 80–82: non-ionic surfactants 3402.13, lubricating preparations 3403.19 and 3403.99)",
+      "signed": "2018-08-08",
+      "published": "2018-08-08",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201808/t20180808_2983770.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement with four annexed product lists (25%, 20%, 10%, 5%)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告 (from June 1, 2019: soaps 3401.11, 3401.19.10 and 3401.20 at 25%, washing powder 3402.20.10 and shoe polish 3405.10 at 20%, skin-washing liquids 3401.30, washing and cleaning preparations 3402.90, waxes 3404.90 and other polishes 3405.20–3405.90 at 10%, anionic and cationic surfactants and candles 3406 at 5%)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Announcement",
+      "title": "Additional tariffs on about US$75 billion of U.S. goods (Annex 1 from September 1, 2019: candles 3406.00 at 5%, halved to 2.5% from February 14, 2020; Annex 2 never applied)",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Announcement",
+      "title": "Halving the September 2019 additional tariffs on U.S. goods (10% to 5%, 5% to 2.5%) from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-excl-2024",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2024",
+      "document": "Announcement with the 15th exclusion-extension list",
+      "title": "Fifteenth extension of exclusions from the counter-tariffs on U.S. goods, August 1, 2024 to February 28, 2025 (items 13–15: non-ionic surfactants 3402.42, lubricating preparations 3403.19 and 3403.99)",
+      "signed": "2024-07-20",
+      "published": "2024-07-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202407/t20240722_3939966.htm"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates (2023)",
+      "document": "Tariff data (TRAINS)",
+      "title": "MFN applied tariff rates by HS six-digit subheading, Chapter 34 (EU, Brazil, Japan, Korea, Singapore), 2023",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/BRA/partner/WLD/product/340399"
+    },
+    {
+      "id": "ustr-korus",
+      "publisher": "USTR",
+      "citation": "KORUS FTA",
+      "document": "Agreement page",
+      "title": "U.S.-Korea Free Trade Agreement (final text and tariff schedules)",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/korus-fta"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 75% of 2025 U.S. Chapter 34 exports. A customs union (the EU) is one market: its members share one tariff."
+}

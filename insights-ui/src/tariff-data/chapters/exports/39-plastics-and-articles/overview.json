@@ -44,7 +44,7 @@
     {
       "label": "Top buyers charging 0%",
       "value": "6 of 13",
-      "note": "Mexico, Belgium, Germany, Netherlands, Singapore, South Korea (Canada: free except 50% on listed lines)"
+      "note": "Mexico, Belgium, Germany, Netherlands, Singapore, South Korea (Canada: free except 25–50% on listed lines)"
     }
   ],
   "keyTakeaways": [
@@ -118,7 +118,7 @@
       "priorExportsUsd": 15065603633,
       "sharePct": 18.4,
       "changePct": -5.1,
-      "tariffNow": "Free (CUSMA); 50% surtax on listed consumer articles",
+      "tariffNow": "Free (CUSMA); 25–50% surtax on listed articles",
       "status": "raised"
     },
     {

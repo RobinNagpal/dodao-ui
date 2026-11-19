@@ -1,0 +1,615 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 38,
+    "padded": "38",
+    "slug": "38-misc-chemical-products",
+    "title": "Miscellaneous Chemical Products"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/38-misc-chemical-products",
+    "h1": "HTS Chapter 38: Miscellaneous Chemical Products — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Chemical Products Exports and Foreign Tariffs (HTS Ch. 38) | KoalaGains",
+      "shortDescription": "U.S. exports of miscellaneous chemical products (reagents, pesticides, catalysts, additives) were $36.19B in 2025, down 2.8%. Who buys them and what the EU, China and Canada charge.",
+      "keywords": ["US chemical exports", "US pesticide exports", "diagnostic reagent exports", "tariffs on US chemical products", "HS 38 exports by country"]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "The U.S. exported **$36.19B** of miscellaneous chemical products in 2025, down 2.8% on 2024 and 12% below the 2022 peak ($41.19B). Diagnostic and laboratory reagents (3822) are the largest group at **31%** ($11.20B, up 4.4%), followed by other chemical preparations (3824, $5.64B), catalysts (3815, $4.51B), pesticides (3808, $4.49B) and fuel and lubricant additives (3811, $2.97B). Canada ($5.59B) and Mexico ($4.02B) buy 27% between them; the EU as a whole takes $8.32B.\n\nTariffs are zero for most of this trade: Canada, Mexico, South Korea and Singapore charge nothing on qualifying U.S. goods, and the EU cut its duties to zero on July 1, 2026 (except 3809.10 and 3824.60). **China** is the exception: it adds a 10% extra duty to MFN rates of up to 13%, and U.S. exports there fell 21.3%. What usually decides access is product approval — pesticide registration (PMRA in Canada, MAPA in Brazil, the EU rules), diagnostic-device approval for reagents, and chemical registration such as REACH and K-REACH — plus U.S. rules such as FIFRA export labeling, TSCA 12(b) export notices and RIN retirement for biodiesel.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$36.19B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-2.8%"
+    },
+    {
+      "label": "Largest product group (3822)",
+      "value": "31%",
+      "note": "Diagnostic & laboratory reagents"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "27%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "8 of 12",
+      "note": "Canada, Mexico, Germany, Netherlands, France, Belgium (EU), South Korea, Singapore"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. Chapter 38 exports slipped 2.8% to $36.19B in 2025; diagnostic and laboratory reagents (3822, $11.20B) grew 4.4% while biodiesel (3826) fell 60.4% and doped silicon wafers (3818) 16.3%.",
+    "Canada, Mexico, South Korea and Singapore charge nothing on qualifying U.S. goods, and the EU, the largest market at $8.32B, has charged nothing since July 1, 2026 except on 3809.10 and 3824.60.",
+    "China is the only large buyer that raised tariffs — a 10% extra duty on all U.S. goods — and exports there fell 21.3% to $2.59B; watch December 31, 2026 (its exclusions end) and January 10, 2027 (its 24-point suspension ends).",
+    "Pesticides (3808, $4.49B) need registration in each market and, if not registered in the U.S., an EPA foreign purchaser acknowledgement before export; Brazil, their second-largest market, charges up to 14%."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 31277298124,
+      "partnerAUsd": 4541401277,
+      "partnerBUsd": 3653220876,
+      "restUsd": 23082675971
+    },
+    {
+      "year": 2021,
+      "totalUsd": 36935474830,
+      "partnerAUsd": 5610690433,
+      "partnerBUsd": 5145196145,
+      "restUsd": 26179588252
+    },
+    {
+      "year": 2022,
+      "totalUsd": 41189143180,
+      "partnerAUsd": 6720003951,
+      "partnerBUsd": 5905870707,
+      "restUsd": 28563268522
+    },
+    {
+      "year": 2023,
+      "totalUsd": 38635586527,
+      "partnerAUsd": 6660858692,
+      "partnerBUsd": 6177059117,
+      "restUsd": 25797668718
+    },
+    {
+      "year": 2024,
+      "totalUsd": 37254250364,
+      "partnerAUsd": 5750786416,
+      "partnerBUsd": 4377296046,
+      "restUsd": 27126167902
+    },
+    {
+      "year": 2025,
+      "totalUsd": 36193023677,
+      "partnerAUsd": 5594980410,
+      "partnerBUsd": 4024861966,
+      "restUsd": 26573181301
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 38 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 24050164876,
+    "priorExportsUsd": 24433488626,
+    "changePct": -1.6,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 3877496364,
+        "priorExportsUsd": 3875105829,
+        "changePct": 0.1
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 3080892187,
+        "priorExportsUsd": 2653734466,
+        "changePct": 16.1
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 1599049448,
+        "priorExportsUsd": 1816461105,
+        "changePct": -12
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 1467639383,
+        "priorExportsUsd": 1543544689,
+        "changePct": -4.9
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 1100191529,
+        "priorExportsUsd": 1597175981,
+        "changePct": -31.1
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 1026375679,
+        "priorExportsUsd": 1217719846,
+        "changePct": -15.7
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 979644525,
+        "priorExportsUsd": 883315434,
+        "changePct": 10.9
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 979548911,
+        "priorExportsUsd": 1005452819,
+        "changePct": -2.6
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 5594980410,
+      "priorExportsUsd": 5750786416,
+      "sharePct": 15.5,
+      "changePct": -2.7,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 4024861966,
+      "priorExportsUsd": 4377296046,
+      "sharePct": 11.1,
+      "changePct": -8.1,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 2586215005,
+      "priorExportsUsd": 3286681792,
+      "sharePct": 7.1,
+      "changePct": -21.3,
+      "tariffNow": "MFN + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 2383901054,
+      "priorExportsUsd": 2122850839,
+      "sharePct": 6.6,
+      "changePct": 12.3,
+      "tariffNow": "MFN 0%–3.9% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 2233367846,
+      "priorExportsUsd": 2184690031,
+      "sharePct": 6.2,
+      "changePct": 2.2,
+      "tariffNow": "Free (EU–US framework); 3809.10 and 3824.60 excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 1732873930,
+      "priorExportsUsd": 1958267025,
+      "sharePct": 4.8,
+      "changePct": -11.5,
+      "tariffNow": "MFN 0%–14% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 1612403268,
+      "priorExportsUsd": 1593681006,
+      "sharePct": 4.5,
+      "changePct": 1.2,
+      "tariffNow": "Free (EU–US framework); 3809.10 and 3824.60 excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 1327368717,
+      "priorExportsUsd": 1487905248,
+      "sharePct": 3.7,
+      "changePct": -10.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 1279114038,
+      "priorExportsUsd": 1158649474,
+      "sharePct": 3.5,
+      "changePct": 10.4,
+      "tariffNow": "Free (EU–US framework); 3809.10 and 3824.60 excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 1153809502,
+      "priorExportsUsd": 1220466619,
+      "sharePct": 3.2,
+      "changePct": -5.5,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 1095536577,
+      "priorExportsUsd": 1108151230,
+      "sharePct": 3,
+      "changePct": -1.1,
+      "tariffNow": "Free (EU–US framework); 3809.10 and 3824.60 excepted",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 1086093876,
+      "priorExportsUsd": 1001351035,
+      "sharePct": 3,
+      "changePct": 8.5,
+      "tariffNow": "MFN 0%–10% (US–India framework not yet in force)",
+      "status": "pending"
+    }
+  ],
+  "othersExportsUsd": 10082497488,
+  "othersPriorExportsUsd": 10003473603,
+  "byHeading": [
+    {
+      "heading": "3801",
+      "label": "Artificial graphite & carbon pastes",
+      "exportsUsd": 195313520,
+      "priorExportsUsd": 209700900,
+      "changePct": -6.9,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "3802",
+      "label": "Activated carbon",
+      "exportsUsd": 540014974,
+      "priorExportsUsd": 518549123,
+      "changePct": 4.1,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "3803",
+      "label": "Tall oil",
+      "exportsUsd": 263538701,
+      "priorExportsUsd": 273511711,
+      "changePct": -3.6,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3804",
+      "label": "Lignin sulfonates & wood-pulp lyes",
+      "exportsUsd": 69998162,
+      "priorExportsUsd": 72639502,
+      "changePct": -3.6,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3805",
+      "label": "Turpentine & pine oil",
+      "exportsUsd": 30680759,
+      "priorExportsUsd": 37414482,
+      "changePct": -18,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "3806",
+      "label": "Rosin & ester gums",
+      "exportsUsd": 102275158,
+      "priorExportsUsd": 105649091,
+      "changePct": -3.2,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "3807",
+      "label": "Wood tar & brewers' pitch",
+      "exportsUsd": 32119186,
+      "priorExportsUsd": 42824381,
+      "changePct": -25,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "3808",
+      "label": "Pesticides, herbicides & disinfectants",
+      "exportsUsd": 4493775645,
+      "priorExportsUsd": 4830215514,
+      "changePct": -7,
+      "sharePct": 12.4
+    },
+    {
+      "heading": "3809",
+      "label": "Textile, paper & leather finishing agents",
+      "exportsUsd": 369429069,
+      "priorExportsUsd": 446948411,
+      "changePct": -17.3,
+      "sharePct": 1
+    },
+    {
+      "heading": "3810",
+      "label": "Pickling preparations & soldering fluxes",
+      "exportsUsd": 304927408,
+      "priorExportsUsd": 280256171,
+      "changePct": 8.8,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "3811",
+      "label": "Fuel & lubricant additives",
+      "exportsUsd": 2970668703,
+      "priorExportsUsd": 3090584266,
+      "changePct": -3.9,
+      "sharePct": 8.2
+    },
+    {
+      "heading": "3812",
+      "label": "Rubber accelerators, plasticizers & stabilizers",
+      "exportsUsd": 447873376,
+      "priorExportsUsd": 496014665,
+      "changePct": -9.7,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "3813",
+      "label": "Fire-extinguisher charges",
+      "exportsUsd": 76832826,
+      "priorExportsUsd": 74379292,
+      "changePct": 3.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3814",
+      "label": "Solvents, thinners & paint removers",
+      "exportsUsd": 249604764,
+      "priorExportsUsd": 248685461,
+      "changePct": 0.4,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3815",
+      "label": "Catalysts",
+      "exportsUsd": 4510098482,
+      "priorExportsUsd": 4686230458,
+      "changePct": -3.8,
+      "sharePct": 12.5
+    },
+    {
+      "heading": "3816",
+      "label": "Refractory cements & mortars",
+      "exportsUsd": 228290160,
+      "priorExportsUsd": 230872368,
+      "changePct": -1.1,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "3817",
+      "label": "Mixed alkylbenzenes (LAB)",
+      "exportsUsd": 261853717,
+      "priorExportsUsd": 282367647,
+      "changePct": -7.3,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3818",
+      "label": "Doped silicon wafers & electronic chemicals",
+      "exportsUsd": 1726785649,
+      "priorExportsUsd": 2063003670,
+      "changePct": -16.3,
+      "sharePct": 4.8
+    },
+    {
+      "heading": "3819",
+      "label": "Brake & hydraulic fluids",
+      "exportsUsd": 220712273,
+      "priorExportsUsd": 178798152,
+      "changePct": 23.4,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "3820",
+      "label": "Antifreeze & deicing fluids",
+      "exportsUsd": 239589813,
+      "priorExportsUsd": 219377562,
+      "changePct": 9.2,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3821",
+      "label": "Culture media",
+      "exportsUsd": 990785247,
+      "priorExportsUsd": 843858181,
+      "changePct": 17.4,
+      "sharePct": 2.7
+    },
+    {
+      "heading": "3822",
+      "label": "Diagnostic & laboratory reagents",
+      "exportsUsd": 11201776207,
+      "priorExportsUsd": 10727371146,
+      "changePct": 4.4,
+      "sharePct": 31
+    },
+    {
+      "heading": "3823",
+      "label": "Industrial fatty acids & fatty alcohols",
+      "exportsUsd": 516120139,
+      "priorExportsUsd": 492896151,
+      "changePct": 4.7,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "3824",
+      "label": "Other chemical preparations (n.e.s.)",
+      "exportsUsd": 5641873019,
+      "priorExportsUsd": 5843225511,
+      "changePct": -3.4,
+      "sharePct": 15.6
+    },
+    {
+      "heading": "3825",
+      "label": "Chemical, municipal & clinical waste",
+      "exportsUsd": 55081027,
+      "priorExportsUsd": 48128328,
+      "changePct": 14.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3826",
+      "label": "Biodiesel",
+      "exportsUsd": 316395303,
+      "priorExportsUsd": 798375225,
+      "changePct": -60.4,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "3827",
+      "label": "Refrigerant & other halogenated blends",
+      "exportsUsd": 136610390,
+      "priorExportsUsd": 112372995,
+      "changePct": 21.6,
+      "sharePct": 0.4
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3822.19",
+      "heading": "3822",
+      "description": "Reagents; diagnostic or laboratory reagents on a backing, prepared diagnostic or laboratory reagents whether or not on a backing, whether or not put up in the form of kits; n.e.c.in item 3822.1",
+      "exportsUsd": 10476337558,
+      "priorExportsUsd": 9981495763,
+      "changePct": 5,
+      "sharePct": 28.9
+    },
+    {
+      "hs6": "3824.99",
+      "heading": "3824",
+      "description": "Chemical products, mixtures and preparations; n.e.c. heading 3824",
+      "exportsUsd": 5138293062,
+      "priorExportsUsd": 5321935325,
+      "changePct": -3.5,
+      "sharePct": 14.2
+    },
+    {
+      "hs6": "3811.21",
+      "heading": "3811",
+      "description": "Lubricating oil additives; containing petroleum oils or oils obtained from bituminous minerals",
+      "exportsUsd": 1919433226,
+      "priorExportsUsd": 2075302544,
+      "changePct": -7.5,
+      "sharePct": 5.3
+    },
+    {
+      "hs6": "3818.00",
+      "heading": "3818",
+      "description": "Chemical elements; doped for use in electronics, in the form of discs, wafers or similar forms; chemical compounds doped for use in electronics",
+      "exportsUsd": 1726785649,
+      "priorExportsUsd": 2063003670,
+      "changePct": -16.3,
+      "sharePct": 4.8
+    },
+    {
+      "hs6": "3815.12",
+      "heading": "3815",
+      "description": "Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with precious metal or precious metal compounds as the active substance, n.e.c. or included",
+      "exportsUsd": 1517515188,
+      "priorExportsUsd": 1594331325,
+      "changePct": -4.8,
+      "sharePct": 4.2
+    },
+    {
+      "hs6": "3808.93",
+      "heading": "3808",
+      "description": "Herbicides, anti-sprouting products and plant-growth regulators; other than containing goods of Subheading Note 1 to this Chapter; put up in forms or packings for retail sale or as preparations or articles",
+      "exportsUsd": 1447972334,
+      "priorExportsUsd": 1630370805,
+      "changePct": -11.2,
+      "sharePct": 4
+    },
+    {
+      "hs6": "3815.19",
+      "heading": "3815",
+      "description": "Catalysts, supported; reaction initiators, reaction accelerators and catalytic preparations, with an active substance other than nickel or precious metals or their compounds, n.e.c. or included",
+      "exportsUsd": 1341980735,
+      "priorExportsUsd": 1395244237,
+      "changePct": -3.8,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "3808.91",
+      "heading": "3808",
+      "description": "Insecticides; other than containing goods specified in Subheading Notes 1 & 2 to this Chapter; put up in forms or packings for retail sale or as preparations or articles",
+      "exportsUsd": 1320682144,
+      "priorExportsUsd": 1591921847,
+      "changePct": -17,
+      "sharePct": 3.6
+    },
+    {
+      "hs6": "3815.90",
+      "heading": "3815",
+      "description": "Reaction initiators, reaction accelerators and catalytic preparations, unsupported, n.e.c. or included",
+      "exportsUsd": 1181304136,
+      "priorExportsUsd": 1173092939,
+      "changePct": 0.7,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "3821.00",
+      "heading": "3821",
+      "description": "Prepared culture media for the development or maintenance of micro-organisms (including viruses and the like) or of plant, human or animal cells",
+      "exportsUsd": 990785247,
+      "priorExportsUsd": 843858181,
+      "changePct": 17.4,
+      "sharePct": 2.7
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 38, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 72% of 2025 U.S. Chapter 38 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

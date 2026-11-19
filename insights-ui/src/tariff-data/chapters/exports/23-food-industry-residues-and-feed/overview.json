@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 23,
+    "padded": "23",
+    "slug": "23-food-industry-residues-and-feed",
+    "title": "Food Industry Residues and Prepared Animal Feed"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/23-food-industry-residues-and-feed",
+    "h1": "HTS Chapter 23: Food Industry Residues and Prepared Animal Feed — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "Chapter 23 Exports: U.S. Soybean Meal, DDGS & Pet Food Trade | Foreign Tariffs",
+      "shortDescription": "How much the U.S. exports of Chapter 23 feed products (soybean meal, DDGS, pet food and prepared animal feed), who buys them, and what Canada, Mexico, China and other buyers charge.",
+      "keywords": [
+        "us soybean meal exports",
+        "us ddgs exports",
+        "pet food export tariff",
+        "chapter 23 tariff report",
+        "HS 2304 export tariff",
+        "animal feed exports by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "The U.S. exported **$13.65 billion** of Chapter 23 goods in 2025, down **5.4%** from 2024 and 14% below the 2023 peak. Three products make up almost all of it: **soybean meal (36%)**, **pet food and prepared animal feed (31%)** and **distillers’ dried grains (DDGS) and other starch and brewing residues (25%)**. Canada and Mexico take 30%, mostly pet food and soybean meal, while Colombia (+20%) and the Philippines (+49%) were the growth markets.\n\nTariffs matter little for most of this trade. Canada, Mexico, Colombia and Korea buy duty-free under U.S. trade agreements, and Viet Nam, the Philippines and Japan charge 0–2% on meal and DDGS even without one. **China is the exception**: an extra 10% on every U.S. good on top of its normal rate, plus anti-dumping and countervailing duties that have shut out U.S. DDGS, and U.S. sales there fell 24% in 2025. What usually decides access instead is the buyer’s veterinary and feed approval, especially for pet food.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$13.65B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-5.4%"
+    },
+    {
+      "label": "Largest product group (2304)",
+      "value": "36%",
+      "note": "Soybean meal"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "30%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top buyers that raised tariffs",
+      "value": "1 of 12",
+      "note": "China (10% extra on all U.S. goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "Three products are almost the whole chapter: soybean meal ($4.86B in 2025), pet food and prepared feed ($4.24B) and DDGS ($2.77B).",
+    "Canada and Mexico, the two largest buyers, pay nothing on qualifying goods under USMCA, so the certificate of origin is what protects the sale; without it Mexico charges 10–15% on most feed lines.",
+    "China is the only top buyer charging more than in January 2025: an extra 10% on all U.S. goods, with its 24-point suspension now running to January 10, 2027 and its exclusions from older counter-tariffs ending December 31, 2026.",
+    "The one tariff cut abroad is the EU’s new 40,000-tonne duty-free quota for several U.S. pet food and feed lines, open since July 1, 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 10951923460,
+      "partnerAUsd": 1731901259,
+      "partnerBUsd": 1503470863,
+      "restUsd": 7716551338
+    },
+    {
+      "year": 2021,
+      "totalUsd": 13228770153,
+      "partnerAUsd": 2170209263,
+      "partnerBUsd": 1954463269,
+      "restUsd": 9104097621
+    },
+    {
+      "year": 2022,
+      "totalUsd": 14756163156,
+      "partnerAUsd": 2523222681,
+      "partnerBUsd": 2102245797,
+      "restUsd": 10130694678
+    },
+    {
+      "year": 2023,
+      "totalUsd": 15822092885,
+      "partnerAUsd": 2519191017,
+      "partnerBUsd": 2333372080,
+      "restUsd": 10969529788
+    },
+    {
+      "year": 2024,
+      "totalUsd": 14431442166,
+      "partnerAUsd": 2490961951,
+      "partnerBUsd": 2112633626,
+      "restUsd": 9827846589
+    },
+    {
+      "year": 2025,
+      "totalUsd": 13647103630,
+      "partnerAUsd": 2236866048,
+      "partnerBUsd": 1888926709,
+      "restUsd": 9521310873
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 23 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": null,
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2236866048,
+      "priorExportsUsd": 2490961951,
+      "sharePct": 16.4,
+      "changePct": -10.2,
+      "tariffNow": "Free (CUSMA)",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 1888926709,
+      "priorExportsUsd": 2112633626,
+      "sharePct": 13.8,
+      "changePct": -10.6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "exportsUsd": 1191043198,
+      "priorExportsUsd": 990845787,
+      "sharePct": 8.7,
+      "changePct": 20.2,
+      "tariffNow": "Free for soybean meal (TPA); other feed mostly duty-free after phase-out",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 719768977,
+      "priorExportsUsd": 710660348,
+      "sharePct": 5.3,
+      "changePct": 1.3,
+      "tariffNow": "Free or near-free on meal and DDGS; 7% on pet food (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 641554025,
+      "priorExportsUsd": 839301393,
+      "sharePct": 4.7,
+      "changePct": -23.6,
+      "tariffNow": "MFN (5% meal & DDGS, 15% pet food) + 10%; DDGS also AD/CVD",
+      "status": "raised"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 546273688,
+      "priorExportsUsd": 618064621,
+      "sharePct": 4,
+      "changePct": -11.6,
+      "tariffNow": "Free on most soybean meal; 5% on DDGS and pet food (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 535763002,
+      "priorExportsUsd": 360731509,
+      "sharePct": 3.9,
+      "changePct": 48.5,
+      "tariffNow": "Free on soybean meal; 5% on pet food (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 474843485,
+      "priorExportsUsd": 518968185,
+      "sharePct": 3.5,
+      "changePct": -8.5,
+      "tariffNow": "Free (KORUS) for most lines",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 412459814,
+      "priorExportsUsd": 408368287,
+      "sharePct": 3,
+      "changePct": 1,
+      "tariffNow": "Free (MFN) on almost all lines",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "exportsUsd": 327063770,
+      "priorExportsUsd": 309454793,
+      "sharePct": 2.4,
+      "changePct": 5.7,
+      "tariffNow": "Free for most lines (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 218,
+      "country": "Ecuador",
+      "exportsUsd": 309361025,
+      "priorExportsUsd": 310705368,
+      "sharePct": 2.3,
+      "changePct": -0.4,
+      "tariffNow": "MFN: 0% soybean meal, up to 45% pet food",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "exportsUsd": 257676214,
+      "priorExportsUsd": 270331093,
+      "sharePct": 1.9,
+      "changePct": -4.7,
+      "tariffNow": "Free for most lines (CAFTA-DR)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 4105503675,
+  "othersPriorExportsUsd": 4490415205,
+  "byHeading": [
+    {
+      "heading": "2301",
+      "label": "Meat & fish meal",
+      "exportsUsd": 937241155,
+      "priorExportsUsd": 1008009980,
+      "changePct": -7,
+      "sharePct": 6.9
+    },
+    {
+      "heading": "2302",
+      "label": "Bran & milling residues",
+      "exportsUsd": 139572076,
+      "priorExportsUsd": 148030418,
+      "changePct": -5.7,
+      "sharePct": 1
+    },
+    {
+      "heading": "2303",
+      "label": "Starch residues, beet pulp & distillers' grains",
+      "exportsUsd": 3390411944,
+      "priorExportsUsd": 3891307406,
+      "changePct": -12.9,
+      "sharePct": 24.8
+    },
+    {
+      "heading": "2304",
+      "label": "Soybean meal",
+      "exportsUsd": 4862951248,
+      "priorExportsUsd": 5095039464,
+      "changePct": -4.6,
+      "sharePct": 35.6
+    },
+    {
+      "heading": "2305",
+      "label": "Peanut meal",
+      "exportsUsd": 1328917,
+      "priorExportsUsd": 2217934,
+      "changePct": -40.1,
+      "sharePct": 0
+    },
+    {
+      "heading": "2306",
+      "label": "Canola, sunflower & other oilcake",
+      "exportsUsd": 24147048,
+      "priorExportsUsd": 34295621,
+      "changePct": -29.6,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2307",
+      "label": "Wine lees",
+      "exportsUsd": 2695557,
+      "priorExportsUsd": 2894427,
+      "changePct": -6.9,
+      "sharePct": 0
+    },
+    {
+      "heading": "2308",
+      "label": "Acorns, citrus pulp & other plant feed",
+      "exportsUsd": 46044200,
+      "priorExportsUsd": 49224025,
+      "changePct": -6.5,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2309",
+      "label": "Pet food & prepared animal feed",
+      "exportsUsd": 4242711485,
+      "priorExportsUsd": 4200422891,
+      "changePct": 1,
+      "sharePct": 31.1
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2304.00",
+      "heading": "2304",
+      "description": "Oil-cake and other solid residues; whether or not ground or in the form of pellets, resulting from the extraction of soya-bean oil",
+      "exportsUsd": 4862951248,
+      "priorExportsUsd": 5095039464,
+      "changePct": -4.6,
+      "sharePct": 35.6
+    },
+    {
+      "hs6": "2303.30",
+      "heading": "2303",
+      "description": "Brewing or distilling dregs and waste; whether or not in the form of pellets",
+      "exportsUsd": 2769331734,
+      "priorExportsUsd": 3199857022,
+      "changePct": -13.5,
+      "sharePct": 20.3
+    },
+    {
+      "hs6": "2309.10",
+      "heading": "2309",
+      "description": "Dog or cat food; put up for retail sale, used in animal feeding",
+      "exportsUsd": 2455188243,
+      "priorExportsUsd": 2520705486,
+      "changePct": -2.6,
+      "sharePct": 18
+    },
+    {
+      "hs6": "2309.90",
+      "heading": "2309",
+      "description": "Animal feed preparations other than dog or cat food for retail sale (incl. premixes, livestock and poultry feed)",
+      "exportsUsd": 1787523242,
+      "priorExportsUsd": 1679717405,
+      "changePct": 6.4,
+      "sharePct": 13.1
+    },
+    {
+      "hs6": "2301.10",
+      "heading": "2301",
+      "description": "Flours, meals and pellets; of meat or meat offal, greaves",
+      "exportsUsd": 765012397,
+      "priorExportsUsd": 831210730,
+      "changePct": -8,
+      "sharePct": 5.6
+    },
+    {
+      "hs6": "2303.10",
+      "heading": "2303",
+      "description": "Residues of starch manufacture and similar residues; whether or not in the form of pellets",
+      "exportsUsd": 547120038,
+      "priorExportsUsd": 624820581,
+      "changePct": -12.4,
+      "sharePct": 4
+    },
+    {
+      "hs6": "2301.20",
+      "heading": "2301",
+      "description": "Flours, meals and pellets; of fish or of crustaceans, molluscs or other aquatic invertebrates",
+      "exportsUsd": 172228758,
+      "priorExportsUsd": 176799250,
+      "changePct": -2.6,
+      "sharePct": 1.3
+    },
+    {
+      "hs6": "2303.20",
+      "heading": "2303",
+      "description": "Beet-pulp, bagasse and other waste of sugar manufacture; whether or not in the form of pellets",
+      "exportsUsd": 73960172,
+      "priorExportsUsd": 66629803,
+      "changePct": 11,
+      "sharePct": 0.5
+    },
+    {
+      "hs6": "2308.00",
+      "heading": "2308",
+      "description": "Vegetable materials and vegetable waste, vegetable residues and by-products; whether or not in the form of pellets, of a kind used in animal feeding, not elsewhere specified or included",
+      "exportsUsd": 46044200,
+      "priorExportsUsd": 49224025,
+      "changePct": -6.5,
+      "sharePct": 0.3
+    },
+    {
+      "hs6": "2302.40",
+      "heading": "2302",
+      "description": "Bran, sharps and other residues; of other cereals, whether or not in the form of pellets, derived from the sifting, milling or other workings thereof",
+      "exportsUsd": 38151391,
+      "priorExportsUsd": 36027195,
+      "changePct": 5.9,
+      "sharePct": 0.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 23, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 70% of 2025 U.S. Chapter 23 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

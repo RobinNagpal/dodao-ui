@@ -1,0 +1,799 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 28,
+    "padded": "28",
+    "slug": "28-inorganic-and-metal-compounds",
+    "title": "Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/28-inorganic-and-metal-compounds",
+    "h1": "HTS Chapter 28: Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Soda Ash & Inorganic Chemical Exports by Country (HTS 28) | KoalaGains",
+      "shortDescription": "U.S. inorganic chemical exports were $14.70B in 2025: soda ash $1.47B, caustic soda $1.41B, silicon $949M. Who buys them and what Mexico, the EU and China charge.",
+      "keywords": [
+        "us soda ash exports",
+        "soda ash exporting countries",
+        "us chemical exports",
+        "us caustic soda exports",
+        "us uranium exports",
+        "rare earth exports to china",
+        "HS 28 exports by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$14.70B** of inorganic chemicals (HTS Chapter 28) in 2025, up 1.5% on 2024 but 13% below the 2022 peak ($16.84B). The largest lines are natural **soda ash** (2836.20, $1.47B, down 14.1%), **liquid caustic soda** (2815.12, $1.41B, up 17.7%), high-purity **silicon** (2804.61, $949M), natural **uranium** compounds (2844.10, $836M) and precious-metal compounds (2843.90, $707M). Mexico ($2.20B) and Canada ($1.79B) buy 27% between them and the EU as a whole $2.24B; exports in January–August 2026 were 9.8% higher than a year earlier.\n\nTariffs matter little for most of this trade: Mexico, Canada and South Korea charge nothing on qualifying U.S. goods, and the EU cut its duties to zero on July 1, 2026. **China** is the exception: it adds a 10% extra duty to its normal rates, and U.S. exports there fell 35.1% to $860M. The product-specific costs are trade remedies, such as Mexico's US$195-per-tonne duty on liquid caustic soda and South Africa's 40% duty on soda ash, while U.S. rules decide much of the rest: BIS licences for chemical-weapons precursors such as sodium cyanide and hydrogen fluoride, NRC licences for uranium, DEA export declarations for iodine and hydriodic acid, and a ban on exporting mercury.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$14.70B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+1.5%"
+    },
+    {
+      "label": "Largest product group (2836)",
+      "value": "12%",
+      "note": "Carbonates, including lithium carbonate"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "27%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "6 of 12",
+      "note": "Mexico, Canada, Germany, Belgium (EU), South Korea, Chile"
+    }
+  ],
+  "keyTakeaways": [
+    "Soda ash (2836.20) is the largest U.S. Chapter 28 export at $1.47B but fell 14.1% in 2025; Mexico, Chile and Brazil are the biggest buyers of U.S. carbonates (2836), and since April 24, 2026 Mexico charges 35% on soda ash from countries without a trade agreement while qualifying U.S. soda ash stays free under USMCA.",
+    "Mexico, Canada, South Korea and Chile charge nothing on qualifying U.S. goods, and the EU, the largest market at $2.24B, has charged nothing on any Chapter 28 line since July 1, 2026.",
+    "China's 10% extra duty, on top of its 2019 counter-tariffs, came as U.S. exports there fell 35.1% to $860M in 2025; rare-earth compounds have a 0% provisional rate for 2026 but still pay the 10%. Watch December 31, 2026 (China's exclusions end) and January 10, 2027 (its 24-point suspension ends).",
+    "India's trade-remedy authority recommended soda ash import quotas on November 4, 2026, with 159,388 tonnes a year for U.S. supply, against 385,453 tonnes shipped in January–September 2025 alone; they apply only if the Government notifies them."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 11103820235,
+      "partnerAUsd": 1950034731,
+      "partnerBUsd": 1592282043,
+      "restUsd": 7561503461
+    },
+    {
+      "year": 2021,
+      "totalUsd": 13523337327,
+      "partnerAUsd": 2427619860,
+      "partnerBUsd": 1653515357,
+      "restUsd": 9442202110
+    },
+    {
+      "year": 2022,
+      "totalUsd": 16837863760,
+      "partnerAUsd": 2619097005,
+      "partnerBUsd": 1803645297,
+      "restUsd": 12415121458
+    },
+    {
+      "year": 2023,
+      "totalUsd": 15010743432,
+      "partnerAUsd": 2298715861,
+      "partnerBUsd": 1801167447,
+      "restUsd": 10910860124
+    },
+    {
+      "year": 2024,
+      "totalUsd": 14481462974,
+      "partnerAUsd": 2020488302,
+      "partnerBUsd": 1722442927,
+      "restUsd": 10738531745
+    },
+    {
+      "year": 2025,
+      "totalUsd": 14704311492,
+      "partnerAUsd": 2197280060,
+      "partnerBUsd": 1789489200,
+      "restUsd": 10717542232
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 28 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 10868230123,
+    "priorExportsUsd": 9901703571,
+    "changePct": 9.8,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 1577333697,
+        "priorExportsUsd": 1531569327,
+        "changePct": 3
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 1240272323,
+        "priorExportsUsd": 1192330886,
+        "changePct": 4
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 888503824,
+        "priorExportsUsd": 713166028,
+        "changePct": 24.6
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 631794803,
+        "priorExportsUsd": 704886212,
+        "changePct": -10.4
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 590171361,
+        "priorExportsUsd": 422725802,
+        "changePct": 39.6
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 588391823,
+        "priorExportsUsd": 520699282,
+        "changePct": 13
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 540332842,
+        "priorExportsUsd": 641280628,
+        "changePct": -15.7
+      },
+      {
+        "countryCode": 490,
+        "country": "Taiwan",
+        "exportsUsd": 374674886,
+        "priorExportsUsd": 184267662,
+        "changePct": 103.3
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 2197280060,
+      "priorExportsUsd": 2020488302,
+      "sharePct": 14.9,
+      "changePct": 8.7,
+      "tariffNow": "Free (USMCA); US$195/t anti-dumping duty on liquid caustic soda",
+      "status": "raised"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 1789489200,
+      "priorExportsUsd": 1722442927,
+      "sharePct": 12.2,
+      "changePct": 3.9,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 1286157283,
+      "priorExportsUsd": 1017986846,
+      "sharePct": 8.7,
+      "changePct": 26.3,
+      "tariffNow": "MFN 0%–5.4% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 1015000512,
+      "priorExportsUsd": 875718807,
+      "sharePct": 6.9,
+      "changePct": 15.9,
+      "tariffNow": "MFN 0%–10% (Mercosur tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 859885399,
+      "priorExportsUsd": 1325000397,
+      "sharePct": 5.8,
+      "changePct": -35.1,
+      "tariffNow": "MFN + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 698251983,
+      "priorExportsUsd": 730592172,
+      "sharePct": 4.7,
+      "changePct": -4.4,
+      "tariffNow": "Free (EU–US framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 663305065,
+      "priorExportsUsd": 681738410,
+      "sharePct": 4.5,
+      "changePct": -2.7,
+      "tariffNow": "MFN 0%–4% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 628493788,
+      "priorExportsUsd": 782263563,
+      "sharePct": 4.3,
+      "changePct": -19.7,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 472161717,
+      "priorExportsUsd": 523485801,
+      "sharePct": 3.2,
+      "changePct": -9.8,
+      "tariffNow": "MFN 0%–20% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 380736383,
+      "priorExportsUsd": 323639883,
+      "sharePct": 2.6,
+      "changePct": 17.6,
+      "tariffNow": "MFN 2.5%–10% basic duty (no U.S. FTA)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 367570896,
+      "priorExportsUsd": 380090187,
+      "sharePct": 2.5,
+      "changePct": -3.3,
+      "tariffNow": "Free (EU–US framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "exportsUsd": 349657324,
+      "priorExportsUsd": 370022927,
+      "sharePct": 2.4,
+      "changePct": -5.5,
+      "tariffNow": "Free (U.S.–Chile FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 3996321882,
+  "othersPriorExportsUsd": 3727992752,
+  "byHeading": [
+    {
+      "heading": "2801",
+      "label": "Chlorine, iodine, fluorine and bromine",
+      "exportsUsd": 111151098,
+      "priorExportsUsd": 106294330,
+      "changePct": 4.6,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "2802",
+      "label": "Sublimed, precipitated and colloidal sulfur",
+      "exportsUsd": 2042500,
+      "priorExportsUsd": 2258022,
+      "changePct": -9.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "2803",
+      "label": "Carbon black and other carbon",
+      "exportsUsd": 376254429,
+      "priorExportsUsd": 377583966,
+      "changePct": -0.4,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "2804",
+      "label": "Hydrogen, helium, argon, nitrogen, oxygen, silicon and other nonmetals",
+      "exportsUsd": 1611606603,
+      "priorExportsUsd": 1809319994,
+      "changePct": -10.9,
+      "sharePct": 11
+    },
+    {
+      "heading": "2805",
+      "label": "Sodium, calcium, lithium and rare-earth metals; mercury",
+      "exportsUsd": 50993284,
+      "priorExportsUsd": 65677491,
+      "changePct": -22.4,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2806",
+      "label": "Hydrochloric acid and chlorosulfuric acid",
+      "exportsUsd": 28043262,
+      "priorExportsUsd": 27802169,
+      "changePct": 0.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2807",
+      "label": "Sulfuric acid and oleum",
+      "exportsUsd": 39960409,
+      "priorExportsUsd": 33291747,
+      "changePct": 20,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2808",
+      "label": "Nitric acid and sulfonitric acids",
+      "exportsUsd": 16786294,
+      "priorExportsUsd": 14955504,
+      "changePct": 12.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2809",
+      "label": "Phosphoric acid and phosphorus pentoxide",
+      "exportsUsd": 332635931,
+      "priorExportsUsd": 285260647,
+      "changePct": 16.6,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "2810",
+      "label": "Boric acid and oxides of boron",
+      "exportsUsd": 212180213,
+      "priorExportsUsd": 200292814,
+      "changePct": 5.9,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "2811",
+      "label": "Hydrofluoric acid, silicon dioxide and other inorganic acids",
+      "exportsUsd": 419572913,
+      "priorExportsUsd": 425129082,
+      "changePct": -1.3,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "2812",
+      "label": "Chlorides and oxychlorides of phosphorus and sulfur",
+      "exportsUsd": 125336139,
+      "priorExportsUsd": 129807170,
+      "changePct": -3.4,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "2813",
+      "label": "Carbon disulfide and other nonmetal sulfides",
+      "exportsUsd": 30991517,
+      "priorExportsUsd": 24846115,
+      "changePct": 24.7,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2814",
+      "label": "Ammonia (anhydrous and aqueous)",
+      "exportsUsd": 480761034,
+      "priorExportsUsd": 334806379,
+      "changePct": 43.6,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "2815",
+      "label": "Caustic soda and caustic potash",
+      "exportsUsd": 1519682580,
+      "priorExportsUsd": 1307243595,
+      "changePct": 16.3,
+      "sharePct": 10.3
+    },
+    {
+      "heading": "2816",
+      "label": "Magnesium hydroxide and peroxide; strontium and barium oxides",
+      "exportsUsd": 18652391,
+      "priorExportsUsd": 18664700,
+      "changePct": -0.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2817",
+      "label": "Zinc oxide and zinc peroxide",
+      "exportsUsd": 154115018,
+      "priorExportsUsd": 121261223,
+      "changePct": 27.1,
+      "sharePct": 1
+    },
+    {
+      "heading": "2818",
+      "label": "Aluminum oxide (alumina), corundum and aluminum hydroxide",
+      "exportsUsd": 511185926,
+      "priorExportsUsd": 567379503,
+      "changePct": -9.9,
+      "sharePct": 3.5
+    },
+    {
+      "heading": "2820",
+      "label": "Manganese oxides",
+      "exportsUsd": 25490003,
+      "priorExportsUsd": 21918094,
+      "changePct": 16.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2821",
+      "label": "Iron oxides and hydroxides; earth colors",
+      "exportsUsd": 48343144,
+      "priorExportsUsd": 49543437,
+      "changePct": -2.4,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2822",
+      "label": "Cobalt oxides and hydroxides",
+      "exportsUsd": 625870,
+      "priorExportsUsd": 1369571,
+      "changePct": -54.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "2823",
+      "label": "Titanium oxides (titanium dioxide)",
+      "exportsUsd": 34228081,
+      "priorExportsUsd": 38414755,
+      "changePct": -10.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2824",
+      "label": "Lead oxides (litharge, red lead)",
+      "exportsUsd": 10475811,
+      "priorExportsUsd": 6834435,
+      "changePct": 53.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2825",
+      "label": "Lithium hydroxide, hydrazine and other metal oxides and hydroxides",
+      "exportsUsd": 796412586,
+      "priorExportsUsd": 687234651,
+      "changePct": 15.9,
+      "sharePct": 5.4
+    },
+    {
+      "heading": "2826",
+      "label": "Fluorides, fluorosilicates and cryolite",
+      "exportsUsd": 171651746,
+      "priorExportsUsd": 142286860,
+      "changePct": 20.6,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "2827",
+      "label": "Chlorides, oxychlorides, bromides and iodides",
+      "exportsUsd": 525321887,
+      "priorExportsUsd": 388727216,
+      "changePct": 35.1,
+      "sharePct": 3.6
+    },
+    {
+      "heading": "2828",
+      "label": "Calcium hypochlorite and other hypochlorites",
+      "exportsUsd": 46759553,
+      "priorExportsUsd": 56478675,
+      "changePct": -17.2,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2829",
+      "label": "Sodium chlorate, perchlorates and bromates",
+      "exportsUsd": 91359155,
+      "priorExportsUsd": 84483694,
+      "changePct": 8.1,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2830",
+      "label": "Sulfides and polysulfides",
+      "exportsUsd": 61334863,
+      "priorExportsUsd": 66306532,
+      "changePct": -7.5,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "2831",
+      "label": "Dithionites (hydrosulfites) and sulfoxylates",
+      "exportsUsd": 1675780,
+      "priorExportsUsd": 2052538,
+      "changePct": -18.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "2832",
+      "label": "Sulfites and thiosulfates",
+      "exportsUsd": 52164120,
+      "priorExportsUsd": 77891234,
+      "changePct": -33,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "2833",
+      "label": "Sulfates, alums and persulfates",
+      "exportsUsd": 242300822,
+      "priorExportsUsd": 251313128,
+      "changePct": -3.6,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "2834",
+      "label": "Nitrites and nitrates",
+      "exportsUsd": 39568049,
+      "priorExportsUsd": 41439987,
+      "changePct": -4.5,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2835",
+      "label": "Phosphates, polyphosphates and hypophosphites",
+      "exportsUsd": 320671600,
+      "priorExportsUsd": 301108161,
+      "changePct": 6.5,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "2836",
+      "label": "Carbonates, including lithium carbonate",
+      "exportsUsd": 1725184352,
+      "priorExportsUsd": 1991705924,
+      "changePct": -13.4,
+      "sharePct": 11.7
+    },
+    {
+      "heading": "2837",
+      "label": "Cyanides and complex cyanides",
+      "exportsUsd": 255973875,
+      "priorExportsUsd": 259852685,
+      "changePct": -1.5,
+      "sharePct": 1.7
+    },
+    {
+      "heading": "2839",
+      "label": "Silicates, including sodium silicate",
+      "exportsUsd": 96673177,
+      "priorExportsUsd": 73142372,
+      "changePct": 32.2,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "2840",
+      "label": "Borates and perborates (refined borax)",
+      "exportsUsd": 387983069,
+      "priorExportsUsd": 443339943,
+      "changePct": -12.5,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "2841",
+      "label": "Potassium permanganate, chromates, molybdates and other metal-acid salts",
+      "exportsUsd": 133064668,
+      "priorExportsUsd": 134167171,
+      "changePct": -0.8,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "2842",
+      "label": "Other inorganic salts, including double and complex salts",
+      "exportsUsd": 120151473,
+      "priorExportsUsd": 125928851,
+      "changePct": -4.6,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "2843",
+      "label": "Precious-metal compounds and colloidal precious metals",
+      "exportsUsd": 1169052999,
+      "priorExportsUsd": 1076005938,
+      "changePct": 8.6,
+      "sharePct": 8
+    },
+    {
+      "heading": "2844",
+      "label": "Uranium, thorium, plutonium and radioactive isotopes",
+      "exportsUsd": 1287414695,
+      "priorExportsUsd": 1289115457,
+      "changePct": -0.1,
+      "sharePct": 8.8
+    },
+    {
+      "heading": "2845",
+      "label": "Stable isotopes, including heavy water",
+      "exportsUsd": 350895904,
+      "priorExportsUsd": 304046896,
+      "changePct": 15.4,
+      "sharePct": 2.4
+    },
+    {
+      "heading": "2846",
+      "label": "Rare-earth compounds (cerium, lanthanum, yttrium and others)",
+      "exportsUsd": 223273689,
+      "priorExportsUsd": 259321793,
+      "changePct": -13.9,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "2847",
+      "label": "Hydrogen peroxide",
+      "exportsUsd": 46701352,
+      "priorExportsUsd": 40442288,
+      "changePct": 15.5,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "2849",
+      "label": "Carbides (silicon carbide, calcium carbide, tungsten carbide)",
+      "exportsUsd": 87797989,
+      "priorExportsUsd": 77091252,
+      "changePct": 13.9,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2850",
+      "label": "Hydrides, nitrides, azides, silicides and borides",
+      "exportsUsd": 179800645,
+      "priorExportsUsd": 215562170,
+      "changePct": -16.6,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "2852",
+      "label": "Mercury compounds",
+      "exportsUsd": 1218180,
+      "priorExportsUsd": 1087177,
+      "changePct": 12,
+      "sharePct": 0
+    },
+    {
+      "heading": "2853",
+      "label": "Phosphides, cyanogen chloride and other inorganic compounds",
+      "exportsUsd": 128790814,
+      "priorExportsUsd": 121375638,
+      "changePct": 6.1,
+      "sharePct": 0.9
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2836.20",
+      "heading": "2836",
+      "description": "Carbonates; disodium carbonate",
+      "exportsUsd": 1471297236,
+      "priorExportsUsd": 1711943546,
+      "changePct": -14.1,
+      "sharePct": 10
+    },
+    {
+      "hs6": "2815.12",
+      "heading": "2815",
+      "description": "Sodium hydroxide (caustic soda); in aqueous solution (soda lye or liquid soda)",
+      "exportsUsd": 1406085517,
+      "priorExportsUsd": 1194173873,
+      "changePct": 17.7,
+      "sharePct": 9.6
+    },
+    {
+      "hs6": "2804.61",
+      "heading": "2804",
+      "description": "Silicon; containing by weight not less than 99.99% of silicon",
+      "exportsUsd": 949307057,
+      "priorExportsUsd": 1064065131,
+      "changePct": -10.8,
+      "sharePct": 6.5
+    },
+    {
+      "hs6": "2844.10",
+      "heading": "2844",
+      "description": "Uranium; natural uranium and its compounds, alloys, dispersions (including cermets), ceramic products and mixtures containing natural uranium or natural uranium compounds",
+      "exportsUsd": 836146042,
+      "priorExportsUsd": 963209851,
+      "changePct": -13.2,
+      "sharePct": 5.7
+    },
+    {
+      "hs6": "2843.90",
+      "heading": "2843",
+      "description": "Inorganic or organic compounds of precious metals, n.e.c.; amalgams",
+      "exportsUsd": 706804422,
+      "priorExportsUsd": 748986190,
+      "changePct": -5.6,
+      "sharePct": 4.8
+    },
+    {
+      "hs6": "2814.10",
+      "heading": "2814",
+      "description": "Ammonia; anhydrous",
+      "exportsUsd": 473064856,
+      "priorExportsUsd": 328774725,
+      "changePct": 43.9,
+      "sharePct": 3.2
+    },
+    {
+      "hs6": "2804.29",
+      "heading": "2804",
+      "description": "Gases, rare; other than argon",
+      "exportsUsd": 453069400,
+      "priorExportsUsd": 539517370,
+      "changePct": -16,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "2843.30",
+      "heading": "2843",
+      "description": "Gold compounds",
+      "exportsUsd": 409649302,
+      "priorExportsUsd": 284555205,
+      "changePct": 44,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "2803.00",
+      "heading": "2803",
+      "description": "Carbon; carbon blacks and other forms of carbon n.e.c.",
+      "exportsUsd": 376254429,
+      "priorExportsUsd": 377583966,
+      "changePct": -0.4,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "2845.90",
+      "heading": "2845",
+      "description": "Isotopes other than those of heading no. 2844, 2845.20, 2845.30 or 2845.40; compounds, inorganic or organic, of such isotopes, whether or not chemically defined",
+      "exportsUsd": 338035042,
+      "priorExportsUsd": 284688894,
+      "changePct": 18.7,
+      "sharePct": 2.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 28, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 73% of 2025 U.S. Chapter 28 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

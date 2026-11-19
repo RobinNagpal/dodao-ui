@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 93,
+    "padded": "93",
+    "slug": "93-arms-and-ammunition",
+    "title": "Arms and Ammunition; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/93-arms-and-ammunition",
+    "h1": "HTS Chapter 93: Arms and Ammunition; Parts and Accessories Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Ammunition & Firearms Exports and Foreign Tariffs (HTS Ch. 93) | KoalaGains",
+      "shortDescription": "U.S. arms and ammunition exports hit $8.40B in 2025, up 32%. Who buys them (Israel, UAE, Japan, Saudi Arabia), what ships, and the tariff each buyer charges.",
+      "keywords": [
+        "us ammunition exports",
+        "us arms exports by country",
+        "us weapons exports by country",
+        "us arms exports to israel",
+        "us firearms exports",
+        "HS 93 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$8.40B** of arms and ammunition (HS Chapter 93) in 2025, up 32.3% from $6.35B in 2024 and almost double the $4.27B of 2020. Ammunition and munitions (9306) were **74%** ($6.23B), most of it other munitions and parts (9306.90, the line that includes bombs, grenades and missiles, $5.43B); military weapons (9301) added $952M and gun parts (9305) $770M, while pistols and revolvers, sporting rifles and shotguns and air guns together came to about $443M. **Israel** (23%, $1.93B) and the **United Arab Emirates** (12%, $1.00B) were the largest buyers.\n\nTariffs rarely decide these sales. Israel, the EU (since July 1, 2026), Australia, South Korea and Canada charge qualifying U.S. goods **nothing**; Japan charges its WTO rates of 5.4–8.4%, and the UAE and Saudi Arabia the 5% Gulf common tariff. What decides access is licensing on both sides: a **U.S. export licence** — from Commerce (BIS) for commercial firearms and ammunition, from the State Department for military items — and the **buyer’s import permit**. Canada’s 25% counter-tariff on U.S. handguns, rifles, shotguns and cartridges was lifted on September 1, 2025.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$8.40B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+32.3%"
+    },
+    {
+      "label": "Largest product group (9306)",
+      "value": "74%",
+      "note": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "35%",
+      "note": "Israel, United Arab Emirates"
+    },
+    {
+      "label": "Top 12 buyers charging 0%",
+      "value": "6 of 12",
+      "note": "Israel, Germany, Australia, South Korea, Poland, Canada (on qualifying U.S. goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. arms and ammunition exports reached $8.40B in 2025 (+32.3%); ammunition and munitions (9306) were 74% of it, and Israel, the UAE, Japan, Saudi Arabia and Germany were the five largest buyers.",
+    "Six of the 12 largest buyers charge 0% on qualifying U.S. Chapter 93 goods, the EU since July 1, 2026; Japan (5.4–8.4%), the UAE and Saudi Arabia (5%) charge their normal rates.",
+    "The only foreign tariff increase since January 2025 that hit these goods in a large market was Canada’s 25% counter-tariff on handguns, rifles, shotguns, air guns and cartridges (March 4 to September 1, 2025); an EU 30% list covering the same goods never applied.",
+    "Almost every shipment needs a U.S. export licence (BIS for commercial firearms and ammunition, the State Department for military items) and an AES filing; BIS’s 2024 tightening of firearms licences was rescinded on September 30, 2025."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 4266892994,
+      "partnerAUsd": 224002116,
+      "partnerBUsd": 441678752,
+      "restUsd": 3601212126
+    },
+    {
+      "year": 2021,
+      "totalUsd": 4247432767,
+      "partnerAUsd": 303028463,
+      "partnerBUsd": 388751546,
+      "restUsd": 3555652758
+    },
+    {
+      "year": 2022,
+      "totalUsd": 4877954716,
+      "partnerAUsd": 395922611,
+      "partnerBUsd": 226602030,
+      "restUsd": 4255430075
+    },
+    {
+      "year": 2023,
+      "totalUsd": 5770285618,
+      "partnerAUsd": 777336580,
+      "partnerBUsd": 340130770,
+      "restUsd": 4652818268
+    },
+    {
+      "year": 2024,
+      "totalUsd": 6350076919,
+      "partnerAUsd": 1596446172,
+      "partnerBUsd": 519404481,
+      "restUsd": 4234226266
+    },
+    {
+      "year": 2025,
+      "totalUsd": 8400512588,
+      "partnerAUsd": 1932332060,
+      "partnerBUsd": 1002929636,
+      "restUsd": 5465250892
+    }
+  ],
+  "byYearPartners": ["Israel", "United Arab Emirates"],
+  "byYearCaption": "U.S. exports of Chapter 93 goods each year, split into the two largest 2025 buyers (Israel and United Arab Emirates) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 5512632515,
+    "priorExportsUsd": 5440026499,
+    "changePct": 1.3,
+    "topBuyers": [
+      {
+        "countryCode": 376,
+        "country": "Israel",
+        "exportsUsd": 1198337795,
+        "priorExportsUsd": 1302855395,
+        "changePct": -8
+      },
+      {
+        "countryCode": 784,
+        "country": "United Arab Emirates",
+        "exportsUsd": 764495642,
+        "priorExportsUsd": 793123124,
+        "changePct": -3.6
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 431371699,
+        "priorExportsUsd": 313879641,
+        "changePct": 37.4
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 340143517,
+        "priorExportsUsd": 190639423,
+        "changePct": 78.4
+      },
+      {
+        "countryCode": 36,
+        "country": "Australia",
+        "exportsUsd": 313264235,
+        "priorExportsUsd": 248400349,
+        "changePct": 26.1
+      },
+      {
+        "countryCode": 616,
+        "country": "Poland",
+        "exportsUsd": 221502248,
+        "priorExportsUsd": 185414817,
+        "changePct": 19.5
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 193824728,
+        "priorExportsUsd": 198576591,
+        "changePct": -2.4
+      },
+      {
+        "countryCode": 682,
+        "country": "Saudi Arabia",
+        "exportsUsd": 189946957,
+        "priorExportsUsd": 337636545,
+        "changePct": -43.7
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 376,
+      "country": "Israel",
+      "exportsUsd": 1932332060,
+      "priorExportsUsd": 1596446172,
+      "sharePct": 23,
+      "changePct": 21,
+      "tariffNow": "Free (U.S.–Israel FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 1002929636,
+      "priorExportsUsd": 519404481,
+      "sharePct": 11.9,
+      "changePct": 93.1,
+      "tariffNow": "5% (GCC common tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 571398310,
+      "priorExportsUsd": 436046492,
+      "sharePct": 6.8,
+      "changePct": 31,
+      "tariffNow": "5.4–8.4% (Japan’s WTO rates)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "exportsUsd": 526903654,
+      "priorExportsUsd": 366378095,
+      "sharePct": 6.3,
+      "changePct": 43.8,
+      "tariffNow": "5% (GCC common tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 422640245,
+      "priorExportsUsd": 304176521,
+      "sharePct": 5,
+      "changePct": 38.9,
+      "tariffNow": "Free (EU–U.S. framework, since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 419994242,
+      "priorExportsUsd": 256666004,
+      "sharePct": 5,
+      "changePct": 63.6,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 345119583,
+      "priorExportsUsd": 245046819,
+      "sharePct": 4.1,
+      "changePct": 40.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 616,
+      "country": "Poland",
+      "exportsUsd": 335452058,
+      "priorExportsUsd": 292434588,
+      "sharePct": 4,
+      "changePct": 14.7,
+      "tariffNow": "Free (EU–U.S. framework, since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 296088528,
+      "priorExportsUsd": 363052334,
+      "sharePct": 3.5,
+      "changePct": -18.4,
+      "tariffNow": "Free (CUSMA); 2025 counter-tariff removed",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 804,
+      "country": "Ukraine",
+      "exportsUsd": 286613472,
+      "priorExportsUsd": 251811108,
+      "sharePct": 3.4,
+      "changePct": 13.8,
+      "tariffNow": "5–10% (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 255337418,
+      "priorExportsUsd": 119146685,
+      "sharePct": 3,
+      "changePct": 114.3,
+      "tariffNow": "0–5% (MFN); trade-agreement cuts pending",
+      "status": "pending"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 202887730,
+      "priorExportsUsd": 130385124,
+      "sharePct": 2.4,
+      "changePct": 55.6,
+      "tariffNow": "0–2% (UK Global Tariff)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1802815652,
+  "othersPriorExportsUsd": 1469082496,
+  "byHeading": [
+    {
+      "heading": "9301",
+      "label": "Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns",
+      "exportsUsd": 952089204,
+      "priorExportsUsd": 589591023,
+      "changePct": 61.5,
+      "sharePct": 11.3
+    },
+    {
+      "heading": "9302",
+      "label": "Revolvers and pistols",
+      "exportsUsd": 188638710,
+      "priorExportsUsd": 146787689,
+      "changePct": 28.5,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "9303",
+      "label": "Sporting and hunting shotguns and rifles, muzzle-loaders, blank-firing pistols, flare guns, captive-bolt and line-throwing guns",
+      "exportsUsd": 174700203,
+      "priorExportsUsd": 171341009,
+      "changePct": 2,
+      "sharePct": 2.1
+    },
+    {
+      "heading": "9304",
+      "label": "Air guns, airsoft guns, paintball markers, spring guns, truncheons and other arms",
+      "exportsUsd": 79724448,
+      "priorExportsUsd": 88571766,
+      "changePct": -10,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "9305",
+      "label": "Gun parts and accessories: frames, receivers, barrels, stocks and other parts of firearms and air guns",
+      "exportsUsd": 769563226,
+      "priorExportsUsd": 629495626,
+      "changePct": 22.3,
+      "sharePct": 9.2
+    },
+    {
+      "heading": "9306",
+      "label": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts",
+      "exportsUsd": 6226633920,
+      "priorExportsUsd": 4718845643,
+      "changePct": 32,
+      "sharePct": 74.1
+    },
+    {
+      "heading": "9307",
+      "label": "Swords, cutlasses, bayonets, lances and similar arms, scabbards and sheaths",
+      "exportsUsd": 9162877,
+      "priorExportsUsd": 5444163,
+      "changePct": 68.3,
+      "sharePct": 0.1
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "9306.90",
+      "heading": "9306",
+      "description": "Ammunition; n.e.c. in chapter 93",
+      "exportsUsd": 5432801958,
+      "priorExportsUsd": 3989854610,
+      "changePct": 36.2,
+      "sharePct": 64.7
+    },
+    {
+      "hs6": "9306.30",
+      "heading": "9306",
+      "description": "Ammunition; cartridges and parts thereof n.e.c. in heading no. 9306",
+      "exportsUsd": 704304052,
+      "priorExportsUsd": 690401329,
+      "changePct": 2,
+      "sharePct": 8.4
+    },
+    {
+      "hs6": "9305.91",
+      "heading": "9305",
+      "description": "Firearms; parts and accessories, of military weapons of heading 9301",
+      "exportsUsd": 579779637,
+      "priorExportsUsd": 455207604,
+      "changePct": 27.4,
+      "sharePct": 6.9
+    },
+    {
+      "hs6": "9301.90",
+      "heading": "9301",
+      "description": "Military weapons; other than revolvers, pistols, and arms of heading 9307, n.e.c. in heading 9301",
+      "exportsUsd": 516202390,
+      "priorExportsUsd": 304384745,
+      "changePct": 69.6,
+      "sharePct": 6.1
+    },
+    {
+      "hs6": "9301.20",
+      "heading": "9301",
+      "description": "Military weapons; rocket launchers, flame-throwers, grenade launchers, torpedo tubes and similar projectors",
+      "exportsUsd": 239009404,
+      "priorExportsUsd": 170903567,
+      "changePct": 39.9,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "9301.10",
+      "heading": "9301",
+      "description": "Military weapons; artillery weapons (e.g. guns, howitzers, and mortars)",
+      "exportsUsd": 196877410,
+      "priorExportsUsd": 114302711,
+      "changePct": 72.2,
+      "sharePct": 2.3
+    },
+    {
+      "hs6": "9302.00",
+      "heading": "9302",
+      "description": "Revolvers and pistols; other than those of heading no. 9303 or 9304",
+      "exportsUsd": 188638710,
+      "priorExportsUsd": 146787689,
+      "changePct": 28.5,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "9303.30",
+      "heading": "9303",
+      "description": "Firearms; sporting, hunting or target-shooting rifles n.e.c. in heading no. 9303",
+      "exportsUsd": 135544190,
+      "priorExportsUsd": 139026977,
+      "changePct": -2.5,
+      "sharePct": 1.6
+    },
+    {
+      "hs6": "9305.20",
+      "heading": "9305",
+      "description": "Firearms; parts and accessories, of shotguns or rifles of heading 9303",
+      "exportsUsd": 103575565,
+      "priorExportsUsd": 98233643,
+      "changePct": 5.4,
+      "sharePct": 1.2
+    },
+    {
+      "hs6": "9304.00",
+      "heading": "9304",
+      "description": "Firearms; (e.g. spring, air or gas guns and pistols, truncheons), excluding those of heading no. 9307",
+      "exportsUsd": 79724448,
+      "priorExportsUsd": 88571766,
+      "changePct": -10,
+      "sharePct": 0.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 93, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 79% of 2025 U.S. Chapter 93 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

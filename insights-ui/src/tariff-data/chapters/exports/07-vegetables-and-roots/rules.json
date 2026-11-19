@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 7,
+    "padded": "07",
+    "slug": "7-vegetables-and-roots",
+    "title": "Edible Vegetables and Certain Roots and Tubers"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/7-vegetables-and-roots/rules",
+    "h1": "HTS Chapter 07: Edible Vegetables and Certain Roots and Tubers — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Exporting U.S. Vegetables & Pulses: Schedule B, Phyto Certificate",
+      "shortDescription": "What the U.S. requires before you export potatoes, onions, lettuce, dry beans, peas and lentils: Schedule B, the USDA phytosanitary certificate, FGIS grading, licences and AES.",
+      "keywords": [
+        "hs code for fresh potatoes",
+        "hs code for lentils",
+        "hs code for chickpeas",
+        "phytosanitary certificate usda",
+        "pcit phytosanitary certificate",
+        "export license for food products"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Shipping vegetables, potatoes and pulses out of the U.S. is light on export controls: find the Schedule B number, screen the buyer and file in AES where required. These goods are EAR99, so no Commerce licence applies in the ordinary case, and shipments to Canada are exempt from AES filing. The work is plant health. Most buyers want a **USDA APHIS phytosanitary certificate**, issued through APHIS’s PCIT system, and APHIS’s Phytosanitary Export Database (PExD) lists each country’s extra declarations, treatments and, for potatoes, which U.S. states may ship. Dry beans, peas and lentils are usually sold with a **USDA Federal Grain Inspection Service** grade certificate.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Main lines: lettuce 0705.19 (head lettuce 0705.11), peppers 0709.60, fresh potatoes 0701.90 (seed potatoes 0701.10), onions 0703.10, tomatoes 0702.00, broccoli and cauliflower 0704.10, dry kidney, navy, pinto and black beans 0713.33, other dry beans 0713.39, lentils 0713.40, dried peas 0713.10, chickpeas 0713.20 and sweet potatoes 0714.20. The first six digits are the HS code on the Overview."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Pulses are often sold through traders and resold across regions; screen the consignee and, where you know it, the final buyer."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Fresh, frozen and dried vegetables, potatoes and pulses are EAR99, so no Commerce licence is needed unless the destination or end user is restricted (see the sanctions step)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Food sales to Cuba are allowed only under the Trade Sanctions Reform Act (cash in advance or third-country bank financing, with prior notice to BIS under License Exception AGR), and OFAC general licenses cover most food sales to Iran. Check the current OFAC program before quoting a sanctioned destination."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Shipments to Canada, where 59% of these goods go, are exempt from EEI filing unless they are going on to a third country or need a licence (15 CFR 30.36). A truckload to Mexico or a container of beans elsewhere is almost always worth more than $2,500 per Schedule B number, so plan to file in AES."
+    }
+  ],
+  "rules": [
+    {
+      "id": "aphis-phyto",
+      "agency": "USDA APHIS (Plant Protection and Quarantine)",
+      "title": "Phytosanitary certificate: the U.S. does not require one, but most buyers’ plant-quarantine agencies do for fresh vegetables, potatoes and pulses. An APHIS or authorized state inspector inspects the lot and issues the certificate (PPQ Form 577) through APHIS’s PCIT system. APHIS’s Phytosanitary Export Database (PExD) lists, country by country, the additional declarations, treatments and approved U.S. states each buyer requires; for potatoes, Mexico, Japan, Korea and Taiwan set product-specific conditions.",
+      "citations": [
+        {
+          "label": "APHIS: plant export certification",
+          "url": "https://www.aphis.usda.gov/plant-export/certification"
+        },
+        {
+          "label": "PCIT and PExD (Phytosanitary Certificate Issuance and Tracking)",
+          "url": "https://pcit.aphis.usda.gov/"
+        },
+        {
+          "label": "7 CFR Part 353 (export certification)",
+          "url": "https://www.ecfr.gov/current/title-7/part-353"
+        }
+      ]
+    },
+    {
+      "id": "fgis-pulses",
+      "agency": "USDA Agricultural Marketing Service, Federal Grain Inspection Service (FGIS)",
+      "title": "Official inspection of dry beans, peas and lentils: FGIS and its designated agencies sample and grade pulses against the U.S. standards on request, for a fee, and issue an official certificate. U.S. law does not require it for export, but buyers often write an FGIS grade certificate into the contract.",
+      "citations": [
+        {
+          "label": "7 CFR Part 868 (inspection of certain agricultural commodities)",
+          "url": "https://www.ecfr.gov/current/title-7/part-868"
+        },
+        {
+          "label": "AMS: Federal Grain Inspection Service",
+          "url": "https://www.ams.usda.gov/about-ams/programs-offices/federal-grain-inspection-service"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "0701",
+      "label": "Potatoes",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Fresh and seed potatoes almost always need a phytosanitary certificate, and many buyers limit which U.S. states may ship; Japan admits U.S. potatoes only for chipping. Seed potatoes (0701.10) carry extra declarations; check PExD."
+    },
+    {
+      "heading": "0702",
+      "label": "Tomatoes",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Almost all to Canada; CFIA’s AIRS shows whether a certificate is needed."
+    },
+    {
+      "heading": "0703",
+      "label": "Onions, garlic & leeks",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Onions and garlic: a phytosanitary certificate where the buyer requires one."
+    },
+    {
+      "heading": "0704",
+      "label": "Cabbage, broccoli & cauliflower",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Broccoli, cauliflower and cabbage, mostly to Canada and Mexico. A phytosanitary certificate where the buyer requires one."
+    },
+    {
+      "heading": "0705",
+      "label": "Lettuce & chicory",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Lettuce, mostly to Canada. A phytosanitary certificate where the buyer requires one."
+    },
+    {
+      "heading": "0706",
+      "label": "Carrots, beets & other roots",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Carrots and other roots: a phytosanitary certificate where the buyer requires one."
+    },
+    {
+      "heading": "0707",
+      "label": "Cucumbers",
+      "ruleIds": ["aphis-phyto"],
+      "note": null
+    },
+    {
+      "heading": "0708",
+      "label": "Fresh peas & beans",
+      "ruleIds": ["aphis-phyto"],
+      "note": null
+    },
+    {
+      "heading": "0709",
+      "label": "Other fresh vegetables",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Peppers, celery, spinach, asparagus and squash: a phytosanitary certificate where the buyer requires one."
+    },
+    {
+      "heading": "0710",
+      "label": "Frozen vegetables",
+      "ruleIds": [],
+      "note": "Frozen vegetables usually need no phytosanitary certificate, but some buyers ask for one; check PExD."
+    },
+    {
+      "heading": "0711",
+      "label": "Provisionally preserved vegetables",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "0712",
+      "label": "Dried vegetables",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Dried onions and other dried vegetables: some buyers want a phytosanitary certificate; check PExD."
+    },
+    {
+      "heading": "0713",
+      "label": "Dried beans, peas & lentils",
+      "ruleIds": ["aphis-phyto", "fgis-pulses"],
+      "note": "Dry peas, lentils, chickpeas and beans need a phytosanitary certificate for most buyers and are usually sold on an FGIS grade certificate. India also requires an import permit."
+    },
+    {
+      "heading": "0714",
+      "label": "Cassava, sweet potatoes & other roots",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Fresh sweet potatoes for the EU and UK need a phytosanitary certificate."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "eu-veg-preference",
+      "title": "Claim the EU’s 0% for U.S. vegetables",
+      "saves": "The EU’s normal duty on listed U.S. vegetables: for example 9.6% on onions, 3% on fresh sweet potatoes, 7.2% on sweet peppers, 10.2% on asparagus and 12.8% on dried onions.",
+      "appliesTo": "U.S.-origin goods of the CN codes in Annex I of Regulation (EU) 2026/1455 (and the percentage part of the duty on tomatoes, cucumbers, artichokes and courgettes in Annex II), from July 1, 2026.",
+      "document": "The EU importer claims the U.S. preference in the customs declaration and must be able to prove U.S. origin under the EU’s non-preferential origin rules (Article 6 of the Regulation).",
+      "caveat": "The preferences apply until December 31, 2029 unless renewed, and the Commission can suspend them. Entry-price duties on tomatoes and cucumbers stay, and U.S. potatoes remain barred by EU plant-health rules.",
+      "citations": [
+        {
+          "label": "Regulation (EU) 2026/1455",
+          "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+        },
+        {
+          "label": "Implementing Regulation (EU) 2019/2072 (plant health)",
+          "url": "https://eur-lex.europa.eu/eli/reg_impl/2019/2072/oj"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

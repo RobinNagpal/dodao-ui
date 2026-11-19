@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 44,
+    "padded": "44",
+    "slug": "44-wood-and-charcoal",
+    "title": "Wood and articles of wood; wood charcoal"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/44-wood-and-charcoal/rules",
+    "h1": "HTS Chapter 44: Wood and articles of wood; wood charcoal — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Exporting Lumber & Logs: Schedule B, Phytosanitary, ISPM 15",
+      "shortDescription": "What the U.S. requires to export lumber, logs, wood pellets or pallets: Schedule B codes, phytosanitary certificates, ISPM 15, the cedar licence and AES.",
+      "keywords": [
+        "phytosanitary certificate for wood",
+        "phytosanitary certificate for wood products",
+        "ispm 15 requirements usa",
+        "ispm 15 certificate",
+        "hs code lumber",
+        "hs code wood pellet",
+        "timber export permit"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Exporting wood from the U.S. is light on federal paperwork: find the Schedule B number, screen the buyer and file the export in AES. Most wood is EAR99, so no Commerce licence applies, with one exception: **unprocessed western red cedar** needs a BIS licence to every destination. What takes work is plant health. Buyers such as China, Viet Nam and Japan want a **USDA APHIS phytosanitary certificate** for logs and lumber, and China wants U.S. logs with bark fumigated. Every pallet or crate that carries any export must meet **ISPM 15**, and timber cut on federal land in the West cannot be exported as logs at all.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Wood pellets are 4401.31, oak lumber 4407.91, other hardwood lumber 4407.92–4407.99 by species, pine lumber 4407.11, fir and spruce 4407.12, S-P-F 4407.13, hem-fir 4407.14, oak logs 4403.91, softwood logs 4403.21–4403.26 and casks and barrels 4416.00. The 10-digit Schedule B number splits lumber further by species, grade or treatment; its first six digits are the HS code on the Overview."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Logs and lumber often sell through traders to sawmills and furniture makers in Viet Nam and China. Screen the consignee and, where you know it, the mill that will buy the wood."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most logs, lumber, pellets and wood products are EAR99. The exception is unprocessed western red cedar (logs, timber and lumber with wane, ECCN 1C988): it needs a BIS licence to every destination, Canada included, unless License Exception WRC applies to timber from Alaska public lands, private or Indian lands (15 CFR 754.4)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "A container of logs, lumber or pellets is almost always worth more than $2,500 per Schedule B number, so plan to file in AES. Western red cedar shipped under a BIS licence must be filed whatever its value."
+    }
+  ],
+  "rules": [
+    {
+      "id": "aphis-phyto",
+      "agency": "USDA APHIS (Plant Protection and Quarantine)",
+      "title": "Phytosanitary certificate: the U.S. does not require one, but most buyers’ plant-quarantine agencies do for logs, and many do for lumber, chips and firewood. An APHIS or authorized state inspector inspects the wood and issues the certificate (PPQ Form 577) through APHIS’s PCIT system, where the Phytosanitary Export Database (PExD) lists each country’s conditions. For China, U.S. logs with bark must be fumigated in the U.S. (it can be recorded on the certificate instead of a separate fumigation certificate). Kiln-dried lumber and processed products such as pellets often need none; check PExD for the destination.",
+      "citations": [
+        {
+          "label": "APHIS: plant and plant product export certificates",
+          "url": "https://www.aphis.usda.gov/plant-exports/certification"
+        },
+        {
+          "label": "PCIT and PExD (Phytosanitary Certificate Issuance and Tracking)",
+          "url": "https://pcit.aphis.usda.gov/pcit/faces/signIn.jsf"
+        },
+        {
+          "label": "7 CFR Part 353 (export certification)",
+          "url": "https://www.ecfr.gov/current/title-7/part-353"
+        },
+        {
+          "label": "USDA FAS: China Solid Wood Annual 2025 (log fumigation)",
+          "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Solid+Wood+Annual+2025_Beijing_China+-+People%27s+Republic+of_CH2026-0020.pdf"
+        }
+      ]
+    },
+    {
+      "id": "ispm15",
+      "agency": "USDA APHIS with the American Lumber Standard Committee (ALSC)",
+      "title": "ISPM 15 wood packaging: pallets, crates and dunnage used to ship any export must be heat-treated (core of at least 56 °C for 30 minutes) or fumigated with methyl bromide and carry the ISPM 15 mark. In the U.S. the mark comes only from a producer enrolled with an ALSC-accredited inspection agency, under ALSC’s agreement with APHIS; exporters cannot mark their own packaging. APHIS does not issue phytosanitary certificates for packaging that carries other goods, only for wood packaging shipped as the cargo itself (heading 4415).",
+      "citations": [
+        {
+          "label": "APHIS: ISPM 15-compliant wood packaging material for export",
+          "url": "https://www.aphis.usda.gov/plant-exports/wood-packaging-material/export"
+        }
+      ]
+    },
+    {
+      "id": "federal-timber",
+      "agency": "USDA Forest Service (and the Bureau of Land Management)",
+      "title": "Unprocessed timber cut on National Forest System lands west of the 100th meridian in the lower 48 states may not be exported, and buyers of it may not substitute it for exported private logs; buyers must report how they acquire and dispose of it. The ban comes from the Forest Resources Conservation and Shortage Relief Act of 1990, which also restricts unprocessed timber from some western state lands. Logs from private land can be exported.",
+      "citations": [
+        {
+          "label": "36 CFR Part 223, Subpart F (Forest Resources Conservation and Shortage Relief Act program)",
+          "url": "https://www.ecfr.gov/current/title-36/chapter-II/part-223/subpart-F"
+        },
+        {
+          "label": "16 U.S.C. 620 et seq. (Forest Resources Conservation and Shortage Relief Act of 1990)",
+          "url": "https://www.govinfo.gov/app/details/USCODE-2023-title16/USCODE-2023-title16-chap4D"
+        }
+      ]
+    },
+    {
+      "id": "wrc-licence",
+      "agency": "Commerce Department, Bureau of Industry and Security (BIS)",
+      "title": "Unprocessed western red cedar (Thuja plicata) logs, timber and rough, dressed or worked lumber with wane are controlled for short supply (ECCN 1C988): a BIS licence is needed to every destination. BIS generally denies licences for cedar from federal or state lands under contracts after September 30, 1979, and approves them for Alaska public, private and Indian lands; License Exception WRC covers those, with a harvest-origin statement and a third-party log-scaling certificate on file.",
+      "citations": [
+        {
+          "label": "15 CFR 754.4 (unprocessed western red cedar)",
+          "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-754/section-754.4"
+        }
+      ]
+    },
+    {
+      "id": "cites",
+      "agency": "USDA APHIS and U.S. Fish and Wildlife Service",
+      "title": "CITES-listed woods: exporting or re-exporting timber, lumber or veneer of a CITES-listed species (for example some rosewoods, mahoganies and other tropical woods) needs a CITES export or re-export permit from the U.S. Fish and Wildlife Service, and the exporter needs an APHIS protected-plant permit (PPQ 621) and must use a designated port. Common U.S. hardwoods and softwoods are not listed.",
+      "citations": [
+        {
+          "label": "APHIS: protected plant permits (CITES and ESA)",
+          "url": "https://www.aphis.usda.gov/plant-imports/cites"
+        },
+        {
+          "label": "7 CFR Part 355 (protected plants)",
+          "url": "https://www.ecfr.gov/current/title-7/part-355"
+        },
+        {
+          "label": "50 CFR Part 23 (CITES)",
+          "url": "https://www.ecfr.gov/current/title-50/part-23"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "4401",
+      "label": "Fuel wood, wood chips, sawdust & wood pellets",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Wood pellets usually need no phytosanitary certificate; chips, sawdust and firewood often do. Pellet buyers in the UK, EU and Japan ask for sustainability evidence (see Markets)."
+    },
+    {
+      "heading": "4402",
+      "label": "Wood charcoal, incl. shell & bamboo charcoal",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4403",
+      "label": "Logs and wood in the rough",
+      "ruleIds": ["aphis-phyto", "federal-timber", "wrc-licence", "cites"],
+      "note": "Logs almost always need a phytosanitary certificate, and logs with bark for China must be fumigated. Logs from western federal lands cannot be exported, and western red cedar logs need a BIS licence."
+    },
+    {
+      "heading": "4404",
+      "label": "Hoopwood, split poles, stakes & sticks",
+      "ruleIds": ["aphis-phyto"],
+      "note": "A phytosanitary certificate when the buyer asks for one."
+    },
+    {
+      "heading": "4405",
+      "label": "Wood wool (excelsior) & wood flour",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4406",
+      "label": "Railway sleepers (cross-ties)",
+      "ruleIds": ["aphis-phyto"],
+      "note": "Treated railway ties usually need no phytosanitary certificate; check PExD for the buyer."
+    },
+    {
+      "heading": "4407",
+      "label": "Sawn lumber: softwood, hardwood & tropical",
+      "ruleIds": ["aphis-phyto", "wrc-licence", "cites"],
+      "note": "Many buyers want a phytosanitary certificate for lumber; western red cedar lumber with wane needs a BIS licence; CITES-listed tropical lumber needs permits for re-export."
+    },
+    {
+      "heading": "4408",
+      "label": "Veneer sheets",
+      "ruleIds": ["aphis-phyto", "cites"],
+      "note": "A phytosanitary certificate when the buyer asks for one; CITES permits for listed tropical veneers."
+    },
+    {
+      "heading": "4409",
+      "label": "Mouldings, flooring strips & continuously shaped wood",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4410",
+      "label": "Particle board & OSB",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4411",
+      "label": "Fiberboard & MDF",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4412",
+      "label": "Plywood, LVL & veneered panels",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4413",
+      "label": "Densified wood",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4414",
+      "label": "Wooden picture & mirror frames",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4415",
+      "label": "Pallets, crates, boxes & cable drums",
+      "ruleIds": ["ispm15"],
+      "note": "New pallets and crates sold as goods must meet the buyer’s ISPM 15 rules; APHIS issues a phytosanitary certificate for wood packaging only when it is the cargo."
+    },
+    {
+      "heading": "4416",
+      "label": "Barrels, casks & staves",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4417",
+      "label": "Tools, tool handles & shoe lasts",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4418",
+      "label": "Builders' joinery: doors, windows, flooring, glulam",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4419",
+      "label": "Wooden tableware & kitchenware",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4420",
+      "label": "Wood marquetry, jewelry boxes & ornaments",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "4421",
+      "label": "Other articles of wood",
+      "ruleIds": [],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Have your Chinese buyer use China’s tariff exclusion process",
+      "saves": "China’s 2018–19 counter-tariffs answering U.S. Section 301, which apply to some U.S. wood lines on top of the 10% extra tariff when the buyer holds no exclusion.",
+      "appliesTo": "U.S. wood products imported into China by a buyer whose exclusion covers the goods.",
+      "document": "The Chinese importer applies on China’s Ministry of Finance exclusion system; the U.S. exporter supplies product and origin details.",
+      "caveat": "Exclusions are valid until December 31, 2026, and some products have earlier application deadlines; no extension is announced. They do not remove China’s extra 10% on all U.S. goods.",
+      "citations": [
+        {
+          "label": "USDA FAS: China extends Section 301 tariff exclusions (CH2025-0223)",
+          "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Trade+Alert+-+China+Extends+Section+301+Tariff+Exclusions+for+US+Agricultural+Products_Beijing_China+-+People%27s+Republic+of_CH2025-0223.pdf"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal (Nov 1, 2025)",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

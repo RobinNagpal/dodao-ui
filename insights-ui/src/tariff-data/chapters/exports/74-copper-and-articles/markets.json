@@ -1,0 +1,1379 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 74,
+    "padded": "74",
+    "slug": "74-copper-and-articles",
+    "title": "Copper and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/74-copper-and-articles/markets",
+    "h1": "HTS Chapter 74: Copper and Articles Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariff on U.S. Copper by Country: China, Canada, EU (HTS Ch. 74) | KoalaGains",
+      "shortDescription": "What Mexico, Canada, the EU, Japan, China, Korea, Thailand and India charge on U.S. copper scrap, cathode, wire and tube, plus scrap-import rules.",
+      "keywords": [
+        "tariff on us copper",
+        "china tariff on copper",
+        "does canada tariff us copper",
+        "copper scrap import duty india",
+        "copper tariff mexico",
+        "copper scrap import china"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Tariffs on U.S. copper split three ways. **Scrap and cathode**, about two-thirds of the chapter, enter duty-free almost everywhere: in Mexico and Canada under USMCA, and in the EU, Japan, Korea, Thailand and, since February 2, 2025, India on copper and brass scrap. In these markets the buyer's scrap-import rules decide access (see each market's regulator). **China** is the exception: U.S. scrap and cathode pay 35% unless the importer holds an exclusion (0% + a 25% counter-tariff from 2018–2019 + a 10% extra duty), and wire, sheet and tube pay 29–40%. **Semi-finished copper** (wire, sheet, tube and fittings) pays 3% in Japan and Thailand and 5–10% in India. It is free in Korea under KORUS, free in the EU since July 1, 2026, and free in Canada, except refined copper wire, which has carried a 50% surtax since September 8, 2026.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7401",
+      "label": "Copper mattes & cement copper",
+      "shortLabel": "Copper mattes"
+    },
+    {
+      "heading": "7402",
+      "label": "Unrefined copper & anodes",
+      "shortLabel": "Unrefined copper"
+    },
+    {
+      "heading": "7403",
+      "label": "Refined copper & alloys, unwrought (cathode)",
+      "shortLabel": "Cathode & unwrought"
+    },
+    {
+      "heading": "7404",
+      "label": "Copper waste & scrap",
+      "shortLabel": "Scrap"
+    },
+    {
+      "heading": "7405",
+      "label": "Master alloys of copper",
+      "shortLabel": "Master alloys"
+    },
+    {
+      "heading": "7406",
+      "label": "Copper powders & flakes",
+      "shortLabel": "Powders & flakes"
+    },
+    {
+      "heading": "7407",
+      "label": "Copper bars, rods & profiles",
+      "shortLabel": "Bars, rods, profiles"
+    },
+    {
+      "heading": "7408",
+      "label": "Copper wire",
+      "shortLabel": "Wire"
+    },
+    {
+      "heading": "7409",
+      "label": "Copper plates, sheets & strip",
+      "shortLabel": "Sheet & strip"
+    },
+    {
+      "heading": "7410",
+      "label": "Copper foil & copper-clad laminates",
+      "shortLabel": "Foil"
+    },
+    {
+      "heading": "7411",
+      "label": "Copper tubes & pipes",
+      "shortLabel": "Tubes & pipes"
+    },
+    {
+      "heading": "7412",
+      "label": "Copper tube & pipe fittings",
+      "shortLabel": "Pipe fittings"
+    },
+    {
+      "heading": "7413",
+      "label": "Stranded wire, cables & plaited bands",
+      "shortLabel": "Stranded wire"
+    },
+    {
+      "heading": "7415",
+      "label": "Copper nails, screws, bolts & washers",
+      "shortLabel": "Fasteners"
+    },
+    {
+      "heading": "7418",
+      "label": "Household & sanitary ware of copper",
+      "shortLabel": "Household ware"
+    },
+    {
+      "heading": "7419",
+      "label": "Other articles of copper",
+      "shortLabel": "Other articles"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin. Goods that do not qualify pay Mexico's MFN rate: 0% on cathode and scrap, 5% on wire, stranded wire and fittings, up to 15% on sanitary ware. Chapter 74 was not part of Mexico's January 1, 2026 tariff increases",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 3962455074,
+      "priorExportsUsd": 3896375794,
+      "sharePct": 31.4,
+      "changePct": 1.7,
+      "status": "unchanged",
+      "cells": {
+        "7401": {
+          "exportsUsd": 527450,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7402": {
+          "exportsUsd": 231662,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7403": {
+          "exportsUsd": 1596593686,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7403.11 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7404": {
+          "exportsUsd": 91419212,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7404.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7405": {
+          "exportsUsd": 1966085,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7405.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7406": {
+          "exportsUsd": 5664734,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7406.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7407": {
+          "exportsUsd": 155835371,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7407.29 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7408": {
+          "exportsUsd": 1112125783,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 5% for HS 7408.11 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7409": {
+          "exportsUsd": 290815376,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7409.11 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7410": {
+          "exportsUsd": 21479250,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7410.21 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7411": {
+          "exportsUsd": 98126369,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0–5% for HS 7411.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7412": {
+          "exportsUsd": 148453776,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 5% for HS 7412.20 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7413": {
+          "exportsUsd": 235026371,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 5% for HS 7413.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7415": {
+          "exportsUsd": 58500385,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7415.33 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7418": {
+          "exportsUsd": 1148246,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7418.20 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7419": {
+          "exportsUsd": 144541318,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–15% MFN (HS 7419.99, 2020)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0–15% for HS 7419.99 (2020, latest WITS year for this line). Not in Mexico's December 29, 2025 tariff decree"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest market ($3.96B, up 1.7%), mostly refined cathode (7403, $1.60B) and wire rod and wire (7408, $1.11B) for its wire, cable and auto-harness plants. Qualifying U.S. copper enters free under USMCA. Mexico's normal rates (5% on wire and stranded wire, up to 15% on sanitary ware) apply only if the rule of origin is not met, and its January 2026 tariff increases skipped copper.",
+        "mainProducts": "Refined copper & alloys, unwrought (cathode) (7403) · Copper wire (7408)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Servicio de Administración Tributaria (importer registry) and USMCA origin rules",
+          "url": "https://www.gob.mx/sat",
+          "requirement": "Copper needs no product approval in Mexico. The importer must be in the importers' registry (Padrón de Importadores) and needs a USMCA certification of origin to claim 0%"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (most Chapter 74 MFN rates are 0% anyway). On top of it, the United States Surtax Order (2026) has charged 50% on U.S.-origin refined copper wire (7408.11, 7408.19) since September 8, 2026, with no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2435362175,
+      "priorExportsUsd": 2202006281,
+      "sharePct": 19.3,
+      "changePct": 10.6,
+      "status": "raised",
+      "cells": {
+        "7401": {
+          "exportsUsd": 7151,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023). Not on any Canadian surtax list"
+        },
+        "7402": {
+          "exportsUsd": 424722872,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023). Not on any Canadian surtax list"
+        },
+        "7403": {
+          "exportsUsd": 236787309,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7403.11 (2023). Not on any Canadian surtax list"
+        },
+        "7404": {
+          "exportsUsd": 849575671,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7404.00 (2023). Not on any Canadian surtax list"
+        },
+        "7405": {
+          "exportsUsd": 1869380,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7405.00 (2023). Not on any Canadian surtax list"
+        },
+        "7406": {
+          "exportsUsd": 14374423,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7406.10 (2023). Not on any Canadian surtax list"
+        },
+        "7407": {
+          "exportsUsd": 178392251,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7407.29 (2023). Not on any Canadian surtax list"
+        },
+        "7408": {
+          "exportsUsd": 238983944,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7408.11 (2023); plus the 50% surtax of the United States Surtax Order (2026), SOR/2026-186, Schedule 3, from September 8, 2026 on refined copper wire (7408.11.10, 7408.11.20, 7408.11.30, 7408.19.00). It applies to goods of U.S. origin under the CUSMA marking rules, with no CUSMA exemption; copper-alloy wire (7408.21–7408.29) is not listed"
+        },
+        "7409": {
+          "exportsUsd": 89090282,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7409.11 (2023). Not on any Canadian surtax list"
+        },
+        "7410": {
+          "exportsUsd": 14689876,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7410.21 (2023). Not on any Canadian surtax list"
+        },
+        "7411": {
+          "exportsUsd": 70667864,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7411.10 (2023). Not on any Canadian surtax list"
+        },
+        "7412": {
+          "exportsUsd": 117367009,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7412.20 (2023). Not on any Canadian surtax list"
+        },
+        "7413": {
+          "exportsUsd": 137380483,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7413.00 (2023). Not on any Canadian surtax list"
+        },
+        "7415": {
+          "exportsUsd": 21317103,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7415.33 (2023). Not on any Canadian surtax list"
+        },
+        "7418": {
+          "exportsUsd": 3461605,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 3% for HS 7418.20 (2023). Not on any Canadian surtax list"
+        },
+        "7419": {
+          "exportsUsd": 36674952,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–9.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0–9.5% for HS 7419.80 (2023). Not on any Canadian surtax list"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($2.44B, up 10.6%) buys scrap (7404, $850M) and anodes for its refineries (7402, $425M), plus wire (7408, $239M) and cathode (7403, $237M). Everything enters free under CUSMA except U.S. refined copper wire, which has paid a 50% surtax since September 8, 2026, even when it qualifies. A Canadian manufacturer that uses the wire in production can claim the surtax back.",
+        "mainProducts": "Copper waste & scrap (7404) · Unrefined copper & anodes (7402)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on refined copper wire",
+        "regulator": {
+          "name": "Canada Border Services Agency (surtax and remission claims)",
+          "url": "https://www.cbsa-asfc.gc.ca/",
+          "requirement": "Copper needs no Canadian import permit. CBSA collects the 50% surtax on U.S. refined copper wire, and the importer files any remission claim for wire used in Canadian manufacturing within two years of import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff: 0% on scrap, cathode and other unwrought copper; for U.S.-origin goods, also 0% on the rest of Chapter 74 under Regulation (EU) 2026/1455 from July 1, 2026 (normally 3–5.2%)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1465674165,
+      "priorExportsUsd": 881951204,
+      "sharePct": 11.6,
+      "changePct": 66.2,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 600103003,
+          "priorExportsUsd": 294435644,
+          "changePct": 103.8
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 343796503,
+          "priorExportsUsd": 276562636,
+          "changePct": 24.3
+        },
+        {
+          "countryCode": 300,
+          "country": "Greece",
+          "exportsUsd": 167019569,
+          "priorExportsUsd": 30857675,
+          "changePct": 441.3
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 103778951,
+          "priorExportsUsd": 76325092,
+          "changePct": 36
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 74209766,
+          "priorExportsUsd": 75044590,
+          "changePct": -1.1
+        }
+      ],
+      "cells": {
+        "7401": {
+          "exportsUsd": 391100,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7402": {
+          "exportsUsd": 5990227,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7403": {
+          "exportsUsd": 41599008,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (checked November 18, 2026): third-country duty 0% for CN 7403.11; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7404": {
+          "exportsUsd": 1212071524,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (checked November 18, 2026): third-country duty 0% for CN 7404.00; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7405": {
+          "exportsUsd": 2788006,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS simple-average MFN 0% for HS 7405.00 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7406": {
+          "exportsUsd": 4925310,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS simple-average MFN 0% for HS 7406.10 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7407": {
+          "exportsUsd": 29937932,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4.8% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 4.8% for HS 7407.29 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7408": {
+          "exportsUsd": 14972410,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4.8% MFN",
+          "basis": "TARIC (checked November 18, 2026): third-country duty 4.8% for CN 7408.11; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7409": {
+          "exportsUsd": 45524673,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4.8% MFN",
+          "basis": "TARIC (checked November 18, 2026): third-country duty 4.8% for CN 7409.11; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7410": {
+          "exportsUsd": 41657101,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "5.2% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 5.2% for HS 7410.21 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7411": {
+          "exportsUsd": 9371232,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4.8% MFN",
+          "basis": "TARIC (checked November 18, 2026): third-country duty 4.8% for CN 7411.10; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7412": {
+          "exportsUsd": 11488565,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "5.2% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 5.2% for HS 7412.20 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7413": {
+          "exportsUsd": 7075021,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "5.2% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 5.2% for HS 7413.00 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7415": {
+          "exportsUsd": 4738458,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7415.33 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7418": {
+          "exportsUsd": 3440339,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7418.20 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7419": {
+          "exportsUsd": 29703259,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3–4.3% MFN",
+          "basis": "TARIC (checked November 18, 2026): third-country duty 3–4.3% for CN 7419.80; 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.47B, up 66.2%) is almost all scrap (7404, $1.21B), shipped mainly to Belgium, Germany and Greece. Scrap and cathode were already duty-free. Since July 1, 2026 the EU also charges 0% on U.S. copper wire, sheet, tube and other semis, which normally pay 3–5.2%. The EU review clause that could restore duties after December 31, 2026 names only the steel and aluminum chapters, not copper.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper plates, sheets & strip (7409)",
+        "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+        "regulator": {
+          "name": "EU Waste Shipment Regulation (Regulation (EU) 2024/1157)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2024/1157/oj",
+          "requirement": "Copper scrap for recycling is green-listed waste. From the U.S., an OECD country, it travels with the Annex VII information document and a contract with the EU recycler, with no prior consent needed. Refined copper and semis need no approval, and copper is not covered by the EU carbon border levy (CBAM)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff: 0% on scrap, cathode, anodes and fittings; 3% on master alloys, powders, bars, wire, sheet, foil, tube and stranded wire; no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 843281929,
+      "priorExportsUsd": 204091719,
+      "sharePct": 6.7,
+      "changePct": 313.2,
+      "status": "unchanged",
+      "cells": {
+        "7401": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023). No U.S. free-trade agreement applies"
+        },
+        "7402": {
+          "exportsUsd": 401609,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023). No U.S. free-trade agreement applies"
+        },
+        "7403": {
+          "exportsUsd": 6288334,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7403.11 (2023). No U.S. free-trade agreement applies"
+        },
+        "7404": {
+          "exportsUsd": 795674757,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7404.00 (2023). No U.S. free-trade agreement applies"
+        },
+        "7405": {
+          "exportsUsd": 332383,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7405.00 (2023). No U.S. free-trade agreement applies"
+        },
+        "7406": {
+          "exportsUsd": 1291293,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7406.10 (2023). No U.S. free-trade agreement applies"
+        },
+        "7407": {
+          "exportsUsd": 6362177,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7407.29 (2023). No U.S. free-trade agreement applies"
+        },
+        "7408": {
+          "exportsUsd": 3801574,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7408.11 (2023). No U.S. free-trade agreement applies"
+        },
+        "7409": {
+          "exportsUsd": 16928823,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7409.11 (2023). No U.S. free-trade agreement applies"
+        },
+        "7410": {
+          "exportsUsd": 2879993,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7410.21 (2023). No U.S. free-trade agreement applies"
+        },
+        "7411": {
+          "exportsUsd": 1234365,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7411.10 (2023). No U.S. free-trade agreement applies"
+        },
+        "7412": {
+          "exportsUsd": 2638758,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7412.20 (2023). No U.S. free-trade agreement applies"
+        },
+        "7413": {
+          "exportsUsd": 1545875,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7413.00 (2023). No U.S. free-trade agreement applies"
+        },
+        "7415": {
+          "exportsUsd": 1207716,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7415.33 (2023). No U.S. free-trade agreement applies"
+        },
+        "7418": {
+          "exportsUsd": 311061,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7418.20 (2023). No U.S. free-trade agreement applies"
+        },
+        "7419": {
+          "exportsUsd": 2383211,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7419.80 (2023). No U.S. free-trade agreement applies"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($843M, up 313%) takes 94% of it as scrap (7404, $796M), much of it diverted from China, and scrap and cathode enter duty-free. Japan charges 3% on most semi-finished copper (wire, sheet, strip, tube and foil), unchanged since January 2025.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper plates, sheets & strip (7409)",
+        "tariffNow": "Free on scrap and cathode; 3% on most semis",
+        "regulator": {
+          "name": "Ministry of the Environment and METI (Basel Act import controls)",
+          "url": "https://www.env.go.jp/recycle/yugai/pdf/tebiki_import_R07_0701.pdf",
+          "requirement": "Clean copper scrap needs no approval. Scrap that counts as a specified hazardous waste under Japan's Basel Act, such as scrap mixed with circuit boards, batteries or lead, needs import approval, and importers can ask the ministries in advance whether a cargo is covered"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's tariff (2026 provisional rates of 0% on cathode, anodes and recycled copper raw material; MFN 4–9% on semis and articles) plus the 10% extra duty on all U.S.-origin goods since May 14, 2025, plus China's 2018–2019 counter-tariffs (25% on scrap and cathode) unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 780917192,
+      "priorExportsUsd": 2938470223,
+      "sharePct": 6.2,
+      "changePct": -73.4,
+      "status": "raised",
+      "cells": {
+        "7401": {
+          "exportsUsd": 15788,
+          "rate": "2% + 10%",
+          "normalRate": "2% MFN (0% 2026 provisional rate for copper matte)",
+          "basis": "China customs tariff: 2% MFN (0% 2026 provisional rate for copper matte) for HS 7401.00 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7402": {
+          "exportsUsd": 17215,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "2% MFN; 0% 2026 provisional rate",
+          "basis": "China customs tariff: 2% MFN; 0% 2026 provisional rate for HS 7402.00 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7403": {
+          "exportsUsd": 16891127,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "2% MFN; 0% 2026 provisional rate",
+          "basis": "China customs tariff: 2% MFN; 0% 2026 provisional rate for HS 7403.11 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on cathode (7403.11.11, 7403.11.19); other unwrought refined copper and alloys 20% + 5%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7404": {
+          "exportsUsd": 647980266,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "1.5% MFN; 0% 2026 provisional rate for recycled copper raw material",
+          "basis": "China customs tariff: 1.5% MFN; 0% 2026 provisional rate for recycled copper raw material for HS 7404.00 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2018 List 2: 25% on 7404.0000 since August 23, 2018. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7405": {
+          "exportsUsd": 369900,
+          "rate": "39% (4% + 25% + 10%)",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 7405.00 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7406": {
+          "exportsUsd": 3977671,
+          "rate": "13–16% (3–6% + 10% + 10%)",
+          "normalRate": "3–6% MFN",
+          "basis": "China customs tariff: 3–6% MFN for HS 7406.10 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 3: 10% on powders of 7406.10. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7407": {
+          "exportsUsd": 10812702,
+          "rate": "27% (7% + 10% + 10%)",
+          "normalRate": "7% MFN",
+          "basis": "China customs tariff: 7% MFN for HS 7407.29 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 3: 10% on other alloy bars (7407.29); refined and brass bars 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7408": {
+          "exportsUsd": 3668058,
+          "rate": "39% (4% + 25% + 10%)",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 7408.11 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on refined copper wire (7408.11, 7408.19); brass wire 20%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7409": {
+          "exportsUsd": 18995762,
+          "rate": "29–39% (4% + 10–25% + 10%)",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 7409.11 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% (oxygen-free strip 7409.11.10: 10%). Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7410": {
+          "exportsUsd": 29204981,
+          "rate": "39% (4% + 25% + 10%)",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 7410.21 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on backed refined copper foil and copper-clad laminates. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7411": {
+          "exportsUsd": 27295289,
+          "rate": "34–39% (4% + 20–25% + 10%)",
+          "normalRate": "4% MFN (2% 2026 provisional rate on low-oxygen tube up to 25 mm)",
+          "basis": "China customs tariff: 4% MFN (2% 2026 provisional rate on low-oxygen tube up to 25 mm) for HS 7411.10 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annexes 1–2: 25% on most refined tube, 20% on other. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7412": {
+          "exportsUsd": 5141363,
+          "rate": "37–42% (7% + 20–25% + 10%)",
+          "normalRate": "7% MFN",
+          "basis": "China customs tariff: 7% MFN for HS 7412.20 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annexes 1–2: 25% or 20%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7413": {
+          "exportsUsd": 4019691,
+          "rate": "40% (5% + 25% + 10%)",
+          "normalRate": "5% MFN",
+          "basis": "China customs tariff: 5% MFN for HS 7413.00 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7415": {
+          "exportsUsd": 2505515,
+          "rate": "18–38% (8% + 0–20% + 10%)",
+          "normalRate": "8% MFN",
+          "basis": "China customs tariff: 8% MFN for HS 7415.33 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 2: 20% on bolts and nuts (7415.33.90); wood screws not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7418": {
+          "exportsUsd": 187908,
+          "rate": "44% (9% + 25% + 10%)",
+          "normalRate": "9% MFN",
+          "basis": "China customs tariff: 9% MFN for HS 7418.20 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7419": {
+          "exportsUsd": 9833956,
+          "rate": "27–44% (7–9% + 10–25% + 10%)",
+          "normalRate": "7–9% MFN",
+          "basis": "China customs tariff: 7–9% MFN for HS 7419.80 (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annexes 1–3: 10–25% depending on the article. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "China ($781M, down 73.4% from $2.94B) still buys mostly scrap (7404, $648M). U.S. scrap and cathode pay 35% unless the Chinese importer holds an exclusion, which runs only to December 31, 2026: China's 0% 2026 rate, plus the 25% counter-tariff from 2018–2019, plus the 10% extra duty. Scrap must also meet China's recycled-copper standards to enter at all.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper foil & copper-clad laminates (7410)",
+        "tariffNow": "35% on scrap and cathode (0% + 25% + 10%) unless excluded",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment and General Administration of Customs (recycled copper raw-material rules)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202410/t20241024_1090051.html",
+          "requirement": "Since November 15, 2024, copper and brass scrap enters only as recycled copper or copper-alloy raw material meeting national standards GB/T 38471 and GB/T 38470 (Announcement No. 23 of 2024). Grades may not be mixed in one declaration. Customs checks the cargo and its radiation level, and material it judges to be solid waste falls under China's solid-waste import ban"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (Korea's MFN rate is 0% on scrap and 3–8% on cathode, semis and articles)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 662796400,
+      "priorExportsUsd": 244596139,
+      "sharePct": 5.3,
+      "changePct": 171,
+      "status": "unchanged",
+      "cells": {
+        "7401": {
+          "exportsUsd": 5432,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023)"
+        },
+        "7402": {
+          "exportsUsd": 4708753,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023)"
+        },
+        "7403": {
+          "exportsUsd": 5034955,
+          "rate": "Free (KORUS)",
+          "normalRate": "3% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 3% for HS 7403.11 (2023)"
+        },
+        "7404": {
+          "exportsUsd": 607160321,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7404.00 (2023)"
+        },
+        "7405": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": "5% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 5% for HS 7405.00 (2023)"
+        },
+        "7406": {
+          "exportsUsd": 7601508,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7406.10 (2023)"
+        },
+        "7407": {
+          "exportsUsd": 5675442,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7407.29 (2023)"
+        },
+        "7408": {
+          "exportsUsd": 676309,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7408.11 (2023)"
+        },
+        "7409": {
+          "exportsUsd": 9610727,
+          "rate": "Free (KORUS)",
+          "normalRate": "5–8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 5–8% for HS 7409.11 (2023)"
+        },
+        "7410": {
+          "exportsUsd": 9277059,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7410.21 (2023)"
+        },
+        "7411": {
+          "exportsUsd": 3186776,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7411.10 (2023)"
+        },
+        "7412": {
+          "exportsUsd": 1075720,
+          "rate": "Free (KORUS)",
+          "normalRate": "3% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 3% for HS 7412.20 (2023)"
+        },
+        "7413": {
+          "exportsUsd": 1433558,
+          "rate": "Free (KORUS)",
+          "normalRate": "3% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 3% for HS 7413.00 (2023)"
+        },
+        "7415": {
+          "exportsUsd": 1905931,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7415.33 (2023)"
+        },
+        "7418": {
+          "exportsUsd": 71408,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7418.20 (2023)"
+        },
+        "7419": {
+          "exportsUsd": 5372501,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7419.80 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($663M, up 171%) is a scrap market (7404, $607M, 92%). Everything in the chapter enters free under KORUS, against Korea's normal 8% on wire, tube and foil, so origin certification matters only for semi-finished goods.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper plates, sheets & strip (7409)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Nuclear Safety and Security Commission (radiation monitoring of recycled scrap metal)",
+          "url": "https://www.nssc.go.kr/en/",
+          "requirement": "Imported scrap metal is screened by radiation monitors at major ports. Scrap melters with large electric furnaces must run their own monitors and return or dispose of contaminated loads"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 764,
+      "name": "Thailand",
+      "rule": "Thailand's MFN tariff (no U.S. free-trade agreement in force): 0% on scrap, cathode, bars and stranded wire; 3% on wire, sheet, tube and fittings; up to 20% on sanitary ware",
+      "usTradeAgreement": null,
+      "exportsUsd": 627483820,
+      "priorExportsUsd": 298494669,
+      "sharePct": 5,
+      "changePct": 110.2,
+      "status": "pending",
+      "cells": {
+        "7401": {
+          "exportsUsd": 140770,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7401.00 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7402": {
+          "exportsUsd": 189172,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7402.00 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7403": {
+          "exportsUsd": 1697361,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7403.11 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7404": {
+          "exportsUsd": 596947814,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7404.00 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7405": {
+          "exportsUsd": 45826,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7405.00 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7406": {
+          "exportsUsd": 781414,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7406.10 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7407": {
+          "exportsUsd": 2006132,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7407.29 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7408": {
+          "exportsUsd": 1119526,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7408.11 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7409": {
+          "exportsUsd": 470773,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7409.11 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7410": {
+          "exportsUsd": 2690668,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7410.21 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7411": {
+          "exportsUsd": 15752813,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7411.10 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7412": {
+          "exportsUsd": 673386,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7412.20 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7413": {
+          "exportsUsd": 481246,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7413.00 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7415": {
+          "exportsUsd": 347100,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7415.33 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7418": {
+          "exportsUsd": 42241,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 20% for HS 7418.20 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        },
+        "7419": {
+          "exportsUsd": 4097578,
+          "rate": "0–10%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff; WITS/TRAINS simple-average MFN 0–10% for HS 7419.80 (2023). No U.S. free-trade agreement in force; the reciprocal trade agreement is not yet signed"
+        }
+      },
+      "profile": {
+        "headline": "Thailand ($628M, up 110%) takes scrap (7404, $597M, 95%) and some tube (7411, $16M). Scrap and cathode pay 0%; wire, sheet and tube pay 3%. Thailand agreed in October 2025 to remove tariffs on about 99% of U.S. goods, and the two sides announced on November 17, 2026 that talks were substantially concluded, but the agreement is not yet signed.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper tubes & pipes (7411)",
+        "tariffNow": "Free on scrap and cathode; 3% on wire, sheet and tube",
+        "regulator": {
+          "name": "Department of Industrial Works and Customs Department (waste and scrap import control)",
+          "url": "https://www.diw.go.th/",
+          "requirement": "Clean copper scrap needs no product approval, but Thailand bans imports of electronic waste and checks incoming scrap containers for it. Scrap mixed with circuit boards or other e-waste is refused"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Thailand import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (no U.S. free-trade agreement): nil on copper and brass scrap since February 2, 2025; 5% on cathode, anodes, bars, wire, sheet and foil; 7.5% on tube and fittings; 10% on stranded wire and articles",
+      "usTradeAgreement": null,
+      "exportsUsd": 605695875,
+      "priorExportsUsd": 231751454,
+      "sharePct": 4.8,
+      "changePct": 161.4,
+      "status": "lowered",
+      "cells": {
+        "7401": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7401.00 (2023). No U.S. free-trade agreement"
+        },
+        "7402": {
+          "exportsUsd": 43493,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7402.00 (2023). No U.S. free-trade agreement"
+        },
+        "7403": {
+          "exportsUsd": 2453713,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7403.11 (2023). No U.S. free-trade agreement"
+        },
+        "7404": {
+          "exportsUsd": 574436512,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Notification No. 04/2025-Customs: nil duty from February 2, 2025 on copper scrap and brass scrap tariff items 7404 00 12, 7404 00 19 and 7404 00 22 (2.5% before; WITS/TRAINS 2023)"
+        },
+        "7405": {
+          "exportsUsd": 353087,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7405.00 (2023). No U.S. free-trade agreement"
+        },
+        "7406": {
+          "exportsUsd": 1119564,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7406.10 (2023). No U.S. free-trade agreement"
+        },
+        "7407": {
+          "exportsUsd": 5156377,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7407.29 (2023). No U.S. free-trade agreement"
+        },
+        "7408": {
+          "exportsUsd": 3903677,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7408.11 (2023). No U.S. free-trade agreement"
+        },
+        "7409": {
+          "exportsUsd": 2152486,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7409.11 (2023). No U.S. free-trade agreement"
+        },
+        "7410": {
+          "exportsUsd": 4551921,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 5% for HS 7410.21 (2023). No U.S. free-trade agreement"
+        },
+        "7411": {
+          "exportsUsd": 505644,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 7.5% for HS 7411.10 (2023). No U.S. free-trade agreement"
+        },
+        "7412": {
+          "exportsUsd": 1611887,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 7.5% for HS 7412.20 (2023). No U.S. free-trade agreement"
+        },
+        "7413": {
+          "exportsUsd": 4176838,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 10% for HS 7413.00 (2023). No U.S. free-trade agreement"
+        },
+        "7415": {
+          "exportsUsd": 1893272,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 10% for HS 7415.33 (2023). No U.S. free-trade agreement"
+        },
+        "7418": {
+          "exportsUsd": 163529,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 10% for HS 7418.20 (2023). No U.S. free-trade agreement"
+        },
+        "7419": {
+          "exportsUsd": 3173875,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS applied MFN 10% for HS 7419.80 (2023). No U.S. free-trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "India ($606M, up 161%) is almost all scrap (7404, $574M). Since February 2, 2025 India has charged nothing on copper and brass scrap (2.5% before); cathode, bars, wire and sheet pay 5% and tube 7.5%. U.S. scrap cleared at one of eight listed ports needs no pre-shipment inspection certificate, only the supplier's declaration that it is free of radioactive material and explosives.",
+        "mainProducts": "Copper waste & scrap (7404) · Copper bars, rods & profiles (7407)",
+        "tariffNow": "Free on copper and brass scrap; 5–10% on other lines",
+        "regulator": {
+          "name": "Directorate General of Foreign Trade (metal scrap import conditions)",
+          "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf",
+          "requirement": "Copper and brass scrap import freely under Handbook of Procedures para 2.51. Unshredded scrap enters only at designated ports. Scrap from the U.S. cleared at Chennai, Tuticorin, Kandla, JNPT, Mumbai, Krishnapatnam, Mundra or Kattupalli needs only a supplier certificate, not a pre-shipment inspection certificate"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "7403",
+      "exportsUsd": 1596593686,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "7404",
+      "exportsUsd": 1212071524,
+      "rate": "Free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7408",
+      "exportsUsd": 1112125783,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7404",
+      "exportsUsd": 849575671,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "7404",
+      "exportsUsd": 795674757,
+      "rate": "Free"
+    },
+    {
+      "market": "China",
+      "heading": "7404",
+      "exportsUsd": 647980266,
+      "rate": "35% (0% + 25% + 10%)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "7404",
+      "exportsUsd": 607160321,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Thailand",
+      "heading": "7404",
+      "exportsUsd": 596947814,
+      "rate": "Free"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. They come from the WITS (TRAINS) simple-average MFN applied rate for one representative six-digit subheading per heading, the one with the largest 2025 U.S. exports in that heading (for example 7404.00 for scrap, 7403.11 for cathode, 7408.11 for wire rod and 7411.10 for refined tube), for 2023, the latest year WITS holds. They are updated where a national 2026 schedule or notice was checked: EU TARIC, China's 2026 provisional rates, India's February 2025 scrap notification and Canada's surtax orders. National 8–10-digit lines can differ.",
+    "Mexico, Canada and Korea show the free-trade-agreement rate for goods that qualify; the normal-rate column shows the MFN rate a non-qualifying good pays. Mexico's decree of December 29, 2025 raised no Chapter 74 line.",
+    "Canada's 7408 cells add the 50% surtax of the United States Surtax Order (2026) on refined copper wire (7408.11, 7408.19). Remission for wire used in Canadian manufacturing is on Export rules.",
+    "The EU cells show 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026; the normal-rate column shows the third-country duty other origins pay.",
+    "China's cells add three layers: China's 2026 rate (provisional where one exists, otherwise MFN), the 10% extra duty on all U.S. goods, and the 2018–2019 counter-tariff of the line (25%, 20% or 10%; another 5% on other unwrought refined copper and alloys from the September 2019 list). An importer with an exclusion pays only the first two.",
+    "India's cells show basic customs duty only. Its copper and brass scrap lines (7404 00 12, 7404 00 19, 7404 00 22) have been nil since February 2, 2025.",
+    "Trade agreements that are signed or announced but not in force (Thailand, Taiwan, Malaysia, India) are not applied; see Tariff updates."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 74, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: tariff and trade data",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (TARIC)",
+      "citation": "TARIC consultation, origin US, November 18, 2026",
+      "document": "TARIC measure information",
+      "title": "TARIC measures for U.S.-origin copper (CN 7403 11, 7404 00 10, 7408 11, 7409 11, 7411 10 10, 7419 80): third-country duty and the 0% U.S. tariff preference (Regulation 2026/1455)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261118&Area=US&Taric=7408110000&LangDescr=en"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-wsr",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2024/1157",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2024/1157 on shipments of waste (applies from May 21, 2026)",
+      "signed": "2024-04-11",
+      "published": "2024-04-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1157/oj"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026): surtaxes of 15%, 25% and 50% on listed U.S. goods from September 8, 2026",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-remission",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2025-122 (consolidated)",
+      "document": "United States Surtax Remission Order (2025)",
+      "title": "United States Surtax Remission Order (2025), current to October 29, 2026",
+      "signed": null,
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE",
+      "title": "Mexico's decree raising general tariffs from January 1, 2026",
+      "signed": "2025-12-10",
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025, Annex 1",
+      "document": "2026 Tariff Adjustment Plan, Annex 1 (provisional import rates)",
+      "title": "2026 provisional import rates: 0% on refined copper cathode, wire bars, billets and other unwrought refined copper, anodes and recycled copper raw material; 2% on low-oxygen refined copper wire and tube",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2018-list2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2018",
+      "document": "Tariff Commission Announcement No. 7 of 2018 and its List 2",
+      "title": "Extra 25% duty on List 2 of U.S. goods from August 23, 2018 (item 129: 7404.0000 copper waste and scrap)",
+      "signed": null,
+      "published": "2018-08-08",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201808/t20180808_2983770.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Tariff Commission Announcement No. 3 of 2019 and Annexes 1–4 (25%, 20%, 10% and 5% lists)",
+      "title": "Higher additional tariffs on part of the U.S. goods on the US$60 billion list, from June 1, 2019",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Tariff Commission Announcement No. 4 of 2019 (third batch, Lists 1 and 2)",
+      "title": "Additional tariffs on US$75 billion of U.S. goods from September 1 and December 15, 2019",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Tariff Commission Announcement No. 1 of 2020",
+      "title": "Rates of the September 2019 additional tariffs on U.S. goods halved from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Tariff Commission Announcement No. 7 of 2025",
+      "title": "Extra tariff on U.S. goods cut to 10% from May 14, 2025",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-recycled-cu-2024",
+      "publisher": "Ministry of Ecology and Environment (PRC)",
+      "citation": "MEE/GACC/NDRC/MIIT/MOFCOM/SAMR Announcement No. 23 of 2024",
+      "document": "Announcement No. 23 of 2024",
+      "title": "Announcement on regulating the import of recycled copper and copper-alloy raw materials and recycled aluminum and aluminum-alloy raw materials (from November 15, 2024)",
+      "signed": "2024-10-21",
+      "published": "2024-10-23",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202410/t20241024_1090051.html"
+    },
+    {
+      "id": "in-cus-04-2025",
+      "publisher": "Ministry of Finance (India)",
+      "citation": "Notification No. 04/2025-Customs",
+      "document": "Notification No. 04/2025-Customs, February 1, 2025",
+      "title": "Effective customs duty of nil on copper scrap tariff items 7404 00 12, 7404 00 19 and 7404 00 22 from February 2, 2025",
+      "signed": "2025-02-01",
+      "published": "2025-02-01",
+      "url": "https://www.indiabudget.gov.in/doc/cen/cus0425.pdf"
+    },
+    {
+      "id": "in-dgft-hbp",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "Handbook of Procedures 2023, Chapter 2 (para 2.51)",
+      "document": "Handbook of Procedures, Chapter 2",
+      "title": "Import of metallic waste and scrap (para 2.51)",
+      "signed": null,
+      "published": "2026-07-01",
+      "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf"
+    },
+    {
+      "id": "th-art-framework-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Oct 26, 2025",
+      "document": "Joint Statement",
+      "title": "Joint Statement on a Framework for a United States-Thailand Agreement on Reciprocal Trade",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/10/joint-statement-on-a-framework-for-a-united-states-thailand-agreement-on-reciprocal-trade/"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 90% of 2025 U.S. Chapter 74 exports. A customs union (the EU) is one market: its members share one tariff."
+}

@@ -1,0 +1,1736 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 48,
+    "padded": "48",
+    "slug": "48-paper-and-paperboard",
+    "title": "Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/48-paper-and-paperboard/markets",
+    "h1": "HTS Chapter 48: Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "What Canada, Mexico, China & the EU Charge on U.S. Paper (HTS Ch. 48) | KoalaGains",
+      "shortDescription": "Rates on U.S. kraftliner, boxes, coated board and tissue in Canada, Mexico, the EU, China, Japan, Costa Rica, Guatemala and the UK, with Canada's 50% surtax.",
+      "keywords": [
+        "tariff on us paper products canada",
+        "mexico tariff on paper usmca",
+        "china tariff kraft paper",
+        "eu tariff on paper",
+        "tariffs on corrugated boxes",
+        "HS 48 tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Six of the eight largest markets charge nothing on most U.S. paper: Mexico, Costa Rica and Guatemala under trade agreements, and the EU, the UK and Japan, whose normal tariff on all paper is zero. **Canada**, the largest buyer, also charges 0% duty, but since September 8, 2026 it adds a **50%** surtax on U.S. corrugated boxes, paper bags, tissue parent rolls and some coated boards and **25%** on toilet paper, tissues and towels. **China** adds 10% to its 2–7.5% rates, and its older counter-tariffs and a 14.9% anti-dumping duty on sack kraft can apply on top. None of these markets requires a product approval for paper itself; the change to plan for is in the EU, where deforestation due-diligence statements are required for paper from December 30, 2026.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "4801",
+      "label": "Newsprint",
+      "shortLabel": "Newsprint"
+    },
+    {
+      "heading": "4802",
+      "label": "Uncoated printing, writing & copy paper",
+      "shortLabel": "Printing paper"
+    },
+    {
+      "heading": "4803",
+      "label": "Tissue & towel stock (parent rolls)",
+      "shortLabel": "Tissue stock"
+    },
+    {
+      "heading": "4804",
+      "label": "Uncoated kraft paper & paperboard (kraftliner, sack kraft)",
+      "shortLabel": "Kraft paper"
+    },
+    {
+      "heading": "4805",
+      "label": "Other uncoated paper & paperboard (fluting, testliner, recycled board)",
+      "shortLabel": "Fluting & recycled"
+    },
+    {
+      "heading": "4806",
+      "label": "Vegetable parchment, greaseproof, tracing paper & glassine",
+      "shortLabel": "Greaseproof & glassine"
+    },
+    {
+      "heading": "4807",
+      "label": "Composite (laminated) paper & paperboard",
+      "shortLabel": "Composite"
+    },
+    {
+      "heading": "4808",
+      "label": "Corrugated, creped & embossed paper",
+      "shortLabel": "Corrugated & creped"
+    },
+    {
+      "heading": "4809",
+      "label": "Carbon & self-copy paper (large rolls or sheets)",
+      "shortLabel": "Copying paper"
+    },
+    {
+      "heading": "4810",
+      "label": "Coated paper & paperboard (clay-coated)",
+      "shortLabel": "Coated paper"
+    },
+    {
+      "heading": "4811",
+      "label": "Paper coated with plastics, wax or adhesive; thermal & gift wrap",
+      "shortLabel": "Coated (plastic, wax)"
+    },
+    {
+      "heading": "4812",
+      "label": "Filter blocks, slabs & plates of paper pulp",
+      "shortLabel": "Filter blocks"
+    },
+    {
+      "heading": "4813",
+      "label": "Cigarette paper",
+      "shortLabel": "Cigarette paper"
+    },
+    {
+      "heading": "4814",
+      "label": "Wallpaper & wallcoverings",
+      "shortLabel": "Wallpaper"
+    },
+    {
+      "heading": "4816",
+      "label": "Carbon & self-copy paper (cut, boxed)",
+      "shortLabel": "Carbon paper"
+    },
+    {
+      "heading": "4817",
+      "label": "Envelopes & correspondence cards",
+      "shortLabel": "Envelopes"
+    },
+    {
+      "heading": "4818",
+      "label": "Toilet paper, tissues, towels & napkins",
+      "shortLabel": "Toilet paper & tissues"
+    },
+    {
+      "heading": "4819",
+      "label": "Boxes, cartons, bags & paper packaging",
+      "shortLabel": "Boxes & bags"
+    },
+    {
+      "heading": "4820",
+      "label": "Notebooks, diaries, binders & business forms",
+      "shortLabel": "Notebooks & binders"
+    },
+    {
+      "heading": "4821",
+      "label": "Paper labels",
+      "shortLabel": "Labels"
+    },
+    {
+      "heading": "4822",
+      "label": "Bobbins, spools & cores",
+      "shortLabel": "Bobbins & cores"
+    },
+    {
+      "heading": "4823",
+      "label": "Paper cups, plates, molded pulp & other paper articles",
+      "shortLabel": "Cups, plates & other"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (duty free; Canada's MFN rate on paper is also free), plus Canada's counter-surtax on 17 U.S.-origin paper tariff items since September 8, 2026 (50% on 13, 25% on 4); no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 5563330474,
+      "priorExportsUsd": 5928065315,
+      "sharePct": 38.9,
+      "changePct": -6.2,
+      "status": "raised",
+      "cells": {
+        "4801": {
+          "exportsUsd": 3646988,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4801.00 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4802": {
+          "exportsUsd": 162300909,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4802.56 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4803": {
+          "exportsUsd": 125143839,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4803.00; United States Surtax Order (2026), SOR/2026-186: every tariff item of the heading (4803.00.00) is in Schedule 3 (50%). The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4804": {
+          "exportsUsd": 606545806,
+          "rate": "Free (CUSMA); 4804.39 + 25%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4804.11; United States Surtax Order (2026), SOR/2026-186: only other kraft paper up to 150 g/m² (4804.39.00) is surtaxed, in Schedule 2 (25%); kraftliner (4804.11) and sack kraft are not. The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4805": {
+          "exportsUsd": 643207817,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4805.25 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4806": {
+          "exportsUsd": 36796292,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4806.20 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4807": {
+          "exportsUsd": 13062770,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4807.00 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4808": {
+          "exportsUsd": 265514364,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4808.10 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4809": {
+          "exportsUsd": 8122744,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4809.20 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4810": {
+          "exportsUsd": 578209551,
+          "rate": "Free (CUSMA); 4810.13, .32, .92 + 50%, 4810.31 + 25%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4810.39; United States Surtax Order (2026), SOR/2026-186: 4810.13.00, 4810.32.00 and 4810.92.00 are in Schedule 3 (50%) and 4810.31.00 in Schedule 2 (25%); the representative line 4810.39 is not surtaxed. The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4811": {
+          "exportsUsd": 752804492,
+          "rate": "Free (CUSMA); 4811.90 + 50%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4811.51; United States Surtax Order (2026), SOR/2026-186: only 4811.90.00 is in Schedule 3 (50%); plastic-coated (4811.51) and self-adhesive paper (4811.41) are not surtaxed. The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4812": {
+          "exportsUsd": 951630,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4812.00 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4813": {
+          "exportsUsd": 8676723,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4813.20 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4814": {
+          "exportsUsd": 17095954,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4814.20 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4816": {
+          "exportsUsd": 19267339,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4816.20 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4817": {
+          "exportsUsd": 22621273,
+          "rate": "Free (CUSMA); envelopes + 50%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4817.10; United States Surtax Order (2026), SOR/2026-186: envelopes (4817.10.00) are in Schedule 3 (50%). The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4818": {
+          "exportsUsd": 610761157,
+          "rate": "Free (CUSMA) + 25% (toilet paper, tissues, towels) or 50% (napkins, other)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4818.20; United States Surtax Order (2026), SOR/2026-186: 4818.10.00 and 4818.20.00 are in Schedule 2 (25%), 4818.30.00 and 4818.90.00 in Schedule 3 (50%). The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4819": {
+          "exportsUsd": 932697390,
+          "rate": "Free (CUSMA) + 50% on corrugated boxes and bags; folding cartons free",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4819.10; United States Surtax Order (2026), SOR/2026-186: 4819.10.00 (corrugated boxes) and 4819.40.00 (other bags) are in Schedule 3 (50%); folding cartons (4819.20) and large sacks (4819.30) are not surtaxed. The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4820": {
+          "exportsUsd": 76560121,
+          "rate": "Free (CUSMA); 4820.10, 4820.30 + 50%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4820.10; United States Surtax Order (2026), SOR/2026-186: notebooks and diaries (4820.10.00) and binders and folders (4820.30.00) are in Schedule 3 (50%). The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4821": {
+          "exportsUsd": 174458888,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4821.10 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4822": {
+          "exportsUsd": 14338391,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4822.90 (WITS 2023 MFN 0%); no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4823": {
+          "exportsUsd": 490546036,
+          "rate": "Free (CUSMA); cups, plates and trays + 50%",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4823.90; United States Surtax Order (2026), SOR/2026-186: paper cups, plates and trays (4823.69.00) are in Schedule 3 (50%); the representative line 4823.90 is not surtaxed. The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest market ($5.56B, down 6.2%) and the only one with a new tariff on U.S. paper. Since September 8, 2026 corrugated boxes and paper bags (part of 4819, $933M), several coated boards (4810, $578M) and tissue products (4818, $611M) pay a 25% or 50% surtax even under CUSMA, while kraftliner, fluting, folding cartons and plastic-coated paper stay free. Buyers that use the goods in manufacturing or to package food or drink can claim the surtax back.",
+        "mainProducts": "Boxes, cartons, bags & paper packaging (4819) · Paper coated with plastics, wax or adhesive; thermal & gift wrap (4811)",
+        "tariffNow": "Free (CUSMA) + 25% or 50% surtax on 17 paper lines",
+        "regulator": {
+          "name": "Canada Border Services Agency (CBSA)",
+          "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn26-23-eng.html",
+          "requirement": "Paper needs no import permit. CBSA collects the surtax on U.S.-origin goods at entry; the Canadian importer claims remission, for example for goods used in manufacturing or food and beverage packaging, within two years of import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff (duty free for originating goods); Mexican general tariff (LIGIE) for non-qualifying goods, raised to 25–35% on 49 Chapter 48 lines from January 1, 2026",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 4003251562,
+      "priorExportsUsd": 4269836908,
+      "sharePct": 28,
+      "changePct": -6.2,
+      "status": "unchanged",
+      "cells": {
+        "4801": {
+          "exportsUsd": 23095019,
+          "rate": "Free (USMCA)",
+          "normalRate": "5%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4801.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4802": {
+          "exportsUsd": 138531675,
+          "rate": "Free (USMCA)",
+          "normalRate": "30%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0%–5% for HS 4802.56; decree of December 29, 2025 (in force January 1, 2026): 4802.56.99 raised to 30% (part of 4802.56; 4802.57.91, 4802.58.04 and 4802.61.03 to 35%)"
+        },
+        "4803": {
+          "exportsUsd": 74925661,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4803.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4804": {
+          "exportsUsd": 769450610,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4804.11; decree of December 29, 2025 (in force January 1, 2026): kraftliner (4804.11) not in the decree; 4804.39.99 raised to 30% and 4804.42.01 to 35%"
+        },
+        "4805": {
+          "exportsUsd": 361089825,
+          "rate": "Free (USMCA)",
+          "normalRate": "35%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4805.25; decree of December 29, 2025 (in force January 1, 2026): 4805.25.02 raised to 35% (4805.24.02 too)"
+        },
+        "4806": {
+          "exportsUsd": 10418202,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4806.20; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4807": {
+          "exportsUsd": 25106500,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4807.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4808": {
+          "exportsUsd": 208450799,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4808.10; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4809": {
+          "exportsUsd": 6805146,
+          "rate": "Free (USMCA)",
+          "normalRate": "5%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4809.20; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4810": {
+          "exportsUsd": 311209571,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4810.39; decree of December 29, 2025 (in force January 1, 2026): 4810.39.99 raised to 25% (also 4810.13.07, 4810.29.99, 4810.32.01, 4810.92.01, 4810.99.99)"
+        },
+        "4811": {
+          "exportsUsd": 408600552,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–5%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0%–5% for HS 4811.51; decree of December 29, 2025 (in force January 1, 2026): 4811.51 not in the decree; 4811.41.02 raised to 25% and 4811.49.01 to 35%"
+        },
+        "4812": {
+          "exportsUsd": 802195,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4812.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4813": {
+          "exportsUsd": 15825075,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4813.20; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4814": {
+          "exportsUsd": 6386480,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4814.20; decree of December 29, 2025 (in force January 1, 2026): 4814.20.01 raised to 25%"
+        },
+        "4816": {
+          "exportsUsd": 4417175,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4816.20; decree of December 29, 2025 (in force January 1, 2026): 4816.20.01 raised to 25%"
+        },
+        "4817": {
+          "exportsUsd": 7840331,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4817.10; decree of December 29, 2025 (in force January 1, 2026): 4817.10.01 raised to 25%"
+        },
+        "4818": {
+          "exportsUsd": 67946752,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4818.20; decree of December 29, 2025 (in force January 1, 2026): 4818.20.01 raised to 25% (also 4818.30.01, 4818.50.01, 4818.90.99)"
+        },
+        "4819": {
+          "exportsUsd": 1026894696,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4819.10; decree of December 29, 2025 (in force January 1, 2026): 4819.10.01 raised to 25% (also folding cartons 4819.20.02, sacks and bags 4819.30.01 and 4819.40.91, other containers 4819.50.91 and office box files 4819.60.01)"
+        },
+        "4820": {
+          "exportsUsd": 14204074,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4820.10; decree of December 29, 2025 (in force January 1, 2026): 4820.10.02 raised to 25%"
+        },
+        "4821": {
+          "exportsUsd": 191133422,
+          "rate": "Free (USMCA)",
+          "normalRate": "25%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0% for HS 4821.10; decree of December 29, 2025 (in force January 1, 2026): 4821.10.01 raised to 25%"
+        },
+        "4822": {
+          "exportsUsd": 8435953,
+          "rate": "Free (USMCA)",
+          "normalRate": "5%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 5% for HS 4822.90; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4823": {
+          "exportsUsd": 321681849,
+          "rate": "Free (USMCA)",
+          "normalRate": "22–30%",
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; WITS 2023 MFN 0%–7% for HS 4823.90; decree of December 29, 2025 (in force January 1, 2026): 4823.90.99 raised to 22% and 4823.90.11 to 30% (4823.69.99 and 4823.70 lines to 25%)"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($4.00B, down 6.2%) is the largest buyer of U.S. boxes and cartons (4819, $1.03B) and kraftliner (4804, $769M), and charges nothing on paper that meets the USMCA rule of origin. Keep the certification of origin in order: since January 1, 2026 non-qualifying boxes, coated board and uncoated printing paper pay 25–35%.",
+        "mainProducts": "Boxes, cartons, bags & paper packaging (4819) · Uncoated kraft paper & paperboard (kraftliner, sack kraft) (4804)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Economía (Mexican Official Standards, NOM) and COFEPRIS",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-labelingmarking-requirements",
+          "requirement": "Paper needs no import permit; paper goods sold at retail, such as tissue and notebooks, need Spanish commercial labeling under the applicable NOM, and food-contact packaging falls under the health authority COFEPRIS"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff: 0% on all of Chapter 48; Regulation (EU) 2026/1455 also lists the chapter for U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 938913555,
+      "priorExportsUsd": 971068421,
+      "sharePct": 6.6,
+      "changePct": -3.3,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 206591768,
+          "priorExportsUsd": 200759507,
+          "changePct": 2.9
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 143647219,
+          "priorExportsUsd": 204038929,
+          "changePct": -29.6
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 122862309,
+          "priorExportsUsd": 112967836,
+          "changePct": 8.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 121196410,
+          "priorExportsUsd": 119938296,
+          "changePct": 1
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 88279146,
+          "priorExportsUsd": 80461529,
+          "changePct": 9.7
+        }
+      ],
+      "cells": {
+        "4801": {
+          "exportsUsd": 119710,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4801.00 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4802": {
+          "exportsUsd": 8200838,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4802.56 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4803": {
+          "exportsUsd": 5580214,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4803.00 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4804": {
+          "exportsUsd": 253201057,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4804.11 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4805": {
+          "exportsUsd": 6436758,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4805.25 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4806": {
+          "exportsUsd": 2559785,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4806.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4807": {
+          "exportsUsd": 10611323,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4807.00 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4808": {
+          "exportsUsd": 8661743,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4808.10 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4809": {
+          "exportsUsd": 1126864,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4809.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4810": {
+          "exportsUsd": 238062690,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4810.39 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4811": {
+          "exportsUsd": 180540473,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4811.51 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4812": {
+          "exportsUsd": 89304,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4812.00 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4813": {
+          "exportsUsd": 288968,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4813.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4814": {
+          "exportsUsd": 6798428,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4814.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4816": {
+          "exportsUsd": 4106371,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4816.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4817": {
+          "exportsUsd": 3748257,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4817.10 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4818": {
+          "exportsUsd": 27869243,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4818.20 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4819": {
+          "exportsUsd": 74016916,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4819.10 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4820": {
+          "exportsUsd": 11623074,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4820.10 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4821": {
+          "exportsUsd": 43024054,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4821.10 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4822": {
+          "exportsUsd": 97892,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4822.90 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        },
+        "4823": {
+          "exportsUsd": 52149593,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4823.90 and for every Chapter 48 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 48 for U.S. goods"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($939M, down 3.3%; Italy, Germany, Spain, the Netherlands and Belgium buy most) charges 0% on all paper and buys mainly kraftliner (4804, $253M) and coated board (4810, $238M). What changes is compliance: from December 30, 2026 EU importers must file deforestation due-diligence statements for paper. The U.S. is rated low-risk, so simplified due diligence applies.",
+        "mainProducts": "Uncoated kraft paper & paperboard (kraftliner, sack kraft) (4804) · Coated paper & paperboard (clay-coated) (4810)",
+        "tariffNow": "Free (EU MFN 0%)",
+        "regulator": {
+          "name": "European Commission (EU Deforestation Regulation 2023/1115)",
+          "url": "https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en",
+          "requirement": "From December 30, 2026 (June 30, 2027 for micro and small firms) the EU importer must file a due-diligence statement that the wood fibre was harvested legally and without deforestation or forest degradation after December 31, 2020, with the geolocation of the harvest plots; products made from recovered paper and packaging used only to carry another product are outside the scope"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China MFN tariff (2–7.5% on paper) plus the 10% extra tariff on all U.S. goods; 2018–2019 counter-tariffs unless the buyer holds an exclusion; 14.9% anti-dumping duty on unbleached sack kraft",
+      "usTradeAgreement": null,
+      "exportsUsd": 351876119,
+      "priorExportsUsd": 563993317,
+      "sharePct": 2.5,
+      "changePct": -37.6,
+      "status": "raised",
+      "cells": {
+        "4801": {
+          "exportsUsd": 12000,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4801.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4802": {
+          "exportsUsd": 1493635,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4802.56 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4803": {
+          "exportsUsd": 4397387,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4803.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (20% Annex 2 + 5% August 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4804": {
+          "exportsUsd": 150027131,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4804.11 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4); unbleached sack kraft (Chinese lines 4804.21, 4804.31) also pays a 14.9% anti-dumping duty until April 9, 2027 (MOFCOM Announcement 2022 No. 10)"
+        },
+        "4805": {
+          "exportsUsd": 16630443,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4805.25 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4806": {
+          "exportsUsd": 2967693,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4806.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4807": {
+          "exportsUsd": 473002,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4807.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4808": {
+          "exportsUsd": 14830176,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4808.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4809": {
+          "exportsUsd": 106508,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4809.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4810": {
+          "exportsUsd": 47744227,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4810.39 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4811": {
+          "exportsUsd": 76164342,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4811.51 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20–25% (Annexes 1 and 2, by Chinese line) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4812": {
+          "exportsUsd": 12394,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4812.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4813": {
+          "exportsUsd": 0,
+          "rate": "7.5% + 10%",
+          "normalRate": "7.5%",
+          "basis": "China MFN 7.5% for HS 4813.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); the heading is not on China's 2018–2019 counter-tariff lists"
+        },
+        "4814": {
+          "exportsUsd": 562899,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4814.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4816": {
+          "exportsUsd": 146175,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4816.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4817": {
+          "exportsUsd": 126001,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4817.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (20% Annex 2 + 5% August 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4818": {
+          "exportsUsd": 2517145,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4818.20 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (20% Annex 2 + 5% August 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4819": {
+          "exportsUsd": 8332666,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4819.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (20% Annex 2 + 5% August 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4820": {
+          "exportsUsd": 1034063,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN 5% for HS 4820.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (20% Annex 2 + 5% August 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4821": {
+          "exportsUsd": 14647060,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4821.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4822": {
+          "exportsUsd": 0,
+          "rate": "6% + 10%",
+          "normalRate": "6%",
+          "basis": "China MFN 6% for HS 4822.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4823": {
+          "exportsUsd": 9651172,
+          "rate": "5%–6% + 10%",
+          "normalRate": "5%–6%",
+          "basis": "China MFN 5%–6% for HS 4823.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20–25% (Annexes 1 and 2, by Chinese line) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        }
+      },
+      "profile": {
+        "headline": "China ($352M, down 37.6%) buys mainly kraftliner (4804, $150M) and plastic-coated and clay-coated paper. It charges its MFN rates plus 10% on all U.S. goods, 20–25% more on most paper (5% on kraftliner) under its 2018–2019 counter-tariff lists for buyers without an exclusion, and 14.9% on U.S. unbleached sack kraft until April 9, 2027.",
+        "mainProducts": "Uncoated kraft paper & paperboard (kraftliner, sack kraft) (4804) · Paper coated with plastics, wax or adhesive; thermal & gift wrap (4811)",
+        "tariffNow": "MFN 2–7.5% + 10% extra on all U.S. goods",
+        "regulator": {
+          "name": "Ministry of Commerce (MOFCOM) Trade Remedy Investigation Bureau",
+          "url": "https://trb.mofcom.gov.cn/myjjdc/art/2026/art_b9389006f02a4e3db8d317d4a168abe1.html",
+          "requirement": "Paper and board need no product approval; Chinese importers of U.S. unbleached sack kraft (Chinese lines 4804.21 and 4804.31) pay a 14.9% anti-dumping duty, listed by MOFCOM as expiring on April 9, 2027 unless an expiry review extends it"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff: 0% on all of Chapter 48",
+      "usTradeAgreement": null,
+      "exportsUsd": 314601939,
+      "priorExportsUsd": 347548217,
+      "sharePct": 2.2,
+      "changePct": -9.5,
+      "status": "unchanged",
+      "cells": {
+        "4801": {
+          "exportsUsd": 49522,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4801.00; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4802": {
+          "exportsUsd": 2896406,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4802.56; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4803": {
+          "exportsUsd": 439016,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4803.00; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4804": {
+          "exportsUsd": 59286367,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4804.11; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4805": {
+          "exportsUsd": 11261056,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4805.25; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4806": {
+          "exportsUsd": 52278,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4806.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4807": {
+          "exportsUsd": 85542,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4807.00; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4808": {
+          "exportsUsd": 156487,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4808.10; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4809": {
+          "exportsUsd": 17686,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4809.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4810": {
+          "exportsUsd": 103586480,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4810.39; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4811": {
+          "exportsUsd": 105638176,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4811.51; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4812": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4812.00; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4813": {
+          "exportsUsd": 93505,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4813.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4814": {
+          "exportsUsd": 702133,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4814.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4816": {
+          "exportsUsd": 460115,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4816.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4817": {
+          "exportsUsd": 282057,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4817.10; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4818": {
+          "exportsUsd": 2205213,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4818.20; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4819": {
+          "exportsUsd": 9548389,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4819.10; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4820": {
+          "exportsUsd": 964291,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4820.10; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4821": {
+          "exportsUsd": 5403675,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4821.10; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4822": {
+          "exportsUsd": 1212349,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4822.90; WITS 2023 shows 0% on every Chapter 48 line"
+        },
+        "4823": {
+          "exportsUsd": 10261196,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 48: 0% for HS 4823.90; WITS 2023 shows 0% on every Chapter 48 line"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($315M, down 9.5%) charges 0% on all paper and buys mostly plastic-coated paper (4811, $106M), clay-coated paper and board (4810, $104M) and kraft paper (4804, $59M). Paper packaging and utensils that touch food must meet the Food Sanitation Act.",
+        "mainProducts": "Paper coated with plastics, wax or adhesive; thermal & gift wrap (4811) · Coated paper & paperboard (clay-coated) (4810)",
+        "tariffNow": "Free (MFN 0%)",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (Food Sanitation Act)",
+          "url": "https://www.mhlw.go.jp/english/topics/importedfoods/index.html",
+          "requirement": "Paper needs no import approval; paper containers, packaging and utensils for food must be notified to an MHLW quarantine station at import and meet Food Sanitation Act standards"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 188,
+      "name": "Costa Rica",
+      "rule": "CAFTA-DR (duty free for originating U.S. goods since January 1, 2015)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 286392518,
+      "priorExportsUsd": 268219389,
+      "sharePct": 2,
+      "changePct": 6.8,
+      "status": "unchanged",
+      "cells": {
+        "4801": {
+          "exportsUsd": 117390,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4801.00"
+        },
+        "4802": {
+          "exportsUsd": 5085814,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4802.56"
+        },
+        "4803": {
+          "exportsUsd": 31879,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 9% for HS 4803.00"
+        },
+        "4804": {
+          "exportsUsd": 160636292,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4804.11"
+        },
+        "4805": {
+          "exportsUsd": 76997253,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4805.25"
+        },
+        "4806": {
+          "exportsUsd": 186675,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4806.20"
+        },
+        "4807": {
+          "exportsUsd": 16580,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4807.00"
+        },
+        "4808": {
+          "exportsUsd": 1250375,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 9% for HS 4808.10"
+        },
+        "4809": {
+          "exportsUsd": 385416,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4809.20"
+        },
+        "4810": {
+          "exportsUsd": 6880602,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4810.39"
+        },
+        "4811": {
+          "exportsUsd": 5803348,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4811.51"
+        },
+        "4812": {
+          "exportsUsd": 12669,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4812.00"
+        },
+        "4813": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4813.20"
+        },
+        "4814": {
+          "exportsUsd": 40607,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 9% for HS 4814.20"
+        },
+        "4816": {
+          "exportsUsd": 31155,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4816.20"
+        },
+        "4817": {
+          "exportsUsd": 225715,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "14%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 14% for HS 4817.10"
+        },
+        "4818": {
+          "exportsUsd": 1976321,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "14%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 14% for HS 4818.20"
+        },
+        "4819": {
+          "exportsUsd": 11670831,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 9% for HS 4819.10"
+        },
+        "4820": {
+          "exportsUsd": 166530,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "14%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 14% for HS 4820.10"
+        },
+        "4821": {
+          "exportsUsd": 10411130,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "14%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 14% for HS 4821.10"
+        },
+        "4822": {
+          "exportsUsd": 51372,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4822.90"
+        },
+        "4823": {
+          "exportsUsd": 4414564,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–9%",
+          "basis": "CAFTA-DR: all U.S. originating consumer and industrial goods duty-free in Costa Rica since January 1, 2015 (trade.gov); Central American tariff (WITS 2023) 0%–9% for HS 4823.90"
+        }
+      },
+      "profile": {
+        "headline": "Costa Rica ($286M, up 6.8%) buys mostly kraftliner (4804, $161M) and fluting and testliner (4805, $77M), duty-free under CAFTA-DR. Without the agreement its normal rate would be 9–14% on boxes, tissue and labels.",
+        "mainProducts": "Uncoated kraft paper & paperboard (kraftliner, sack kraft) (4804) · Other uncoated paper & paperboard (fluting, testliner, recycled board) (4805)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "Costa Rica customs (Dirección General de Aduanas)",
+          "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-tariffs",
+          "requirement": "Paper and board need no product approval; the importer claims the CAFTA-DR rate at entry on the basis of a certification of origin"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Costa Rica import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 320,
+      "name": "Guatemala",
+      "rule": "CAFTA-DR (duty free for originating U.S. industrial goods)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 247769834,
+      "priorExportsUsd": 259023165,
+      "sharePct": 1.7,
+      "changePct": -4.3,
+      "status": "unchanged",
+      "cells": {
+        "4801": {
+          "exportsUsd": 1888512,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4801.00"
+        },
+        "4802": {
+          "exportsUsd": 6698110,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4802.56"
+        },
+        "4803": {
+          "exportsUsd": 1403614,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 10% for HS 4803.00"
+        },
+        "4804": {
+          "exportsUsd": 176293234,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4804.11"
+        },
+        "4805": {
+          "exportsUsd": 36304541,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4805.25"
+        },
+        "4806": {
+          "exportsUsd": 307413,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4806.20"
+        },
+        "4807": {
+          "exportsUsd": 95261,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4807.00"
+        },
+        "4808": {
+          "exportsUsd": 256159,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 10% for HS 4808.10"
+        },
+        "4809": {
+          "exportsUsd": 24264,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4809.20"
+        },
+        "4810": {
+          "exportsUsd": 5830218,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4810.39"
+        },
+        "4811": {
+          "exportsUsd": 3679115,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4811.51"
+        },
+        "4812": {
+          "exportsUsd": 3520,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4812.00"
+        },
+        "4813": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4813.20"
+        },
+        "4814": {
+          "exportsUsd": 28526,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 10% for HS 4814.20"
+        },
+        "4816": {
+          "exportsUsd": 75636,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4816.20"
+        },
+        "4817": {
+          "exportsUsd": 188275,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "15%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 15% for HS 4817.10"
+        },
+        "4818": {
+          "exportsUsd": 3138272,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "15%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 15% for HS 4818.20"
+        },
+        "4819": {
+          "exportsUsd": 3456434,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 10% for HS 4819.10"
+        },
+        "4820": {
+          "exportsUsd": 309405,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "15%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 15% for HS 4820.10"
+        },
+        "4821": {
+          "exportsUsd": 4493768,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "15%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 15% for HS 4821.10"
+        },
+        "4822": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0% for HS 4822.90"
+        },
+        "4823": {
+          "exportsUsd": 3295557,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "0%–10%",
+          "basis": "CAFTA-DR: U.S. industrial and consumer goods duty-free in Guatemala, the last staged cuts ending in 2026 (trade.gov); Central American tariff (WITS 2023) 0%–10% for HS 4823.90"
+        }
+      },
+      "profile": {
+        "headline": "Guatemala ($248M, down 4.3%) buys mainly kraftliner (4804, $176M) and fluting (4805, $36M), duty-free under CAFTA-DR. Its normal rate is 0% on kraftliner but 10–15% on boxes, tissue and labels.",
+        "mainProducts": "Uncoated kraft paper & paperboard (kraftliner, sack kraft) (4804) · Other uncoated paper & paperboard (fluting, testliner, recycled board) (4805)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "Guatemala customs (Superintendencia de Administración Tributaria, SAT)",
+          "url": "https://www.trade.gov/country-commercial-guides/guatemala-import-tariffs",
+          "requirement": "Paper and board need no product approval; the importer claims the CAFTA-DR rate at entry on the basis of a certification of origin"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Guatemala import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/guatemala-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff: 0% on all of Chapter 48",
+      "usTradeAgreement": null,
+      "exportsUsd": 227344954,
+      "priorExportsUsd": 228801628,
+      "sharePct": 1.6,
+      "changePct": -0.6,
+      "status": "unchanged",
+      "cells": {
+        "4801": {
+          "exportsUsd": 90602,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4801.00 and every Chapter 48 line (WITS 2023)"
+        },
+        "4802": {
+          "exportsUsd": 3040522,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4802.56 and every Chapter 48 line (WITS 2023)"
+        },
+        "4803": {
+          "exportsUsd": 1364584,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4803.00 and every Chapter 48 line (WITS 2023)"
+        },
+        "4804": {
+          "exportsUsd": 38346335,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4804.11 and every Chapter 48 line (WITS 2023)"
+        },
+        "4805": {
+          "exportsUsd": 2430083,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4805.25 and every Chapter 48 line (WITS 2023)"
+        },
+        "4806": {
+          "exportsUsd": 360429,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4806.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4807": {
+          "exportsUsd": 10155,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4807.00 and every Chapter 48 line (WITS 2023)"
+        },
+        "4808": {
+          "exportsUsd": 1098660,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4808.10 and every Chapter 48 line (WITS 2023)"
+        },
+        "4809": {
+          "exportsUsd": 1439690,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4809.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4810": {
+          "exportsUsd": 93207829,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4810.39 and every Chapter 48 line (WITS 2023)"
+        },
+        "4811": {
+          "exportsUsd": 43374000,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4811.51 and every Chapter 48 line (WITS 2023)"
+        },
+        "4812": {
+          "exportsUsd": 2653,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4812.00 and every Chapter 48 line (WITS 2023)"
+        },
+        "4813": {
+          "exportsUsd": 90761,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4813.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4814": {
+          "exportsUsd": 2584185,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4814.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4816": {
+          "exportsUsd": 1386895,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4816.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4817": {
+          "exportsUsd": 830058,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4817.10 and every Chapter 48 line (WITS 2023)"
+        },
+        "4818": {
+          "exportsUsd": 5215553,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4818.20 and every Chapter 48 line (WITS 2023)"
+        },
+        "4819": {
+          "exportsUsd": 11034993,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4819.10 and every Chapter 48 line (WITS 2023)"
+        },
+        "4820": {
+          "exportsUsd": 4388445,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4820.10 and every Chapter 48 line (WITS 2023)"
+        },
+        "4821": {
+          "exportsUsd": 6603962,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4821.10 and every Chapter 48 line (WITS 2023)"
+        },
+        "4822": {
+          "exportsUsd": 0,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4822.90 and every Chapter 48 line (WITS 2023)"
+        },
+        "4823": {
+          "exportsUsd": 10444560,
+          "rate": "Free (UK Global Tariff 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff: 0% for HS 4823.90 and every Chapter 48 line (WITS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($227M, down 0.6%) charges 0% on paper and buys mostly clay-coated paper and board (4810, $93M) and plastic-coated paper (4811, $43M). The EU's deforestation rules do not apply in Great Britain.",
+        "mainProducts": "Coated paper & paperboard (clay-coated) (4810) · Paper coated with plastics, wax or adhesive; thermal & gift wrap (4811)",
+        "tariffNow": "Free (UK Global Tariff 0%)",
+        "regulator": {
+          "name": "HM Revenue & Customs (UK Global Tariff)",
+          "url": "https://www.trade-tariff.service.gov.uk/chapters/48",
+          "requirement": "Paper and board need no import licence or product approval; HMRC applies the UK Global Tariff rate of 0%"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "4819",
+      "exportsUsd": 1026894696,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4819",
+      "exportsUsd": 932697390,
+      "rate": "Free (CUSMA) + 50% on corrugated boxes and bags; folding cartons free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4804",
+      "exportsUsd": 769450610,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4811",
+      "exportsUsd": 752804492,
+      "rate": "Free (CUSMA); 4811.90 + 50%"
+    },
+    {
+      "market": "Canada",
+      "heading": "4805",
+      "exportsUsd": 643207817,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4818",
+      "exportsUsd": 610761157,
+      "rate": "Free (CUSMA) + 25% (toilet paper, tissues, towels) or 50% (napkins, other)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4804",
+      "exportsUsd": 606545806,
+      "rate": "Free (CUSMA); 4804.39 + 25%"
+    },
+    {
+      "market": "Canada",
+      "heading": "4810",
+      "exportsUsd": 578209551,
+      "rate": "Free (CUSMA); 4810.13, .32, .92 + 50%, 4810.31 + 25%"
+    }
+  ],
+  "assumptions": [
+    "Each cell uses one representative six-digit subheading per heading: the one with the largest 2025 U.S. exports (for example 4804.11 kraftliner, 4819.10 corrugated boxes, 4811.51 plastic-coated paper, 4810.39 coated kraft board). MFN rates are World Bank/UNCTAD WITS (TRAINS) rates for 2023, the latest year WITS holds; national 8–10-digit lines can differ.",
+    "Japan, the EU, the UK and Canada charge 0% MFN on every six-digit line of Chapter 48 (WITS 2023; Canada's 2026 Customs Tariff and Japan's April 2026 schedule show the same), so a trade agreement changes nothing there.",
+    "Mexico (USMCA), Costa Rica and Guatemala (CAFTA-DR) apply 0% only to goods that meet the agreement's rules of origin; the normal-rate column shows the MFN rate a non-qualifying U.S. good would pay, including Mexico's decree of December 29, 2025 (in force January 1, 2026) where it raised a line under the heading.",
+    "Canada's cells name the tariff items in the United States Surtax Order (2026), SOR/2026-186: Schedule 3 (50%) and Schedule 2 (25%). The surtax applies to goods of U.S. origin under the CUSMA marking rules; relief under the United States Surtax Remission Order (2025), such as for inputs to Canadian manufacturing or food and beverage packaging, is not netted out.",
+    "China's cells add the 10% extra duty on all U.S. goods to the MFN rate. China's 2018–2019 counter-tariffs (Tariff Commission Announcement 2019 No. 3, and the August 2019 list of Announcement 2019 No. 4, halved to 5% from February 14, 2020 by Announcement 2020 No. 1) are named in each basis but not added, because importers can hold exclusions valid until December 31, 2026. The 14.9% anti-dumping duty applies only to unbleached sack kraft.",
+    "VAT and other internal taxes, the cost of EU deforestation due diligence and any trade-remedy duty other than China's sack kraft duty are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 48, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates (2023)",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading, chapter 48 (Canada, Mexico, EU, China, Japan, Costa Rica, Guatemala, UK)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/480411"
+    },
+    {
+      "id": "ca-cbsa-ch48",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, ch. 48",
+      "document": "Tariff schedule",
+      "title": "Canadian Customs Tariff, Chapter 48: paper and paperboard (MFN and United States Tariff columns Free)",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch48-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-remission-order",
+      "publisher": "Department of Justice Canada (Justice Laws)",
+      "citation": "SOR/2025-122, consolidated to 2026-10-29",
+      "document": "Remission order",
+      "title": "United States Surtax Remission Order (2025)",
+      "signed": "2025-04-16",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "ca-cbsa-cn26-23",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Notice 26-23 (revised Oct 23, 2026)",
+      "document": "Customs notice",
+      "title": "Customs Notice 26-23: United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-10-23",
+      "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn26-23-eng.html"
+    },
+    {
+      "id": "usmca-roo",
+      "publisher": "USTR",
+      "citation": "USMCA Chapter 4 and Annex 4-B",
+      "document": "Agreement text",
+      "title": "USMCA Chapter 4: Rules of Origin, with Annex 4-B product-specific rules (Chapter 48)",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04-Rules-of-Origin.pdf"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement with four annexed product lists (25%, 20%, 10%, 5%)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告 (counter-tariffs on about $60B of U.S. goods raised to 25%, 20%, 10% and 5% from June 1, 2019)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Announcement with two annexed product lists",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品（第三批）加征关税的公告 (third batch: 10% and 5% on about $75B of U.S. goods from September 1, 2019; the December 15, 2019 list was never applied)",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Announcement",
+      "title": "国务院关税税则委员会关于调整对原产于美国的部分进口商品加征关税措施的公告 (September 2019 counter-tariffs halved: 10% to 5% and 5% to 2.5% from February 14, 2020)",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-mofcom-sack-2022",
+      "publisher": "Ministry of Commerce (PRC), Trade Remedy Investigation Bureau (reprinted by the Fujian Department of Commerce)",
+      "citation": "MOFCOM Announcement No. 10 of 2022",
+      "document": "Expiry-review ruling",
+      "title": "对原产于美国、欧盟和日本的进口未漂白纸袋纸反倾销措施期终复审裁定的公告 (anti-dumping duty on unbleached sack paper continued for five years from April 10, 2022; 14.9% for all U.S. companies)",
+      "signed": "2022-04-08",
+      "published": "2022-04-08",
+      "url": "https://swt.fujian.gov.cn/xxgk/jgzn/jgcs/mzdyzc/zwdt_551/202204/t20220414_5891126.htm"
+    },
+    {
+      "id": "cn-mofcom-expiry-2027",
+      "publisher": "Ministry of Commerce (PRC), Trade Remedy Investigation Bureau",
+      "citation": "商救济立案函〔2026〕73号",
+      "document": "Notice",
+      "title": "关于2027年上半年部分反倾销和反补贴措施即将到期的通知 (anti-dumping and countervailing measures expiring January 1 – June 30, 2027; unbleached sack paper from the U.S., EU and Japan expires April 9, 2027)",
+      "signed": null,
+      "published": "2026-06-29",
+      "url": "https://trb.mofcom.gov.cn/myjjdc/art/2026/art_b9389006f02a4e3db8d317d4a168abe1.html"
+    },
+    {
+      "id": "eu-eudr-2025-2650",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2025/2650",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2025/2650 amending Regulation (EU) 2023/1115 (EU Deforestation Regulation): obligations apply from December 30, 2026, and from June 30, 2027 for micro and small operators",
+      "signed": "2025-12-19",
+      "published": "2025-12-23",
+      "url": "https://eur-lex.europa.eu/eli/reg/2025/2650/oj"
+    },
+    {
+      "id": "eu-eudr-2026-2102",
+      "publisher": "EUR-Lex",
+      "citation": "Delegated Regulation (EU) 2026/2102",
+      "document": "Delegated regulation",
+      "title": "Commission Delegated Regulation (EU) 2026/2102 amending Annex I to Regulation (EU) 2023/1115 (scope of Chapter 48: excludes recovered-paper products and packaging used only to carry another product)",
+      "signed": "2026-07-13",
+      "published": "2026-09-17",
+      "url": "https://eur-lex.europa.eu/eli/reg_del/2026/2102/oj"
+    },
+    {
+      "id": "eu-eudr-benchmark",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1093",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2025/1093: list of low-risk and high-risk countries under Regulation (EU) 2023/1115 (United States listed as low risk)",
+      "signed": "2025-05-22",
+      "published": "2025-05-23",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1093/oj"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, Apr 1, 2026, Chapter 48",
+      "document": "Tariff schedule",
+      "title": "Customs Tariff Schedules of Japan, Chapter 48: paper and paperboard (April 1, 2026)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_48.htm"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "HM Government",
+      "citation": "UK Trade Tariff, chapter 48",
+      "document": "Tariff schedule",
+      "title": "UK Global Tariff, Chapter 48: paper and paperboard",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.trade-tariff.service.gov.uk/chapters/48"
+    },
+    {
+      "id": "cr-ccg-tariffs",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Costa Rica Country Commercial Guide: import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Costa Rica: Import Tariffs (100% of U.S. originating consumer and industrial goods duty-free since January 1, 2015)",
+      "signed": null,
+      "published": "2026-06-23",
+      "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-tariffs"
+    },
+    {
+      "id": "gt-ccg-tariffs",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Guatemala Country Commercial Guide: import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Guatemala: Import Tariffs (CAFTA-DR duty-free treatment of U.S. industrial and consumer goods; Central American tariff 0–15%)",
+      "signed": null,
+      "published": "2026-03-03",
+      "url": "https://www.trade.gov/country-commercial-guides/guatemala-import-tariffs"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 83% of 2025 U.S. Chapter 48 exports. A customs union (the EU) is one market: its members share one tariff."
+}

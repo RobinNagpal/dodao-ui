@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 32,
+    "padded": "32",
+    "slug": "32-dyes-pigments-and-paints",
+    "title": "Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/32-dyes-pigments-and-paints/faq",
+    "h1": "HTS Chapter 32: Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Paint, Pigment & Ink Export FAQ: Tariffs, HS Codes (Ch. 32) | KoalaGains",
+      "shortDescription": "Short answers: is there a tariff on paint, does Canada or China tariff U.S. paint and TiO2, HS codes for paint, ink and caulk, and is paint hazmat (UN1263).",
+      "keywords": [
+        "is there a tariff on paint",
+        "hs code paint",
+        "hs code for printing ink",
+        "titanium dioxide tariffs",
+        "does canada have tariffs on us goods",
+        "un1263 paint",
+        "us paint exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. paint, titanium dioxide, dyes, caulk and printing ink, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada, Mexico and South Korea charge nothing on qualifying U.S. paints, pigments and inks, and the EU has charged nothing on any U.S. Chapter 32 good since July 1, 2026.",
+    "China stacks its MFN rate, 2019 counter-tariffs and a 10% extra duty: 42.5% on U.S. solvent paint and 29% on TiO2 pigment without an exclusion; its exclusions end December 31, 2026 and its 24-point suspension January 10, 2027.",
+    "Before shipping, check TSCA 12(b) export notices, hazmat rules for flammable paint (UN1263) and ink (UN1210), and the BIS licence needed for Russia and Belarus."
+  ],
+  "questionSource": "Google search-suggestion queries for \"tariff on paint\", \"tariffs on paint\", \"paint tariff\", \"hs code paint\", \"hs code ink\", \"hs code for printing ink\", \"hs code titanium dioxide\", \"titanium dioxide tariff\", \"hs code caulk\", \"does canada have tariffs on\", \"did canada put tariffs on\", \"does mexico have tariffs on us\", \"eu tariff on us\", \"china tariff on us\", \"is paint hazardous for shipping\", \"un1263\", \"schedule b number\" and \"paint exports\"; the answers restate the Overview, Markets, Tariff updates and Export rules pages.",
+  "faqs": [
+    {
+      "id": "paint-tariff",
+      "question": "Is there a tariff on U.S. paint exported to other countries?",
+      "searchedAs": ["is there a tariff on paint", "are there tariffs on paint", "tariffs on paint", "is paint tariffed"],
+      "answer": "In the three biggest markets, no: Canada and Mexico charge nothing on U.S. paint that qualifies for USMCA, and the EU has charged nothing on U.S. paints and varnishes since July 1, 2026 (6.5% before). China charges the most — 42.5% on U.S. solvent-based paint and 32.5% on water-based paint without an exclusion. Brazil charges 14%, India 10% and Japan 3.2%–4%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada",
+      "question": "Does Canada have tariffs on U.S. paint, pigments or ink?",
+      "searchedAs": ["does canada have tariffs on us goods", "did canada put tariffs on us goods", "canada counter tariffs list", "tariffs on paint canada"],
+      "answer": "No. Neither Canada's March 2025 counter-tariff list nor its September 8, 2026 list includes any Chapter 32 item, so U.S. paints, pigments, caulks and inks that qualify for CUSMA still enter free. Canada is the largest buyer, at $2.34B in 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-tio2",
+      "question": "What tariff does China charge on U.S. titanium dioxide and paint?",
+      "searchedAs": ["titanium dioxide tariffs", "china tariff on us products", "china tariff on us goods"],
+      "answer": "China stacks three layers: its MFN rate, its 2019 counter-tariffs and a 10% extra duty on all U.S. goods. U.S. TiO2 pigment (3206.1110) pays 29% (6.5% + 10% + 2.5% + 10%) and solvent paint (3208.90) 42.5%; a buyer holding an exclusion, valid to December 31, 2026, pays only the MFN rate plus 10%. U.S. exports to China fell 21.6% to $289M in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-dates",
+      "question": "When could China's tariffs on U.S. paint and pigments go up?",
+      "searchedAs": ["china tariff on us goods", "china tariff on us imports"],
+      "answer": "Two dates: China's exclusions from its 2019 counter-tariffs end December 31, 2026, and the suspension of 24 points of its extra duty ends January 10, 2027. If the suspension lapses, the extra duty goes from 10% to 34%, taking U.S. solvent paint from 42.5% to 66.5% without an exclusion.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "mexico",
+      "question": "Does Mexico charge tariffs on U.S. paint and pigments?",
+      "searchedAs": ["does mexico have tariffs on us goods", "does mexico charge tariffs on us goods"],
+      "answer": "Not on goods that qualify for USMCA, which enter free. Without a USMCA certification of origin Mexico's MFN rates apply, for example 9% on TiO2 pigment and 10% on artists' colors, and Mexico's December 2025 tariff increases did not touch Chapter 32. Paints and inks sold in Mexico need Spanish labelling under NOM-003-SSA1-2006.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu",
+      "question": "What tariff does the EU charge on U.S. paint, pigments and ink?",
+      "searchedAs": ["eu tariff on us goods", "eu tariffs on us products"],
+      "answer": "None since July 1, 2026: Regulation (EU) 2026/1455 lists all of Chapter 32 and zeroes the EU's duties of up to 6.5% on U.S.-origin goods until December 31, 2029, on proof of U.S. origin. The EU's suspended 2025 countermeasure list would have added 30% to most U.S. paints, dyes and inks.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "hs-paint",
+      "question": "What is the HS or Schedule B code for paint?",
+      "searchedAs": ["hs code paint", "hs code paints and varnishes", "paint tariff code", "acrylic paint tariff code", "hs code 3208", "hs code 3209"],
+      "answer": "Paints and varnishes are heading 3208 when solvent-based (3208.90 for epoxies, polyurethanes and other polymers, $877M of 2025 exports) and 3209 when water-based (3209.10 for acrylic or vinyl latex paint, $760M). The 10-digit Schedule B number starts with those six digits; look it up with the Census Schedule B search tool.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-ink",
+      "question": "What is the HS code for printing ink?",
+      "searchedAs": ["hs code for printing ink", "printing ink tariff code", "printer ink tariff code", "hs code 3215"],
+      "answer": "Printing ink is heading 3215: 3215.11 for black and 3215.19 for other colors (the largest ink line, $405M of 2025 U.S. exports), and 3215.90 for writing, drawing and other inks.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-tio2",
+      "question": "What is the HS code for titanium dioxide pigment?",
+      "searchedAs": ["hs code titanium dioxide", "hs code for titanium dioxide pigment", "titanium dioxide tariff code", "hs code 320611"],
+      "answer": "Pigments and preparations with 80% or more titanium dioxide are 3206.11 ($873M of 2025 U.S. exports, down 18.4%); those with less are 3206.19. Titanium dioxide as a chemical (HS 2823) belongs to Chapter 28, not Chapter 32.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-caulk",
+      "question": "What is the HS code for caulk and sealant?",
+      "searchedAs": ["hs code caulk", "hs code sealant", "hs code for caulking compounds"],
+      "answer": "Caulks, glazier's putty, resin cements and painters' fillings are 3214.10, the largest single Chapter 32 export line at $932M in 2025; non-refractory surfacing preparations for walls and floors are 3214.90.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hazmat",
+      "question": "Is paint a hazardous material for shipping?",
+      "searchedAs": ["is paint considered hazardous material for shipping", "is paint hazardous to ship", "un1263 paint", "paint un number"],
+      "answer": "Flammable solvent-based paints, varnishes and driers usually are: they ship as Class 3 dangerous goods under UN1263 (Paint or Paint related material), and solvent-based printing inks under UN1210, following DOT's Hazardous Materials Regulations (49 CFR 172.101). Water-based latex paint is usually not flammable; check the safety data sheet.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "exports",
+      "question": "How much paint and pigment does the U.S. export, and who buys it?",
+      "searchedAs": ["us paint exports", "paint exports", "titanium dioxide export"],
+      "answer": "U.S. Chapter 32 exports were $7.78B in 2025, down 4.1%, of which paints and varnishes were $2.80B and TiO2 and other pigments $1.48B. Canada ($2.34B) and Mexico ($1.66B) buy 51%, followed by the EU ($898M), South Korea ($355M) and China ($289M).",
+      "link": "exports"
+    }
+  ]
+}

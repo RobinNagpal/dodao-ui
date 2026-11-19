@@ -1,0 +1,1949 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 73,
+    "padded": "73",
+    "slug": "73-articles-of-iron-steel",
+    "title": "Articles of Iron or Steel"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/73-articles-of-iron-steel/markets",
+    "h1": "HTS Chapter 73: Articles of Iron or Steel — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Steel Articles by Market (HTS Ch. 73) | KoalaGains",
+      "shortDescription": "What Mexico, Canada, the EU, China, the UK, Japan, Brazil and Korea charge on U.S. fasteners, pipe, fittings and other steel articles, with Canada's 50% surtax and EU and UK steel quotas.",
+      "keywords": [
+        "canada tariff on us steel products",
+        "eu tariff on us steel",
+        "canada steel surtax",
+        "eu steel quota 2026",
+        "tariffs on us fasteners",
+        "HS 73 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Four of the eight largest markets charge nothing on most U.S. steel articles: Mexico and South Korea under free-trade agreements, the EU since July 1, 2026, and Japan on its own low schedule. The exception is **Canada**, the second-largest buyer: it charges a 50% surtax on nearly every steel line of the chapter, CUSMA or not. **China** adds 10% to its 3–8% rates, and Brazil's Mercosur tariff runs 14–18%. For pipe and tube the tariff column is not the whole story: the EU and the UK cap duty-free imports with steel quotas and charge 50% above them, and EU importers must report and pay for embedded carbon under CBAM.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7301",
+      "label": "Sheet piling & welded shapes",
+      "shortLabel": "Sheet piling"
+    },
+    {
+      "heading": "7302",
+      "label": "Railway track material",
+      "shortLabel": "Rail material"
+    },
+    {
+      "heading": "7303",
+      "label": "Cast-iron pipe & tube",
+      "shortLabel": "Cast-iron pipe"
+    },
+    {
+      "heading": "7304",
+      "label": "Seamless pipe & tube (OCTG, line pipe)",
+      "shortLabel": "Seamless pipe"
+    },
+    {
+      "heading": "7305",
+      "label": "Large welded pipe (over 406.4 mm)",
+      "shortLabel": "Large pipe"
+    },
+    {
+      "heading": "7306",
+      "label": "Welded pipe, tube & hollow sections",
+      "shortLabel": "Welded pipe"
+    },
+    {
+      "heading": "7307",
+      "label": "Pipe fittings (flanges, elbows, couplings)",
+      "shortLabel": "Fittings"
+    },
+    {
+      "heading": "7308",
+      "label": "Structures & structural parts",
+      "shortLabel": "Structures"
+    },
+    {
+      "heading": "7309",
+      "label": "Tanks & vats over 300 liters",
+      "shortLabel": "Large tanks"
+    },
+    {
+      "heading": "7310",
+      "label": "Drums, cans & containers (300 l or less)",
+      "shortLabel": "Drums & cans"
+    },
+    {
+      "heading": "7311",
+      "label": "Gas cylinders",
+      "shortLabel": "Gas cylinders"
+    },
+    {
+      "heading": "7312",
+      "label": "Wire rope, cable & strand",
+      "shortLabel": "Wire rope"
+    },
+    {
+      "heading": "7313",
+      "label": "Barbed wire",
+      "shortLabel": "Barbed wire"
+    },
+    {
+      "heading": "7314",
+      "label": "Wire mesh, netting, fencing & expanded metal",
+      "shortLabel": "Wire mesh"
+    },
+    {
+      "heading": "7315",
+      "label": "Chain & chain parts",
+      "shortLabel": "Chain"
+    },
+    {
+      "heading": "7316",
+      "label": "Anchors & grapnels",
+      "shortLabel": "Anchors"
+    },
+    {
+      "heading": "7317",
+      "label": "Nails, tacks & staples",
+      "shortLabel": "Nails"
+    },
+    {
+      "heading": "7318",
+      "label": "Screws, bolts, nuts & washers",
+      "shortLabel": "Fasteners"
+    },
+    {
+      "heading": "7319",
+      "label": "Sewing needles, pins & similar",
+      "shortLabel": "Needles & pins"
+    },
+    {
+      "heading": "7320",
+      "label": "Springs & leaf springs",
+      "shortLabel": "Springs"
+    },
+    {
+      "heading": "7321",
+      "label": "Stoves, grills & barbecues",
+      "shortLabel": "Stoves & grills"
+    },
+    {
+      "heading": "7322",
+      "label": "Radiators & air heaters",
+      "shortLabel": "Radiators"
+    },
+    {
+      "heading": "7323",
+      "label": "Kitchenware & household articles",
+      "shortLabel": "Kitchenware"
+    },
+    {
+      "heading": "7324",
+      "label": "Sinks, baths & sanitary ware",
+      "shortLabel": "Sanitary ware"
+    },
+    {
+      "heading": "7325",
+      "label": "Cast articles (manhole covers, grinding balls)",
+      "shortLabel": "Cast articles"
+    },
+    {
+      "heading": "7326",
+      "label": "Other articles (forgings, wire articles, hangers)",
+      "shortLabel": "Other articles"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rule of origin for the heading; non-qualifying goods pay Mexico's MFN rate, raised to 35% on about 130 Chapter 73 lines from January 1, 2026",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 7321982279,
+      "priorExportsUsd": 7956795772,
+      "sharePct": 33.6,
+      "changePct": -8,
+      "status": "unchanged",
+      "cells": {
+        "7301": {
+          "exportsUsd": 3870281,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7301.20 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7302": {
+          "exportsUsd": 36120771,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023); Mexico's decree of December 29, 2025 set 20% on 1 tariff line(s) under HS 7302.10 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7303": {
+          "exportsUsd": 4771892,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7303.00 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7303.00 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7304": {
+          "exportsUsd": 133665507,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7305": {
+          "exportsUsd": 13424393,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 3.3% for HS 7305.39 (2023); Mexico's decree of December 29, 2025 set 35% on 5 tariff line(s) under HS 7305.39 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7306": {
+          "exportsUsd": 414782032,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7306.30 (2023); Mexico's decree of December 29, 2025 set 35% on 4 tariff line(s) under HS 7306.30 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7307": {
+          "exportsUsd": 333824542,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7307.29 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7308": {
+          "exportsUsd": 106817687,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 9.7% for HS 7308.90 (2023); Mexico's decree of December 29, 2025 set 35% on 3 tariff line(s) under HS 7308.90 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7309": {
+          "exportsUsd": 66142275,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7309.00 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7310": {
+          "exportsUsd": 284055260,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7310.29 (2023); Mexico's decree of December 29, 2025 set 35% on 2 tariff line(s) under HS 7310.29 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7311": {
+          "exportsUsd": 37026306,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7311.00 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7312": {
+          "exportsUsd": 42224167,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 3% for HS 7312.10 (2023); Mexico's decree of December 29, 2025 set 35% on 5 tariff line(s) under HS 7312.10 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7313": {
+          "exportsUsd": 737974,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 7% for HS 7313.00 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7313.00 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7314": {
+          "exportsUsd": 48241196,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7314.14 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7315": {
+          "exportsUsd": 133776137,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7315.12 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7316": {
+          "exportsUsd": 829928,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7316.00 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7316.00 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7317": {
+          "exportsUsd": 4830598,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 2.4% for HS 7317.00 (2023); Mexico's decree of December 29, 2025 set 35% on 4 tariff line(s) under HS 7317.00 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7318": {
+          "exportsUsd": 1857534705,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 2.5% for HS 7318.15 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7319": {
+          "exportsUsd": 986682,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 10% for HS 7319.40 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7319.40 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7320": {
+          "exportsUsd": 362061631,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7320.20 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7321": {
+          "exportsUsd": 28004948,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7321.11 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7321.11 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7322": {
+          "exportsUsd": 45613123,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 7.5% for HS 7322.90 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7322.90 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7323": {
+          "exportsUsd": 21284363,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7323.93 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7324": {
+          "exportsUsd": 11355501,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7324.90 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7325": {
+          "exportsUsd": 37733158,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7325.99 (2023). Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        },
+        "7326": {
+          "exportsUsd": 3292267222,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN since Jan 2026 (lines raised by decree)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7326.90 (2023); Mexico's decree of December 29, 2025 set 35% on 1 tariff line(s) under HS 7326.90 from January 1, 2026. Goods must meet the USMCA rule of origin for the heading; non-qualifying U.S. goods pay the MFN rate"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest market ($7.32B, down 8%), and most of it is parts for Mexican factories: other articles such as forgings and stampings (7326, $3.29B) and fasteners (7318, $1.86B). Qualifying goods enter free, but since January 2026 Mexico charges 35% on many steel lines from countries without a trade agreement, so a U.S. good that fails the USMCA rule of origin now costs far more.",
+        "mainProducts": "Other articles (forgings, wire articles, hangers) (7326) · Screws, bolts, nuts & washers (7318)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Economía (steel import notice and sector importer registry)",
+          "url": "https://www.gob.mx/se",
+          "requirement": "Mexican importers of many steel products must be in the sector importer registry and file an automatic steel import notice before entry; some articles, such as LP-gas cylinders, also need a Mexican Official Standard (NOM) certificate"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (duty free), plus Canada's counter-surtax on U.S.-origin steel goods: 50% on most Chapter 73 tariff items since September 8, 2026 (25% from March 13, 2025) and 25% on stoves, radiators, kitchenware, sinks and leaf springs; no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 5809413536,
+      "priorExportsUsd": 6690442687,
+      "sharePct": 26.6,
+      "changePct": -13.2,
+      "status": "raised",
+      "cells": {
+        "7301": {
+          "exportsUsd": 20316733,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7302": {
+          "exportsUsd": 144642799,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7303": {
+          "exportsUsd": 35214430,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7303.00 (2023). Cast-iron pipe is on none of Canada's surtax lists"
+        },
+        "7304": {
+          "exportsUsd": 152124226,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7305": {
+          "exportsUsd": 55890660,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7305.39 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7306": {
+          "exportsUsd": 522291424,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7306.30 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7307": {
+          "exportsUsd": 532489932,
+          "rate": "Free (CUSMA) + 50% surtax; cast fittings free",
+          "normalRate": "1.1% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 1.1% for HS 7307.29 (2023); plus a 50% surtax on 7307.21–7307.99 under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026). Cast fittings (7307.11, 7307.19) are not listed. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7308": {
+          "exportsUsd": 615149666,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7308.90 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7309": {
+          "exportsUsd": 74122321,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7309.00 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7310": {
+          "exportsUsd": 325592327,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7310.29 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7311": {
+          "exportsUsd": 104844466,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7311.00 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7312": {
+          "exportsUsd": 108418754,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7312.10 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7313": {
+          "exportsUsd": 325239,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7313.00 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7314": {
+          "exportsUsd": 39150694,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7315": {
+          "exportsUsd": 92586088,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7315.12 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7316": {
+          "exportsUsd": 4672781,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 3% for HS 7316.00 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7317": {
+          "exportsUsd": 23602393,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7317.00 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7318": {
+          "exportsUsd": 1274712671,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7318.15 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7319": {
+          "exportsUsd": 6437642,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "3.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 3.5% for HS 7319.40 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7320": {
+          "exportsUsd": 142395678,
+          "rate": "Free (CUSMA) + 50% surtax; 25% on leaf springs",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 0% for HS 7320.20 (2023); plus a surtax under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 50% on helical and other springs (7320.20, 7320.90, Schedule 2.1, since September 8, 2026) and 25% on leaf springs (7320.10, Schedule 2); all were 25% from March 13, 2025. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7321": {
+          "exportsUsd": 129572158,
+          "rate": "Free (CUSMA) + 25% surtax",
+          "normalRate": "8% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 8% for HS 7321.11 (2023); plus 25% on cooking appliances and stoves (7321.11–7321.89) under the United States Surtax Order (2026), SOR/2026-186, Schedule 2, since September 8, 2026 (they were also surtaxed from March 4 to August 31, 2025), and 25% on parts (7321.90) under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2, since March 13, 2025. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7322": {
+          "exportsUsd": 366795669,
+          "rate": "Free (CUSMA) + 25% surtax; cast-iron radiators free",
+          "normalRate": "5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 5% for HS 7322.90 (2023); plus 25% on the steel lines of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2, since March 13, 2025. Cast-iron radiators (7322.11) were surtaxed only from March 13 to August 31, 2025. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7323": {
+          "exportsUsd": 118823184,
+          "rate": "Free (CUSMA) + 25% surtax; cast-iron cookware free",
+          "normalRate": "3.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 3.2% for HS 7323.93 (2023); plus 25% on the steel lines of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2, since March 13, 2025. Cast-iron kitchenware (7323.91, 7323.92) were surtaxed only from March 13 to August 31, 2025. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7324": {
+          "exportsUsd": 52135319,
+          "rate": "Free (CUSMA) + 25% surtax; cast-iron baths free",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 6.5% for HS 7324.90 (2023); plus 25% on the steel lines of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2, since March 13, 2025. Cast-iron baths (7324.21) were surtaxed only from March 13 to August 31, 2025. The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7325": {
+          "exportsUsd": 62721303,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "4.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 4.2% for HS 7325.99 (2023); plus 50% on non-malleable cast-iron articles such as manhole covers (7325.10) under the United States Surtax Order (2026), SOR/2026-186, Schedule 3, since September 8, 2026, and 50% on other castings (7325.91, 7325.99) under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7326": {
+          "exportsUsd": 804384979,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "3.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada (United States Tariff): duty free; WITS/TRAINS simple-average MFN 3.2% for HS 7326.90 (2023); plus a 50% surtax on every tariff item of the heading under the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95, Schedule 2.1 (25% from March 13, 2025; 50% since September 8, 2026 under SOR/2026-187). The surtax is charged on goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the second-largest market ($5.81B, down 13.2%) and the one where tariffs bite hardest. Since September 8, 2026 nearly every steel line of the chapter, including fasteners (7318, $1.27B), structures (7308) and fittings (7307), pays a 50% surtax even when it qualifies for CUSMA. Canada remits the surtax for some listed products it finds in short supply or not made in Canada, mainly seamless tube, rails and sheet piling, and, until June 30, 2027, for steel used to make vehicles and aircraft.",
+        "mainProducts": "Screws, bolts, nuts & washers (7318) · Other articles (forgings, wire articles, hangers) (7326)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on most lines",
+        "regulator": {
+          "name": "Canada Border Services Agency (CBSA)",
+          "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn25-11-eng.html",
+          "requirement": "CBSA collects the surtax on U.S.-origin goods at entry; the Canadian importer claims any remission from the Minister of Public Safety within two years of import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists chapter 73 in full) from July 1, 2026 to December 31, 2029; pipe, tube, rails and sheet piling also fall under the EU steel quotas of Regulation (EU) 2026/1384, with 50% above quota",
+      "usTradeAgreement": null,
+      "exportsUsd": 2163871540,
+      "priorExportsUsd": 1941213781,
+      "sharePct": 9.9,
+      "changePct": 11.5,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 497506598,
+          "priorExportsUsd": 453796856,
+          "changePct": 9.6
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 483392102,
+          "priorExportsUsd": 432248888,
+          "changePct": 11.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 236740782,
+          "priorExportsUsd": 247490127,
+          "changePct": -4.3
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 159238241,
+          "priorExportsUsd": 128960042,
+          "changePct": 23.5
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 141172319,
+          "priorExportsUsd": 120171438,
+          "changePct": 17.5
+        }
+      ],
+      "cells": {
+        "7301": {
+          "exportsUsd": 16229847,
+          "rate": "Free (EU–US framework); 50% above the EU steel quota on sheet piling",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023) before that date; plus the EU steel regime of Regulation (EU) 2026/1384 from July 1, 2026: sheet piling (7301.10) from the U.S. share the quota for 'other countries' (Implementing Regulation (EU) 2026/1457) and pay a 50% duty once it is used up, whatever the tariff preference (TARIC, checked November 2026)"
+        },
+        "7302": {
+          "exportsUsd": 1202289,
+          "rate": "Free (EU–US framework); 50% above the EU steel quota on rails and fish-plates",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023) before that date; plus the EU steel regime of Regulation (EU) 2026/1384 from July 1, 2026: rails and fish-plates (7302.10, 7302.40) from the U.S. share the quota for 'other countries' (Implementing Regulation (EU) 2026/1457) and pay a 50% duty once it is used up, whatever the tariff preference (TARIC, checked November 2026)"
+        },
+        "7303": {
+          "exportsUsd": 391321,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.2% for HS 7303.00 (2023) before that date"
+        },
+        "7304": {
+          "exportsUsd": 57061609,
+          "rate": "Free within the EU steel quota; 50% above it",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023) before that date; plus the EU steel regime of Regulation (EU) 2026/1384 from July 1, 2026: seamless pipe and tube from the U.S. share the quota for 'other countries' (Implementing Regulation (EU) 2026/1457) and pay a 50% duty once it is used up, whatever the tariff preference (TARIC, checked November 2026)"
+        },
+        "7305": {
+          "exportsUsd": 9481238,
+          "rate": "Free within the EU steel quota; 50% above it",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7305.39 (2023) before that date; plus the EU steel regime of Regulation (EU) 2026/1384 from July 1, 2026: large welded pipe from the U.S. share the quota for 'other countries' (Implementing Regulation (EU) 2026/1457) and pay a 50% duty once it is used up, whatever the tariff preference (TARIC, checked November 2026)"
+        },
+        "7306": {
+          "exportsUsd": 69877956,
+          "rate": "Free within the EU steel quota; 50% above it",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7306.30 (2023) before that date; plus the EU steel regime of Regulation (EU) 2026/1384 from July 1, 2026: welded pipe, tube and hollow sections from the U.S. share the quota for 'other countries' (Implementing Regulation (EU) 2026/1457) and pay a 50% duty once it is used up, whatever the tariff preference (TARIC, checked November 2026)"
+        },
+        "7307": {
+          "exportsUsd": 210572239,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.7% for HS 7307.29 (2023) before that date"
+        },
+        "7308": {
+          "exportsUsd": 39272398,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7308.90 (2023) before that date"
+        },
+        "7309": {
+          "exportsUsd": 22617235,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.2% for HS 7309.00 (2023) before that date"
+        },
+        "7310": {
+          "exportsUsd": 71216921,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7310.29 (2023) before that date"
+        },
+        "7311": {
+          "exportsUsd": 43726118,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7311.00 (2023) before that date"
+        },
+        "7312": {
+          "exportsUsd": 26931966,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7312.10 (2023) before that date"
+        },
+        "7313": {
+          "exportsUsd": 565575,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7313.00 (2023) before that date"
+        },
+        "7314": {
+          "exportsUsd": 8940638,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023) before that date"
+        },
+        "7315": {
+          "exportsUsd": 15052129,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7315.12 (2023) before that date"
+        },
+        "7316": {
+          "exportsUsd": 637917,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7316.00 (2023) before that date"
+        },
+        "7317": {
+          "exportsUsd": 1641922,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 7317.00 (2023) before that date"
+        },
+        "7318": {
+          "exportsUsd": 675390620,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.7% for HS 7318.15 (2023) before that date"
+        },
+        "7319": {
+          "exportsUsd": 4338834,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7319.40 (2023) before that date"
+        },
+        "7320": {
+          "exportsUsd": 64826923,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7320.20 (2023) before that date"
+        },
+        "7321": {
+          "exportsUsd": 18249613,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7321.11 (2023) before that date"
+        },
+        "7322": {
+          "exportsUsd": 3629189,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.2% for HS 7322.90 (2023) before that date"
+        },
+        "7323": {
+          "exportsUsd": 13935489,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.2% for HS 7323.93 (2023) before that date"
+        },
+        "7324": {
+          "exportsUsd": 12111430,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.2% for HS 7324.90 (2023) before that date"
+        },
+        "7325": {
+          "exportsUsd": 52905667,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7325.99 (2023) before that date"
+        },
+        "7326": {
+          "exportsUsd": 723064457,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 73 listed in full): 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.7% for HS 7326.90 (2023) before that date"
+        }
+      },
+      "profile": {
+        "headline": "The EU is the third-largest market ($2.16B, up 11.5%), led by other articles (7326, $723M) and fasteners (7318, $675M). EU duties of up to 3.7% fell to zero on July 1, 2026, but the Commission can take that back for chapters 72, 73 and 76 after December 31, 2026, and steel pipe and tube still face quotas with a 50% duty above them. Importers also need CBAM authorization for most of the chapter.",
+        "mainProducts": "Other articles (forgings, wire articles, hangers) (7326) · Screws, bolts, nuts & washers (7318)",
+        "tariffNow": "Free (EU–US framework); pipe 50% above quota",
+        "regulator": {
+          "name": "European Commission: Carbon Border Adjustment Mechanism (CBAM)",
+          "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+          "requirement": "Since January 1, 2026 EU importers of pipe, fittings, structures, tanks, containers, cylinders, fasteners and other articles of 7301–7311, 7318 and 7326 must be authorized CBAM declarants and pay for the embedded emissions, so they will ask the U.S. producer for emissions data; pressure equipment and structural steel also need CE marking"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule plus the 10% extra duty on all U.S.-origin goods (in force since May 14, 2025); China's 2019 counter-tariffs also apply to listed lines unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 680275839,
+      "priorExportsUsd": 698721574,
+      "sharePct": 3.1,
+      "changePct": -2.6,
+      "status": "raised",
+      "cells": {
+        "7301": {
+          "exportsUsd": 2468912,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7301.20 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7302": {
+          "exportsUsd": 207646,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 6% for HS 7302.10 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7303": {
+          "exportsUsd": 99158,
+          "rate": "14% (4% MFN + 10% extra)",
+          "normalRate": "4% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 4% for HS 7303.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7304": {
+          "exportsUsd": 12610953,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7304.41 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7305": {
+          "exportsUsd": 108935,
+          "rate": "16% (6% MFN + 10% extra)",
+          "normalRate": "6% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 6% for HS 7305.39 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7306": {
+          "exportsUsd": 10935424,
+          "rate": "13% (3% MFN + 10% extra)",
+          "normalRate": "3% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 3% for HS 7306.30 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7307": {
+          "exportsUsd": 91679048,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7307.29 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7308": {
+          "exportsUsd": 6176813,
+          "rate": "14% (4% MFN + 10% extra)",
+          "normalRate": "4% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 4% for HS 7308.90 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7309": {
+          "exportsUsd": 7830721,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7309.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7310": {
+          "exportsUsd": 12618624,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7310.29 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7311": {
+          "exportsUsd": 6770073,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7311.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7312": {
+          "exportsUsd": 12523119,
+          "rate": "14% (4% MFN + 10% extra)",
+          "normalRate": "4% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 4% for HS 7312.10 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7313": {
+          "exportsUsd": 0,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7313.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7314": {
+          "exportsUsd": 1757756,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7314.14 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7315": {
+          "exportsUsd": 8057803,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7315.12 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7316": {
+          "exportsUsd": 419268,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7316.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7317": {
+          "exportsUsd": 587404,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7317.00 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7318": {
+          "exportsUsd": 257182713,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7318.15 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7319": {
+          "exportsUsd": 490963,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7319.40 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7320": {
+          "exportsUsd": 37020048,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7320.20 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7321": {
+          "exportsUsd": 630117,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7321.11 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7322": {
+          "exportsUsd": 1054111,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7322.90 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7323": {
+          "exportsUsd": 1847684,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7323.93 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7324": {
+          "exportsUsd": 4348183,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 7% for HS 7324.90 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7325": {
+          "exportsUsd": 8330432,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7325.99 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        },
+        "7326": {
+          "exportsUsd": 194519931,
+          "rate": "18% (8% MFN + 10% extra)",
+          "normalRate": "8% (MFN)",
+          "basis": "China customs tariff; WITS/TRAINS simple-average MFN 8% for HS 7326.90 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 7, as extended). China's 2019 counter-tariffs, lifted line by line by exclusions valid until December 31, 2026, are not added"
+        }
+      },
+      "profile": {
+        "headline": "China is a small market ($680M, down 2.6%), mostly fasteners (7318, $257M) and other articles (7326, $195M). U.S. bolts now pay 18% (8% MFN plus the 10% extra duty) against 8% in January 2025, and lines on China's 2019 lists pay more unless the Chinese buyer holds an exclusion, valid only until December 31, 2026.",
+        "mainProducts": "Screws, bolts, nuts & washers (7318) · Other articles (forgings, wire articles, hangers) (7326)",
+        "tariffNow": "MFN 3–8% + 10% extra",
+        "regulator": {
+          "name": "State Administration for Market Regulation (special-equipment licensing)",
+          "url": "https://english.samr.gov.cn/",
+          "requirement": "Foreign makers of pressure vessels and gas cylinders (7309, 7311) sold in China need a SAMR special-equipment manufacturing licence; most other steel articles need no product approval"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (mostly 0–2% on these goods); no U.S. free-trade agreement. Rails and welded pipe and tube also fall under the UK Steel Trade Measure from July 1, 2026: quarterly quotas with 50% above them, and the U.S. has its own quota for large and other welded tubes",
+      "usTradeAgreement": null,
+      "exportsUsd": 568460134,
+      "priorExportsUsd": 545503526,
+      "sharePct": 2.6,
+      "changePct": 4.2,
+      "status": "raised",
+      "cells": {
+        "7301": {
+          "exportsUsd": 1741937,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7302": {
+          "exportsUsd": 74905,
+          "rate": "Free within quota; 50% above it",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023); no U.S.–UK free-trade agreement; plus the UK Steel Trade Measure from July 1, 2026: category 19 (railway material) have quarterly tariff-free quotas and a 50% duty above them; U.S. goods use the quota for other countries"
+        },
+        "7303": {
+          "exportsUsd": 337643,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7303.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7304": {
+          "exportsUsd": 26519011,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7305": {
+          "exportsUsd": 1277755,
+          "rate": "Free within quota; 50% above it",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7305.39 (2023); no U.S.–UK free-trade agreement; plus the UK Steel Trade Measure from July 1, 2026: categories 25A and 25B (large welded tubes) have quarterly tariff-free quotas and a 50% duty above them; the U.S. has its own quota in categories 25A and 26"
+        },
+        "7306": {
+          "exportsUsd": 12833178,
+          "rate": "Free within quota; 50% above it",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7306.30 (2023); no U.S.–UK free-trade agreement; plus the UK Steel Trade Measure from July 1, 2026: categories 20, 21 and 26 (gas pipes, hollow sections, other welded tubes) have quarterly tariff-free quotas and a 50% duty above them; the U.S. has its own quota in categories 25A and 26"
+        },
+        "7307": {
+          "exportsUsd": 64491729,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7307.29 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7308": {
+          "exportsUsd": 20637612,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7308.90 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7309": {
+          "exportsUsd": 20612712,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7309.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7310": {
+          "exportsUsd": 12263215,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7310.29 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7311": {
+          "exportsUsd": 8967941,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 2% for HS 7311.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7312": {
+          "exportsUsd": 9713619,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7312.10 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7313": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7313.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7314": {
+          "exportsUsd": 2693365,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7315": {
+          "exportsUsd": 2477960,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7315.12 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7316": {
+          "exportsUsd": 28537,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7316.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7317": {
+          "exportsUsd": 831752,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7317.00 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7318": {
+          "exportsUsd": 215898103,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7318.15 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7319": {
+          "exportsUsd": 573553,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 2% for HS 7319.40 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7320": {
+          "exportsUsd": 13488094,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7320.20 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7321": {
+          "exportsUsd": 5560434,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 2% for HS 7321.11 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7322": {
+          "exportsUsd": 406759,
+          "rate": "1%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 1% for HS 7322.90 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7323": {
+          "exportsUsd": 6879160,
+          "rate": "1.6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 1.6% for HS 7323.93 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7324": {
+          "exportsUsd": 6996878,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7324.90 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7325": {
+          "exportsUsd": 5266225,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 0% for HS 7325.99 (2023); no U.S.–UK free-trade agreement"
+        },
+        "7326": {
+          "exportsUsd": 127888057,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS simple-average MFN 2% for HS 7326.90 (2023); no U.S.–UK free-trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($568M, up 4.2%) buys mostly fasteners (7318, $216M) and other articles (7326, $128M), which are free or 2%. On July 1, 2026 it replaced its steel safeguard with a Steel Trade Measure that doubles the above-quota duty to 50% on rails and welded pipe and tube; the U.S. has its own small quota in two welded-tube categories.",
+        "mainProducts": "Screws, bolts, nuts & washers (7318) · Other articles (forgings, wire articles, hangers) (7326)",
+        "tariffNow": "Mostly free; welded pipe 50% above quota",
+        "regulator": {
+          "name": "Department for Business and Trade (Steel Trade Measure) and UKCA marking",
+          "url": "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/uks-steel-trade-measure-from-1-july-2026",
+          "requirement": "UK steel quotas are allocated per quarter, first come first served, by category and country; pressure equipment, gas cylinders and construction products also need UKCA (or CE) marking"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff: free on most Chapter 73 goods, 2.8% on bolts and screws and about 3.3% on cast-iron pipe, tanks, containers, cylinders and anchors; no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 455779939,
+      "priorExportsUsd": 442532848,
+      "sharePct": 2.1,
+      "changePct": 3,
+      "status": "unchanged",
+      "cells": {
+        "7301": {
+          "exportsUsd": 833278,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023); no U.S. free-trade agreement applies"
+        },
+        "7302": {
+          "exportsUsd": 28681,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023); no U.S. free-trade agreement applies"
+        },
+        "7303": {
+          "exportsUsd": 17728,
+          "rate": "3.3% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.3% for HS 7303.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7304": {
+          "exportsUsd": 5423006,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023); no U.S. free-trade agreement applies"
+        },
+        "7305": {
+          "exportsUsd": 814166,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7305.39 (2023); no U.S. free-trade agreement applies"
+        },
+        "7306": {
+          "exportsUsd": 1661766,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7306.30 (2023); no U.S. free-trade agreement applies"
+        },
+        "7307": {
+          "exportsUsd": 67319094,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7307.29 (2023); no U.S. free-trade agreement applies"
+        },
+        "7308": {
+          "exportsUsd": 13181087,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7308.90 (2023); no U.S. free-trade agreement applies"
+        },
+        "7309": {
+          "exportsUsd": 4821133,
+          "rate": "3.3% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.3% for HS 7309.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7310": {
+          "exportsUsd": 18135176,
+          "rate": "3.3% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.3% for HS 7310.29 (2023); no U.S. free-trade agreement applies"
+        },
+        "7311": {
+          "exportsUsd": 22031453,
+          "rate": "3.3% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.3% for HS 7311.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7312": {
+          "exportsUsd": 8181431,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7312.10 (2023); no U.S. free-trade agreement applies"
+        },
+        "7313": {
+          "exportsUsd": 16312,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7313.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7314": {
+          "exportsUsd": 413874,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023); no U.S. free-trade agreement applies"
+        },
+        "7315": {
+          "exportsUsd": 8971444,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7315.12 (2023); no U.S. free-trade agreement applies"
+        },
+        "7316": {
+          "exportsUsd": 151686,
+          "rate": "3.3% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.3% for HS 7316.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7317": {
+          "exportsUsd": 602352,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7317.00 (2023); no U.S. free-trade agreement applies"
+        },
+        "7318": {
+          "exportsUsd": 133994124,
+          "rate": "2.8% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 2.8% for HS 7318.15 (2023); no U.S. free-trade agreement applies"
+        },
+        "7319": {
+          "exportsUsd": 331585,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7319.40 (2023); no U.S. free-trade agreement applies"
+        },
+        "7320": {
+          "exportsUsd": 14807159,
+          "rate": "1.6% (MFN)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 1.6% for HS 7320.20 (2023); no U.S. free-trade agreement applies"
+        },
+        "7321": {
+          "exportsUsd": 1592239,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7321.11 (2023); no U.S. free-trade agreement applies"
+        },
+        "7322": {
+          "exportsUsd": 1391343,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7322.90 (2023); no U.S. free-trade agreement applies"
+        },
+        "7323": {
+          "exportsUsd": 3454031,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7323.93 (2023); no U.S. free-trade agreement applies"
+        },
+        "7324": {
+          "exportsUsd": 1941064,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7324.90 (2023); no U.S. free-trade agreement applies"
+        },
+        "7325": {
+          "exportsUsd": 1444390,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7325.99 (2023); no U.S. free-trade agreement applies"
+        },
+        "7326": {
+          "exportsUsd": 144220337,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7326.90 (2023); no U.S. free-trade agreement applies"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($456M, up 3%) takes other articles (7326, $144M), fasteners (7318, $134M) and fittings (7307, $67M). Its tariffs are low and unchanged since January 2025; gas cylinders are the product that needs a Japanese approval.",
+        "mainProducts": "Other articles (forgings, wire articles, hangers) (7326) · Screws, bolts, nuts & washers (7318)",
+        "tariffNow": "Mostly free; 2.8–3.3% on some lines",
+        "regulator": {
+          "name": "Ministry of Economy, Trade and Industry (High Pressure Gas Safety Act)",
+          "url": "https://www.meti.go.jp/english/policy/safety_security/industrial_safety/index.html",
+          "requirement": "Gas cylinders and other high-pressure gas containers (7311) must pass container inspection under the High Pressure Gas Safety Act before use in Japan; most other steel articles need no approval"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Mercosur common external tariff as applied by Brazil (mostly 14–18% on these goods); no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 406043240,
+      "priorExportsUsd": 389363777,
+      "sharePct": 1.9,
+      "changePct": 4.3,
+      "status": "unchanged",
+      "cells": {
+        "7301": {
+          "exportsUsd": 997780,
+          "rate": "10% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 7301.20 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7302": {
+          "exportsUsd": 475338,
+          "rate": "6% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 6% for HS 7302.10 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7303": {
+          "exportsUsd": 32231,
+          "rate": "12% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 7303.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7304": {
+          "exportsUsd": 41728505,
+          "rate": "9% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 9% for HS 7304.41 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7305": {
+          "exportsUsd": 139909,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7305.39 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7306": {
+          "exportsUsd": 11280002,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7306.30 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7307": {
+          "exportsUsd": 48740821,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7307.29 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7308": {
+          "exportsUsd": 18661747,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7308.90 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7309": {
+          "exportsUsd": 1302826,
+          "rate": "9.3% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 9.3% for HS 7309.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7310": {
+          "exportsUsd": 886887,
+          "rate": "10% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 7310.29 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7311": {
+          "exportsUsd": 6886703,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7311.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7312": {
+          "exportsUsd": 6795544,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7312.10 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7313": {
+          "exportsUsd": 185922,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7313.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7314": {
+          "exportsUsd": 784218,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7314.14 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7315": {
+          "exportsUsd": 8488719,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7315.12 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7316": {
+          "exportsUsd": 109936,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7316.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7317": {
+          "exportsUsd": 109188,
+          "rate": "14% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 7317.00 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7318": {
+          "exportsUsd": 157046773,
+          "rate": "16% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 16% for HS 7318.15 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7319": {
+          "exportsUsd": 433540,
+          "rate": "16% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 16% for HS 7319.40 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7320": {
+          "exportsUsd": 9023429,
+          "rate": "16% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 16% for HS 7320.20 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7321": {
+          "exportsUsd": 494450,
+          "rate": "20% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 20% for HS 7321.11 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7322": {
+          "exportsUsd": 1437553,
+          "rate": "10% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 7322.90 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7323": {
+          "exportsUsd": 1420072,
+          "rate": "18% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 18% for HS 7323.93 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7324": {
+          "exportsUsd": 1773567,
+          "rate": "18% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 18% for HS 7324.90 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7325": {
+          "exportsUsd": 3447606,
+          "rate": "18% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 18% for HS 7325.99 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        },
+        "7326": {
+          "exportsUsd": 83359974,
+          "rate": "10% (Mercosur tariff)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 7326.90 (2023); no U.S. free-trade agreement. Brazil's temporary tariff increases for steel products (Gecex) can raise individual NCM lines"
+        }
+      },
+      "profile": {
+        "headline": "Brazil ($406M, up 4.3%) buys fasteners (7318, $157M), other articles (7326, $83M) and fittings (7307, $49M) and charges some of the highest tariffs among large buyers: 16% on bolts and screws. Gecex Resolutions 929 (June 25, 2026) and 941 (July 23, 2026) added products to Brazil's list of temporary tariff increases for every origin; check the exact NCM line before quoting.",
+        "mainProducts": "Screws, bolts, nuts & washers (7318) · Other articles (forgings, wire articles, hangers) (7326)",
+        "tariffNow": "Mostly 14–18% (Mercosur tariff)",
+        "regulator": {
+          "name": "INMETRO (compulsory conformity assessment)",
+          "url": "https://www.gov.br/inmetro/pt-br",
+          "requirement": "Products on INMETRO's compulsory-certification list, such as LPG cylinders, need certification before sale in Brazil; most steel articles do not"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin (Korea's MFN rate is mostly 8%)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 368363953,
+      "priorExportsUsd": 339342014,
+      "sharePct": 1.7,
+      "changePct": 8.6,
+      "status": "unchanged",
+      "cells": {
+        "7301": {
+          "exportsUsd": 366340,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7301.20 (2023)"
+        },
+        "7302": {
+          "exportsUsd": 339743,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7302.10 (2023)"
+        },
+        "7303": {
+          "exportsUsd": 202358,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7303.00 (2023)"
+        },
+        "7304": {
+          "exportsUsd": 8103773,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7304.41 (2023)"
+        },
+        "7305": {
+          "exportsUsd": 549817,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7305.39 (2023)"
+        },
+        "7306": {
+          "exportsUsd": 13163780,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7306.30 (2023)"
+        },
+        "7307": {
+          "exportsUsd": 42237582,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7307.29 (2023)"
+        },
+        "7308": {
+          "exportsUsd": 15062522,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7308.90 (2023)"
+        },
+        "7309": {
+          "exportsUsd": 2021860,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7309.00 (2023)"
+        },
+        "7310": {
+          "exportsUsd": 19554112,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7310.29 (2023)"
+        },
+        "7311": {
+          "exportsUsd": 14645926,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7311.00 (2023)"
+        },
+        "7312": {
+          "exportsUsd": 3943084,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7312.10 (2023)"
+        },
+        "7313": {
+          "exportsUsd": 15766,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7313.00 (2023)"
+        },
+        "7314": {
+          "exportsUsd": 329260,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7314.14 (2023)"
+        },
+        "7315": {
+          "exportsUsd": 5903539,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7315.12 (2023)"
+        },
+        "7316": {
+          "exportsUsd": 792476,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7316.00 (2023)"
+        },
+        "7317": {
+          "exportsUsd": 37337,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7317.00 (2023)"
+        },
+        "7318": {
+          "exportsUsd": 120633248,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7318.15 (2023)"
+        },
+        "7319": {
+          "exportsUsd": 885686,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7319.40 (2023)"
+        },
+        "7320": {
+          "exportsUsd": 7134121,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7320.20 (2023)"
+        },
+        "7321": {
+          "exportsUsd": 1127316,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7321.11 (2023)"
+        },
+        "7322": {
+          "exportsUsd": 324452,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7322.90 (2023)"
+        },
+        "7323": {
+          "exportsUsd": 10622387,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7323.93 (2023)"
+        },
+        "7324": {
+          "exportsUsd": 3501354,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7324.90 (2023)"
+        },
+        "7325": {
+          "exportsUsd": 5911048,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7325.99 (2023)"
+        },
+        "7326": {
+          "exportsUsd": 90955066,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7326.90 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($368M, up 8.6%) takes fasteners (7318, $121M), other articles (7326, $91M) and fittings (7307, $42M). Under KORUS they enter free instead of Korea's usual 8%, so a valid origin certification is worth eight points of price.",
+        "mainProducts": "Screws, bolts, nuts & washers (7318) · Other articles (forgings, wire articles, hangers) (7326)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Korea product standards (KC marking, gas-safety inspection)",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-standards-trade",
+          "requirement": "Most steel articles need no approval; high-pressure gas containers and some consumer products need Korean safety certification (KC) before sale"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "7326",
+      "exportsUsd": 3292267222,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7318",
+      "exportsUsd": 1857534705,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7318",
+      "exportsUsd": 1274712671,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Canada",
+      "heading": "7326",
+      "exportsUsd": 804384979,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "European Union",
+      "heading": "7326",
+      "exportsUsd": 723064457,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "European Union",
+      "heading": "7318",
+      "exportsUsd": 675390620,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7308",
+      "exportsUsd": 615149666,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Canada",
+      "heading": "7307",
+      "exportsUsd": 532489932,
+      "rate": "Free (CUSMA) + 50% surtax; cast fittings free"
+    }
+  ],
+  "assumptions": [
+    "Each cell uses one representative six-digit subheading per heading: the one with the largest 2025 U.S. exports (for example 7318.15 for fasteners, 7326.90 for other articles, 7306.30 for welded pipe). MFN rates are World Bank/UNCTAD WITS (TRAINS) simple averages for 2023, the latest year WITS holds; national 8–10-digit lines can differ.",
+    "Mexico (USMCA), Canada (CUSMA) and South Korea (KORUS) apply 0% only to goods that meet the agreement's rules of origin; the normal-rate column shows the MFN rate a non-qualifying U.S. good would pay. Mexico's MFN figures include its decree of December 29, 2025 (in force January 1, 2026) where it raised a line under the representative subheading.",
+    "Canada's cells add the surtaxes on goods of U.S. origin named in the Canada Gazette: the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95 as amended by SOR/2026-187 (Schedule 2.1 at 50%, Schedule 2 at 25%), and the United States Surtax Order (2026), SOR/2026-186. Products remitted under Schedules 2 and 6 of the United States Surtax Remission Order (2025) can enter without the surtax; they are not netted out.",
+    "For the EU, Regulation (EU) 2026/1455 zeroes chapter 73 from July 1, 2026 to December 31, 2029; the normal-rate column shows the EU rate before that date. The 50% above-quota duty of Regulation (EU) 2026/1384 is shown for the headings TARIC lists under it (7301.10, 7302.10, 7302.40, 7304, 7305, 7306).",
+    "China's cells add the 10% extra duty on all U.S. goods to the MFN rate. China's 2019 counter-tariffs (5–25% by annex, for example 10% on the 47 Chapter 73 lines in Annex 3 of Announcement 2019 No. 3) are not added, because importers can hold line-by-line exclusions valid until December 31, 2026.",
+    "Canada's other steel surtaxes do not stack on U.S. goods: its global 25% Steel Derivative Goods Surtax (SOR/2025-267, since December 26, 2025, on fasteners, wire, chain, structures and similar goods) excludes goods already under the U.S. steel surtax, and its steel tariff-rate quotas apply only to countries outside CUSMA.",
+    "The UK cells show the UK Global Tariff and, for rails and welded pipe and tube, the Steel Trade Measure quotas from July 1, 2026 (50% above quota). Anti-dumping duties, VAT and the EU's CBAM charge are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 73, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates (2023)",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading, chapter 73 (Mexico, Canada, EU, China, UK, Japan, Brazil, Korea)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CAN/partner/WLD/product/731815"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "usmca-roo",
+      "publisher": "USTR",
+      "citation": "USMCA Chapter 4 and Annex 4-B",
+      "document": "Agreement text",
+      "title": "USMCA Chapter 4: Rules of Origin, with Annex 4-B product-specific rules",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04-Rules-of-Origin.pdf"
+    },
+    {
+      "id": "ca-sor-2025-95",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-95",
+      "document": "Order in Council",
+      "title": "United States Surtax Order (Steel and Aluminum 2025)",
+      "signed": "2025-03-12",
+      "published": "2025-03-26",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-26/html/sor-dors95-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-187",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-187",
+      "document": "Order in Council",
+      "title": "Order Amending the United States Surtax Order (Steel and Aluminum 2025) (50% on Schedules 1.1 and 2.1 from September 8, 2026)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors187-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order in Council",
+      "title": "United States Surtax Order (2026)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-remission-order",
+      "publisher": "Department of Justice Canada (Justice Laws)",
+      "citation": "SOR/2025-122, consolidated to 2026-10-29",
+      "document": "Remission order",
+      "title": "United States Surtax Remission Order (2025)",
+      "signed": "2025-04-16",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "ca-cbsa-cn25-11",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Notice 25-11 (updated Sep 7, 2026)",
+      "document": "Customs notice",
+      "title": "Customs Notice 25-11: United States Surtax Order (Steel and Aluminum 2025)",
+      "signed": null,
+      "published": "2026-09-07",
+      "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn25-11-eng.html"
+    },
+    {
+      "id": "ca-sdg-order",
+      "publisher": "Department of Justice Canada (Justice Laws)",
+      "citation": "SOR/2025-267, consolidated to 2026-10-29",
+      "document": "Order in Council",
+      "title": "Steel Derivative Goods Surtax Order",
+      "signed": "2025-12-11",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-267/FullText.html"
+    },
+    {
+      "id": "ca-cbsa-cn25-33",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Notice 25-33 (updated Jul 22, 2026)",
+      "document": "Customs notice",
+      "title": "Customs Notice 25-33: Steel Derivative Goods Surtax Order (non-stacking order of Canada's steel surtaxes)",
+      "signed": null,
+      "published": "2026-07-22",
+      "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn25-33-eng.html"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-steel-reg",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1384",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1384 addressing the negative trade-related effects of global overcapacity on the Union steel market",
+      "signed": "2026-06-17",
+      "published": "2026-06-24",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1384/oj"
+    },
+    {
+      "id": "eu-steel-quotas",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1457",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2026/1457 on the distribution of tariff quotas opened under Regulation (EU) 2026/1384",
+      "signed": "2026-06-29",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (TARIC)",
+      "citation": "TARIC consultation, origin US",
+      "document": "Database",
+      "title": "TARIC measures for U.S.-origin goods, e.g. CN 7306 30 77 80 (tariff preference 0%, steel quota and 50% additional duty from July 1, 2026; CBAM)",
+      "signed": null,
+      "published": "2026-11-17",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261118&Area=US&Taric=7306307780&LangDescr=en"
+    },
+    {
+      "id": "eu-cbam",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2023/956",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2023/956 establishing a carbon border adjustment mechanism",
+      "signed": "2023-05-10",
+      "published": "2023-05-16",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/956/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Announcement annex",
+      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3 (10% list)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    },
+    {
+      "id": "uk-stm",
+      "publisher": "HM Government (Department for Business and Trade)",
+      "citation": "GOV.UK, updated Nov 3, 2026",
+      "document": "Guidance",
+      "title": "UK's steel trade measure from 1 July 2026",
+      "signed": null,
+      "published": "2026-11-03",
+      "url": "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/uks-steel-trade-measure-from-1-july-2026"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "HM Revenue & Customs (UK Trade Tariff)",
+      "citation": "UK Trade Tariff, commodity 7306 30 80 00",
+      "document": "Database",
+      "title": "UK Trade Tariff: welded tubes 7306 30 80 00 (50% third-country duty, U.S. quota 058663 at 0%)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://www.trade-tariff.service.gov.uk/commodities/7306308000"
+    },
+    {
+      "id": "br-gecex",
+      "publisher": "Ministry of Development, Industry, Trade and Services (Brazil)",
+      "citation": "Camex: Gecex tariff resolutions",
+      "document": "Resolution index",
+      "title": "Resoluções Gecex sobre Alterações Tarifárias (Resolutions 929 of June 25, 2026 and 941 of July 23, 2026)",
+      "signed": null,
+      "published": "2026-07-24",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/estrategia-comercial/resolucoes-gecex-sobre-alteracoes-tarifarias"
+    },
+    {
+      "id": "korus-text",
+      "publisher": "USTR",
+      "citation": "KORUS FTA final text",
+      "document": "Agreement text",
+      "title": "U.S.–Korea Free Trade Agreement: final text and tariff schedules",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/korus-fta/final-text"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 81% of 2025 U.S. Chapter 73 exports. A customs union (the EU) is one market: its members share one tariff."
+}

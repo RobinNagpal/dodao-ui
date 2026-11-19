@@ -1,0 +1,1623 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 40,
+    "padded": "40",
+    "slug": "40-rubber-and-articles",
+    "title": "Rubber and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/40-rubber-and-articles/markets",
+    "h1": "HTS Chapter 40: Rubber and Articles Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "What Canada, Mexico, China & the EU Charge on U.S. Tires & Rubber (HTS Ch. 40) | KoalaGains",
+      "shortDescription": "Tariffs on U.S. tires, gaskets, hoses and synthetic rubber in Canada, Mexico, the EU, Brazil, Australia, China, Chile, India and Japan, with each market's tire rules.",
+      "keywords": [
+        "tariff on tires canada",
+        "mexico tariff on tires",
+        "china tariff on us tires",
+        "eu tariff on tires",
+        "tariffs on rubber products",
+        "rubber tariff china",
+        "HS 40 tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Six of the nine largest markets charge nothing on qualifying U.S. tires: Canada and Mexico under USMCA, Chile and Australia under their FTAs, Japan (0% MFN on tires and synthetic rubber) and, since July 1, 2026, the EU. **Mexico** is the one to watch on paperwork: tires that fail the USMCA rule of origin pay 25–35% since January 2026. **China** adds 10% to its 7.5–25% rates on every U.S. good, its older counter-tariffs apply unless the buyer holds an exclusion, and three U.S. synthetic rubbers pay anti-dumping duties of 75.5% to 222%. **Brazil** has no trade agreement with the U.S. and charges its Mercosur rates (12% on EPDM, 16% on gaskets); it has approved 30% on all imported car tires for 12 months. What usually decides access for tires is the buyer's safety certification (Canada's and Mexico's tire standards, the EU's E-mark, China's CCC, India's BIS mark, Brazil's INMETRO seal), covered under each market's regulator below.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "4001",
+      "label": "Natural rubber: latex, smoked sheets, TSNR, balata, gutta-percha, chicle",
+      "shortLabel": "Natural rubber"
+    },
+    {
+      "heading": "4002",
+      "label": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene",
+      "shortLabel": "Synthetic rubber"
+    },
+    {
+      "heading": "4003",
+      "label": "Reclaimed rubber",
+      "shortLabel": "Reclaimed rubber"
+    },
+    {
+      "heading": "4004",
+      "label": "Rubber waste, scrap, powder and crumb",
+      "shortLabel": "Rubber scrap & crumb"
+    },
+    {
+      "heading": "4005",
+      "label": "Compounded rubber, unvulcanized (masterbatch, solutions, sheets)",
+      "shortLabel": "Compounded rubber"
+    },
+    {
+      "heading": "4006",
+      "label": "Other unvulcanized forms: camel-back retread strips, rods, tubes, discs",
+      "shortLabel": "Unvulcanized shapes"
+    },
+    {
+      "heading": "4007",
+      "label": "Vulcanized rubber thread and cord",
+      "shortLabel": "Rubber thread"
+    },
+    {
+      "heading": "4008",
+      "label": "Plates, sheets, strip, rods and profiles of vulcanized rubber, incl. foam",
+      "shortLabel": "Rubber sheet & profiles"
+    },
+    {
+      "heading": "4009",
+      "label": "Tubes, pipes and hoses, incl. brake hoses",
+      "shortLabel": "Hoses & tubes"
+    },
+    {
+      "heading": "4010",
+      "label": "Conveyor belts and transmission belts (V-belts, timing belts)",
+      "shortLabel": "Conveyor & drive belts"
+    },
+    {
+      "heading": "4011",
+      "label": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle",
+      "shortLabel": "New tires"
+    },
+    {
+      "heading": "4012",
+      "label": "Retreaded and used tires, solid tires, tire treads and flaps",
+      "shortLabel": "Retreaded & used tires"
+    },
+    {
+      "heading": "4013",
+      "label": "Inner tubes",
+      "shortLabel": "Inner tubes"
+    },
+    {
+      "heading": "4014",
+      "label": "Hygienic and pharmaceutical articles: condoms, nursing nipples",
+      "shortLabel": "Condoms & hygienic"
+    },
+    {
+      "heading": "4015",
+      "label": "Rubber gloves and apparel: medical, surgical, nitrile and latex gloves, aprons",
+      "shortLabel": "Gloves & apparel"
+    },
+    {
+      "heading": "4016",
+      "label": "Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts",
+      "shortLabel": "Gaskets, seals & other"
+    },
+    {
+      "heading": "4017",
+      "label": "Hard rubber (ebonite) and articles of hard rubber",
+      "shortLabel": "Hard rubber"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (free for originating goods; Canada MFN 7% on car and truck tires, 0–6.5% on most other rubber goods); no Chapter 40 item on the 2026 surtax list",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3863029586,
+      "priorExportsUsd": 4067725117,
+      "sharePct": 27.8,
+      "changePct": -5,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "4001": {
+          "exportsUsd": 19974363,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4001.22; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4002": {
+          "exportsUsd": 287611972,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4002.70; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4003": {
+          "exportsUsd": 8954544,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4003.00; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4004": {
+          "exportsUsd": 13038738,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4004.00; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4005": {
+          "exportsUsd": 188661163,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4005.10; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4006": {
+          "exportsUsd": 9883436,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4006.90; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4007": {
+          "exportsUsd": 642125,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–4.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–4.5% for HS 4007.00; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4008": {
+          "exportsUsd": 156873321,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4008.21; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4009": {
+          "exportsUsd": 415730573,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4009.31; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4010": {
+          "exportsUsd": 172278657,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0% for HS 4010.12; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4011": {
+          "exportsUsd": 1704872406,
+          "rate": "Free (CUSMA)",
+          "normalRate": "7% MFN on car and truck tires",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; Canada MFN 7% on car and truck tires (4011.10, 4011.20) and 0%–6.5% on HS 4011.80 (WITS 2023). Canada's 25% counter-surtax on U.S. tires (every 4011 tariff item except tires for original equipment) applied from March 4 to August 31, 2025 (SOR/2025-66, repealed by SOR/2025-181); no tire is on the September 8, 2026 surtax list (SOR/2026-186)"
+        },
+        "4012": {
+          "exportsUsd": 74536309,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–6.5% for HS 4012.90. Canada's 25% counter-surtax covered retreaded and used tires (4012) from March 4 to August 31, 2025 (SOR/2025-66, repealed by SOR/2025-181); nothing in the heading is on the 2026 surtax list"
+        },
+        "4013": {
+          "exportsUsd": 5961155,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–6.5% for HS 4013.90; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4014": {
+          "exportsUsd": 9867523,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–6.5% for HS 4014.90; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4015": {
+          "exportsUsd": 43969272,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–15.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–15.5% for HS 4015.19; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        },
+        "4016": {
+          "exportsUsd": 748070223,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–6.5% for HS 4016.93. Canada's 25% counter-surtax covered rubber floor coverings and mats (4016.91) from March 4 to August 31, 2025 (SOR/2025-66, repealed by SOR/2025-181); nothing in the heading is on the 2026 surtax list"
+        },
+        "4017": {
+          "exportsUsd": 2103806,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0%–6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: free for originating goods; WITS 2023 MFN 0%–6.5% for HS 4017.00; no tariff item of the heading is on Canada's 2025 or 2026 surtax lists"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest market ($3.86B, down 5%), led by tires ($1.70B), gaskets and other rubber parts ($748M) and hoses ($416M). Its 25% counter-surtax on U.S. tires ran from March 4 to August 31, 2025; today qualifying U.S. tires and rubber goods enter free and none is on the September 2026 surtax list.",
+        "mainProducts": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle (4011) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "Free (CUSMA); 25% surtax on tires ended Aug 31, 2025",
+        "regulator": {
+          "name": "Transport Canada (Motor Vehicle Tire Safety Regulations, 2013)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2013-198/FullText.html",
+          "requirement": "Tires sold in Canada must meet the Motor Vehicle Tire Safety Regulations, 2013, and the company that makes or imports them must give Transport Canada and dealers the tire information the regulations list (rims, load and inflation data)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff (free for originating goods); Mexican general tariff (LIGIE) for non-qualifying goods, raised to 25–35% on car, truck and farm tires and one gasket line from January 1, 2026",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 3551147551,
+      "priorExportsUsd": 4022460712,
+      "sharePct": 25.6,
+      "changePct": -11.7,
+      "status": "unchanged",
+      "cells": {
+        "4001": {
+          "exportsUsd": 25560472,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4001.22; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4002": {
+          "exportsUsd": 440583953,
+          "rate": "Free (USMCA); US$0.34075/kg AD on emulsion SBR",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4002.70; no line of the heading raised by the decree of December 29, 2025; plus Mexico's anti-dumping duty of US$0.34075 per kg on U.S. emulsion SBR (tariff items 4002.19.01, 4002.19.02, 4002.19.03, 4002.19.99), extended for five years from January 26, 2024 (DOF, May 29, 2025), which applies whatever the USMCA status"
+        },
+        "4003": {
+          "exportsUsd": 620370,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4003.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4004": {
+          "exportsUsd": 6124422,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4004.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4005": {
+          "exportsUsd": 345373758,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4005.10; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4006": {
+          "exportsUsd": 6304668,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4006.90; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4007": {
+          "exportsUsd": 512439,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4007.00; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4008": {
+          "exportsUsd": 66628131,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4008.21; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4009": {
+          "exportsUsd": 368095779,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4009.31; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4010": {
+          "exportsUsd": 79072522,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4010.12; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4011": {
+          "exportsUsd": 1268514119,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–15% MFN on mining tires; 35% on car and farm tires, 25–35% on truck tires since 2026",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4011.80; decree of December 29, 2025 (in force January 1, 2026): 35% on car tires (4011.10.10) and farm tires (4011.70.03, 4011.70.99); 25% (4011.20.04, 4011.20.05) or 35% (4011.20.06) on bus and truck tires; construction and mining tires (4011.80) not in the decree"
+        },
+        "4012": {
+          "exportsUsd": 23996511,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4012.90; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4013": {
+          "exportsUsd": 766605,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4013.90; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4014": {
+          "exportsUsd": 1180846,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–15% for HS 4014.90; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4015": {
+          "exportsUsd": 34017351,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 15% for HS 4015.19; no line of the heading raised by the decree of December 29, 2025"
+        },
+        "4016": {
+          "exportsUsd": 883342339,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% on gaskets of 4016.93.04 since 2026; 0% on other 4016.93 lines",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0% for HS 4016.93; decree of December 29, 2025 (in force January 1, 2026): gaskets and seals of tariff item 4016.93.04 raised to 25%"
+        },
+        "4017": {
+          "exportsUsd": 453266,
+          "rate": "Free (USMCA)",
+          "normalRate": "0%–5% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: free for originating goods; WITS 2023 MFN 0%–5% for HS 4017.00; no line of the heading raised by the decree of December 29, 2025"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($3.55B, down 11.7%) buys U.S. tires ($1.27B), gaskets and auto parts ($883M), synthetic rubber ($441M) and compounded rubber for its auto plants. Qualifying goods enter free, but since January 1, 2026 a car or farm tire without a valid USMCA certification pays 35%.",
+        "mainProducts": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle (4011) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Economía (NOM-086-SCFI-2018, new tires)",
+          "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5539728&fecha=02/10/2018",
+          "requirement": "New radial tires sold in Mexico must meet the Mexican Official Standard NOM-086-SCFI-2018 on safety specifications and test methods, certified before the tires are sold"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists Chapter 40 in full) from July 1, 2026, replacing the EU common external tariff (4–4.5% on tires, 2.5% on gaskets, 6.5% on belts; synthetic rubber already free)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1582944022,
+      "priorExportsUsd": 1656280124,
+      "sharePct": 11.4,
+      "changePct": -4.4,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 495272506,
+          "priorExportsUsd": 451168111,
+          "changePct": 9.8
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 355173439,
+          "priorExportsUsd": 418723453,
+          "changePct": -15.2
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 173166596,
+          "priorExportsUsd": 181046891,
+          "changePct": -4.4
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 124287922,
+          "priorExportsUsd": 144377188,
+          "changePct": -13.9
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 93477839,
+          "priorExportsUsd": 87948863,
+          "changePct": 6.3
+        }
+      ],
+      "cells": {
+        "4001": {
+          "exportsUsd": 3464000,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4001.22 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4002": {
+          "exportsUsd": 686575870,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4002.70 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4003": {
+          "exportsUsd": 55595,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4003.00 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4004": {
+          "exportsUsd": 492272,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4004.00 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4005": {
+          "exportsUsd": 45575718,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4005.10 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4006": {
+          "exportsUsd": 22157352,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4006.90 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4007": {
+          "exportsUsd": 465232,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 3% for HS 4007.00 before that date (TARIC, WITS 2023)"
+        },
+        "4008": {
+          "exportsUsd": 85988176,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 3% for HS 4008.21 before that date (TARIC, WITS 2023)"
+        },
+        "4009": {
+          "exportsUsd": 83681483,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 3% for HS 4009.31 before that date (TARIC, WITS 2023)"
+        },
+        "4010": {
+          "exportsUsd": 52680029,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 6.5% for HS 4010.12 before that date (TARIC, WITS 2023)"
+        },
+        "4011": {
+          "exportsUsd": 171155440,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 4% for HS 4011.80 before that date (TARIC, WITS 2023)"
+        },
+        "4012": {
+          "exportsUsd": 16271380,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.5–4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 2.5–4% for HS 4012.90 before that date (TARIC, WITS 2023)"
+        },
+        "4013": {
+          "exportsUsd": 760438,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 4% for HS 4013.90 before that date (TARIC, WITS 2023)"
+        },
+        "4014": {
+          "exportsUsd": 7017605,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4014.90 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        },
+        "4015": {
+          "exportsUsd": 4760604,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 2.7% for HS 4015.19 before that date (TARIC, WITS 2023)"
+        },
+        "4016": {
+          "exportsUsd": 401085287,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026 (TARIC: 0% U.S. tariff preference); EU common external tariff 2.5% for HS 4016.93 before that date (TARIC, WITS 2023)"
+        },
+        "4017": {
+          "exportsUsd": 757541,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU common external tariff 0% for HS 4017.00 (TARIC, WITS 2023); Regulation (EU) 2026/1455 also lists the heading for U.S. goods"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.58B) is the largest buyer of U.S. synthetic rubber ($687M, mostly through Belgium) and buys $401M of gaskets and other rubber parts. Since July 1, 2026 U.S. tires, belts and gaskets enter at 0% instead of 2.5–6.5%; the EU's €93B countermeasure list, which named most rubber goods, stays suspended.",
+        "mainProducts": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "Free (EU–US framework, from July 1, 2026)",
+        "regulator": {
+          "name": "European Commission (tyre labelling, Regulation (EU) 2020/740)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2020/740/oj",
+          "requirement": "Car, van and truck tyres placed on the EU market must carry the EU tyre label and be registered in the EPREL product database, and need EU or UNECE type approval (E-mark)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Mercosur Common External Tariff as applied by Brazil (no U.S. trade agreement), including temporary increases under the Mercosur list of trade imbalances (DCC)",
+      "usTradeAgreement": null,
+      "exportsUsd": 590523478,
+      "priorExportsUsd": 545836682,
+      "sharePct": 4.3,
+      "changePct": 8.2,
+      "status": "pending",
+      "cells": {
+        "4001": {
+          "exportsUsd": 2613264,
+          "rate": "4% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 4% for HS 4001.22; no U.S.-specific measure"
+        },
+        "4002": {
+          "exportsUsd": 262955517,
+          "rate": "12% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 12% for HS 4002.70; no U.S.-specific measure"
+        },
+        "4003": {
+          "exportsUsd": 1092220,
+          "rate": "12% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 12% for HS 4003.00; no U.S.-specific measure"
+        },
+        "4004": {
+          "exportsUsd": 506861,
+          "rate": "12% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 12% for HS 4004.00; no U.S.-specific measure"
+        },
+        "4005": {
+          "exportsUsd": 17995271,
+          "rate": "2%–14% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 2%–14% for HS 4005.10; no U.S.-specific measure"
+        },
+        "4006": {
+          "exportsUsd": 1499855,
+          "rate": "14% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 14% for HS 4006.90; no U.S.-specific measure"
+        },
+        "4007": {
+          "exportsUsd": 136138,
+          "rate": "14% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 14% for HS 4007.00; no U.S.-specific measure"
+        },
+        "4008": {
+          "exportsUsd": 2827338,
+          "rate": "14% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 14% for HS 4008.21; no U.S.-specific measure"
+        },
+        "4009": {
+          "exportsUsd": 37659789,
+          "rate": "14% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 14% for HS 4009.31; no U.S.-specific measure"
+        },
+        "4010": {
+          "exportsUsd": 29065561,
+          "rate": "14% (MFN); 30% approved on steel-cord belts",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff: WITS 2023 14% for HS 4010.12; Gecex approved raising steel-cord conveyor belts (4010.11.00) from 12.6% to 30% for 12 months at its 242nd meeting (November 2026)"
+        },
+        "4011": {
+          "exportsUsd": 142614762,
+          "rate": "2–16% (MFN); 16% on car tires, 30% approved",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 2%–16% for HS 4011.80; car tires (4011.10.00) carry a 16% TEC rate, were raised to 25% from October 15, 2024 to October 16, 2026 (Resoluções Gecex 648/2024 and 800/2025), and Gecex approved 30% for 12 months at its 242nd meeting (deliberations published November 6, 2026)"
+        },
+        "4012": {
+          "exportsUsd": 296406,
+          "rate": "16% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 16% for HS 4012.90; no U.S.-specific measure"
+        },
+        "4013": {
+          "exportsUsd": 573669,
+          "rate": "16% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 16% for HS 4013.90; no U.S.-specific measure"
+        },
+        "4014": {
+          "exportsUsd": 102384,
+          "rate": "16% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 16% for HS 4014.90; no U.S.-specific measure"
+        },
+        "4015": {
+          "exportsUsd": 577548,
+          "rate": "35% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 35% for HS 4015.19; no U.S.-specific measure"
+        },
+        "4016": {
+          "exportsUsd": 89993519,
+          "rate": "16% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 16% for HS 4016.93; no U.S.-specific measure"
+        },
+        "4017": {
+          "exportsUsd": 13376,
+          "rate": "16% (MFN)",
+          "normalRate": null,
+          "basis": "Mercosur Common External Tariff as applied by Brazil: WITS 2023 16% for HS 4017.00; no U.S.-specific measure"
+        }
+      },
+      "profile": {
+        "headline": "Brazil ($590M, up 8.2%) is the largest buyer of U.S. synthetic rubber outside North America and Europe ($263M) and buys $143M of tires. It charges U.S. goods its normal Mercosur rates; its Gecex committee approved raising the duty on all imported car tires from 16% to 30% for 12 months in November 2026, after two years at 25%.",
+        "mainProducts": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002) · New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle (4011)",
+        "tariffNow": "MFN 2–16% (no U.S. FTA); 30% on car tires approved",
+        "regulator": {
+          "name": "INMETRO (Portaria Inmetro nº 379/2021, new tires)",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-standards-trade",
+          "requirement": "New tires made, imported or sold in Brazil must be certified and registered with INMETRO under Portaria 379/2021, and their imports need a non-automatic import licence approved by INMETRO"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "Australian general tariff (Free on new tires since the 2024 removal of nuisance tariffs; 5% on most other rubber goods), with U.S.-origin goods free under the U.S.–Australia FTA",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 545972324,
+      "priorExportsUsd": 506889896,
+      "sharePct": 3.9,
+      "changePct": 7.7,
+      "status": "unchanged",
+      "cells": {
+        "4001": {
+          "exportsUsd": 286444,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4001.22; AUSFTA also free"
+        },
+        "4002": {
+          "exportsUsd": 2090667,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4002.70"
+        },
+        "4003": {
+          "exportsUsd": 39520,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4003.00"
+        },
+        "4004": {
+          "exportsUsd": 159800,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4004.00"
+        },
+        "4005": {
+          "exportsUsd": 2525406,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4005.10; AUSFTA also free"
+        },
+        "4006": {
+          "exportsUsd": 378262,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4006.90"
+        },
+        "4007": {
+          "exportsUsd": 38498,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4007.00; AUSFTA also free"
+        },
+        "4008": {
+          "exportsUsd": 2564080,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0%–5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 0%–5% for HS 4008.21"
+        },
+        "4009": {
+          "exportsUsd": 34251015,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4009.31"
+        },
+        "4010": {
+          "exportsUsd": 18189720,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4010.12"
+        },
+        "4011": {
+          "exportsUsd": 395339260,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4011.80; AUSFTA also free"
+        },
+        "4012": {
+          "exportsUsd": 3491356,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4012.90"
+        },
+        "4013": {
+          "exportsUsd": 326625,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4013.90; AUSFTA also free"
+        },
+        "4014": {
+          "exportsUsd": 914546,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4014.90; AUSFTA also free"
+        },
+        "4015": {
+          "exportsUsd": 1220111,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026): general rate Free for HS 4015.19; AUSFTA also free"
+        },
+        "4016": {
+          "exportsUsd": 82990769,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4016.93"
+        },
+        "4017": {
+          "exportsUsd": 1166245,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "U.S.–Australia FTA: free for originating goods; Australian Customs Tariff, Schedule 3 (ABF working tariff, 2026) general rate 5% for HS 4017.00"
+        }
+      },
+      "profile": {
+        "headline": "Australia ($546M, up 7.7%) is mainly a tire market: tires were $395M, 72% of what it bought, largely for mining and trucking. New tires enter free from any country, and other U.S. rubber goods are free under AUSFTA.",
+        "mainProducts": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle (4011) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "Free (tires: MFN 0%; other goods AUSFTA)",
+        "regulator": {
+          "name": "Department of Infrastructure, Transport, Regional Development (Road Vehicle Standards Act 2018)",
+          "url": "https://www.infrastructure.gov.au/infrastructure-transport-vehicles/vehicles/importing-road-vehicle-australia",
+          "requirement": "Tires fitted to road vehicles imported or supplied in Australia must meet the Australian Design Rules for the vehicle under the Road Vehicle Standards Act 2018"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff plus the 10% extra duty on all U.S. goods (since May 14, 2025); 2018–2019 counter-tariffs unless the buyer holds an exclusion; anti-dumping duties on U.S. EPDM (214.9–222.0%), halobutyl (75.5%) and chloroprene rubber (151%)",
+      "usTradeAgreement": null,
+      "exportsUsd": 408094922,
+      "priorExportsUsd": 481600377,
+      "sharePct": 2.9,
+      "changePct": -15.3,
+      "status": "raised",
+      "cells": {
+        "4001": {
+          "exportsUsd": 470201,
+          "rate": "20% + 10%",
+          "normalRate": "20% (MFN)",
+          "basis": "China MFN 20% for HS 4001.22 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); the representative line is not on China's 2018–2019 counter-tariff lists"
+        },
+        "4002": {
+          "exportsUsd": 121169819,
+          "rate": "7.5% + 10% + anti-dumping duty on EPDM, halobutyl and chloroprene rubber",
+          "normalRate": "7.5% (MFN)",
+          "basis": "China MFN 7.5% for HS 4002.70 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) on EPDM (40027010, 40027090) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4); anti-dumping duties: EPDM (40027010, 40027090) 214.9–222.0% for U.S. companies, kept during an expiry review that must end before December 20, 2026 (MOFCOM Announcement 2025 No. 81); halogenated butyl rubber (40023910, 40023990) 75.5% for all U.S. companies until August 2029 (Announcement 2024 No. 32); chloroprene rubber (40024910, 40024990) 151% for all U.S. companies until May 2028 (Announcement 2023 No. 17)"
+        },
+        "4003": {
+          "exportsUsd": 410004,
+          "rate": "8% + 10%",
+          "normalRate": "8% (MFN)",
+          "basis": "China MFN 8% for HS 4003.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4004": {
+          "exportsUsd": 29437,
+          "rate": "8% + 10%",
+          "normalRate": "8% (MFN)",
+          "basis": "China MFN 8% for HS 4004.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); the representative line is not on China's 2018–2019 counter-tariff lists"
+        },
+        "4005": {
+          "exportsUsd": 37224667,
+          "rate": "8% + 10%",
+          "normalRate": "8% (MFN)",
+          "basis": "China MFN 8% for HS 4005.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4006": {
+          "exportsUsd": 5064757,
+          "rate": "8%–14% + 10%",
+          "normalRate": "8%–14% (MFN)",
+          "basis": "China MFN 8%–14% for HS 4006.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 10% (Annex 3) or 5% (Annex 4), by Chinese line unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4007": {
+          "exportsUsd": 540449,
+          "rate": "14% + 10%",
+          "normalRate": "14% (MFN)",
+          "basis": "China MFN 14% for HS 4007.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4008": {
+          "exportsUsd": 4750150,
+          "rate": "8% + 10%",
+          "normalRate": "8% (MFN)",
+          "basis": "China MFN 8% for HS 4008.21 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 10% (Annex 3) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4009": {
+          "exportsUsd": 29816294,
+          "rate": "10% + 10%",
+          "normalRate": "10% (MFN)",
+          "basis": "China MFN 10% for HS 4009.31 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 20% (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4010": {
+          "exportsUsd": 6519916,
+          "rate": "10% + 10%",
+          "normalRate": "10% (MFN)",
+          "basis": "China MFN 10% for HS 4010.12 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 10% (Annex 3) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4011": {
+          "exportsUsd": 35299683,
+          "rate": "17%–25% + 10%",
+          "normalRate": "17%–25% (MFN)",
+          "basis": "China MFN 17%–25% for HS 4011.80 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) plus 2.5% (September 2019 list) on most construction and mining tires (40118011, 40118012, 40118091), 10% plus 2.5% on 40118092; 5% (Annex 4) on car and truck tires unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4); car and truck tires (4011.10, 4011.20) pay 10% MFN"
+        },
+        "4012": {
+          "exportsUsd": 162338,
+          "rate": "3%–22% + 10%",
+          "normalRate": "3%–22% (MFN)",
+          "basis": "China MFN 3%–22% for HS 4012.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5–25% (Annexes 1 and 4) plus 2.5% (September 2019 list) on most lines unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4013": {
+          "exportsUsd": 79261,
+          "rate": "3%–15% + 10%",
+          "normalRate": "3%–15% (MFN)",
+          "basis": "China MFN 3%–15% for HS 4013.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) or 25% (Annex 1), by Chinese line unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4014": {
+          "exportsUsd": 578408,
+          "rate": "17% + 10%",
+          "normalRate": "17% (MFN)",
+          "basis": "China MFN 17% for HS 4014.90 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 10% (Annex 3) plus 2.5% (September 2019 list) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4015": {
+          "exportsUsd": 6336881,
+          "rate": "10% + 10%",
+          "normalRate": "10% (MFN)",
+          "basis": "China MFN 10% for HS 4015.19 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4016": {
+          "exportsUsd": 159595004,
+          "rate": "8%–15% + 10%",
+          "normalRate": "8%–15% (MFN)",
+          "basis": "China MFN 8%–15% for HS 4016.93 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 10% (Annex 3) on gaskets and seals (40169310, 40169390) unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        },
+        "4017": {
+          "exportsUsd": 47653,
+          "rate": "8%–15% + 10%",
+          "normalRate": "8%–15% (MFN)",
+          "basis": "China MFN 8%–15% for HS 4017.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 25% (Annex 1) or 10% (Annex 3), by Chinese line unless the buyer holds an exclusion (Tariff Commission Announcements 2019 No. 3 and No. 4)"
+        }
+      },
+      "profile": {
+        "headline": "China ($408M, down 15.3%) buys mostly U.S. gaskets and rubber parts ($160M) and synthetic rubber ($121M); U.S. tire sales there are small ($35M). Every U.S. good pays 10% on top of the MFN rate, and U.S. EPDM, halobutyl and chloroprene rubber also pay anti-dumping duties of 214.9–222.0%, 75.5% and 151%.",
+        "mainProducts": "Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016) · Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002)",
+        "tariffNow": "MFN + 10% extra (20% on car tires); anti-dumping duties on 3 synthetic rubbers",
+        "regulator": {
+          "name": "State Administration for Market Regulation (China Compulsory Certification)",
+          "url": "https://english.samr.gov.cn/CooperationandExchanges/Organizations/art/2026/art_c2f7533f9c0046a1ae3e65a95259218a.html",
+          "requirement": "Motor vehicle tires are on the China Compulsory Certification (CCC) catalogue and cannot be imported or sold without the certificate and CCC mark (implementation rule CNCA-C12-01:2024)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 152,
+      "name": "Chile",
+      "rule": "U.S.–Chile FTA: all U.S.-origin goods duty-free; Chile's uniform 6% tariff applies to goods that do not qualify",
+      "usTradeAgreement": "U.S.–Chile Free Trade Agreement",
+      "exportsUsd": 387588362,
+      "priorExportsUsd": 337807815,
+      "sharePct": 2.8,
+      "changePct": 14.7,
+      "status": "unchanged",
+      "cells": {
+        "4001": {
+          "exportsUsd": 156761,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4001.22)"
+        },
+        "4002": {
+          "exportsUsd": 40797776,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4002.70)"
+        },
+        "4003": {
+          "exportsUsd": 0,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4003.00)"
+        },
+        "4004": {
+          "exportsUsd": 72839,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4004.00)"
+        },
+        "4005": {
+          "exportsUsd": 1729014,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4005.10)"
+        },
+        "4006": {
+          "exportsUsd": 457555,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4006.90)"
+        },
+        "4007": {
+          "exportsUsd": 2562,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4007.00)"
+        },
+        "4008": {
+          "exportsUsd": 1067597,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4008.21)"
+        },
+        "4009": {
+          "exportsUsd": 14631440,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4009.31)"
+        },
+        "4010": {
+          "exportsUsd": 7295007,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4010.12)"
+        },
+        "4011": {
+          "exportsUsd": 278765905,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4011.80)"
+        },
+        "4012": {
+          "exportsUsd": 330782,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4012.90)"
+        },
+        "4013": {
+          "exportsUsd": 65737,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4013.90)"
+        },
+        "4014": {
+          "exportsUsd": 84962,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4014.90)"
+        },
+        "4015": {
+          "exportsUsd": 2751570,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4015.19)"
+        },
+        "4016": {
+          "exportsUsd": 39350785,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4016.93)"
+        },
+        "4017": {
+          "exportsUsd": 28070,
+          "rate": "Free (U.S.–Chile FTA)",
+          "normalRate": "6% MFN",
+          "basis": "U.S.–Chile FTA: all trade duty-free (trade.gov Country Commercial Guide); Chile's uniform 6% tariff for goods without FTA origin (WITS 2022, HS 4017.00)"
+        }
+      },
+      "profile": {
+        "headline": "Chile ($388M, up 14.7%) buys mostly tires ($279M, 72%), many of them large tires for its copper mines. U.S. goods that qualify under the FTA pay nothing instead of Chile's flat 6%.",
+        "mainProducts": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle (4011) · Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002)",
+        "tariffNow": "Free (U.S.–Chile FTA)",
+        "regulator": {
+          "name": "Ministerio del Medio Ambiente (Ley REP 20.920; Decreto Supremo 8/2019 on tires)",
+          "url": "https://economiacircular.mma.gob.cl/wp-content/uploads/2025/06/4.-Manual-Ley-REP.pdf",
+          "requirement": "Companies that place tires on the Chilean market, importers included, must join a management system and meet annual collection and recovery targets for end-of-life tires, in force since January 20, 2023"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Chile import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/chile-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (10% on most rubber goods, 10–15% on tires), plus an anti-dumping duty on U.S. butyl rubber; the February 2026 U.S.–India framework has published no new rate",
+      "usTradeAgreement": null,
+      "exportsUsd": 312211050,
+      "priorExportsUsd": 245045977,
+      "sharePct": 2.2,
+      "changePct": 27.4,
+      "status": "pending",
+      "cells": {
+        "4001": {
+          "exportsUsd": 169723,
+          "rate": "25% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 25% for HS 4001.22; surcharges not included"
+        },
+        "4002": {
+          "exportsUsd": 101432678,
+          "rate": "10% (basic duty); AD on butyl rubber",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4002.70; U.S. butyl rubber (4002.31) also pays an anti-dumping duty of US$781–859 per tonne (Notification 17/2024-Customs (ADD), September 27, 2024); DGTR opened an anti-dumping investigation into U.S. halobutyl rubber (4002.39) on October 31, 2025"
+        },
+        "4003": {
+          "exportsUsd": 45842,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4003.00; surcharges not included"
+        },
+        "4004": {
+          "exportsUsd": 65826840,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4004.00; surcharges not included"
+        },
+        "4005": {
+          "exportsUsd": 26864665,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4005.10; surcharges not included"
+        },
+        "4006": {
+          "exportsUsd": 5466733,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4006.90; surcharges not included"
+        },
+        "4007": {
+          "exportsUsd": 5375,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4007.00; surcharges not included"
+        },
+        "4008": {
+          "exportsUsd": 2468572,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4008.21; surcharges not included"
+        },
+        "4009": {
+          "exportsUsd": 10704382,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4009.31; surcharges not included"
+        },
+        "4010": {
+          "exportsUsd": 5790924,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4010.12; surcharges not included"
+        },
+        "4011": {
+          "exportsUsd": 19229602,
+          "rate": "10–15% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4011.80, 10–15% on car and truck tires (4011.10, 4011.20); surcharges not included"
+        },
+        "4012": {
+          "exportsUsd": 318951,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4012.90; surcharges not included"
+        },
+        "4013": {
+          "exportsUsd": 23068,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4013.90; surcharges not included"
+        },
+        "4014": {
+          "exportsUsd": 26232,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4014.90; surcharges not included"
+        },
+        "4015": {
+          "exportsUsd": 4066974,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4015.19; surcharges not included"
+        },
+        "4016": {
+          "exportsUsd": 69748926,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4016.93; surcharges not included"
+        },
+        "4017": {
+          "exportsUsd": 21563,
+          "rate": "10% (basic duty)",
+          "normalRate": null,
+          "basis": "India basic customs duty: WITS 2023 10% for HS 4017.00; surcharges not included"
+        }
+      },
+      "profile": {
+        "headline": "India ($312M, up 27.4%) buys U.S. synthetic rubber ($101M), rubber parts ($70M) and rubber scrap and crumb ($66M). It charges 10% on most of these goods and 10–15% on tires, and U.S. butyl rubber also pays an anti-dumping duty of US$781–859 per tonne.",
+        "mainProducts": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "MFN 10–15% (U.S.–India framework not yet in force)",
+        "regulator": {
+          "name": "Bureau of Indian Standards (Pneumatic Tyres and Tubes for Automotive Vehicles (Quality Control) Order, 2009)",
+          "url": "https://www.services.bis.gov.in/tmp/Circular_86Yd_2023-11-21.pdf",
+          "requirement": "Car, truck, bus and motorcycle tyres and tubes sold in India, imported ones included, need a BIS licence and the BIS Standard Mark (car tyres under IS 15633:2022), which the foreign manufacturer applies for"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's tariff schedule (WTO rates): 0% on tires, synthetic rubber and gaskets; 1.9% on conveyor belts and up to 2.5% on some hoses",
+      "usTradeAgreement": null,
+      "exportsUsd": 258131998,
+      "priorExportsUsd": 199756508,
+      "sharePct": 1.9,
+      "changePct": 29.2,
+      "status": "unchanged",
+      "cells": {
+        "4001": {
+          "exportsUsd": 10363408,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4001.22 (WITS 2023)"
+        },
+        "4002": {
+          "exportsUsd": 114701091,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4002.70 (WITS 2023)"
+        },
+        "4003": {
+          "exportsUsd": 3505349,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4003.00 (WITS 2023)"
+        },
+        "4004": {
+          "exportsUsd": 2980315,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4004.00 (WITS 2023)"
+        },
+        "4005": {
+          "exportsUsd": 13129643,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4005.10 (WITS 2023)"
+        },
+        "4006": {
+          "exportsUsd": 687836,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4006.90 (WITS 2023)"
+        },
+        "4007": {
+          "exportsUsd": 176886,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4007.00 (WITS 2023)"
+        },
+        "4008": {
+          "exportsUsd": 2612520,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4008.21 (WITS 2023)"
+        },
+        "4009": {
+          "exportsUsd": 18987041,
+          "rate": "Free–2.5% (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026), HS 4009.31: free for hoses for motor vehicles, 2.5% for others (WITS 2023: 0–2.5%)"
+        },
+        "4010": {
+          "exportsUsd": 1487104,
+          "rate": "1.9% (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 1.9% for HS 4010.12 (general rate 3.9%)"
+        },
+        "4011": {
+          "exportsUsd": 37029953,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4011.80 (WITS 2023)"
+        },
+        "4012": {
+          "exportsUsd": 771763,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4012.90 (WITS 2023)"
+        },
+        "4013": {
+          "exportsUsd": 34841,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4013.90 (WITS 2023)"
+        },
+        "4014": {
+          "exportsUsd": 911453,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4014.90 (WITS 2023)"
+        },
+        "4015": {
+          "exportsUsd": 1180296,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4015.19 (WITS 2023)"
+        },
+        "4016": {
+          "exportsUsd": 49553813,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4016.93 (WITS 2023)"
+        },
+        "4017": {
+          "exportsUsd": 18686,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "Customs Tariff Schedules of Japan (April 1, 2026): WTO rate 0% for HS 4017.00 (WITS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($258M, up 29.2%) buys mostly U.S. synthetic rubber ($115M) and rubber parts ($50M). Its tariff on tires, synthetic rubber and gaskets is already zero, and the 2025 U.S.–Japan agreement changed none of these rates.",
+        "mainProducts": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene (4002) · Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts (4016)",
+        "tariffNow": "Free (MFN 0%) on tires, synthetic rubber and gaskets",
+        "regulator": {
+          "name": "METI, MHLW and MOE (Chemical Substances Control Law)",
+          "url": "https://www.meti.go.jp/policy/chemical_management/english/",
+          "requirement": "Tires need no import approval; a synthetic rubber that is a new chemical substance needs prior notification under the Chemical Substances Control Law"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "4011",
+      "exportsUsd": 1704872406,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4011",
+      "exportsUsd": 1268514119,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4016",
+      "exportsUsd": 883342339,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4016",
+      "exportsUsd": 748070223,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "4002",
+      "exportsUsd": 686575870,
+      "rate": "Free (MFN 0%)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4002",
+      "exportsUsd": 440583953,
+      "rate": "Free (USMCA); US$0.34075/kg AD on emulsion SBR"
+    },
+    {
+      "market": "Canada",
+      "heading": "4009",
+      "exportsUsd": 415730573,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "4016",
+      "exportsUsd": 401085287,
+      "rate": "Free (EU–US framework)"
+    }
+  ],
+  "assumptions": [
+    "Each cell shows the rate for one representative six-digit subheading per heading: the line with the largest 2025 U.S. exports (for example 4011.80 for new tires, 4016.93 for gaskets and seals, 4002.70 for synthetic rubber). Car-tire (4011.10) and truck-tire (4011.20) rates are named in the basis where they differ. National 8–10-digit lines can differ.",
+    "MFN rates are World Bank/UNCTAD WITS (TRAINS) applied rates (2023, Chile 2022), checked against the market's own 2026 schedule where available: EU TARIC, the Customs Tariff Schedules of Japan (April 1, 2026) and the Australian Border Force working tariff (July 1, 2026).",
+    "USMCA (Canada, Mexico), the U.S.–Chile FTA and the U.S.–Australia FTA apply 0% to qualifying U.S.-origin goods; the normal-rate column shows the MFN rate for goods that do not qualify. Mexico's column includes the general rates raised from January 1, 2026.",
+    "For the EU, Regulation (EU) 2026/1455 takes Chapter 40 to 0% for U.S. goods from July 1, 2026; the normal-rate column shows the EU rate before then.",
+    "China's cells add the 10% extra duty on all U.S. goods to the MFN rate. China's 2018–2019 counter-tariffs (Tariff Commission Announcement 2018 No. 7 List 2, Announcement 2019 No. 3 and the September 2019 list of Announcement 2019 No. 4, halved by Announcement 2020 No. 1) are named in each basis but not added, because importers can hold exclusions valid until December 31, 2026. Anti-dumping duties on U.S. EPDM, halobutyl and chloroprene rubber are shown on heading 4002 only.",
+    "Brazil's cells use WITS 2023 Mercosur rates. Brazil moves some lines above or below the common tariff through its exception lists, as with car tires (4011.10) and steel-cord conveyor belts (4010.11) in November 2026, so the 2026 applied rate can differ.",
+    "India's rates are the basic customs duty (WITS 2023) only; surcharges and IGST are not included, and the U.S.–India framework has not been implemented as far as we found.",
+    "Canada's 25% surtax on U.S. tires (March 4 to August 31, 2025) is not in the rates because it has been repealed; no Chapter 40 item is on Canada's September 2026 surtax list."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 40, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2022–2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: MFN applied rates for HS chapter 40 by market",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (TARIC)",
+      "citation": "TARIC consultation, origin US, November 19, 2026",
+      "document": "TARIC measure information",
+      "title": "TARIC measures for U.S.-origin rubber goods (CN 4001 22, 4002 70, 4010 12, 4011 10, 4011 80, 4016 93): third-country duty and the 0% U.S. tariff preference from July 1, 2026 (Regulation 2026/1455)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261119&Area=US&Taric=4011100000&LangDescr=en"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "jp-tariff",
+      "publisher": "Japan Customs",
+      "citation": "Customs Tariff Schedules of Japan, Chapter 40 (April 1, 2026)",
+      "document": "Tariff schedule",
+      "title": "Customs Tariff Schedules of Japan, Chapter 40: rubber and articles thereof (April 1, 2026)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_40.htm"
+    },
+    {
+      "id": "au-tariff",
+      "publisher": "Australian Border Force",
+      "citation": "Working Tariff, Schedule 3, Chapter 40 (operative July 1, 2026)",
+      "document": "Customs Tariff Act 1995, Schedule 3",
+      "title": "Current tariff classification: Schedule 3, Section VII, Chapter 40 (general rates)",
+      "signed": null,
+      "published": "2026-07-01",
+      "url": "https://www.abf.gov.au/importing-exporting-and-manufacturing/tariff-classification/current-tariff/schedule-3/section-vii/chapter-40"
+    },
+    {
+      "id": "au-ccg-tariffs",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Australia Country Commercial Guide: import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Australia: Import Tariffs (most U.S.-origin goods enter Australia duty free)",
+      "signed": null,
+      "published": "2026-05-26",
+      "url": "https://www.trade.gov/country-commercial-guides/australia-import-tariffs"
+    },
+    {
+      "id": "cl-ccg-tariffs",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Chile Country Commercial Guide: import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Chile: Import Tariffs (all U.S.–Chile trade duty-free under the FTA; uniform 6% tariff for other goods)",
+      "signed": null,
+      "published": "2025-11-24",
+      "url": "https://www.trade.gov/country-commercial-guides/chile-import-tariffs"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE",
+      "title": "Mexico's decree raising general tariffs from January 1, 2026 (tires 4011.10.10, 4011.20.04–.06, 4011.70.03, 4011.70.99 to 25–35%; gaskets 4016.93.04 to 25%)",
+      "signed": "2025-12-10",
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "ca-sor-2025-66",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-66",
+      "document": "United States Surtax Order (2025-1)",
+      "title": "United States Surtax Order (2025-1): 25% surtax on listed U.S. goods from March 4, 2025 (Schedule includes tariff items 4011.10.00 to 4011.90.90, 4012 and 4016.91.00; tires for original equipment exempt)",
+      "signed": "2025-03-03",
+      "published": "2025-03-12",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors66-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-181",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-181",
+      "document": "Order Amending and Repealing Certain Orders Made Under the Customs Tariff (United States Surtax)",
+      "title": "Repeal of the United States Surtax Order (2025-1) from September 1, 2025",
+      "signed": "2025-08-29",
+      "published": "2025-09-10",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-09-10/html/sor-dors181-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026): surtaxes of 15%, 25% and 50% on listed U.S. goods from September 8, 2026 (no Chapter 40 tariff item listed)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "cn-2018-list2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2018",
+      "document": "Tariff Commission Announcement No. 7 of 2018 and its List 2",
+      "title": "Extra 25% duty on List 2 of U.S. goods from August 23, 2018 (item 97: 4002.3990 halogenated butyl rubber plates, sheets and strip)",
+      "signed": null,
+      "published": "2018-08-08",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201808/t20180808_2983770.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Tariff Commission Announcement No. 3 of 2019 and Annexes 1–4 (25%, 20%, 10% and 5% lists)",
+      "title": "Higher additional tariffs on part of the U.S. goods on the US$60 billion list, from June 1, 2019",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Tariff Commission Announcement No. 4 of 2019 (third batch, Lists 1 and 2)",
+      "title": "Additional tariffs on US$75 billion of U.S. goods from September 1 and December 15, 2019",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Tariff Commission Announcement No. 1 of 2020",
+      "title": "Rates of the September 2019 additional tariffs on U.S. goods halved from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-mofcom-epdm-2025-81",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 81 of 2025",
+      "document": "Announcement",
+      "title": "关于对原产于美国、韩国和欧盟的进口三元乙丙橡胶所适用的反倾销措施发起期终复审调查的公告 (expiry review of anti-dumping measures on EPDM from the U.S., Korea and the EU; U.S. rates 214.9–222.0%)",
+      "signed": "2025-12-19",
+      "published": "2025-12-19",
+      "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_50c8adab6b72437b84b0f04a69b5ab0d.html"
+    },
+    {
+      "id": "cn-mofcom-halobutyl-2024",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 32 of 2024",
+      "document": "Announcement",
+      "title": "关于原产于美国、欧盟、英国和新加坡的进口卤化丁基橡胶所适用反倾销措施的期终复审裁定的公告 (halogenated butyl rubber: anti-dumping duties continued for five years from August 20, 2024; U.S. companies 75.5%)",
+      "signed": "2024-08-19",
+      "published": "2024-08-19",
+      "url": "https://www.mofcom.gov.cn/zcfb/blgg/art/2024/art_33352bb183c0479bab0895b9827a8131.html"
+    },
+    {
+      "id": "cn-mofcom-cr-2023",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 17 of 2023",
+      "document": "Announcement",
+      "title": "关于原产于日本、美国和欧盟的进口氯丁橡胶所适用反倾销措施期终复审裁定的公告 (chloroprene rubber: anti-dumping duties continued for five years from May 10, 2023; all U.S. companies 151%)",
+      "signed": "2023-05-09",
+      "published": "2023-05-09",
+      "url": "https://www.mofcom.gov.cn/zcfb/gpmy/art/2023/art_5340da6711bc4417b143ebfa37d35236.html"
+    },
+    {
+      "id": "mx-dof-esbr-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, May 29, 2025 (E.C. Rev. 24/23)",
+      "document": "Resolución final",
+      "title": "Resolución final del examen de vigencia y de la revisión de oficio de las cuotas compensatorias impuestas a las importaciones de hule polibutadieno estireno en emulsión originarias de los Estados Unidos de América, la República de Corea y Japón",
+      "signed": null,
+      "published": "2025-05-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5758619&fecha=29/05/2025"
+    },
+    {
+      "id": "in-wto-iir",
+      "publisher": "World Trade Organization",
+      "citation": "WTO Trade Remedies Data Portal, 6/05/2023-DGTR",
+      "document": "Trade remedies record",
+      "title": "India – anti-dumping duty on isobutylene-isoprene (butyl) rubber from the United States: Notification 17/2024-Customs (ADD), September 27, 2024, US$781–859 per tonne",
+      "signed": null,
+      "published": "2024-09-27",
+      "url": "https://trade-remedies.wto.org/en/antidumping/investigations/investigation/ind-6052023-dgtr-55"
+    },
+    {
+      "id": "in-dgtr-hiir-2025",
+      "publisher": "Directorate General of Trade Remedies (India)",
+      "citation": "F.No. 6/59/2025-DGTR",
+      "document": "Initiation notification",
+      "title": "Initiation of an anti-dumping investigation concerning imports of Halo-Isobutene-Isoprene Rubber from China PR, Singapore and the USA",
+      "signed": "2025-10-31",
+      "published": "2025-10-31",
+      "url": "https://dgtr.gov.in/sites/default/files/2025-11/Hiir%20Eng_0001.pdf"
+    },
+    {
+      "id": "br-gecex-242",
+      "publisher": "Ministério do Desenvolvimento, Indústria, Comércio e Serviços (Brazil)",
+      "citation": "Gecex, 242nd meeting",
+      "document": "Deliberações",
+      "title": "Deliberações da 242ª Reunião Ordinária do Comitê-Executivo de Gestão (Gecex): DCC list, 4011.10.00 car tires from 16% to 30% and 4010.11.00 steel-cord conveyor belts from 12.6% to 30%, for 12 months",
+      "signed": null,
+      "published": "2026-11-06",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/deliberacoes/deliberacoes-da-242a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex"
+    },
+    {
+      "id": "br-nt-1933-2026",
+      "publisher": "Ministério do Desenvolvimento, Indústria, Comércio e Serviços (Brazil)",
+      "citation": "Nota Técnica SEI nº 1933/2026/MDIC (public extract)",
+      "document": "Technical note",
+      "title": "Car tires (NCM 4011.10.00): TEC rate 16%; raised to 25% from October 15, 2024 to October 14, 2025 (Resolução Gecex 648/2024) and from October 17, 2025 to October 16, 2026 (Resolução Gecex 800/2025); 30% for 12 months proposed",
+      "signed": "2026-11-05",
+      "published": "2026-11-05",
+      "url": "https://www.gov.br/mdic/pt-br/assuntos/camex/outros-documentos/notas/deferimentos/242a-reuniao-ordinaria-do-comite-executivo-de-gestao-gecex/extrato-publico-da-nota-tecnica-sei-no-1933-2026-mdic.pdf"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 83% of 2025 U.S. Chapter 40 exports. A customs union (the EU) is one market: its members share one tariff."
+}

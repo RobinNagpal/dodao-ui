@@ -1,0 +1,614 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 73,
+    "padded": "73",
+    "slug": "73-articles-of-iron-steel",
+    "title": "Articles of Iron or Steel"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/73-articles-of-iron-steel",
+    "h1": "HTS Chapter 73: Articles of Iron or Steel — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Steel Article Exports & Foreign Tariffs (HTS Ch. 73) | KoalaGains",
+      "shortDescription": "U.S. exports of steel articles were $21.82B in 2025, down 5.1%. Where fasteners, pipe, fittings and structures go, and what Canada, Mexico, the EU and China charge on them.",
+      "keywords": [
+        "us steel exports",
+        "us steel exports to canada",
+        "us steel exports by country",
+        "us fastener exports",
+        "canada tariff on us steel products",
+        "HS 73 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "The U.S. exported **$21.82B** of articles of iron or steel in 2025, down **5.1%** from $23.00B in 2024 after four straight years of growth. Two headings make up more than half: other articles such as forgings, stampings and fabricated parts (7326, **29%**, $6.41B) and screws, bolts, nuts and washers (7318, **26%**, $5.63B). Mexico and Canada take **60%** between them, much of it parts and fasteners for factories on the other side of the border. In the first eight months of 2026 exports were up 2.2%, with Mexico up 7.5% and Canada down 9.4%.\n\nTariffs matter most in **Canada**: since September 8, 2026 it charges a 50% surtax on nearly every U.S. steel line of the chapter (25% from March 13, 2025), with no exemption for goods that qualify for CUSMA. **China** adds its 10% extra duty to rates of 3–8%. Elsewhere tariffs have fallen or stayed at zero: the EU cut its duties on U.S. steel articles to zero on July 1, 2026, and Mexico, South Korea, Singapore and Australia charge nothing on qualifying goods under U.S. free-trade agreements. For pipe and tube the limits are steel quotas instead: the EU and the UK charge 50% once their quotas are used up.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$21.82B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-5.1%"
+    },
+    {
+      "label": "Largest product group (7326)",
+      "value": "29%",
+      "note": "Other articles (forgings, wire articles, hangers)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "60%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top 12 buyers with a counter-tariff on these goods",
+      "value": "2",
+      "note": "Canada (50% surtax on most lines) and China (10% extra); EU and UK steel quotas apply to every origin"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. exports of steel articles fell 5.1% to $21.82B in 2025; other articles (7326, $6.41B) and fasteners (7318, $5.63B) are 55% of the total.",
+    "Canada, the second-largest buyer at $5.81B (down 13.2%), charges a 50% surtax on most U.S. steel articles since September 8, 2026, CUSMA or not; stoves, radiators, kitchenware, sinks and leaf springs pay 25%, and cast-iron pipe is the one product with no surtax at all.",
+    "Mexico ($7.32B) charges nothing on goods that meet the USMCA rule of origin, but since January 1, 2026 its general rate on many steel lines is 35%, so failing the rule is now expensive.",
+    "The EU charges nothing on U.S. steel articles since July 1, 2026, but it can restore duties on chapters 72, 73 and 76 after December 31, 2026, and pipe and tube still pay 50% above the EU steel quota."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 16000982002,
+      "partnerAUsd": 4623074220,
+      "partnerBUsd": 5183912854,
+      "restUsd": 6193994928
+    },
+    {
+      "year": 2021,
+      "totalUsd": 19246739758,
+      "partnerAUsd": 5940054076,
+      "partnerBUsd": 6613953141,
+      "restUsd": 6692732541
+    },
+    {
+      "year": 2022,
+      "totalUsd": 22006888226,
+      "partnerAUsd": 7042937814,
+      "partnerBUsd": 7541756237,
+      "restUsd": 7422194175
+    },
+    {
+      "year": 2023,
+      "totalUsd": 22722823731,
+      "partnerAUsd": 7511928002,
+      "partnerBUsd": 7482992790,
+      "restUsd": 7727902939
+    },
+    {
+      "year": 2024,
+      "totalUsd": 23002771027,
+      "partnerAUsd": 7956795772,
+      "partnerBUsd": 6690442687,
+      "restUsd": 8355532568
+    },
+    {
+      "year": 2025,
+      "totalUsd": 21823551840,
+      "partnerAUsd": 7321982279,
+      "partnerBUsd": 5809413536,
+      "restUsd": 8692156025
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 73 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 15196337863,
+    "priorExportsUsd": 14867719707,
+    "changePct": 2.2,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 5377772353,
+        "priorExportsUsd": 5002370794,
+        "changePct": 7.5
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 3656010307,
+        "priorExportsUsd": 4033908603,
+        "changePct": -9.4
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 483953547,
+        "priorExportsUsd": 466402519,
+        "changePct": 3.8
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 404830411,
+        "priorExportsUsd": 372573664,
+        "changePct": 8.7
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 364398322,
+        "priorExportsUsd": 353053614,
+        "changePct": 3.2
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 358184826,
+        "priorExportsUsd": 306853900,
+        "changePct": 16.7
+      },
+      {
+        "countryCode": 251,
+        "country": "France",
+        "exportsUsd": 315193688,
+        "priorExportsUsd": 320920745,
+        "changePct": -1.8
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 268019724,
+        "priorExportsUsd": 245813216,
+        "changePct": 9
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 7321982279,
+      "priorExportsUsd": 7956795772,
+      "sharePct": 33.6,
+      "changePct": -8,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 5809413536,
+      "priorExportsUsd": 6690442687,
+      "sharePct": 26.6,
+      "changePct": -13.2,
+      "tariffNow": "Free (CUSMA) + 50% surtax on most lines",
+      "status": "raised"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 680275839,
+      "priorExportsUsd": 698721574,
+      "sharePct": 3.1,
+      "changePct": -2.6,
+      "tariffNow": "MFN 3–8% + 10% extra",
+      "status": "raised"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 568460134,
+      "priorExportsUsd": 545503526,
+      "sharePct": 2.6,
+      "changePct": 4.2,
+      "tariffNow": "Mostly free; welded pipe 50% above quota",
+      "status": "raised"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 497506598,
+      "priorExportsUsd": 453796856,
+      "sharePct": 2.3,
+      "changePct": 9.6,
+      "tariffNow": "Free (EU–US framework); pipe 50% above quota",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 483392102,
+      "priorExportsUsd": 432248888,
+      "sharePct": 2.2,
+      "changePct": 11.8,
+      "tariffNow": "Free (EU–US framework); pipe 50% above quota",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 455779939,
+      "priorExportsUsd": 442532848,
+      "sharePct": 2.1,
+      "changePct": 3,
+      "tariffNow": "Mostly free; 2.8–3.3% on some lines",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 406043240,
+      "priorExportsUsd": 389363777,
+      "sharePct": 1.9,
+      "changePct": 4.3,
+      "tariffNow": "Mostly 14–18% (Mercosur tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 368363953,
+      "priorExportsUsd": 339342014,
+      "sharePct": 1.7,
+      "changePct": 8.6,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 320000296,
+      "priorExportsUsd": 304617844,
+      "sharePct": 1.5,
+      "changePct": 5,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 287410002,
+      "priorExportsUsd": 244824584,
+      "sharePct": 1.3,
+      "changePct": 17.4,
+      "tariffNow": "Mostly 10% MFN; 15% on bolts and nuts (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 281374764,
+      "priorExportsUsd": 299011736,
+      "sharePct": 1.3,
+      "changePct": -5.9,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 4343549158,
+  "othersPriorExportsUsd": 4205568921,
+  "byHeading": [
+    {
+      "heading": "7301",
+      "label": "Sheet piling & welded shapes",
+      "exportsUsd": 65575704,
+      "priorExportsUsd": 67697241,
+      "changePct": -3.1,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "7302",
+      "label": "Railway track material",
+      "exportsUsd": 191766077,
+      "priorExportsUsd": 271532793,
+      "changePct": -29.4,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "7303",
+      "label": "Cast-iron pipe & tube",
+      "exportsUsd": 45423914,
+      "priorExportsUsd": 40113751,
+      "changePct": 13.2,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7304",
+      "label": "Seamless pipe & tube (OCTG, line pipe)",
+      "exportsUsd": 653886326,
+      "priorExportsUsd": 821230244,
+      "changePct": -20.4,
+      "sharePct": 3
+    },
+    {
+      "heading": "7305",
+      "label": "Large welded pipe (over 406.4 mm)",
+      "exportsUsd": 120148353,
+      "priorExportsUsd": 107966596,
+      "changePct": 11.3,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "7306",
+      "label": "Welded pipe, tube & hollow sections",
+      "exportsUsd": 1242456671,
+      "priorExportsUsd": 1362085466,
+      "changePct": -8.8,
+      "sharePct": 5.7
+    },
+    {
+      "heading": "7307",
+      "label": "Pipe fittings (flanges, elbows, couplings)",
+      "exportsUsd": 1889750513,
+      "priorExportsUsd": 1976163196,
+      "changePct": -4.4,
+      "sharePct": 8.7
+    },
+    {
+      "heading": "7308",
+      "label": "Structures & structural parts",
+      "exportsUsd": 1220723921,
+      "priorExportsUsd": 1411361541,
+      "changePct": -13.5,
+      "sharePct": 5.6
+    },
+    {
+      "heading": "7309",
+      "label": "Tanks & vats over 300 liters",
+      "exportsUsd": 316210527,
+      "priorExportsUsd": 372380471,
+      "changePct": -15.1,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "7310",
+      "label": "Drums, cans & containers (300 l or less)",
+      "exportsUsd": 825908876,
+      "priorExportsUsd": 738084430,
+      "changePct": 11.9,
+      "sharePct": 3.8
+    },
+    {
+      "heading": "7311",
+      "label": "Gas cylinders",
+      "exportsUsd": 325578071,
+      "priorExportsUsd": 347118793,
+      "changePct": -6.2,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "7312",
+      "label": "Wire rope, cable & strand",
+      "exportsUsd": 319229824,
+      "priorExportsUsd": 340764189,
+      "changePct": -6.3,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "7313",
+      "label": "Barbed wire",
+      "exportsUsd": 2643541,
+      "priorExportsUsd": 2980066,
+      "changePct": -11.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "7314",
+      "label": "Wire mesh, netting, fencing & expanded metal",
+      "exportsUsd": 121660821,
+      "priorExportsUsd": 186540191,
+      "changePct": -34.8,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "7315",
+      "label": "Chain & chain parts",
+      "exportsUsd": 350666515,
+      "priorExportsUsd": 381814995,
+      "changePct": -8.2,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "7316",
+      "label": "Anchors & grapnels",
+      "exportsUsd": 11271031,
+      "priorExportsUsd": 19099229,
+      "changePct": -41,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7317",
+      "label": "Nails, tacks & staples",
+      "exportsUsd": 41802581,
+      "priorExportsUsd": 51319574,
+      "changePct": -18.5,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7318",
+      "label": "Screws, bolts, nuts & washers",
+      "exportsUsd": 5628065624,
+      "priorExportsUsd": 5628007197,
+      "changePct": 0,
+      "sharePct": 25.8
+    },
+    {
+      "heading": "7319",
+      "label": "Sewing needles, pins & similar",
+      "exportsUsd": 19612531,
+      "priorExportsUsd": 23447950,
+      "changePct": -16.4,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7320",
+      "label": "Springs & leaf springs",
+      "exportsUsd": 778954612,
+      "priorExportsUsd": 776742887,
+      "changePct": 0.3,
+      "sharePct": 3.6
+    },
+    {
+      "heading": "7321",
+      "label": "Stoves, grills & barbecues",
+      "exportsUsd": 227826387,
+      "priorExportsUsd": 267096947,
+      "changePct": -14.7,
+      "sharePct": 1
+    },
+    {
+      "heading": "7322",
+      "label": "Radiators & air heaters",
+      "exportsUsd": 427123668,
+      "priorExportsUsd": 476816992,
+      "changePct": -10.4,
+      "sharePct": 2
+    },
+    {
+      "heading": "7323",
+      "label": "Kitchenware & household articles",
+      "exportsUsd": 240896714,
+      "priorExportsUsd": 266612534,
+      "changePct": -9.6,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "7324",
+      "label": "Sinks, baths & sanitary ware",
+      "exportsUsd": 120908481,
+      "priorExportsUsd": 108606093,
+      "changePct": 11.3,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "7325",
+      "label": "Cast articles (manhole covers, grinding balls)",
+      "exportsUsd": 228873962,
+      "priorExportsUsd": 251039143,
+      "changePct": -8.8,
+      "sharePct": 1
+    },
+    {
+      "heading": "7326",
+      "label": "Other articles (forgings, wire articles, hangers)",
+      "exportsUsd": 6406586595,
+      "priorExportsUsd": 6706148518,
+      "changePct": -4.5,
+      "sharePct": 29.4
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7326.90",
+      "heading": "7326",
+      "description": "Iron or steel; articles n.e.c. in heading 7326",
+      "exportsUsd": 5770788261,
+      "priorExportsUsd": 5986451711,
+      "changePct": -3.6,
+      "sharePct": 26.4
+    },
+    {
+      "hs6": "7318.15",
+      "heading": "7318",
+      "description": "Iron or steel; threaded screws and bolts n.e.c. in item no. 7318.1, whether or not with their nuts or washers",
+      "exportsUsd": 2492579119,
+      "priorExportsUsd": 2499615968,
+      "changePct": -0.3,
+      "sharePct": 11.4
+    },
+    {
+      "hs6": "7318.16",
+      "heading": "7318",
+      "description": "Iron or steel; threaded nuts",
+      "exportsUsd": 1167867775,
+      "priorExportsUsd": 1137119924,
+      "changePct": 2.7,
+      "sharePct": 5.4
+    },
+    {
+      "hs6": "7308.90",
+      "heading": "7308",
+      "description": "Iron or steel; structures and parts thereof, n.e.c. in heading 7308",
+      "exportsUsd": 839477852,
+      "priorExportsUsd": 974856206,
+      "changePct": -13.9,
+      "sharePct": 3.8
+    },
+    {
+      "hs6": "7318.29",
+      "heading": "7318",
+      "description": "Iron or steel; non-threaded articles, n.e.c. in item no. 7318.2",
+      "exportsUsd": 575208407,
+      "priorExportsUsd": 597959346,
+      "changePct": -3.8,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "7320.20",
+      "heading": "7320",
+      "description": "Iron or steel; helical springs and leaves for springs",
+      "exportsUsd": 518019490,
+      "priorExportsUsd": 496919053,
+      "changePct": 4.2,
+      "sharePct": 2.4
+    },
+    {
+      "hs6": "7326.19",
+      "heading": "7326",
+      "description": "Iron or steel; articles n.e.c. in item no. 7326.11, forged or stamped, but not further worked",
+      "exportsUsd": 446605307,
+      "priorExportsUsd": 469043430,
+      "changePct": -4.8,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7306.30",
+      "heading": "7306",
+      "description": "Iron or non-alloy steel (excluding cast iron); tubes and pipes (not seamless), welded, of circular cross-section, n.e.c. in chapter 73",
+      "exportsUsd": 445652848,
+      "priorExportsUsd": 506323342,
+      "changePct": -12,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7322.90",
+      "heading": "7322",
+      "description": "Air heaters and hot air distributors, (not electrically heated), incorporating a motor-driven fan or blower and parts thereof, of iron or steel",
+      "exportsUsd": 411027935,
+      "priorExportsUsd": 462916781,
+      "changePct": -11.2,
+      "sharePct": 1.9
+    },
+    {
+      "hs6": "7307.29",
+      "heading": "7307",
+      "description": "Steel, stainless; tube or pipe fittings, n.e.c. in item no. 7307.2",
+      "exportsUsd": 406037795,
+      "priorExportsUsd": 406802108,
+      "changePct": -0.2,
+      "sharePct": 1.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 73, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 80% of 2025 U.S. Chapter 73 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

@@ -1,0 +1,559 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 70,
+    "padded": "70",
+    "slug": "70-glass-and-glassware",
+    "title": "Glass and Glassware"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/70-glass-and-glassware",
+    "h1": "HTS Chapter 70: Glass and Glassware — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Glass & Fiberglass Exports by Country, 2025 (HTS Ch. 70) | KoalaGains",
+      "shortDescription": "U.S. glass exports were $5.84B in 2025: car rear-view mirrors $1.59B, fiberglass $1.42B. Who buys them, and where Canada and China charge more.",
+      "keywords": [
+        "us glass exports",
+        "glass exports by country",
+        "us fiberglass exports",
+        "rear view mirror exports",
+        "glass bottle export",
+        "us glass exports 2025",
+        "HS 70 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$5.84B** of glass and glass products in 2025, down 4.2% from $6.10B in 2024 and below the 2023 peak of $6.15B. The two biggest groups are car parts and fiberglass: **rear-view mirrors for vehicles** (7009.10, **$1.59B**, mostly to Germany, Japan, Canada and Mexico) and **glass fibres** (7019, **$1.42B**: fiberglass rovings, yarn, mats, fabrics and glass-wool insulation, mostly to Mexico and Canada). Next come float glass (7005, $407M), glass bottles and jars (7010, $370M), quartz and other glass tubes and rods (7002, $295M), safety glass (7007, $288M) and laboratory glassware (7017, $256M). Canada (**29%**) and Mexico (**15%**) are the largest buyers. Exports are up **1.2%** in 2026 so far: $3.97B from January to August.\n\nTariffs bite in two places. **Canada** has charged a **50% surtax** on U.S. glass bottles, jars and other glass containers (7010.90) since September 8, 2026, even when they qualify for CUSMA; bottles used to package food or drinks in Canada can get it back. **China** adds a 10% extra duty on all U.S. goods to its 2018–2019 counter-tariffs, so U.S. rear-view mirrors pay **30%** and fiberglass about 28% unless the importer holds an exclusion. Everywhere else the main buyers charge little or nothing: Mexico and Korea 0% under their trade agreements, the EU 0% on all U.S. glass since July 1, 2026, Japan 0% on mirrors and fiberglass. For mirrors and car glass, the buyer's vehicle type approval matters more than the tariff.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$5.84B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-4.2%"
+    },
+    {
+      "label": "Largest product group (7009)",
+      "value": "28%",
+      "note": "Mirrors, incl. vehicle rear-view mirrors"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "44%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top 12 buyers that raised tariffs",
+      "value": "2 of 12",
+      "note": "Canada (glass containers), China (all goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. glass exports were $5.84B in 2025 (−4.2%) and $3.97B in January–August 2026 (+1.2%). Vehicle rear-view mirrors ($1.59B) and fiberglass (7019, $1.42B) make up over half.",
+    "Canada has charged a 50% surtax on U.S. glass bottles, jars and other glass containers (7010.90.00) since September 8, 2026, CUSMA or not. Canadian food and beverage packers and manufacturers can claim it back.",
+    "China charges 30% on U.S. rear-view mirrors and 35% on cast, rolled and float glass sheet unless the importer holds an exclusion. The exclusions end December 31, 2026 and the suspension of 24 points of China's extra duty ends January 10, 2027.",
+    "The EU has charged 0% on every U.S. glass product since July 1, 2026 (normally up to 11%). Mexico, the top fiberglass buyer, charges 0% on goods that qualify for USMCA."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 4942765740,
+      "partnerAUsd": 1536552664,
+      "partnerBUsd": 697416402,
+      "restUsd": 2708796674
+    },
+    {
+      "year": 2021,
+      "totalUsd": 5634457374,
+      "partnerAUsd": 1704072928,
+      "partnerBUsd": 872367514,
+      "restUsd": 3058016932
+    },
+    {
+      "year": 2022,
+      "totalUsd": 6093141995,
+      "partnerAUsd": 1841618687,
+      "partnerBUsd": 912821664,
+      "restUsd": 3338701644
+    },
+    {
+      "year": 2023,
+      "totalUsd": 6154191497,
+      "partnerAUsd": 1865838440,
+      "partnerBUsd": 978404812,
+      "restUsd": 3309948245
+    },
+    {
+      "year": 2024,
+      "totalUsd": 6095055102,
+      "partnerAUsd": 1697503488,
+      "partnerBUsd": 1070473158,
+      "restUsd": 3327078456
+    },
+    {
+      "year": 2025,
+      "totalUsd": 5839689985,
+      "partnerAUsd": 1708937771,
+      "partnerBUsd": 884625334,
+      "restUsd": 3246126880
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 70 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 3974393051,
+    "priorExportsUsd": 3927036600,
+    "changePct": 1.2,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 1103872746,
+        "priorExportsUsd": 1153838664,
+        "changePct": -4.3
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 641067717,
+        "priorExportsUsd": 618670505,
+        "changePct": 3.6
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 450961476,
+        "priorExportsUsd": 479918062,
+        "changePct": -6
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 403972416,
+        "priorExportsUsd": 397219897,
+        "changePct": 1.7
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 336893383,
+        "priorExportsUsd": 311140583,
+        "changePct": 8.3
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 112637920,
+        "priorExportsUsd": 99883818,
+        "changePct": 12.8
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 109881254,
+        "priorExportsUsd": 114164030,
+        "changePct": -3.8
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 55154575,
+        "priorExportsUsd": 54353431,
+        "changePct": 1.5
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 1708937771,
+      "priorExportsUsd": 1697503488,
+      "sharePct": 29.3,
+      "changePct": 0.7,
+      "tariffNow": "Free (CUSMA) + 50% surtax on glass bottles and jars (7010.90)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 884625334,
+      "priorExportsUsd": 1070473158,
+      "sharePct": 15.1,
+      "changePct": -17.4,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 701494743,
+      "priorExportsUsd": 737060282,
+      "sharePct": 12,
+      "changePct": -4.8,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 587645300,
+      "priorExportsUsd": 541339865,
+      "sharePct": 10.1,
+      "changePct": 8.6,
+      "tariffNow": "Free on mirrors and fiberglass; up to 6.6% on some lines",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 484393405,
+      "priorExportsUsd": 573587901,
+      "sharePct": 8.3,
+      "changePct": -15.6,
+      "tariffNow": "Normal rate + 10–25% counter-tariff + 10% unless excluded",
+      "status": "raised"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 165432162,
+      "priorExportsUsd": 179992541,
+      "sharePct": 2.8,
+      "changePct": -8.1,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 144882135,
+      "priorExportsUsd": 156063182,
+      "sharePct": 2.5,
+      "changePct": -7.2,
+      "tariffNow": "Free on most glass; 6–7% on fiberglass, 10% on glassware",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 82688600,
+      "priorExportsUsd": 70631043,
+      "sharePct": 1.4,
+      "changePct": 17.1,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 78789236,
+      "priorExportsUsd": 57361174,
+      "sharePct": 1.3,
+      "changePct": 37.4,
+      "tariffNow": "10% on most glass; 15% on mirrors and safety glass; 20% on glassware",
+      "status": "pending"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 66768187,
+      "priorExportsUsd": 43741658,
+      "sharePct": 1.1,
+      "changePct": 52.6,
+      "tariffNow": "0–30%: free on lab glassware, 20% on fiberglass",
+      "status": "pending"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 59993569,
+      "priorExportsUsd": 67545902,
+      "sharePct": 1,
+      "changePct": -11.2,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 55915593,
+      "priorExportsUsd": 58179736,
+      "sharePct": 1,
+      "changePct": -3.9,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 818123950,
+  "othersPriorExportsUsd": 841575172,
+  "byHeading": [
+    {
+      "heading": "7001",
+      "label": "Cullet, glass waste & scrap; glass in the mass",
+      "exportsUsd": 131288040,
+      "priorExportsUsd": 125592448,
+      "changePct": 4.5,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "7002",
+      "label": "Glass balls, rods & tubes, unworked (incl. fused quartz)",
+      "exportsUsd": 295353182,
+      "priorExportsUsd": 269788903,
+      "changePct": 9.5,
+      "sharePct": 5.1
+    },
+    {
+      "heading": "7003",
+      "label": "Cast & rolled glass sheets and profiles (patterned glass)",
+      "exportsUsd": 156071484,
+      "priorExportsUsd": 177897441,
+      "changePct": -12.3,
+      "sharePct": 2.7
+    },
+    {
+      "heading": "7004",
+      "label": "Drawn & blown sheet glass",
+      "exportsUsd": 5836415,
+      "priorExportsUsd": 7086226,
+      "changePct": -17.6,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7005",
+      "label": "Float glass & polished plate glass (incl. LCD glass)",
+      "exportsUsd": 407006924,
+      "priorExportsUsd": 443210516,
+      "changePct": -8.2,
+      "sharePct": 7
+    },
+    {
+      "heading": "7006",
+      "label": "Bent, edge-worked, enameled or engraved flat glass",
+      "exportsUsd": 30696262,
+      "priorExportsUsd": 36586467,
+      "changePct": -16.1,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "7007",
+      "label": "Safety glass: tempered & laminated, incl. windshields",
+      "exportsUsd": 288087227,
+      "priorExportsUsd": 301430213,
+      "changePct": -4.4,
+      "sharePct": 4.9
+    },
+    {
+      "heading": "7008",
+      "label": "Insulating glass units (double glazing)",
+      "exportsUsd": 171757141,
+      "priorExportsUsd": 168569681,
+      "changePct": 1.9,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "7009",
+      "label": "Mirrors, incl. vehicle rear-view mirrors",
+      "exportsUsd": 1659675471,
+      "priorExportsUsd": 1748590241,
+      "changePct": -5.1,
+      "sharePct": 28.4
+    },
+    {
+      "heading": "7010",
+      "label": "Glass bottles, jars, vials & closures",
+      "exportsUsd": 369663731,
+      "priorExportsUsd": 349933610,
+      "changePct": 5.6,
+      "sharePct": 6.3
+    },
+    {
+      "heading": "7011",
+      "label": "Glass envelopes for lamps & CRTs",
+      "exportsUsd": 8423310,
+      "priorExportsUsd": 9241239,
+      "changePct": -8.9,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7013",
+      "label": "Glassware: drinking glasses, tableware, kitchen & decor",
+      "exportsUsd": 170417388,
+      "priorExportsUsd": 198139403,
+      "changePct": -14,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "7014",
+      "label": "Signaling glassware & optical glass elements",
+      "exportsUsd": 111032793,
+      "priorExportsUsd": 158697785,
+      "changePct": -30,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "7015",
+      "label": "Watch glasses & spectacle-lens glass",
+      "exportsUsd": 4536320,
+      "priorExportsUsd": 5117359,
+      "changePct": -11.4,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7016",
+      "label": "Glass blocks, bricks, mosaic tiles & leaded glass",
+      "exportsUsd": 65351308,
+      "priorExportsUsd": 50057052,
+      "changePct": 30.6,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "7017",
+      "label": "Laboratory & pharmaceutical glassware",
+      "exportsUsd": 255750141,
+      "priorExportsUsd": 253507619,
+      "changePct": 0.9,
+      "sharePct": 4.4
+    },
+    {
+      "heading": "7018",
+      "label": "Glass beads, imitation pearls & stones, microspheres",
+      "exportsUsd": 62886770,
+      "priorExportsUsd": 72232800,
+      "changePct": -12.9,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "7019",
+      "label": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool",
+      "exportsUsd": 1424826368,
+      "priorExportsUsd": 1484744756,
+      "changePct": -4,
+      "sharePct": 24.4
+    },
+    {
+      "heading": "7020",
+      "label": "Other articles of glass (incl. vacuum flask inners, quartz tubes)",
+      "exportsUsd": 221029710,
+      "priorExportsUsd": 234631343,
+      "changePct": -5.8,
+      "sharePct": 3.8
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7009.10",
+      "heading": "7009",
+      "description": "Glass; rear-view mirrors for vehicles",
+      "exportsUsd": 1594006945,
+      "priorExportsUsd": 1689834786,
+      "changePct": -5.7,
+      "sharePct": 27.3
+    },
+    {
+      "hs6": "7019.90",
+      "heading": "7019",
+      "description": "Glass fibres; n.e.c. in heading no. 7019",
+      "exportsUsd": 439611813,
+      "priorExportsUsd": 558114725,
+      "changePct": -21.2,
+      "sharePct": 7.5
+    },
+    {
+      "hs6": "7010.90",
+      "heading": "7010",
+      "description": "Glass; carboys, bottles, flasks, jars, pots, phials and other containers of glass, (not ampoules), used for the conveyance or packing of goods",
+      "exportsUsd": 362344179,
+      "priorExportsUsd": 346654350,
+      "changePct": 4.5,
+      "sharePct": 6.2
+    },
+    {
+      "hs6": "7019.80",
+      "heading": "7019",
+      "description": "Glass fibres; glass wool and articles thereof",
+      "exportsUsd": 320473961,
+      "priorExportsUsd": 272398819,
+      "changePct": 17.6,
+      "sharePct": 5.5
+    },
+    {
+      "hs6": "7020.00",
+      "heading": "7020",
+      "description": "Glass; articles n.e.c. in chapter 70",
+      "exportsUsd": 221029710,
+      "priorExportsUsd": 234631343,
+      "changePct": -5.8,
+      "sharePct": 3.8
+    },
+    {
+      "hs6": "7005.10",
+      "heading": "7005",
+      "description": "Glass; float glass and surface ground or polished glass, in sheets, non-wired, having an absorbent reflecting or non-reflecting layer",
+      "exportsUsd": 196515458,
+      "priorExportsUsd": 208291798,
+      "changePct": -5.7,
+      "sharePct": 3.4
+    },
+    {
+      "hs6": "7008.00",
+      "heading": "7008",
+      "description": "Glass; multiple-walled insulating units of glass",
+      "exportsUsd": 171757141,
+      "priorExportsUsd": 168569681,
+      "changePct": 1.9,
+      "sharePct": 2.9
+    },
+    {
+      "hs6": "7002.31",
+      "heading": "7002",
+      "description": "Glass; unworked, in tubes, of fused quartz or other fused silica",
+      "exportsUsd": 154828914,
+      "priorExportsUsd": 147591330,
+      "changePct": 4.9,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "7017.90",
+      "heading": "7017",
+      "description": "Glassware; laboratory, hygienic or pharmaceutical, whether or not graduated or calibrated, of glass n.e.c. in heading no. 7017",
+      "exportsUsd": 145629364,
+      "priorExportsUsd": 135708635,
+      "changePct": 7.3,
+      "sharePct": 2.5
+    },
+    {
+      "hs6": "7003.19",
+      "heading": "7003",
+      "description": "Glass; cast glass and rolled glass, non-wired sheets, (excluding those coloured throughout the mass (body tinted) opacified, flashed or having an absorbent or reflecting layer)",
+      "exportsUsd": 145352813,
+      "priorExportsUsd": 167296402,
+      "changePct": -13.1,
+      "sharePct": 2.5
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 70, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 86% of 2025 U.S. Chapter 70 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

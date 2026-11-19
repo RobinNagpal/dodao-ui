@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 70,
+    "padded": "70",
+    "slug": "70-glass-and-glassware",
+    "title": "Glass and Glassware"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/70-glass-and-glassware/faq",
+    "h1": "HTS Chapter 70: Glass and Glassware — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Glass & Fiberglass Export FAQ: Canada, China, HS Codes (HTS Ch. 70) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. glass bottles? Does China tariff U.S. glass? HS codes for fiberglass, glass bottles and rear-view mirrors, licences and top buyers.",
+      "keywords": [
+        "glass tariffs canada",
+        "glass tariff china",
+        "hs code fiberglass",
+        "hs code glass bottle",
+        "rear view mirror hs code",
+        "glass export by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. glass, fiberglass, mirrors, bottles and glassware, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Most U.S. glass enters its big markets duty-free. The exceptions are Canada (50% on glass bottles and jars since September 8, 2026) and China (27–50% unless the importer holds an exclusion).",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions and its 24-point tariff suspension both expire unless extended.",
+    "Glass and ordinary fiberglass need no export licence except for Russia, Belarus and embargoed destinations; high-strength glass fibre (1C210.b) and some optical glass are controlled."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"tariff on glass canada\", \"glass tariffs\", \"glass tariff china\", \"china tariff glass\", \"fiberglass tariff\", \"glass bottles tariff\", \"glassware tariff\", \"hs code fiberglass\", \"fiberglass hs code\", \"glass fiber hs code\", \"hs code glass\", \"hs code glass bottle\", \"glass containers hs code\", \"rear view mirror hs code\", \"mirror tariff\", \"lab glassware hs code\", \"glass exports\", \"glass export by country\", \"export glass\" and \"canada surtax list\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have a tariff on U.S. glass?",
+      "searchedAs": ["glass tariffs canada", "tariff on glass canada", "canada surtax list", "canada us surtax list"],
+      "answer": "Only on glass containers. Since September 8, 2026, Canada has charged a 50% surtax on U.S. glass bottles, jars and other containers (tariff item 7010.90.00), even when they qualify for CUSMA. U.S. fiberglass, float glass, mirrors, safety glass and glassware still enter Canada free.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-remission",
+      "question": "Can Canada's surtax on U.S. glass bottles and jars be refunded?",
+      "searchedAs": ["glass bottles canada", "glass jars canada", "glass containers canada"],
+      "answer": "Yes, if the containers are used in Canada to package a food product or beverage, or in manufacturing. The Canadian importer claims remission from the Canada Border Services Agency within two years of import under the United States Surtax Remission Order (2025). Empty containers bought for resale do not qualify.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "canada-glassware-2025",
+      "question": "Did Canada put tariffs on U.S. glassware in 2025?",
+      "searchedAs": ["glassware tariff", "glass tariffs"],
+      "answer": "Yes. Canada's March 4, 2025 counter-tariff list charged 25% on every line of heading 7013, from drinking glasses and stemware to kitchen, table and decorative glassware, until it was repealed on September 1, 2025. U.S. glassware has entered Canada free again since then.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-tariff",
+      "question": "What tariff does China charge on U.S. glass?",
+      "searchedAs": ["glass tariff china", "china glass tariff", "china tariff glass"],
+      "answer": "Three layers unless the Chinese importer holds an exclusion: China's normal rate, a 10–25% counter-tariff from 2018–2019 and the 10% extra duty on all U.S. goods. U.S. vehicle rear-view mirrors pay 30% (10% + 10% + 10%), cast and rolled glass sheet 35% and fiberglass 27–30%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-dates",
+      "question": "When do China's tariff exclusions and its tariff suspension for U.S. goods end?",
+      "searchedAs": ["glass tariff china", "glass tariffs"],
+      "answer": "China's exclusions from its 2018–2019 counter-tariffs are valid until December 31, 2026, and the suspension of 24 points of its extra duty runs to January 10, 2027. If the suspension lapses, U.S. rear-view mirrors without an exclusion would go from 30% to 54%. No extension of the exclusions has been announced.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "What tariff does the EU charge on U.S. glass and fiberglass?",
+      "searchedAs": ["fiberglass tariffs", "glass tariffs", "fiberglass tariff code"],
+      "answer": "None since July 1, 2026. Regulation (EU) 2026/1455 set a 0% duty on U.S.-origin glass, which normally pays 3% on most glass, 4% on vehicle mirrors, 5% on bottles, 7% on glass fibres and 11% on glassware. The EU's 2025 countermeasure list, which had much of the chapter at 25–30%, was never applied.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "mexico-tariff",
+      "question": "Does Mexico charge a tariff on U.S. fiberglass and glass?",
+      "searchedAs": ["fiberglass tariff", "fiberglass tariffs"],
+      "answer": "Not on goods that qualify for USMCA, which covers most of the $885M of U.S. glass Mexico bought in 2025, half of it fiberglass. Goods that fail the rule of origin pay Mexico's general rate, which rose on January 1, 2026 to 35% on many flat-glass, safety-glass and glass-container lines; glass fibres and mirrors were not raised.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "hs-fiberglass",
+      "question": "What is the HS code (Schedule B number) for fiberglass?",
+      "searchedAs": [
+        "hs code fiberglass",
+        "fiberglass hs code",
+        "glass fiber hs code",
+        "fiberglass hts code",
+        "fiberglass mesh hs code",
+        "fiberglass insulation hs code",
+        "fiberglass cloth hs code",
+        "glass fiber yarn hs code",
+        "glass fiber mat hs code"
+      ],
+      "answer": "Heading 7019. Chopped strands are 7019.11.0000, rovings 7019.12.0040 or 7019.12.0080, yarn 7019.13, mats 7019.14.0000 and 7019.15.0000, woven fabrics 7019.61.0000 to 7019.69.0000, glass-wool insulation 7019.80.1000, and other glass fibres 7019.90. The first six digits are the HS code the buyer's customs uses.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-glass-bottle",
+      "question": "What is the HS code for glass bottles and jars?",
+      "searchedAs": [
+        "hs code glass bottle",
+        "glass bottles hs code",
+        "glass bottle hs code",
+        "hs code glass jar",
+        "glass containers hs code",
+        "hs code glass vials",
+        "glass vial h.s.code"
+      ],
+      "answer": "HS 7010.90. The Schedule B number depends on use and capacity: 7010.90.0510 to 7010.90.0540 for pharmaceutical vials and bottles, 7010.90.2010 to 7010.90.3040 for perfume and toiletry bottles, and 7010.90.5005 to 7010.90.5060 for other bottles and jars, reported in gross. Ampoules are 7010.10.0000.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-mirror",
+      "question": "What is the HS code for vehicle rear-view mirrors?",
+      "searchedAs": [
+        "rear view mirror hs code",
+        "hs code rearview mirror",
+        "car rear view mirror hs code",
+        "side view mirror hs code",
+        "rear view mirror tariff code",
+        "car mirror tariff code"
+      ],
+      "answer": "Rear-view mirrors for vehicles are HS 7009.10, Schedule B 7009.10.0000, reported by number. They were the largest U.S. glass export in 2025 at $1.59B. They enter the EU, Japan, Canada, Mexico and Korea duty-free, and China at 30% unless the importer holds an exclusion.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence",
+      "question": "Do I need an export license to ship glass or fiberglass?",
+      "searchedAs": ["export glass", "export glass company"],
+      "answer": "Usually not: bottles, flat glass, mirrors, glassware and ordinary fiberglass are EAR99. High-strength continuous glass fibre is ECCN 1C210.b, optical-fibre preforms 5C991 and ultra-pure fused silica can be 6C004.e. Russia and Belarus need a licence for 22 six-digit glass codes, including float glass and fiberglass.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "us-exports",
+      "question": "How much glass does the U.S. export, and who buys it?",
+      "searchedAs": ["glass export by country", "glass exports", "glass exports by country"],
+      "answer": "$5.84B of Chapter 70 goods in 2025, down 4.2%, led by vehicle rear-view mirrors ($1.59B) and fiberglass ($1.42B). Canada ($1.71B) and Mexico ($885M) are the largest buyers, followed by Germany, Japan, China, Korea and the UK. In January–August 2026, exports were $3.97B, up 1.2%.",
+      "link": "exports"
+    }
+  ]
+}

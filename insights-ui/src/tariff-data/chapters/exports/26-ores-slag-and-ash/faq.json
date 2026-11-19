@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 26,
+    "padded": "26",
+    "slug": "26-ores-slag-and-ash",
+    "title": "Ores, Slag and Ash"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/26-ores-slag-and-ash/faq",
+    "h1": "HTS Chapter 26: Ores, Slag and Ash — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Ore Export FAQ: China Tariff, HS Codes, Uranium Licence (HTS Ch. 26) | KoalaGains",
+      "shortDescription": "Does China tariff U.S. copper concentrate or iron ore? HS codes for copper, zinc, moly concentrate, slag and fly ash. Uranium and hazardous-waste export rules.",
+      "keywords": [
+        "hs code copper concentrate",
+        "hs code iron ore",
+        "china iron ore tariff",
+        "zinc concentrate hs code",
+        "hs code fly ash",
+        "nrc export license"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. ores, concentrates, slag and ash, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Every large buyer except China charges 0% on U.S. ores and concentrates. China charges 35% on copper and zinc concentrate and 20% on lead and molybdenum concentrate unless the importer holds an exclusion.",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions and its 24-point tariff suspension both expire unless extended.",
+    "Most ores need no U.S. export licence. Uranium and thorium ores need an NRC licence, and hazardous slag and residues need EPA consent."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"china tariff iron ore\", \"china copper concentrate\", \"copper concentrate tariff\", \"iron ore tariff\", \"us iron ore exports\", \"does the us export iron ore\", \"does the us export copper\", \"copper concentrate export\", \"hs code copper concentrate\", \"hs code iron ore\", \"hs code zinc concentrate\", \"lead concentrate\", \"molybdenum concentrate\", \"hs code slag\", \"hs code fly ash\", \"export uranium\", \"nrc export license\", \"export hazardous waste\" and \"hs code 2603\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "china-copper-concentrate",
+      "question": "Does China have a tariff on U.S. copper concentrate?",
+      "searchedAs": ["china copper concentrate imports", "copper concentrate china"],
+      "answer": "Yes. U.S. copper ores and concentrates (2603) pay 35% in China unless the Chinese importer holds an exclusion: China's 0% normal rate, plus a 25% counter-tariff from its 2019 list, plus the 10% extra duty on all U.S. goods since May 14, 2025. An importer with an exclusion pays only the 10%. U.S. copper concentrate exports to China were $101M in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-iron-ore",
+      "question": "What tariff does China charge on U.S. iron ore?",
+      "searchedAs": ["china iron ore tariff", "iron ore tariffs"],
+      "answer": "It depends on the form. Iron ore fines and concentrate (2601.11) pay 10%: China's extra duty on all U.S. goods on top of a 0% normal rate. Pellets and other agglomerated ore (2601.12) pay 35% unless the importer holds an exclusion, because they are also on China's 2019 counter-tariff list at 25%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-dates",
+      "question": "When do China's tariff exclusions and its tariff suspension for U.S. goods end?",
+      "searchedAs": ["china copper concentrate imports"],
+      "answer": "China's exclusions from its 2018–2019 counter-tariffs are valid until December 31, 2026, and the suspension of 24 points of its extra duty runs to January 10, 2027. If the suspension lapses, U.S. copper and zinc concentrate without an exclusion would go from 35% to 59%, and lead and molybdenum concentrate from 20% to 44%.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "other-markets",
+      "question": "Do Canada, Mexico, the EU or Japan charge tariffs on U.S. ores and concentrates?",
+      "searchedAs": ["iron ore tariffs", "copper concentrate tariff code"],
+      "answer": "No. Mexico and Canada charge 0% under USMCA, Korea under KORUS, and the EU, Japan, the UK and Taiwan charge 0% on every Chapter 26 line from any supplier. Canada's 2025 and 2026 counter-tariff lists skipped Chapter 26, and the EU's suspended list named copper ore only at a 0% extra duty.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "hs-copper",
+      "question": "What is the HS code (Schedule B number) for copper concentrate?",
+      "searchedAs": [
+        "hs code copper concentrate",
+        "hs code for copper ores and concentrates",
+        "copper concentrate tariff code",
+        "hs code 2603",
+        "hs code 260300"
+      ],
+      "answer": "The HS code for copper ores and concentrates is 2603.00. U.S. exports are reported by metal content: Schedule B 2603.00.0010 for the copper content (kg), 2603.00.0015 for the precious-metal content (grams) and 2603.00.0035 for other metal content.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-iron-ore",
+      "question": "What is the HS code for iron ore, iron ore fines and pellets?",
+      "searchedAs": [
+        "hs code iron ore",
+        "hs code iron ore pellets",
+        "hs code iron ore fines",
+        "hs code for iron ore concentrate",
+        "hs code 2601.11",
+        "hs code 2601.12",
+        "iron ore tariff code"
+      ],
+      "answer": "Unagglomerated iron ore is HS 2601.11 (Schedule B 2601.11.0030 concentrates, 2601.11.0060 coarse, 2601.11.0090 fines) and pellets are 2601.12 (2601.12.0030), all reported in metric tons. Pellets were most of the $527M of U.S. iron ore exports in 2025.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-zinc-lead-moly",
+      "question": "What are the HS codes for zinc, lead and molybdenum concentrate?",
+      "searchedAs": [
+        "hs code zinc concentrate",
+        "zinc concentrate hs code",
+        "hs code zinc ore",
+        "lead concentrate hs code",
+        "molybdenum concentrate hs code",
+        "hs code molybdenum concentrate"
+      ],
+      "answer": "Zinc ores and concentrates are HS 2608.00, lead ores and concentrates 2607.00, and molybdenum concentrate 2613.10 if roasted (moly oxide) or 2613.90 if not. Like copper, zinc and lead concentrate are reported by metal content: 2608.00.0030, 0035 and 0055, and 2607.00.0020, 0025 and 0045.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-slag-ash",
+      "question": "What is the HS code for slag and fly ash?",
+      "searchedAs": ["hs code slag", "hs code for granulated slag", "hs code copper slag", "hs code fly ash", "hs code for coal fly ash"],
+      "answer": "Granulated blast-furnace slag (slag sand) is 2618.00, and other iron and steel slag, dross and mill scale 2619.00. Slag, ash and residues containing metals are 2620 (2620.30 for those containing mainly copper), and other slag and ash, including coal fly ash, 2621.90. Coal ash and iron, steel and primary-smelter slag are excluded from EPA hazardous-waste rules.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "uranium-licence",
+      "question": "Do I need a license to export uranium ore from the U.S.?",
+      "searchedAs": ["export uranium", "nrc export license", "nrc general export license", "does us export uranium"],
+      "answer": "Usually yes. Ores with 0.05% or more uranium or thorium are source material, and exporting them needs an NRC specific licence (NRC Form 7) unless a general licence covers it: ore below 0.05%, or shipments of up to 10 kg (at most 1,000 kg a year to one country). Cuba, Iran, Iraq, North Korea, Syria and Sudan are embargoed. The U.S. exported almost no uranium or thorium ores in 2025.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hazardous-waste",
+      "question": "Do I need EPA approval to export slag, ash or metal-bearing residues?",
+      "searchedAs": ["epa export hazardous waste", "hazardous waste export permit", "export hazardous waste"],
+      "answer": "Only if they are RCRA hazardous waste, such as electric-arc-furnace dust (K061). Then the exporter must notify EPA through WIETS at least 60 days before the first shipment and receive EPA's Acknowledgment of Consent. Iron blast furnace and steel slag, slag from primary copper, lead and zinc processing, and coal fly ash are excluded, so they need no EPA consent.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence-ban",
+      "question": "Is there a U.S. export ban or license for copper concentrate or iron ore?",
+      "searchedAs": ["copper concentrate export ban"],
+      "answer": "No. Chapter 26 ores are EAR99 and need no licence for most destinations; Russia and Belarus need a Commerce licence for every Chapter 26 code except uranium ores. Proclamation 10962 told Commerce to set a domestic-sales requirement for copper input materials, but no rule had been published by November 19, 2026.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "us-exports",
+      "question": "How much ore does the U.S. export, and who buys it?",
+      "searchedAs": ["us iron ore exports", "does the us export iron ore", "does the us export copper", "copper concentrate exporters"],
+      "answer": "$9.33B of Chapter 26 goods in 2025, up 10.9%, led by copper concentrate ($3.54B), zinc concentrate ($1.47B) and molybdenum concentrate ($1.42B). Mexico ($2.42B) and Canada ($2.40B) are the largest buyers, followed by Korea, the Netherlands, Japan and China. Iron ore exports, mostly pellets, were $527M.",
+      "link": "exports"
+    }
+  ]
+}

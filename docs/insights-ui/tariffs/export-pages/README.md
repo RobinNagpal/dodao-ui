@@ -59,6 +59,12 @@ Each fact has one home. Other pages link to it instead of repeating it.
 7. `pnpm lint && pnpm prettier-check && pnpm compile`, PR, deploy, then flush
    `/industry-tariff-report/exports/chapters/<slug>` and `/<slug>/*` from CloudFront.
 
+**Batches with parallel agents:** `docs/insights-ui/tasks/export-agent-brief.md` is the brief each chapter
+agent follows. `docs/insights-ui/tasks/export-library-lib-edit.py` makes locked edits to the shared library, so
+agents never overwrite each other: set coverage, add a measure or event, add a market. After the library gains
+entries, `docs/insights-ui/tasks/export-library-merge.py` merges them into every chapter's tariff-updates page
+without touching written text.
+
 **Sitemap:** export pages are left out of `/industry-tariff-report/sitemap.xml` for now, while their
 content is being finalized. When they are ready to be indexed, add them back in
 `src/app/industry-tariff-report/sitemap.xml/route.ts`.

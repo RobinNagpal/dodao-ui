@@ -1,0 +1,2108 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 72,
+    "padded": "72",
+    "slug": "72-iron-and-steel",
+    "title": "Iron and Steel"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/72-iron-and-steel/markets",
+    "h1": "HTS Chapter 72: Iron and Steel — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Steel & Scrap by Market (HTS Ch. 72) | KoalaGains",
+      "shortDescription": "What Mexico, Canada, Türkiye, the EU, Thailand, India, Bangladesh and Taiwan charge on U.S. steel and ferrous scrap, by product, with each market's quota, safeguard and scrap-import rules.",
+      "keywords": [
+        "canada surtax on us steel",
+        "eu steel quota us steel 2026",
+        "india safeguard duty steel",
+        "tariff on us steel scrap",
+        "mexico tariff steel 35%",
+        "HS 72 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Tariffs on U.S. iron and steel split three ways. **Scrap**, a third of the chapter, enters every large scrap market duty-free — Türkiye, Thailand, India, Bangladesh and Taiwan all charge 0% on 7204 — so what decides access is the buyer's import licence, inspection and radiation rules (see each market's regulator). **Finished steel** to Mexico enters free under USMCA, but only if it meets the rule of origin: Mexico's general rate is now 35%. And three markets have put new duties on U.S. finished steel since January 2025: **Canada** a 50% surtax on 7206–7229, the **EU** a 50% duty once its steel quotas are used up, and **India** an 11.5% safeguard duty on flat steel.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7201",
+      "label": "Pig iron & spiegeleisen",
+      "shortLabel": "Pig iron"
+    },
+    {
+      "heading": "7202",
+      "label": "Ferroalloys",
+      "shortLabel": "Ferroalloys"
+    },
+    {
+      "heading": "7203",
+      "label": "Direct-reduced iron (DRI, HBI)",
+      "shortLabel": "DRI / HBI"
+    },
+    {
+      "heading": "7204",
+      "label": "Ferrous waste & scrap",
+      "shortLabel": "Scrap"
+    },
+    {
+      "heading": "7205",
+      "label": "Iron & steel granules and powders",
+      "shortLabel": "Powders"
+    },
+    {
+      "heading": "7206",
+      "label": "Iron & nonalloy steel ingots",
+      "shortLabel": "Ingots"
+    },
+    {
+      "heading": "7207",
+      "label": "Semifinished steel (slabs, billets)",
+      "shortLabel": "Slabs & billets"
+    },
+    {
+      "heading": "7208",
+      "label": "Hot-rolled flat steel (600 mm+)",
+      "shortLabel": "Hot-rolled flat"
+    },
+    {
+      "heading": "7209",
+      "label": "Cold-rolled flat steel (600 mm+)",
+      "shortLabel": "Cold-rolled flat"
+    },
+    {
+      "heading": "7210",
+      "label": "Coated flat steel (600 mm+)",
+      "shortLabel": "Coated flat"
+    },
+    {
+      "heading": "7211",
+      "label": "Narrow flat steel (under 600 mm)",
+      "shortLabel": "Narrow flat"
+    },
+    {
+      "heading": "7212",
+      "label": "Narrow coated flat steel",
+      "shortLabel": "Narrow coated"
+    },
+    {
+      "heading": "7213",
+      "label": "Wire rod (hot-rolled, in coils)",
+      "shortLabel": "Wire rod"
+    },
+    {
+      "heading": "7214",
+      "label": "Hot-rolled bars & rebar",
+      "shortLabel": "Bars & rebar"
+    },
+    {
+      "heading": "7215",
+      "label": "Cold-finished bars",
+      "shortLabel": "Cold-finished bars"
+    },
+    {
+      "heading": "7216",
+      "label": "Angles, shapes & sections",
+      "shortLabel": "Shapes"
+    },
+    {
+      "heading": "7217",
+      "label": "Nonalloy steel wire",
+      "shortLabel": "Steel wire"
+    },
+    {
+      "heading": "7218",
+      "label": "Stainless semifinished",
+      "shortLabel": "Stainless semis"
+    },
+    {
+      "heading": "7219",
+      "label": "Stainless flat (600 mm+)",
+      "shortLabel": "Stainless flat"
+    },
+    {
+      "heading": "7220",
+      "label": "Stainless strip (under 600 mm)",
+      "shortLabel": "Stainless strip"
+    },
+    {
+      "heading": "7221",
+      "label": "Stainless wire rod",
+      "shortLabel": "Stainless rod"
+    },
+    {
+      "heading": "7222",
+      "label": "Stainless bars & shapes",
+      "shortLabel": "Stainless bars"
+    },
+    {
+      "heading": "7223",
+      "label": "Stainless wire",
+      "shortLabel": "Stainless wire"
+    },
+    {
+      "heading": "7224",
+      "label": "Alloy steel semifinished",
+      "shortLabel": "Alloy semis"
+    },
+    {
+      "heading": "7225",
+      "label": "Alloy flat steel (600 mm+)",
+      "shortLabel": "Alloy flat"
+    },
+    {
+      "heading": "7226",
+      "label": "Alloy flat steel (under 600 mm)",
+      "shortLabel": "Alloy narrow"
+    },
+    {
+      "heading": "7227",
+      "label": "Alloy wire rod",
+      "shortLabel": "Alloy rod"
+    },
+    {
+      "heading": "7228",
+      "label": "Alloy bars, shapes & drill rods",
+      "shortLabel": "Alloy bars"
+    },
+    {
+      "heading": "7229",
+      "label": "Alloy steel wire",
+      "shortLabel": "Alloy wire"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Since January 1, 2026 Mexico's general (MFN) rate on most Chapter 72 lines is 35% (50% on some stainless flat steel), which applies to steel that does not qualify",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 5867110015,
+      "priorExportsUsd": 7055292581,
+      "sharePct": 35,
+      "changePct": -16.8,
+      "status": "unchanged",
+      "cells": {
+        "7201": {
+          "exportsUsd": 1131902,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7201.10 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7201.10 in 2023). Certificate of origin required"
+        },
+        "7202": {
+          "exportsUsd": 10817069,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); HS 7202.30 is not in the December 29, 2025 decree; WITS/TRAINS simple-average MFN 0% for HS 7202.30 (2023). Certificate of origin required"
+        },
+        "7203": {
+          "exportsUsd": 84190573,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); HS 7203.90 is not in the December 29, 2025 decree; WITS/TRAINS simple-average MFN 0% for HS 7203.90 (2023). Certificate of origin required"
+        },
+        "7204": {
+          "exportsUsd": 382098178,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7204.49 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7204.49 in 2023). Certificate of origin required"
+        },
+        "7205": {
+          "exportsUsd": 51453931,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7205.29 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7205.29 in 2023). Certificate of origin required"
+        },
+        "7206": {
+          "exportsUsd": 4643990,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7206.10 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7206.10 in 2023). Certificate of origin required"
+        },
+        "7207": {
+          "exportsUsd": 3167416,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); HS 7207.12 is not in the December 29, 2025 decree; WITS/TRAINS simple-average MFN 0% for HS 7207.12 (2023). Certificate of origin required"
+        },
+        "7208": {
+          "exportsUsd": 1092843746,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7208.51 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7208.51 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7209": {
+          "exportsUsd": 398111695,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7209.16 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7209.16 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7210": {
+          "exportsUsd": 795419302,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7210.49 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7210.49 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7211": {
+          "exportsUsd": 154080592,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7211.19 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7211.19 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7212": {
+          "exportsUsd": 107511159,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7212.30 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7212.30 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7213": {
+          "exportsUsd": 9693470,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7213.10 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7213.10 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7214": {
+          "exportsUsd": 121132477,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7214.99 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7214.99 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7215": {
+          "exportsUsd": 47110484,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7215.50 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7215.50 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7216": {
+          "exportsUsd": 120481313,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7216.33 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 7.5% avg (0–15%) for HS 7216.33 in 2023). Certificate of origin required. To qualify, the steel must be made in North America from a semi (7206–7207) or earlier stage: rolling imported 7208–7216 steel into another product of that group does not confer origin"
+        },
+        "7217": {
+          "exportsUsd": 37076926,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7217.10 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7217.10 in 2023). Certificate of origin required"
+        },
+        "7218": {
+          "exportsUsd": 3462745,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7218.10 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7218.10 in 2023). Certificate of origin required"
+        },
+        "7219": {
+          "exportsUsd": 616833387,
+          "rate": "Free (USMCA)",
+          "normalRate": "50% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 50% from January 1, 2026 for the HS 7219.13 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7219.13 in 2023). Certificate of origin required"
+        },
+        "7220": {
+          "exportsUsd": 123430929,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 20% from January 1, 2026 for the HS 7220.20 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7220.20 in 2023). Certificate of origin required"
+        },
+        "7221": {
+          "exportsUsd": 1607811,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7221.00 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7221.00 in 2023). Certificate of origin required"
+        },
+        "7222": {
+          "exportsUsd": 85198580,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7222.20 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7222.20 in 2023). Certificate of origin required"
+        },
+        "7223": {
+          "exportsUsd": 62439988,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7223.00 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7223.00 in 2023). Certificate of origin required"
+        },
+        "7224": {
+          "exportsUsd": 41198373,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); HS 7224.90 is not in the December 29, 2025 decree; WITS/TRAINS simple-average MFN 0% for HS 7224.90 (2023). Certificate of origin required"
+        },
+        "7225": {
+          "exportsUsd": 1121580207,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7225.92 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7225.92 in 2023). Certificate of origin required"
+        },
+        "7226": {
+          "exportsUsd": 89214318,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7226.91 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7226.91 in 2023). Certificate of origin required"
+        },
+        "7227": {
+          "exportsUsd": 973616,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7227.90 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 15% for HS 7227.90 in 2023). Certificate of origin required"
+        },
+        "7228": {
+          "exportsUsd": 252510836,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7228.30 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 7.5% avg (0–15%) for HS 7228.30 in 2023). Certificate of origin required"
+        },
+        "7229": {
+          "exportsUsd": 47695002,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Annex 2-B / Mexico's tariff (TIGIE); general rate raised to 35% from January 1, 2026 for the HS 7229.90 line(s) listed in the decree of December 29, 2025 (WITS/TRAINS MFN 0% for HS 7229.90 in 2023). Certificate of origin required"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest market ($5.87B, down 16.8%), mostly flat steel for its auto and appliance plants: alloy coated sheet (7225, $1.12B), hot-rolled (7208, $1.09B) and galvanized (7210, $0.80B). Qualifying steel enters free, but since January 1, 2026 the general rate on most Chapter 72 lines is 35%, so steel that fails the USMCA rule of origin — such as sheet cold-rolled in the U.S. from imported hot-rolled coil — now costs far more.",
+        "mainProducts": "Alloy flat steel (600 mm+) (7225) · Hot-rolled flat steel (600 mm+) (7208)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Economía (automatic import notice for steel products)",
+          "url": "https://www.snice.gob.mx/~oracle/SNICE_DOCS/ACUERDO-REGLAS-SE-02ABRIL2026-BIBLIOTECA_20260520-20260520.pdf",
+          "requirement": "The Mexican importer needs an automatic import notice (aviso automático) for each steel tariff line, backed by the mill certificate with the heat number and the country where the steel was melted and poured (rule 2.2.19 of the Secretaría de Economía's foreign-trade rules)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (most Chapter 72 MFN rates are 0% anyway). On top of it, the United States Surtax Order (Steel and Aluminum 2025) charges 50% on U.S.-origin steel of 7206–7229 since September 8, 2026 (25% from March 13, 2025), with no CUSMA exemption. Cold-formed angles, shapes and sections (7216.91), which that order does not list, pay the global 25% Steel Derivative Goods Surtax (SOR/2025-267) since December 26, 2025",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3922643795,
+      "priorExportsUsd": 4779084818,
+      "sharePct": 23.4,
+      "changePct": -17.9,
+      "status": "raised",
+      "cells": {
+        "7201": {
+          "exportsUsd": 1720222,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7201.10 (2023). Not on the steel surtax list"
+        },
+        "7202": {
+          "exportsUsd": 119145776,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7202.30 (2023). Not on the steel surtax list"
+        },
+        "7203": {
+          "exportsUsd": 1880088,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7203.90 (2023). Not on the steel surtax list"
+        },
+        "7204": {
+          "exportsUsd": 199851315,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7204.49 (2023). Not on the steel surtax list"
+        },
+        "7205": {
+          "exportsUsd": 29240232,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7205.29 (2023). Not on the steel surtax list"
+        },
+        "7206": {
+          "exportsUsd": 4280453,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7206.10 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7207": {
+          "exportsUsd": 4332484,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7207.12 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7208": {
+          "exportsUsd": 392795227,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7208.51 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7209": {
+          "exportsUsd": 158246647,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7209.16 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7210": {
+          "exportsUsd": 516627804,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7210.49 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7210.20"
+        },
+        "7211": {
+          "exportsUsd": 195989819,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7211.19 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7212": {
+          "exportsUsd": 105535355,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7212.30 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7212.50 and 7212.60"
+        },
+        "7213": {
+          "exportsUsd": 45531790,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7213.10 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7214": {
+          "exportsUsd": 120933175,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7214.99 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7214.30"
+        },
+        "7215": {
+          "exportsUsd": 51150209,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7215.50 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7215.90"
+        },
+        "7216": {
+          "exportsUsd": 206573122,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7216.33 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7216.10, 7216.32, 7216.33 and 7216.99. Cold-formed angles, shapes and sections (7216.91) are not on that list and pay the global 25% Steel Derivative Goods Surtax (SOR/2025-267) instead, since December 26, 2025"
+        },
+        "7217": {
+          "exportsUsd": 54547531,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7217.10 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7218": {
+          "exportsUsd": 20936342,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7218.10 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7219": {
+          "exportsUsd": 251437719,
+          "rate": "Free (CUSMA) + 50% surtax, remitted on claim",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7219.13 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits the surtax on every line of this heading, with no time limit"
+        },
+        "7220": {
+          "exportsUsd": 86945974,
+          "rate": "Free (CUSMA) + 50% surtax, remitted on claim",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7220.20 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits the surtax on every line of this heading, with no time limit"
+        },
+        "7221": {
+          "exportsUsd": 4511010,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7221.00 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7222": {
+          "exportsUsd": 103433512,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7222.20 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7222.11–7222.40"
+        },
+        "7223": {
+          "exportsUsd": 11080932,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7223.00 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7223.00"
+        },
+        "7224": {
+          "exportsUsd": 31912270,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7224.90 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7225": {
+          "exportsUsd": 674623259,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7225.92 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7225.11 and 7225.19 (electrical steel)"
+        },
+        "7226": {
+          "exportsUsd": 254717817,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7226.91 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7226.11, 7226.19 and 7226.20"
+        },
+        "7227": {
+          "exportsUsd": 27955034,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7227.90 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "7228": {
+          "exportsUsd": 231185084,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7228.30 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption. Schedule 6 of the United States Surtax Remission Order (2025) remits it for listed lines in 7228.10–.30, 7228.70 and 7228.80"
+        },
+        "7229": {
+          "exportsUsd": 15523593,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 7229.90 (2023); plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($3.92B, down 17.9%) buys mainly alloy flat steel (7225, $675M), galvanized sheet (7210, $517M) and hot-rolled (7208, $393M). U.S. steel of 7206 to 7229 has paid a Canadian surtax since March 13, 2025 — 25% at first, 50% since September 8, 2026 — even when it qualifies for CUSMA; cold-formed sections (7216.91), left off that list, pay Canada's global 25% steel-derivative surtax instead. Scrap, pig iron, ferroalloys and DRI are not on the list, and stainless flat steel and electrical steel can have the surtax remitted.",
+        "mainProducts": "Alloy flat steel (600 mm+) (7225) · Coated flat steel (600 mm+) (7210)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on steel (7206–7229)",
+        "regulator": {
+          "name": "Global Affairs Canada (steel import permits, Export and Import Permits Act)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2012-17/FullText.html",
+          "requirement": "Steel imports need an import permit, usually General Import Permit No. 80 (carbon steel) or No. 81 (specialty steel), and the importer declares the country of melt and pour for shipments over C$5,000; U.S. steel is exempt from Canada's steel tariff-rate quotas"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 792,
+      "name": "Türkiye",
+      "rule": "Türkiye's customs tariff for goods without preferential origin (no U.S. free-trade agreement): 0% on ferrous scrap, DRI and stainless flat steel; its own MFN rates (up to 40% in the sample) on other finished steel",
+      "usTradeAgreement": null,
+      "exportsUsd": 1362083726,
+      "priorExportsUsd": 1763653852,
+      "sharePct": 8.1,
+      "changePct": -22.8,
+      "status": "unchanged",
+      "cells": {
+        "7201": {
+          "exportsUsd": 21528,
+          "rate": "0.5% avg (0–2%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0.5% avg (0–2%) for HS 7201.10 (2023); 2026 national lines not re-checked"
+        },
+        "7202": {
+          "exportsUsd": 0,
+          "rate": "3.7%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.7% for HS 7202.30 (2023); 2026 national lines not re-checked"
+        },
+        "7203": {
+          "exportsUsd": 63678489,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7203.90 (2023); 2026 national lines not re-checked"
+        },
+        "7204": {
+          "exportsUsd": 1267803760,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7204.49 (2023); 2026 national lines not re-checked"
+        },
+        "7205": {
+          "exportsUsd": 472463,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7205.29 (2023); 2026 national lines not re-checked"
+        },
+        "7206": {
+          "exportsUsd": 0,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 7206.10 (2023); 2026 national lines not re-checked"
+        },
+        "7207": {
+          "exportsUsd": 2820,
+          "rate": "11.25% avg (0–22.5%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 11.25% avg (0–22.5%) for HS 7207.12 (2023); 2026 national lines not re-checked"
+        },
+        "7208": {
+          "exportsUsd": 11470,
+          "rate": "9%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 9% for HS 7208.51 (2023); 2026 national lines not re-checked"
+        },
+        "7209": {
+          "exportsUsd": 34998,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 10% for HS 7209.16 (2023); 2026 national lines not re-checked"
+        },
+        "7210": {
+          "exportsUsd": 507187,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 15% for HS 7210.49 (2023); 2026 national lines not re-checked"
+        },
+        "7211": {
+          "exportsUsd": 104080,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 15% for HS 7211.19 (2023); 2026 national lines not re-checked"
+        },
+        "7212": {
+          "exportsUsd": 65942,
+          "rate": "7.5% avg (0–15%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 7.5% avg (0–15%) for HS 7212.30 (2023); 2026 national lines not re-checked"
+        },
+        "7213": {
+          "exportsUsd": 502786,
+          "rate": "30%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 30% for HS 7213.10 (2023); 2026 national lines not re-checked"
+        },
+        "7214": {
+          "exportsUsd": 69776,
+          "rate": "31.25% avg (30–40%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 31.25% avg (30–40%) for HS 7214.99 (2023); 2026 national lines not re-checked"
+        },
+        "7215": {
+          "exportsUsd": 10493,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 25% for HS 7215.50 (2023); 2026 national lines not re-checked"
+        },
+        "7216": {
+          "exportsUsd": 35736,
+          "rate": "17%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 17% for HS 7216.33 (2023); 2026 national lines not re-checked"
+        },
+        "7217": {
+          "exportsUsd": 66244,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 25% for HS 7217.10 (2023); 2026 national lines not re-checked"
+        },
+        "7218": {
+          "exportsUsd": 388893,
+          "rate": "0.7%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0.7% for HS 7218.10 (2023); 2026 national lines not re-checked"
+        },
+        "7219": {
+          "exportsUsd": 3575821,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7219.13 (2023); 2026 national lines not re-checked"
+        },
+        "7220": {
+          "exportsUsd": 1608002,
+          "rate": "8%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 8% for HS 7220.20 (2023); 2026 national lines not re-checked"
+        },
+        "7221": {
+          "exportsUsd": 2744,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3% for HS 7221.00 (2023); 2026 national lines not re-checked"
+        },
+        "7222": {
+          "exportsUsd": 11764739,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7222.20 (2023); 2026 national lines not re-checked"
+        },
+        "7223": {
+          "exportsUsd": 2275290,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7223.00 (2023); 2026 national lines not re-checked"
+        },
+        "7224": {
+          "exportsUsd": 118112,
+          "rate": "7.49% avg (0–14%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 7.49% avg (0–14%) for HS 7224.90 (2023); 2026 national lines not re-checked"
+        },
+        "7225": {
+          "exportsUsd": 3232959,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 6% for HS 7225.92 (2023); 2026 national lines not re-checked"
+        },
+        "7226": {
+          "exportsUsd": 117295,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 6% for HS 7226.91 (2023); 2026 national lines not re-checked"
+        },
+        "7227": {
+          "exportsUsd": 50795,
+          "rate": "24.33% avg (3–40%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 24.33% avg (3–40%) for HS 7227.90 (2023); 2026 national lines not re-checked"
+        },
+        "7228": {
+          "exportsUsd": 5434467,
+          "rate": "8.57% avg (0–10%)",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 8.57% avg (0–10%) for HS 7228.30 (2023); 2026 national lines not re-checked"
+        },
+        "7229": {
+          "exportsUsd": 126837,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Türkiye's customs tariff, rate for non-preferential origin (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7229.90 (2023); 2026 national lines not re-checked"
+        }
+      },
+      "profile": {
+        "headline": "Türkiye ($1.36B, down 22.8%) is almost all scrap: 93% is ferrous scrap (7204, $1.27B) for its electric-arc-furnace mills, and scrap enters duty-free. Finished steel faces Türkiye's own MFN rates, from 6% on alloy sheet to 30–40% on hot-rolled bars in the WITS sample. Türkiye repealed its 2018 extra duties on U.S. goods on September 22, 2025.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Direct-reduced iron (DRI, HBI) (7203)",
+        "tariffNow": "Free on scrap; MFN on finished steel (no U.S. FTA)",
+        "regulator": {
+          "name": "Ministry of Environment, Urbanisation and Climate Change (metal-scrap import control)",
+          "url": "https://www.resmigazete.gov.tr/eskiler/2025/12/20251231M4-69.pdf",
+          "requirement": "Ferrous scrap is imported under the ministry's metal-scrap import control communiqué (2026/23 for 2026): only melters and processors holding its Metal Scrap Importer Certificate may import, and shipments are checked for radiation at entry"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Türkiye import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/turkey-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff, 0% for U.S. goods under Regulation (EU) 2026/1455 (chapter 72 in full) from July 1, 2026; most finished steel is also under the EU steel tariff quotas of Regulation (EU) 2026/1384 (50% above quota), and ferroalloys under a separate safeguard",
+      "usTradeAgreement": null,
+      "exportsUsd": 1082382851,
+      "priorExportsUsd": 1121384701,
+      "sharePct": 6.5,
+      "changePct": -3.5,
+      "status": "raised",
+      "members": [
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 241337616,
+          "priorExportsUsd": 259328826,
+          "changePct": -6.9
+        },
+        {
+          "countryCode": 300,
+          "country": "Greece",
+          "exportsUsd": 166066226,
+          "priorExportsUsd": 106220830,
+          "changePct": 56.3
+        },
+        {
+          "countryCode": 40,
+          "country": "Austria",
+          "exportsUsd": 159449818,
+          "priorExportsUsd": 104456161,
+          "changePct": 52.6
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 113909043,
+          "priorExportsUsd": 100024947,
+          "changePct": 13.9
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 84430590,
+          "priorExportsUsd": 100419049,
+          "changePct": -15.9
+        }
+      ],
+      "cells": {
+        "7201": {
+          "exportsUsd": 825989,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (chapter 72 listed in full), from July 1, 2026; CN 2026 rate 1.7% for 7201 10 (2.2% for 7201 20 00) before that date"
+        },
+        "7202": {
+          "exportsUsd": 4458298,
+          "rate": "Free (EU–US framework); safeguard duty above quota",
+          "normalRate": "3.7% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I, from July 1, 2026; CN 2026 rate 3.7% for 7202 30 00 (2.7–7% on other ferroalloys) before that date. Ferromanganese, ferrosilicon and ferro-silico-manganese are also under the EU ferroalloy safeguard (Implementing Regulation (EU) 2025/2351, to November 17, 2028): U.S. goods use the \"other countries\" quota, and above it pay the gap between a price threshold and the import price"
+        },
+        "7203": {
+          "exportsUsd": 174526989,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7203.90; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7204": {
+          "exportsUsd": 263296986,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7204.49; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7205": {
+          "exportsUsd": 23856107,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7205.29; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7206": {
+          "exportsUsd": 14399882,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7206.10; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7207": {
+          "exportsUsd": 28022336,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7207.12; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7208": {
+          "exportsUsd": 3995147,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7208.51 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7209": {
+          "exportsUsd": 586090,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7209.16 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7210": {
+          "exportsUsd": 19155244,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7210.49 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7211": {
+          "exportsUsd": 702971,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7211.19 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7212": {
+          "exportsUsd": 13613135,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7212.30 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up. The U.S. has its own small quota (509 t a year) only for 7212 60 00"
+        },
+        "7213": {
+          "exportsUsd": 549648,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7213.10 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7214": {
+          "exportsUsd": 2942020,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7214.99 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7215": {
+          "exportsUsd": 2063304,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7215.50 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7216": {
+          "exportsUsd": 3508760,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7216.33 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7217": {
+          "exportsUsd": 11959263,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7217.10 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7218": {
+          "exportsUsd": 12364677,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7218.10; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7219": {
+          "exportsUsd": 27400839,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7219.13 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7220": {
+          "exportsUsd": 170564861,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7220.20 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7221": {
+          "exportsUsd": 3984961,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7221.00 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7222": {
+          "exportsUsd": 85416731,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7222.20 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7223": {
+          "exportsUsd": 33303002,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7223.00; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7224": {
+          "exportsUsd": 49830865,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7224.90; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        },
+        "7225": {
+          "exportsUsd": 20378487,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7225.92 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up. Grain-oriented electrical steel (7225 11) is outside the quotas but pays EU anti-dumping duty (Implementing Regulation (EU) 2022/58, minimum import price capped at 22%) and a provisional safeguard to February 26, 2027"
+        },
+        "7226": {
+          "exportsUsd": 1854780,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7226.91 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up. Grain-oriented electrical steel (7226 11) is outside the quotas but pays EU anti-dumping duty (Implementing Regulation (EU) 2022/58) and a provisional safeguard to February 26, 2027"
+        },
+        "7227": {
+          "exportsUsd": 1742792,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7227.90 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7228": {
+          "exportsUsd": 106073623,
+          "rate": "Free in quota; 50% above quota",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7228.30 (0% for U.S. goods under Regulation (EU) 2026/1455); tariff quotas of Regulation (EU) 2026/1384 from July 1, 2026: U.S. steel uses the residual \"other countries\" quota and pays 50% once it is used up"
+        },
+        "7229": {
+          "exportsUsd": 1005064,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2026 rate 0% for HS 7229.90; not covered by the EU steel tariff quotas of Regulation (EU) 2026/1384"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.08B, down 3.5%) buys scrap (7204, $263M), DRI (7203, $175M) and stainless strip (7220, $171M). The duty is zero, but since July 1, 2026 most finished steel (7208–7217, 7219–7222, 7225–7228) falls under the EU steel quotas that replaced its safeguard: U.S. steel shares the \"other countries\" quota and pays 50% once it runs out (25% under the old safeguard), and from October 1, 2026 the importer must prove where the steel was melted and poured.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Direct-reduced iron (DRI, HBI) (7203)",
+        "tariffNow": "0% duty; 50% above the EU steel quota",
+        "regulator": {
+          "name": "EU Carbon Border Adjustment Mechanism (CBAM, Regulation (EU) 2023/956)",
+          "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+          "requirement": "Since January 1, 2026 an EU importer of more than 50 tonnes a year of CBAM goods — pig iron, DRI and steel of 7205–7229, not scrap — must be an authorised CBAM declarant and surrender CBAM certificates for the embedded emissions, first in 2027 for 2026 imports"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 764,
+      "name": "Thailand",
+      "rule": "Thailand's MFN tariff schedule (no U.S. free-trade agreement): 0% on scrap, DRI and semis, 5% on most flat and long steel. The U.S.–Thailand reciprocal trade agreement, substantially concluded on November 17, 2026, is not yet signed",
+      "usTradeAgreement": null,
+      "exportsUsd": 833405448,
+      "priorExportsUsd": 438619536,
+      "sharePct": 5,
+      "changePct": 90,
+      "status": "pending",
+      "cells": {
+        "7201": {
+          "exportsUsd": 20000,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7201.10 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7202": {
+          "exportsUsd": 4274330,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7202.30 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7203": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7203.90 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7204": {
+          "exportsUsd": 796231182,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7204.49 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7205": {
+          "exportsUsd": 678404,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7205.29 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7206": {
+          "exportsUsd": 777522,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7206.10 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7207": {
+          "exportsUsd": 37162,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7207.12 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7208": {
+          "exportsUsd": 232021,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7208.51 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7209": {
+          "exportsUsd": 148274,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7209.16 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7210": {
+          "exportsUsd": 1810717,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7210.49 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7211": {
+          "exportsUsd": 221977,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7211.19 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7212": {
+          "exportsUsd": 2167047,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7212.30 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7213": {
+          "exportsUsd": 166515,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7213.10 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7214": {
+          "exportsUsd": 205984,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7214.99 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7215": {
+          "exportsUsd": 337200,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7215.50 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7216": {
+          "exportsUsd": 491944,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 10% for HS 7216.33 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7217": {
+          "exportsUsd": 76386,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7217.10 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7218": {
+          "exportsUsd": 2878025,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7218.10 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7219": {
+          "exportsUsd": 1186223,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7219.13 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7220": {
+          "exportsUsd": 11913669,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7220.20 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7221": {
+          "exportsUsd": 10870,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7221.00 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7222": {
+          "exportsUsd": 7526812,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7222.20 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7223": {
+          "exportsUsd": 1049047,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7223.00 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7224": {
+          "exportsUsd": 10500,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7224.90 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7225": {
+          "exportsUsd": 84832,
+          "rate": "3.67% avg (1–5%)",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.67% avg (1–5%) for HS 7225.92 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7226": {
+          "exportsUsd": 144665,
+          "rate": "1%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 1% for HS 7226.91 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7227": {
+          "exportsUsd": 7074,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 7227.90 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7228": {
+          "exportsUsd": 717066,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 5% for HS 7228.30 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        },
+        "7229": {
+          "exportsUsd": 0,
+          "rate": "3% avg (0–5%)",
+          "normalRate": null,
+          "basis": "Thailand's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3% avg (0–5%) for HS 7229.90 (2023). The U.S.–Thailand reciprocal trade agreement (substantially concluded November 17, 2026) is not signed"
+        }
+      },
+      "profile": {
+        "headline": "Thailand ($833M, up 90%) was the fastest-growing large market, and 96% of it is scrap (7204, $796M), which enters duty-free; most flat steel pays 5%. An agreement that would remove most Thai tariffs on U.S. goods was substantially concluded on November 17, 2026 but is not signed, and Thai authorities have been seizing e-waste hidden in imported scrap containers, so clean, accurately declared loads matter.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Stainless strip (under 600 mm) (7220)",
+        "tariffNow": "Free on scrap; 5% MFN on most flat steel",
+        "regulator": {
+          "name": "Thai Industrial Standards Institute (TISI)",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-standards-trade",
+          "requirement": "Steel products under mandatory Thai Industrial Standards (such as rebar, TIS 20 and TIS 24) need a TISI licence for the producing mill, with factory inspection and testing, before they can be imported; check the product's TIS status first"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Thailand import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (no U.S. free-trade agreement): 0% applied on ferrous scrap, 5% on pig iron, ferroalloys and DRI, 7.5% on steel; plus a safeguard duty on non-alloy and alloy flat steel (11.5% from April 21, 2026, 11% from April 21, 2027) unless the price is above set floors",
+      "usTradeAgreement": null,
+      "exportsUsd": 807414606,
+      "priorExportsUsd": 862269202,
+      "sharePct": 4.8,
+      "changePct": -6.4,
+      "status": "raised",
+      "cells": {
+        "7201": {
+          "exportsUsd": 68411,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 5% for HS 7201.10 (2023); no U.S. free-trade agreement"
+        },
+        "7202": {
+          "exportsUsd": 7992871,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 5% for HS 7202.30 (2023); no U.S. free-trade agreement"
+        },
+        "7203": {
+          "exportsUsd": 29270,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 5% for HS 7203.90 (2023); no U.S. free-trade agreement"
+        },
+        "7204": {
+          "exportsUsd": 740741215,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS applied MFN 0% for HS 7204.49 (2023), an exemption from the statutory rate; confirm it is still in force for the shipment date"
+        },
+        "7205": {
+          "exportsUsd": 1608219,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 5% for HS 7205.29 (2023); no U.S. free-trade agreement"
+        },
+        "7206": {
+          "exportsUsd": 1630991,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7206.10 (2023); no U.S. free-trade agreement"
+        },
+        "7207": {
+          "exportsUsd": 11210,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7207.12 (2023); no U.S. free-trade agreement"
+        },
+        "7208": {
+          "exportsUsd": 392766,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7208.51 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7209": {
+          "exportsUsd": 170853,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7209.16 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7210": {
+          "exportsUsd": 6505734,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7210.49 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7211": {
+          "exportsUsd": 458116,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7211.19 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7212": {
+          "exportsUsd": 268866,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7212.30 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7213": {
+          "exportsUsd": 120593,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7213.10 (2023); no U.S. free-trade agreement"
+        },
+        "7214": {
+          "exportsUsd": 84354,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7214.99 (2023); no U.S. free-trade agreement"
+        },
+        "7215": {
+          "exportsUsd": 368168,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7215.50 (2023); no U.S. free-trade agreement"
+        },
+        "7216": {
+          "exportsUsd": 1122833,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7216.33 (2023); no U.S. free-trade agreement"
+        },
+        "7217": {
+          "exportsUsd": 223041,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7217.10 (2023); no U.S. free-trade agreement"
+        },
+        "7218": {
+          "exportsUsd": 4003633,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7218.10 (2023); no U.S. free-trade agreement"
+        },
+        "7219": {
+          "exportsUsd": 7722482,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7219.13 (2023); no U.S. free-trade agreement"
+        },
+        "7220": {
+          "exportsUsd": 1772827,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7220.20 (2023); no U.S. free-trade agreement"
+        },
+        "7221": {
+          "exportsUsd": 246118,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7221.00 (2023); no U.S. free-trade agreement"
+        },
+        "7222": {
+          "exportsUsd": 14910780,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7222.20 (2023); no U.S. free-trade agreement"
+        },
+        "7223": {
+          "exportsUsd": 4637375,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7223.00 (2023); no U.S. free-trade agreement"
+        },
+        "7224": {
+          "exportsUsd": 1203282,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7224.90 (2023); no U.S. free-trade agreement"
+        },
+        "7225": {
+          "exportsUsd": 264454,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7225.92 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7226": {
+          "exportsUsd": 2548718,
+          "rate": "7.5% + 11.5% safeguard",
+          "normalRate": "7.5% MFN",
+          "basis": "India's basic customs duty, WITS/TRAINS MFN 7.5% for HS 7226.91 (2023); plus the safeguard duty on non-alloy and alloy flat steel: 12% from April 21, 2025, 11.5% from April 21, 2026, 11% from April 21, 2027 to April 20, 2028 (DGTR final findings of August 16, 2025). No safeguard duty if the CIF price is at or above the floor (USD 675–964 a tonne by product); stainless, electrical and tin-mill steel are excluded"
+        },
+        "7227": {
+          "exportsUsd": 881470,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7227.90 (2023); no U.S. free-trade agreement"
+        },
+        "7228": {
+          "exportsUsd": 6153971,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7228.30 (2023); no U.S. free-trade agreement"
+        },
+        "7229": {
+          "exportsUsd": 1271985,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 7229.90 (2023); no U.S. free-trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "India ($807M, down 6.4%) is mainly a scrap market (7204, $741M), and scrap enters duty-free; U.S. scrap cleared at one of the designated ports needs no pre-shipment inspection certificate, only a supplier certificate that it is free of radioactive material and explosives. Flat steel pays 7.5% plus a safeguard duty (12% from April 2025, 11.5% now) unless its CIF price is above the floor, and listed steel products must carry the BIS mark.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Stainless bars & shapes (7222)",
+        "tariffNow": "Free on scrap; 7.5% + 11.5% safeguard on flat steel",
+        "regulator": {
+          "name": "Directorate General of Foreign Trade (scrap import conditions) and Bureau of Indian Standards (steel quality control order)",
+          "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf",
+          "requirement": "Metal scrap imports follow Handbook of Procedures para 2.51: shredded scrap needs a pre-shipment inspection certificate for radiation, unshredded scrap enters only at listed ports, and U.S. scrap at the designated ports needs only a supplier certificate. Steel products under the Steel and Steel Products (Quality Control) Order need a BIS licence held by the producing mill"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 50,
+      "name": "Bangladesh",
+      "rule": "Bangladesh's customs tariff (no U.S. free-trade agreement): customs duty plus regulatory and, for bars and rods, supplementary duty. Scrap is 0% since July 2025. The U.S.–Bangladesh Agreement on Reciprocal Trade (signed February 9, 2026) would phase out most of the rest but is not in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 433915279,
+      "priorExportsUsd": 658293277,
+      "sharePct": 2.6,
+      "changePct": -34.1,
+      "status": "lowered",
+      "cells": {
+        "7201": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7201.10: CD 0%. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7202": {
+          "exportsUsd": 0,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7202.30: 0% customs duty + 15% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7203": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7203.90: CD 0%. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7204": {
+          "exportsUsd": 432465394,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7204.49: 0% since July 2025 (was BDT 1,500 a tonne). Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7205": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7205.29: 5% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7206": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7206.10: 0% customs duty + 20% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7207": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7207.12: 0% customs duty + 20% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7208": {
+          "exportsUsd": 46000,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7208.51: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7209": {
+          "exportsUsd": 50436,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7209.16: 10% customs duty + 10% regulatory duty (new from July 1, 2026). Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7210": {
+          "exportsUsd": 1307417,
+          "rate": "45%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7210.49: 25% customs duty + 20% regulatory duty on 7210.49.90 (15% on 7210.49.10). Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7211": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7211.19: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7212": {
+          "exportsUsd": 9220,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7212.30: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7213": {
+          "exportsUsd": 0,
+          "rate": "5% + 5% RD + 45% SD",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7213.10: 5% customs duty, 5% regulatory duty and 45% supplementary duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7214": {
+          "exportsUsd": 36812,
+          "rate": "5% + 5% RD + 45% SD",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7214.99: 5% customs duty, 5% regulatory duty and 45% supplementary duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7215": {
+          "exportsUsd": 0,
+          "rate": "5% + 5% RD + 45% SD",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7215.50: 5% customs duty, 5% regulatory duty and 45% supplementary duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7216": {
+          "exportsUsd": 0,
+          "rate": "5% + 5% RD + 20% SD",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7216.33: 5% customs duty, 5% regulatory duty and 20% supplementary duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7217": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7217.10: 15% customs duty + 5% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7218": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7218.10: 0% customs duty + 20% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7219": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7219.13: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7220": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7220.20: 10% customs duty (5% under 0.125 mm). Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7221": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7221.00: 5% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7222": {
+          "exportsUsd": 0,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7222.20: 15% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7223": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7223.00: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7224": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7224.90: 0% customs duty + 20% regulatory duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7225": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7225.92: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7226": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7226.91: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7227": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7227.90: 10% customs duty (46.9% on M.S. bars and rods, 7227.90.20). Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7228": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7228.30: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        },
+        "7229": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Bangladesh customs tariff for HS 7229.90: 10% customs duty. Base rates as of July 1, 2025 from Annex 1 of the U.S.–Bangladesh Agreement on Reciprocal Trade, with the regulatory-duty schedule of SRO 248 (from July 1, 2026). The agreement would phase most of these out but is not in force; VAT and advance taxes are not included"
+        }
+      },
+      "profile": {
+        "headline": "Bangladesh ($434M, down 34.1%) buys almost only scrap (7204, $432M) for its re-rolling mills. Since July 2025 scrap enters at 0% (it paid BDT 1,500 a tonne before), while finished steel pays 10% to over 50% in customs, regulatory and supplementary duty. The February 2026 agreement would cut most of those at entry into force and phase out the rest over 5 or 10 years.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Coated flat steel (600 mm+) (7210)",
+        "tariffNow": "Free on scrap; 10% to over 50% on finished steel",
+        "regulator": {
+          "name": "Ministry of Commerce (Import Policy Order)",
+          "url": "https://www.trade.gov/country-commercial-guides/bangladesh-standards-trade",
+          "requirement": "Under Bangladesh's Import Policy Order, ferrous scrap may be imported only by approved actual-user steel and re-rolling mills; confirm the buyer's status and the 2026–2029 Order's conditions before shipping"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Bangladesh import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/bangladesh-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs import tariff: 0% on every Chapter 72 line; the U.S.–Taiwan Agreement on Reciprocal Trade (signed February 12, 2026) keeps them duty-free",
+      "usTradeAgreement": null,
+      "exportsUsd": 366761990,
+      "priorExportsUsd": 467992360,
+      "sharePct": 2.2,
+      "changePct": -21.6,
+      "status": "unchanged",
+      "cells": {
+        "7201": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7201.10 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7202": {
+          "exportsUsd": 1634184,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7202.30 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7203": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7203.90 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7204": {
+          "exportsUsd": 329501843,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7204.49 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7205": {
+          "exportsUsd": 6388288,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7205.29 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7206": {
+          "exportsUsd": 203789,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7206.10 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7207": {
+          "exportsUsd": 19793,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7207.12 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7208": {
+          "exportsUsd": 121520,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7208.51 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7209": {
+          "exportsUsd": 43102,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7209.16 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7210": {
+          "exportsUsd": 211076,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7210.49 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7211": {
+          "exportsUsd": 3251,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7211.19 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7212": {
+          "exportsUsd": 16687,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7212.30 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7213": {
+          "exportsUsd": 102639,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7213.10 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7214": {
+          "exportsUsd": 1002913,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7214.99 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7215": {
+          "exportsUsd": 22690,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7215.50 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7216": {
+          "exportsUsd": 37902,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7216.33 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7217": {
+          "exportsUsd": 592331,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7217.10 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7218": {
+          "exportsUsd": 5191489,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7218.10 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7219": {
+          "exportsUsd": 5197882,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7219.13 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7220": {
+          "exportsUsd": 3634389,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7220.20 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7221": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7221.00 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7222": {
+          "exportsUsd": 6014867,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7222.20 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7223": {
+          "exportsUsd": 1232326,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7223.00 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7224": {
+          "exportsUsd": 458802,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7224.90 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7225": {
+          "exportsUsd": 3872094,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7225.92 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7226": {
+          "exportsUsd": 650379,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7226.91 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7227": {
+          "exportsUsd": 44543,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7227.90 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7228": {
+          "exportsUsd": 456250,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7228.30 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        },
+        "7229": {
+          "exportsUsd": 106961,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs import tariff, MFN 0% for HS 7229.90 (applied rates as of January 30, 2026, in Schedule 1 of the U.S.–Taiwan Agreement on Reciprocal Trade, where every Chapter 72 line is category A: stays duty-free)"
+        }
+      },
+      "profile": {
+        "headline": "Taiwan ($367M, down 21.6%) buys mostly scrap (7204, $330M). Every Chapter 72 line is duty-free, and the February 2026 agreement lists all 307 of them as staying free. Mills with melting furnaces must screen incoming scrap with radiation portal monitors under Nuclear Safety Commission rules.",
+        "mainProducts": "Ferrous waste & scrap (7204) · Iron & steel granules and powders (7205)",
+        "tariffNow": "Free (0% on all Chapter 72)",
+        "regulator": {
+          "name": "Nuclear Safety Commission (radiation control at steel mills)",
+          "url": "https://www.nusc.gov.tw/english/Radiation-Protection/Radiation-Safety-Control-of-Steel-Mills-Equipped-With-Smelting-Furnaces-113.html",
+          "requirement": "Steel mills with smelting furnaces must run radiation portal monitors on incoming scrap and report detections; contaminated loads are rejected"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Türkiye",
+      "heading": "7204",
+      "exportsUsd": 1267803760,
+      "rate": "Free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7225",
+      "exportsUsd": 1121580207,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7208",
+      "exportsUsd": 1092843746,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Thailand",
+      "heading": "7204",
+      "exportsUsd": 796231182,
+      "rate": "Free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7210",
+      "exportsUsd": 795419302,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "India",
+      "heading": "7204",
+      "exportsUsd": 740741215,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "7225",
+      "exportsUsd": 674623259,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7219",
+      "exportsUsd": 616833387,
+      "rate": "Free (USMCA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. MFN rates are the World Bank/UNCTAD WITS (TRAINS) simple-average applied rates for one representative six-digit subheading per heading — the subheading with the largest 2025 U.S. exports in that heading (for example 7204.49 for scrap, 7208.51 for hot-rolled plate and 7210.49 for galvanized sheet) — for 2023, the latest year WITS holds, updated where a national 2026 schedule or decree was checked (Mexico, the EU, Bangladesh, Taiwan). National 8–10-digit lines can differ.",
+    "Mexico and Canada show the USMCA rate for qualifying goods. Mexico's normal-rate column shows the general rate set by the decree of December 29, 2025 (35% on most Chapter 72 lines from January 1, 2026). USMCA's Chapter 72 rule (HTSUS General Note 11) requires a change of heading group: steel rolled from an imported slab qualifies, steel cold-rolled from imported hot-rolled coil does not.",
+    "Canada's cells add the 50% surtax of the United States Surtax Order (Steel and Aluminum 2025) for the 134 tariff items it lists in 7206–7229, and note the lines whose surtax Schedule 6 of the United States Surtax Remission Order (2025) remits. Cold-formed angles, shapes and sections (7216.91) are not on that list; they pay the global 25% Steel Derivative Goods Surtax Order (SOR/2025-267), which does not stack with the U.S. surtax. Other remission (named products and importers, steel for motor-vehicle and aircraft manufacturing) is on Export rules.",
+    "The EU cells show the 0% duty and, for products in Annex I of Regulation (EU) 2026/1384, the 50% duty that applies once the quota U.S. steel shares with other countries is used up. Whether a quota is still open on the shipment date is not shown.",
+    "India's flat-steel cells add the safeguard duty in force for the year from April 21, 2026 (11.5%); it does not apply above the CIF price floors in the DGTR final findings. India's 0% on scrap is an applied exemption from the statutory rate.",
+    "Bangladesh's cells add customs, regulatory and supplementary duty, which Bangladesh collects at the border; VAT and advance taxes are the buyer's business and are left out.",
+    "China (not one of the eight markets) charges its MFN rate plus the 10% extra duty on all U.S. goods, and many Chapter 72 lines are also on its 2018–2019 counter-tariff lists unless the importer holds an exclusion (see Tariff updates)."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 72, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: tariff and trade data",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE",
+      "title": "Mexico's decree raising general tariffs from January 1, 2026",
+      "signed": "2025-12-10",
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "usmca-gn11",
+      "publisher": "U.S. International Trade Commission",
+      "citation": "HTSUS General Note 11 (2026)",
+      "document": "HTSUS General Note 11: USMCA rules of origin",
+      "title": "Product-specific rules of origin, Chapter 72",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://hts.usitc.gov/reststop/file?release=currentRelease&filename=General%20Note%2011"
+    },
+    {
+      "id": "ca-sor-2025-95",
+      "publisher": "Canada Gazette, Part II",
+      "citation": "SOR/2025-95",
+      "document": "United States Surtax Order (Steel and Aluminum 2025)",
+      "title": "United States Surtax Order (Steel and Aluminum 2025)",
+      "signed": "2025-03-12",
+      "published": "2025-03-26",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-26/html/sor-dors95-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-267",
+      "publisher": "Canada Gazette, Part II",
+      "citation": "SOR/2025-267",
+      "document": "Order",
+      "title": "Steel Derivative Goods Surtax Order",
+      "signed": "2025-12-11",
+      "published": "2025-12-31",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-12-31/html/sor-dors267-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-187",
+      "publisher": "Canada Gazette, Part II",
+      "citation": "SOR/2026-187",
+      "document": "Order Amending the United States Surtax Order (Steel and Aluminum 2025)",
+      "title": "Steel and aluminum surtax raised to 50% from September 8, 2026",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors187-eng.html"
+    },
+    {
+      "id": "ca-remission",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2025-122 (consolidated)",
+      "document": "United States Surtax Remission Order (2025)",
+      "title": "United States Surtax Remission Order (2025)",
+      "signed": "2025-04-16",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "eu-steel-trq",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1384",
+      "document": "Regulation (EU) 2026/1384 of the European Parliament and of the Council",
+      "title": "Tariff quotas and 50% out-of-quota duty on steel products, from July 1, 2026",
+      "signed": "2026-06-17",
+      "published": "2026-06-24",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1384/oj"
+    },
+    {
+      "id": "eu-steel-trq-alloc",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2026/1457",
+      "document": "Commission Implementing Regulation (EU) 2026/1457",
+      "title": "Allocation of the steel tariff quotas by country, July 1 to December 31, 2026",
+      "signed": "2026-06-29",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2026/1457/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation (EU) 2026/1455",
+      "title": "Adjustment of customs duties on goods originating in the United States",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-ferroalloy-sg",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/2351",
+      "document": "Commission Implementing Regulation (EU) 2025/2351",
+      "title": "Definitive safeguard measures on imports of certain ferroalloys",
+      "signed": "2025-11-18",
+      "published": "2025-11-18",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/2351/oj"
+    },
+    {
+      "id": "eu-goes-ad",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2022/58",
+      "document": "Commission Implementing Regulation (EU) 2022/58",
+      "title": "Anti-dumping duty on grain-oriented electrical steel from China, Japan, Korea, Russia and the United States",
+      "signed": "2022-01-14",
+      "published": "2022-01-17",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2022/58/oj"
+    },
+    {
+      "id": "eu-cbam",
+      "publisher": "European Commission (DG TAXUD)",
+      "citation": "CBAM",
+      "document": "Carbon Border Adjustment Mechanism",
+      "title": "Carbon Border Adjustment Mechanism: definitive period from January 1, 2026",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en"
+    },
+    {
+      "id": "in-dgtr-sg",
+      "publisher": "Directorate General of Trade Remedies (India)",
+      "citation": "DGTR Final Findings, Case SG-01/2024",
+      "document": "Final findings: safeguard investigation on non-alloy and alloy steel flat products",
+      "title": "Safeguard duty of 12%, 11.5% and 11% over three years, with CIF price floors",
+      "signed": "2025-08-16",
+      "published": "2025-08-16",
+      "url": "https://dgtr.gov.in/sites/default/files/2025-08/NCV%20FINAL%20SGD%20Steel%2016.08.2025.pdf"
+    },
+    {
+      "id": "in-dgft-hbp",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "Handbook of Procedures 2023, Chapter 2 (para 2.51)",
+      "document": "Handbook of Procedures 2023, Chapter 2 (July 2026 edition)",
+      "title": "Import of metallic waste and scrap: pre-shipment inspection and designated ports",
+      "signed": null,
+      "published": "2026-07-01",
+      "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf"
+    },
+    {
+      "id": "bd-art-annex",
+      "publisher": "USTR",
+      "citation": "U.S.–Bangladesh ART, Annex 1",
+      "document": "Agreement on Reciprocal Trade, Annex 1: Schedules 1 and 2",
+      "title": "Bangladesh's tariff schedule for U.S. goods, base rates as of July 1, 2025",
+      "signed": "2026-02-09",
+      "published": "2026-02-09",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/BGD%20Annex%201%20Schedules%201%20and%202%20FINAL%2009feb2026%20LETTER.pdf"
+    },
+    {
+      "id": "bd-sro-248",
+      "publisher": "National Board of Revenue (Bangladesh)",
+      "citation": "SRO No. 248-Ain/2026/78/Customs",
+      "document": "Regulatory duty SRO, FY2026-27",
+      "title": "Regulatory duty schedule from July 1, 2026",
+      "signed": "2026-06-30",
+      "published": "2026-06-30",
+      "url": "https://nbr.gov.bd/uploads/sros/248._%E2%80%8DSRO-RD-2026-New_.pdf"
+    },
+    {
+      "id": "bd-nbr-scrap",
+      "publisher": "National Board of Revenue (Bangladesh)",
+      "citation": "NBR budget FY2025-26: specific duty changes",
+      "document": "Specific duty changed, FY2025-2026",
+      "title": "Specific duty on ferrous scrap (7204) converted to 0%",
+      "signed": null,
+      "published": "2025-06-02",
+      "url": "https://nbr.gov.bd/uploads/budget_at_a_glance/Specific_Duty_Changed-FY_2025-2026.pdf"
+    },
+    {
+      "id": "tw-art-schedule",
+      "publisher": "USTR",
+      "citation": "AIT-TECRO ART tariff schedules",
+      "document": "Agreement on Reciprocal Trade, tariff schedules",
+      "title": "Taiwan's applied MFN rates as of January 30, 2026 and staging for U.S. goods",
+      "signed": "2026-02-12",
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/AIT-TECRO%20ART%20Tariff%20Schedules%20sanitized.pdf"
+    },
+    {
+      "id": "th-art-2026",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Nov 17, 2026",
+      "document": "Joint Statement on an Agreement on Reciprocal Trade between the United States and Thailand",
+      "title": "U.S.–Thailand agreement substantially concluded",
+      "signed": null,
+      "published": "2026-11-17",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/11/joint-statement-on-an-agreement-between-the-united-states-of-america-and-the-kingdom-of-thailand-on-reciprocal-trade/"
+    },
+    {
+      "id": "tr-10435",
+      "publisher": "Republic of Türkiye Ministry of Trade",
+      "citation": "Presidential Decision No. 10435",
+      "document": "Ministry of Trade announcement, September 22, 2025",
+      "title": "Türkiye removes its 2018 additional duties on U.S. goods",
+      "signed": null,
+      "published": "2025-09-22",
+      "url": "https://ticaret.gov.tr/haberler/dtodeki-istisare-surecleri-ve-surdurulen-muzakereler-sonucunda-abdden-ithalatta-bazi-yeni-duzenlemelere-gidildi"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 88% of 2025 U.S. Chapter 72 exports. A customs union (the EU) is one market: its members share one tariff."
+}

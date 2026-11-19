@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 7,
+    "padded": "07",
+    "slug": "7-vegetables-and-roots",
+    "title": "Edible Vegetables and Certain Roots and Tubers"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/7-vegetables-and-roots/faq",
+    "h1": "HTS Chapter 07: Edible Vegetables and Certain Roots and Tubers — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Vegetable, Potato & Pulse Export FAQ: Tariffs, Buyers, Rules",
+      "shortDescription": "Answers on exporting U.S. vegetables, potatoes, peas, lentils and beans: who buys them, India’s 30% yellow-pea duty, China and Canada tariffs, HS codes and certificates.",
+      "keywords": [
+        "india tariff on us pulses",
+        "india tariff on us yellow peas",
+        "does the us export potatoes",
+        "does canada have tariffs on us produce",
+        "hs code for lentils",
+        "phytosanitary certificate usda",
+        "us pulses exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Common questions about exporting U.S. vegetables, potatoes and dry pulses, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $4.97 billion of vegetables, potatoes and pulses in 2025; Canada (59.4%) and Mexico (12.4%) are by far the largest buyers.",
+    "Canada and Mexico charge nothing under USMCA and the EU nothing on pulses; India charges 30% on yellow peas and China about 42–48% on U.S. pulses.",
+    "To ship you need a Schedule B number and usually a USDA phytosanitary certificate; there is no export licence in the ordinary case, and shipments to Canada need no AES filing."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"us vegetable exports\", \"us potato exports\", \"india tariff on us pulses\", \"yellow peas tariff\", \"tariff on lentils\", \"canada tariffs on us produce\", \"tariff on vegetables\", \"japan potato import\", \"hs code for lentils\", \"hs code for chickpeas\", \"phytosanitary certificate usda\" and \"export license for food products\".",
+  "faqs": [
+    {
+      "id": "how-much",
+      "question": "How much vegetables does the U.S. export?",
+      "answer": "The U.S. exported $4.97 billion of Chapter 07 goods (vegetables, potatoes, dry pulses and roots) in 2025, down 15.5% from a record $5.89 billion in 2024. Other fresh vegetables such as peppers and celery (heading 0709) were 20.1% of it and dried pulses (0713) 19.6%. In January to August 2026 exports were $3.36 billion, level with 2025.",
+      "link": "exports",
+      "searchedAs": ["us vegetable exports", "what crops does the us export", "what food does the us export"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. vegetables?",
+      "answer": "Canada takes 59.4% of U.S. Chapter 07 exports, mostly fresh vegetables such as lettuce, peppers, broccoli and tomatoes, followed by Mexico (12.4%) and Japan (3.8%). The Dominican Republic, the UK, Spain and the Netherlands are next.",
+      "link": "exports",
+      "searchedAs": ["us vegetable exports", "what crops does the us export"]
+    },
+    {
+      "id": "potatoes",
+      "question": "Does the U.S. export potatoes, and where?",
+      "answer": "Yes. The U.S. exported $327 million of fresh potatoes (0701.90) in 2025. Mexico is the largest buyer of U.S. potatoes ($108 million), and since May 2022 U.S. fresh potatoes can be sold throughout Mexico, duty-free under USMCA. Japan admits U.S. fresh potatoes only for making chips, and the EU does not admit them at all.",
+      "link": "exports/markets",
+      "searchedAs": ["does the us export potatoes", "us potato exports", "how many potatoes does the us export", "japan potato import"]
+    },
+    {
+      "id": "pulses",
+      "question": "How much dry peas, lentils and beans does the U.S. export?",
+      "answer": "U.S. exports of dried pulses (heading 0713) were $973 million in 2025, down 30.6%: dry kidney, navy and other Phaseolus beans $306 million, other dry beans $250 million, lentils $162 million, dried peas $126 million and chickpeas $93 million. Mexico, Canada and the Dominican Republic buy the most. U.S. sales of Chapter 07 goods to India fell from $80.6 million in 2024 to $6.7 million in 2025.",
+      "link": "exports",
+      "searchedAs": ["us pulses exports", "us exports pulses to india"]
+    },
+    {
+      "id": "india-yellow-peas",
+      "question": "Does India charge a tariff on U.S. yellow peas?",
+      "answer": "Yes. Since November 1, 2025 India charges 30% on yellow peas (a 10% basic customs duty plus a 20% Agriculture Infrastructure and Development Cess), ending duty-free treatment that began in December 2023. It is not aimed at the U.S.: it applies to yellow peas from every country. Imports stay \"Free\" of a minimum import price or port restriction until March 31, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": [
+        "india tariff on us yellow peas",
+        "us yellow peas tariff",
+        "india yellow peas import duty",
+        "india 30 tariff on us pulses",
+        "india tariff on us pulses"
+      ]
+    },
+    {
+      "id": "india-framework",
+      "question": "Does the U.S.–India trade framework cut India’s tariffs on U.S. pulses?",
+      "answer": "Not so far. The February 6, 2026 U.S.–India joint statement says India will cut tariffs on a wide range of U.S. food and farm goods, naming dried distillers’ grains, red sorghum, tree nuts, fruit, soybean oil, wine and spirits, but it does not name pulses, vegetables or potatoes, and no rates or dates are published.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["us pulses india tariff", "india tariff on us pulse crops", "pulses tariff india"]
+    },
+    {
+      "id": "china-pulses",
+      "question": "What tariff does China charge on U.S. peas and beans?",
+      "answer": "About 42.5% on U.S. dried peas and 47.5% on dried kidney beans: China’s normal rate (5–7.5%), its 25% counter-tariff from July 2018, 2.5–5% from 2019 and its extra 10% on all U.S. goods. Pulses are not eligible for China’s exclusion process. If China’s 24-point suspension ends on January 10, 2027, dried peas would pay about 66.5%.",
+      "link": "exports/markets",
+      "searchedAs": ["china yellow pea tariff", "china tariff on peas", "yellow peas tariff"]
+    },
+    {
+      "id": "canada",
+      "question": "Does Canada have tariffs on U.S. produce?",
+      "answer": "Not on U.S. vegetables today: qualifying U.S. vegetables, potatoes and pulses enter Canada duty-free under CUSMA. Canada’s 25% counter-tariff hit U.S. fresh tomatoes and fresh beans from March 4 to September 1, 2025, and its September 2026 counter-tariffs do not cover vegetables.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["does canada have tariffs on us produce", "canadian tariffs on us produce", "does canada tariff us produce"]
+    },
+    {
+      "id": "eu",
+      "question": "What tariff does the EU charge on U.S. vegetables?",
+      "answer": "U.S. dried peas, beans, lentils and chickpeas enter the EU at its 0% normal rate. Since July 1, 2026 U.S. onions, fresh sweet potatoes, asparagus, sweet peppers, fresh beans, dried onions and some frozen vegetables are duty-free too, but most other fresh vegetables pay 10–14%, and EU plant-health rules do not admit U.S. potatoes.",
+      "link": "exports/markets",
+      "searchedAs": ["tariff on vegetables", "tariff on fruits and vegetables"]
+    },
+    {
+      "id": "hs-codes",
+      "question": "What are the HS (Schedule B) codes for potatoes, onions, lentils and beans?",
+      "answer": "Fresh potatoes are 0701.90 (seed potatoes 0701.10), onions 0703.10, lettuce 0705.11 and 0705.19, dried peas 0713.10, chickpeas 0713.20, dry kidney, navy, pinto and black beans 0713.33, lentils 0713.40 and sweet potatoes 0714.20. These six digits are the start of the 10-digit Schedule B number.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for fresh potatoes",
+        "hs code for onions",
+        "hs code for lentils",
+        "hs code for chickpeas",
+        "hs code for dried peas",
+        "hs code for dried beans",
+        "hs code for lettuce"
+      ]
+    },
+    {
+      "id": "phyto",
+      "question": "Do I need a USDA phytosanitary certificate to export vegetables or pulses?",
+      "answer": "The U.S. does not require one, but most buyers do for fresh vegetables, potatoes and pulses. APHIS or an authorized state inspector issues it through the PCIT system, and APHIS’s Phytosanitary Export Database (PExD) lists each country’s extra declarations, treatments and approved U.S. states.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "phytosanitary certificate usda",
+        "pcit phytosanitary certificate",
+        "do i need a phytosanitary certificate",
+        "usda phytosanitary certificate requirements"
+      ]
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export licence or an AES filing for vegetables?",
+      "answer": "No licence in the ordinary case: fresh, frozen and dried vegetables and pulses are EAR99. Shipments to Canada are exempt from AES filing unless they go on to a third country; elsewhere, file in AES when a Schedule B line is worth more than $2,500.",
+      "link": "exports/rules",
+      "searchedAs": ["export license for food products", "how to export food products"]
+    }
+  ]
+}

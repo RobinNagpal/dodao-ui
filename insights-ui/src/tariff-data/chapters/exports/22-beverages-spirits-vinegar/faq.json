@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 22,
+    "padded": "22",
+    "slug": "22-beverages-spirits-vinegar",
+    "title": "Beverages, Spirits and Vinegar"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/22-beverages-spirits-vinegar/faq",
+    "h1": "HTS Chapter 22: Beverages, Spirits and Vinegar — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Bourbon, Wine & Ethanol Export FAQ: Tariffs, HS Codes & TTB Rules (HTS Ch. 22) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. alcohol, and is it still boycotting it? What do the EU, India and China charge on bourbon? HS codes for bourbon and ethanol, and do you need an export licence?",
+      "keywords": [
+        "does canada have tariffs on us alcohol",
+        "is canada still boycotting american alcohol",
+        "eu tariff on bourbon",
+        "india bourbon tariff",
+        "hs code for bourbon",
+        "hs code for ethanol",
+        "export license for alcohol"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Common questions about exporting U.S. bourbon and other spirits, wine, beer, ethanol and soft drinks, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $10.80 billion of Chapter 22 goods in 2025; ethanol ($4.91 billion) is the largest part, then whiskey including bourbon ($1.25 billion), and Canada buys 28%.",
+    "Canada, Mexico, the EU, the UK, Japan and Korea charge nothing on U.S. bourbon; India (100%) and China (about 40% without an exclusion) are the costly markets, and most Canadian provinces still keep U.S. alcohol off liquor-store shelves.",
+    "Alcohol leaves the U.S. free of federal excise tax on a TTB form, with TTB export certificates when the buyer asks; no Commerce licence is needed except for Russia and Belarus."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"bourbon tariff\", \"whiskey tariffs\", \"canada tariff on us alcohol\", \"is canada still boycotting american alcohol\", \"us ethanol exports\", \"us wine exports\", \"hs code for bourbon\", \"hs code for ethanol\", \"ttb export\" and \"export license alcohol\".",
+  "faqs": [
+    {
+      "id": "how-much",
+      "question": "How much bourbon, ethanol, wine and other beverages does the U.S. export?",
+      "answer": "The U.S. exported $10.80 billion of Chapter 22 goods in 2025, down 1% from 2024. Ethanol was $4.91 billion, whiskey including bourbon $1.25 billion (down 18%), soft drinks and energy drinks $1.70 billion, wine $850 million (down 32%) and beer $305 million. January to August 2026 exports were 13% above the same months of 2025.",
+      "link": "exports",
+      "searchedAs": ["us bourbon exports", "us bourbon exports 2025", "us ethanol exports 2025", "us wine exports 2025", "us beer exports"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. ethanol, bourbon and wine?",
+      "answer": "Canada takes 28% of U.S. Chapter 22 exports, mostly ethanol and soft drinks, followed by the Netherlands (13%) and the UK (7%). The EU as a whole is the largest market for U.S. spirits ($1.29 billion), and Canada, the Netherlands, India, the UK and Colombia are the largest buyers of U.S. ethanol.",
+      "link": "exports",
+      "searchedAs": ["us ethanol exports by country", "us bourbon exports by country", "us wine exports by country", "us ethanol exports to canada"]
+    },
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have tariffs on U.S. alcohol?",
+      "answer": "Not at the federal level any more. Canada charged a 25% surtax on U.S. beer, wine, spirits and soft drinks from March 4, 2025 and removed it on September 1, 2025, and its September 2026 counter-tariffs skip beverages, so qualifying U.S. drinks enter duty-free under CUSMA. Saskatchewan, however, has charged a 50% provincial levy on U.S.-produced alcohol since September 8, 2026.",
+      "link": "exports/tariff-updates",
+      "searchedAs": [
+        "canada tariff on us alcohol",
+        "does canada have tariffs on us alcohol",
+        "canadian duty on us alcohol",
+        "bourbon tariffs canada",
+        "canadian tariffs on us bourbon"
+      ]
+    },
+    {
+      "id": "canada-boycott",
+      "question": "Is Canada still boycotting American alcohol?",
+      "answer": "Largely, yes. Most provincial liquor boards stopped buying U.S. beer, wine and spirits in March 2025. British Columbia said in September 2026 it is keeping its ban, Quebec’s order to remove U.S. products stands, and Nova Scotia is not importing U.S. alcohol; Alberta resumed sales in June 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": [
+        "is canada still boycotting american alcohol",
+        "is canada still boycotting us liquor",
+        "canada us alcohol ban",
+        "canada us alcohol boycott"
+      ]
+    },
+    {
+      "id": "eu-bourbon",
+      "question": "What tariff does the EU charge on U.S. bourbon?",
+      "answer": "None: bourbon and other whiskies enter the EU duty-free. The EU’s 2018 25% duty on U.S. whiskey was suspended from 2022 and repealed in July 2025, and the 30% on bourbon in its 2025 counter-list (Implementing Regulation (EU) 2025/1564) has been suspended since August 2025 with no end date.",
+      "link": "exports/markets",
+      "searchedAs": ["eu tariff on bourbon", "eu whiskey tariff", "whiskey tariffs removed", "american whiskey tariffs"]
+    },
+    {
+      "id": "india-bourbon",
+      "question": "What is India’s tariff on U.S. bourbon?",
+      "answer": "India charges 100% on bourbon whiskey: 50% basic customs duty plus a 50% cess since February 13, 2025, down from 150%. Other whiskies, spirits and wine still pay 150%. The February 2026 U.S.–India framework promises cuts on wine and spirits, but no rates are published yet.",
+      "link": "exports/markets",
+      "searchedAs": ["india bourbon tariff", "bourbon whiskey tariffs india", "indian bourbon whiskey tariffs"]
+    },
+    {
+      "id": "china-whiskey",
+      "question": "Does China tariff U.S. whiskey and wine?",
+      "answer": "Yes. U.S. whiskey pays about 40% in China (5% normal rate + 25% 2019 counter-tariff + 10% extra on all U.S. goods), or 15% if the importer holds an exclusion. Bottled U.S. wine pays about 64%, because a 15% 2018 counter-tariff is added. China’s exclusions end on December 31, 2026.",
+      "link": "exports/markets",
+      "searchedAs": ["whiskey tariffs china", "us wine exports to china"]
+    },
+    {
+      "id": "ethanol-tariffs",
+      "question": "What do other countries charge on U.S. ethanol?",
+      "answer": "Canada, Mexico, Colombia and Korea charge nothing on U.S. ethanol under their trade agreements, though Colombia adds a countervailing duty of US$0.06646 per kg on fuel ethanol. The UK lets U.S. ethanol in duty-free within a 1.4 billion-liter yearly quota, the EU charges €19.2 per hectoliter (undenatured) or €10.2 (denatured), Brazil 18%, and India does not allow ethanol imports for fuel use.",
+      "link": "exports/markets",
+      "searchedAs": ["ethanol tariff", "brazil ethanol tariff", "us ethanol exports to uk", "india ethanol import from usa"]
+    },
+    {
+      "id": "hs-bourbon",
+      "question": "What is the HS code and Schedule B number for bourbon?",
+      "answer": "Bourbon is HS 2208.30 (whiskies). Its Schedule B number is 2208.30.6020 in containers of 4 liters or less and 2208.30.6040 in larger containers; other whiskies are 2208.30.9025–9040. The six-digit code 2208.30 is the line every buyer’s tariff uses.",
+      "link": "exports/rules",
+      "searchedAs": ["hs code for bourbon", "hs code for bourbon whiskey", "hs code for whisky", "hs code for spirits"]
+    },
+    {
+      "id": "hs-ethanol",
+      "question": "What is the HS code for ethanol?",
+      "answer": "Undenatured ethanol of 80% or more is HS 2207.10 and denatured ethanol is 2207.20. For fuel ethanol the Schedule B numbers are 2207.10.6010 (undenatured) and 2207.20.0010 (denatured); ethanol under 80% is classified in 2208.90.",
+      "link": "exports/rules",
+      "searchedAs": ["hs code for ethanol", "hs code for denatured ethanol", "hs code for undenatured ethanol", "hs code for ethanol fuel"]
+    },
+    {
+      "id": "export-license",
+      "question": "Do I need an export licence to export alcohol from the U.S.?",
+      "answer": "Usually not: beverages, spirits and ethanol are EAR99, so no Commerce licence is needed except for embargoed destinations and for Russia and Belarus, where beer, wine, spirits and undenatured ethanol are listed luxury goods. What you do need is TTB paperwork: TTB F 5100.11 to remove spirits or wine from bond tax-free for export, and a TTB basic permit if you export spirits but are not the distillery.",
+      "link": "exports/rules",
+      "searchedAs": ["export license for alcohol", "export liquor license", "ttb export requirements", "ttb export permit"]
+    },
+    {
+      "id": "ttb-certificates",
+      "question": "What export certificates does TTB issue for wine and spirits?",
+      "answer": "TTB issues certificates of free sale, origin and/or age, health, sanitation and authenticity, electronically in myTTB since July 18, 2023. For spirits it uses TTB F 5110.58 (origin and age) and F 5110.42 (bourbon authenticity). U.S. wine shipped to the EU needs the self-certified simplified export certificate or a VI-1 form for each lot.",
+      "link": "exports/rules",
+      "searchedAs": ["ttb wine export certificate", "ttb export form", "ttb export"]
+    }
+  ]
+}

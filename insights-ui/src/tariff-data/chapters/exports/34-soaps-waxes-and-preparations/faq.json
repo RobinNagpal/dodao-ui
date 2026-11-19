@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 34,
+    "padded": "34",
+    "slug": "34-soaps-waxes-and-preparations",
+    "title": "Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/34-soaps-waxes-and-preparations/faq",
+    "h1": "HTS Chapter 34: Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Soap, Detergent & Lubricant Export FAQ: HS Codes, Tariffs Abroad & Licences (HTS Ch. 34) | KoalaGains",
+      "shortDescription": "What is the HS code for soap, laundry detergent, grease or candles? Did Canada tariff U.S. soap? Does China tariff U.S. lubricants? Short answers with the dates that matter.",
+      "keywords": [
+        "hs code for soap",
+        "hs code for laundry detergent",
+        "hs code for grease",
+        "hs code for candles",
+        "tariffs on soap",
+        "china tariff on us lubricants"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. soap, detergents, lubricants, waxes and candles, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Most large buyers let U.S. Chapter 34 goods in duty-free; China, where U.S. lubricants pay about 45%, is the exception, and Canada's 2025 surtax on U.S. soap is gone.",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions end, and its extra tariff could rise from 10% to 34%.",
+    "No export licence is needed except for lubricants going to Russia or Belarus; check whether your lubricant is 3403 (Chapter 34) or 2710 (Chapter 27)."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"hs code for soap\", \"hs code for liquid soap\", \"hs code detergent\", \"hs code for laundry detergent\", \"hs code for dish soap\", \"hs code lubricant\", \"hs code for grease\", \"hs code for candles\", \"hs code for wax\", \"soap tariff\", \"tariffs on soap\", \"tariff on candles\", \"china tariff on us lubricants\", \"eu tariff on us\" and \"lubricant export\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "hs-soap",
+      "question": "What is the HS or Schedule B code for soap and liquid hand soap?",
+      "searchedAs": [
+        "hs code for soap",
+        "hs code for soap bar",
+        "hs code for liquid soap",
+        "hs code for hand soap",
+        "hs code for liquid body wash",
+        "soap tariff code",
+        "bar soap tariff code"
+      ],
+      "answer": "Bar soap is 3401.11, and liquid hand soap and body wash put up for retail sale are 3401.30. The 10-digit Schedule B number starts with these six digits.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-detergent",
+      "question": "What is the HS code for laundry detergent and dish soap?",
+      "searchedAs": [
+        "hs code for laundry detergent",
+        "hs code detergent powder",
+        "hs code detergent liquid",
+        "hs code for dish soap",
+        "hs code for dishwashing liquid",
+        "laundry detergent tariff code"
+      ],
+      "answer": "Laundry detergent, dish soap and other cleaners put up for retail sale are 3402.50 (3402.20 before HS 2022). Other washing and cleaning preparations, such as industrial cleaners, are 3402.90, and non-ionic surfactants are 3402.42.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-lubricant",
+      "question": "What is the HS code for lubricants and grease?",
+      "searchedAs": [
+        "hs code lubricant",
+        "hs code for lubricants",
+        "hs code for grease",
+        "lubricating grease hs code",
+        "hs code for silicone grease",
+        "hs code for silicone lubricant",
+        "hs code lubricant oil"
+      ],
+      "answer": "Lubricants and greases with less than 70% petroleum oil are 3403.19, and those with no petroleum oil, such as synthetic and silicone greases, are 3403.99. Lubricating oils with 70% or more petroleum oil are 2710.19 in Chapter 27, and lubricating-oil additives are 3811.21.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-candles",
+      "question": "What is the HS code for candles, wax and car wax?",
+      "searchedAs": ["hs code for candles", "hs code for candles scented", "hs code for wax", "hs code for car wax", "hs code for car wax polish"],
+      "answer": "Candles, scented or not, are 3406.00. Prepared waxes are 3404.90, car polish and wax 3405.30, shoe polish 3405.10, and modelling pastes and dental wax 3407.00.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "canada-soap",
+      "question": "Did Canada put tariffs on U.S. soap?",
+      "searchedAs": ["tariffs on soap", "soap tariff"],
+      "answer": "Yes, but it is gone. Canada charged a 25% surtax on U.S. toilet soap, other bar soap, soap in other forms and liquid skin cleansers (3401) from March 4 to August 31, 2025, and repealed it from September 1, 2025. Canada's September 2026 counter-tariffs list no Chapter 34 goods, so U.S. soap, detergents and lubricants that qualify for CUSMA enter duty-free.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-lubricants",
+      "question": "Does China have tariffs on U.S. lubricants and detergents?",
+      "searchedAs": ["china tariff on us oil", "does china have tariffs on us goods", "what are the current us china tariffs"],
+      "answer": "Yes. U.S. lubricating preparations pay about 45% in China: a 10% normal rate, a 25% counter-tariff from 2018 and the 10% extra on all U.S. goods. Non-ionic surfactants and bar soap pay about 41.5%, and retail detergents 26.5–36.5%. An importer holding a market-based exclusion, valid until December 31, 2026, pays only the normal rate plus 10%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-deadline",
+      "question": "When does China's tariff suspension on U.S. goods end?",
+      "searchedAs": ["what are the current us china tariffs", "does china have tariffs on us goods"],
+      "answer": "China's Tariff Commission extended the suspension of 24 points of its extra tariff on U.S. goods to January 10, 2027 (Announcement No. 6 of 2026). If it lapses, the extra tariff goes from 10% to 34%, and U.S. lubricating preparations would pay 69%. Separately, China's exclusions from its 2018–2019 counter-tariffs are valid until December 31, 2026.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU charge tariffs on U.S. soap, detergents and lubricants?",
+      "searchedAs": ["eu tariff on us goods", "eu tariff on us products", "eu tariff on usa"],
+      "answer": "No. Since July 1, 2026 the EU charges 0% on all U.S. Chapter 34 goods under Regulation (EU) 2026/1455, down from 4% on detergents and surfactants and 4.6–6.5% on lubricants. The EU's 2025 counter-tariff list named nearly the whole chapter at 10–30% but was never applied. Substances imported at 1 tonne a year or more still need REACH registration.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "candle-tariffs",
+      "question": "What tariffs do other countries charge on U.S. candles?",
+      "searchedAs": ["tariff on candles", "candle tariffs"],
+      "answer": "Canada, Mexico, Korea and Singapore charge nothing on qualifying U.S. candles (3406), and the EU and Japan charge 0%. Brazil charges 16% and China about 24%: a 6.5% normal rate, 7.5% in counter-tariffs and the 10% extra.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license for lubricants, soap or detergents?",
+      "searchedAs": ["lubricant export", "lubricant oil export"],
+      "answer": "Chapter 34 goods are EAR99, so most destinations need no licence. Lubricating preparations (3403) need a BIS licence for Russia and Belarus, where they are on the industry-sector sanctions list; soap, detergents, waxes, polishes and candles are not. File EEI in AES when one Schedule B number in a shipment is worth over $2,500; shipments to Canada need none unless they need a licence.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "exports-trade",
+      "question": "How much soap, detergent and lubricant does the U.S. export, and who buys it?",
+      "searchedAs": ["lubricant export", "lubricant exporters in uae"],
+      "answer": "The U.S. exported $8.41B of Chapter 34 goods in 2025, 1.3% more than in 2024; detergents, surfactants and cleaners were 46%, lubricating preparations 25% and soap 14%. Canada bought 37%, followed by Mexico, China, Brazil and the Netherlands. January–August 2026 exports were $5.65B, 1% less than a year earlier.",
+      "link": "exports"
+    }
+  ]
+}

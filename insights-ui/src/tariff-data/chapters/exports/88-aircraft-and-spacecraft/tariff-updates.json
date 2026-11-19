@@ -23,7 +23,7 @@
   "stats": [
     {
       "label": "Actions tracked",
-      "value": "23"
+      "value": "41"
     },
     {
       "label": "In force & cost these goods",
@@ -32,7 +32,7 @@
     },
     {
       "label": "Reach this chapter",
-      "value": "7"
+      "value": "9"
     },
     {
       "label": "Coming up",
@@ -46,10 +46,10 @@
       "dateLabel": "Expires",
       "countries": ["China"],
       "title": "China's suspension of 24 points of its extra tariff on U.S. goods ends",
-      "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027, with talks on a further extension expected before the end of the year.",
+      "whatHappens": "China suspended 24 points of its extra tariff on all U.S. goods for one year from November 10, 2025, keeping 10%. Tariff Commission Announcement No. 6 of 2026 (November 9, 2026) continued the suspension for two months from November 10, 2026, to January 10, 2027.",
       "impact": "If the suspension lapses without a further extension, China's extra tariff on U.S. goods — including Chapter 88 aircraft and parts — would rise from 10% back toward the 34% level it fell to after the April 2025 peak. Talks on a further extension were reported before the end of 2026, so a lapse is not the base case, but no replacement notice has been published yet.",
-      "status": "Extension to Jan 10, 2027 announced by MOFCOM; China's Tariff Commission has not yet published its notice",
-      "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09"]
+      "status": "Extended to January 10, 2027; no further extension announced",
+      "sourceIds": ["cn-24-suspend", "cn-mofcom-2026-09", "cn-sctc-2026-6"]
     }
   ],
   "inEffect": [
@@ -67,6 +67,32 @@
     }
   ],
   "changes": [
+    {
+      "id": "th-art-2026",
+      "date": "2026-11-17",
+      "type": "tradeDeal",
+      "countries": ["Thailand"],
+      "title": "U.S.–Thailand Agreement on Reciprocal Trade: negotiations substantially concluded",
+      "before": null,
+      "now": null,
+      "coversChapter": "yes",
+      "status": "Not yet signed; Thailand's tariffs on U.S. goods unchanged",
+      "detail": "Under the October 26, 2025 framework, Thailand committed to eliminate tariff barriers on about 99% of goods, covering a full range of U.S. industrial, food and agricultural products. On November 17, 2026 the two leaders announced in Manila that negotiations had reached substantial conclusion; each side must now complete its internal processes before the agreement is signed and enters into force. No Thai tariff cut has been published yet.",
+      "sourceIds": ["th-art-2026", "th-art-framework-2025"]
+    },
+    {
+      "id": "in-soda-ash-qr",
+      "date": "2026-11-04",
+      "type": "retaliation",
+      "countries": ["India"],
+      "title": "India's trade-remedy authority recommends soda ash import quotas, with 159,388 tonnes a year for U.S. supply",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Recommended Nov 4, 2026; not yet notified by the Government of India",
+      "detail": "Final findings in India's safeguard (quantitative restrictions) case on soda ash (subheading 2836.20), opened March 16, 2026: DGTR recommends country-wise import quotas for two years, 754,992 tonnes in year 1 and 792,740 tonnes in year 2. The U.S. share is 159,388 tonnes in year 1 and 167,357 tonnes in year 2, released in four equal quarterly tranches (39,847 tonnes a quarter in year 1). Imports from the U.S. were 385,453 tonnes in January–September 2025 alone. The quotas apply only once the Central Government notifies them in the Gazette; imports under India's Advance Authorisation scheme would stay outside the quota. No tariff is involved.",
+      "sourceIds": ["in-dgtr-soda-qr-ff"]
+    },
     {
       "id": "cn-bot",
       "date": "2026-09-27",
@@ -92,6 +118,32 @@
       "status": "In force",
       "detail": "Counter-tariffs of 15%, 25% and 50% on listed U.S. products — steel, aluminum, dairy, furniture and clothing, but also machinery, household appliances and electronics such as smartphones, routers and monitors (50%). The order applies to goods of U.S. origin and has no exemption for goods that qualify for CUSMA.",
       "sourceIds": ["ca-2026-list", "ca-sor-2026-186"]
+    },
+    {
+      "id": "ca-sk-alcohol-levy",
+      "date": "2026-09-08",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "Saskatchewan puts a 50% levy on U.S. alcohol",
+      "before": "0% (CUSMA)",
+      "now": "50% levy on U.S.-produced alcohol (Saskatchewan only)",
+      "coversChapter": "no",
+      "status": "In force from September 8, 2026",
+      "detail": "Saskatchewan's government announced on August 27, 2026 a 50% levy on all U.S.-produced alcohol imported into the province, applied through the Saskatchewan Liquor and Gaming Authority's ordering system from September 8, 2026. It answers the 50% U.S. tariff on Canadian alcohol of August 22, 2026. It is a provincial measure: Canada's federal counter-tariffs of September 8, 2026 skip beverages.",
+      "sourceIds": ["ca-sk-levy-2026"]
+    },
+    {
+      "id": "mx-alu-hollow-ad",
+      "date": "2026-09-04",
+      "type": "retaliation",
+      "countries": ["Mexico"],
+      "title": "Mexico imposes an anti-dumping duty of US$1.72/kg on U.S. hollow aluminum profiles",
+      "before": "0% extra (Jan 2025)",
+      "now": "US$1.72 per kg anti-dumping duty",
+      "coversChapter": "no",
+      "status": "In force from 2026-09-05 (provisional US$1.62/kg from Dec 31, 2025)",
+      "detail": "Secretaría de Economía final resolution in case AD_28-24 (DOF, September 4, 2026): a definitive anti-dumping duty of US$1.72 per kilogram on hollow aluminum profiles (tariff fraction 7604.21.01) originating in the United States, and US$1.93 per kilogram on those from China, whatever the country they are shipped from. The preliminary resolution of December 31, 2025 had set provisional duties of US$1.62 and US$1.88 per kilogram. It is a trade-remedy case, not a general counter-tariff, and applies on top of the USMCA rate.",
+      "sourceIds": ["mx-ad-hollow-final", "mx-ad-hollow-ita"]
     },
     {
       "id": "br-2026",
@@ -133,6 +185,19 @@
       "sourceIds": ["mx-usmca-review"]
     },
     {
+      "id": "eu-lobster",
+      "date": "2026-06-30",
+      "type": "tradeDeal",
+      "countries": ["European Union"],
+      "title": "EU renews 0% duty on live and frozen lobster to July 31, 2030 and adds processed lobster",
+      "before": "0% (2020 deal, expired July 31, 2025)",
+      "now": "0% to July 31, 2030",
+      "coversChapter": "no",
+      "status": "In force from June 30, 2026; applies retroactively from August 1, 2025 to July 31, 2030",
+      "detail": "Regulation (EU) 2026/1461 of June 25, 2026 sets a 0% EU duty on live lobster (CN 0306 32 10), frozen lobster (0306 12 10, 0306 12 90) and frozen rock lobster (0306 11 90) and, for the first time, on prepared or preserved lobster (1605 30 90). It renews the zero duty of the 2020 U.S.–EU lobster deal (Regulation (EU) 2020/2131), which ran from August 1, 2020 to July 31, 2025, as agreed in the August 2025 EU–U.S. Joint Statement. In the gap the normal EU rates applied (8% on live lobster, 6% or 16% on frozen lobster, 12.5% on frozen rock lobster); duties paid between August 1, 2025 and June 30, 2026 are refunded on request. Like the 2020 regulation, the 0% applies to lobster from every country. The Commission can suspend it if the U.S. stops implementing the Joint Statement, and must assess it by January 31, 2030.",
+      "sourceIds": ["eu-lobster-2026", "eu-lobster-2020", "eu-joint-2025"]
+    },
+    {
       "id": "de-eu-framework",
       "date": "2026-06-25",
       "type": "tradeDeal",
@@ -144,6 +209,19 @@
       "status": "In force (applies from July 1, 2026)",
       "detail": "Regulation (EU) 2026/1455 cuts EU duties on listed U.S. goods to zero from July 1, 2026, and Regulation (EU) 2026/1461 sets aside duties on certain other goods.",
       "sourceIds": ["eu-framework", "eu-joint-2025"]
+    },
+    {
+      "id": "za-soda-ash-ad",
+      "date": "2026-02-19",
+      "type": "retaliation",
+      "countries": ["South Africa"],
+      "title": "South Africa keeps its 40% anti-dumping duty on U.S. soda ash after a sunset review",
+      "before": "40% anti-dumping duty",
+      "now": "40% anti-dumping duty (kept)",
+      "coversChapter": "no",
+      "status": "Maintained (final determination published Feb 19, 2026)",
+      "detail": "South Africa's International Trade Administration Commission (ITAC) opened a sunset review of the anti-dumping duty on disodium carbonate (soda ash, tariff heading 2836.20) from the U.S. on March 7, 2025, at the request of Botswana Ash. No U.S. exporter or SACU importer responded. ITAC found that ending the duty would likely lead to renewed dumping and injury, and the Minister of Trade, Industry and Competition approved keeping the 40% duty (Notice 3778 of 2026). The duty applies at the border of the Southern African Customs Union (South Africa, Botswana, Lesotho, Namibia and Eswatini). It is a trade-remedy case, not a general counter-tariff.",
+      "sourceIds": ["za-itac-3778"]
     },
     {
       "id": "tw-art-2026",
@@ -198,6 +276,32 @@
       "sourceIds": ["mx-dof-2025"]
     },
     {
+      "id": "ca-steel-derivatives-2025",
+      "date": "2025-12-26",
+      "type": "retaliation",
+      "countries": ["Canada"],
+      "title": "Canada's 25% global surtax on steel derivative goods, U.S. goods included",
+      "before": "0% (CUSMA)",
+      "now": "25% surtax on listed steel derivative goods",
+      "coversChapter": "no",
+      "status": "In force since December 26, 2025",
+      "detail": "Canada's Steel Derivative Goods Surtax Order (SOR/2025-267) charges a 25% surtax on the full value of listed steel derivative goods from every country, the United States included, such as prefabricated buildings, wire, cables, chains, fasteners and wind towers. It is not a counter-tariff aimed at the U.S.: it answers global steel overcapacity and the diversion caused by U.S. steel tariffs, and the Government of Canada put 44% of the C$10.6 billion of goods it covers as imported from the United States. Goods already paying another Canadian surtax (such as the United States Surtax Orders on steel and aluminum and of 2026) do not pay it again, and goods imported before July 1, 2027 for making motor vehicles, aircraft or their parts are exempt (SOR/2026-155).",
+      "sourceIds": ["ca-sor-2025-267", "ca-sor-2026-155"]
+    },
+    {
+      "id": "cn-epdm-ad-review",
+      "date": "2025-12-19",
+      "type": "reference",
+      "countries": ["China"],
+      "title": "China opens an expiry review of its 214.9–222.0% anti-dumping duties on U.S. EPDM rubber, keeping them in force",
+      "before": "214.9–222.0% anti-dumping duty",
+      "now": "214.9–222.0% (kept during the review)",
+      "coversChapter": "no",
+      "status": "Expiry review under way; ruling due before December 20, 2026",
+      "detail": "MOFCOM Announcement No. 81 of 2025: China has charged anti-dumping duties on ethylene-propylene-non-conjugated diene rubber (EPDM, Chinese lines 4002.7010 and 4002.7090) from the U.S., Korea and the EU since December 20, 2020 (Announcement No. 60 of 2020), at 214.9–222.0% for U.S. companies (Dow 222.0%, ExxonMobil 214.9%, Arlanxeo USA and Lion Copolymer Geismar 219.8%, all others 222.0%). On a request from PetroChina Jilin Petrochemical and SINOPEC Mitsui Elastomers, MOFCOM opened an expiry review from December 20, 2025, which must end before December 20, 2026; the duties stay in force while it runs. It is a trade-remedy case, not a general counter-tariff.",
+      "sourceIds": ["cn-mofcom-epdm-2025-81"]
+    },
+    {
       "id": "br-2025",
       "date": "2025-12-18",
       "type": "retaliation",
@@ -250,6 +354,58 @@
       "sourceIds": ["wh-china-deal-2025", "cn-2019-annex3"]
     },
     {
+      "id": "in-yellow-peas-2025",
+      "date": "2025-11-01",
+      "type": "reference",
+      "countries": ["India"],
+      "title": "India ends duty-free yellow peas: 30% duty on imports from every country, U.S. included",
+      "before": "0% (duty-free since December 2023)",
+      "now": "30% (10% basic customs duty + 20% AIDC)",
+      "coversChapter": "no",
+      "status": "In force since November 1, 2025",
+      "detail": "Customs Notification No. 46/2025 of October 29, 2025 charges a 10% basic customs duty and a 20% Agriculture Infrastructure and Development Cess on yellow peas (Indian tariff item 0713 10 10) shipped on a bill of lading dated November 1, 2025 or later, ending the duty-free treatment India had given yellow peas since December 2023. It is not aimed at the U.S.: it applies to yellow peas from every country, to support Indian pulse prices. Imports stay \"Free\" (no minimum import price or port restriction, but registration in India's online Import Monitoring System) for bills of lading dated up to March 31, 2027 (DGFT Notification No. 70/2025-26).",
+      "sourceIds": ["in-cbic-46-2025", "in-fas-yellow-peas-2025", "in-dgft-70-2025"]
+    },
+    {
+      "id": "in-hiir-ad-2025",
+      "date": "2025-10-31",
+      "type": "reference",
+      "countries": ["India"],
+      "title": "India opens an anti-dumping investigation into U.S. halobutyl rubber",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Investigation; no duty published as far as we found",
+      "detail": "India's Directorate General of Trade Remedies (case AD(OI)-51/2025) opened an anti-dumping investigation on October 31, 2025 into halo-isobutene-isoprene rubber (bromobutyl and chlorobutyl, mainly 4002.39) from the United States, China and Singapore, on an application by Reliance Sibur Elastomers. An earlier DGTR recommendation of December 2024 to put anti-dumping duties on halobutyl rubber from the U.S. and four other countries was not imposed. India separately charges US$781–859 per tonne on U.S. butyl rubber (4002.31) under Notification 17/2024-Customs (ADD) of September 27, 2024.",
+      "sourceIds": ["in-dgtr-hiir-2025"]
+    },
+    {
+      "id": "my-art-2025",
+      "date": "2025-10-26",
+      "type": "tradeDeal",
+      "countries": ["Malaysia"],
+      "title": "U.S.–Malaysia Agreement on Reciprocal Trade signed; Malaysia has not ratified it",
+      "before": null,
+      "now": null,
+      "coversChapter": "partly",
+      "status": "Signed Oct 26, 2025; not ratified, not in force",
+      "detail": "Malaysia agreed to apply the duties in its Schedule 1 to U.S.-origin goods: many lines go to 0% on entry into force, others are cut over up to 10 or 15 years, and some stay at today's rate. The agreement enters into force 60 days after both sides exchange written notifications. Malaysia's trade ministry said on February 21, 2026 that it has signed but not ratified the agreement, so Malaysia's normal (MFN) rates still apply to U.S. goods.",
+      "sourceIds": ["my-art-text", "my-art-annex", "my-miti-2026-02"]
+    },
+    {
+      "id": "in-soda-ash-ad",
+      "date": "2025-09-29",
+      "type": "retaliation",
+      "countries": ["India"],
+      "title": "India's trade-remedy authority recommends anti-dumping duties on U.S. soda ash; no duty imposed",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Recommended Sept 29, 2025; never imposed",
+      "detail": "DGTR's final findings in case AD (OI)-29/2024 recommended five-year anti-dumping duties on soda ash (2836.20) from Turkey, Russia, the U.S. and Iran: US$27 per tonne on Sisecam Wyoming and US$79 per tonne on other U.S. producers (the November 4, 2025 corrigendum changed only the Turkish rates). India's Ministry of Finance did not impose them: DGTR's November 2026 safeguard findings record that the case 'did not result in the imposition of duty'. Separately, India's DGFT barred soda ash imports priced below ₹20,108 per tonne CIF from December 30, 2024 to December 31, 2025 (a minimum import price, Notification No. 46/2024-25, extended once); it has lapsed.",
+      "sourceIds": ["in-dgtr-soda-ad-ff", "in-dgtr-soda-qr-ff"]
+    },
+    {
       "id": "jp-deal",
       "date": "2025-09-04",
       "type": "tradeDeal",
@@ -276,6 +432,32 @@
       "sourceIds": ["eu-rebalancing", "eu-rebalancing-pharma"]
     },
     {
+      "id": "mx-caustic-soda-ad",
+      "date": "2025-05-29",
+      "type": "retaliation",
+      "countries": ["Mexico"],
+      "title": "Mexico resets its anti-dumping duty on U.S. liquid caustic soda to US$195 per tonne",
+      "before": "Reference-price duty: the shortfall below US$288.71/t (max 54.79%)",
+      "now": "US$195 per tonne (dry basis) anti-dumping duty",
+      "coversChapter": "no",
+      "status": "In force from May 30, 2025; sunset review open since July 11, 2025",
+      "detail": "Mexico has charged an anti-dumping duty on liquid caustic soda (sodium hydroxide in aqueous solution, tariff fraction 2815.12.01) from the U.S. since 1995. A review resolution published May 29, 2025 replaced the reference-price scheme (a duty equal to the shortfall below US$288.71 per tonne, capped at 54.79%) with a specific duty of US$195 per tonne, measured dry or at 100% concentration, on U.S.-origin goods whatever the country they are shipped from. Mexico's Ministry of Economy opened a sunset review (case EC_17-25) on July 11, 2025; the duty stays in force while it runs. It applies on top of the USMCA rate.",
+      "sourceIds": ["mx-dof-sosa-2025", "mx-dof-sosa-ec17"]
+    },
+    {
+      "id": "mx-esbr-ad-2025",
+      "date": "2025-05-29",
+      "type": "reference",
+      "countries": ["Mexico"],
+      "title": "Mexico keeps its US$0.34075/kg anti-dumping duty on U.S. emulsion SBR rubber for five more years",
+      "before": "US$0.34075 per kg anti-dumping duty",
+      "now": "US$0.34075 per kg (extended to January 2029)",
+      "coversChapter": "no",
+      "status": "In force; extended for five years from January 26, 2024",
+      "detail": "Secretaría de Economía final resolution in the expiry and ex officio review E.C. Rev. 24/23 (DOF, May 29, 2025): the anti-dumping duty on emulsion styrene-butadiene rubber (SBR) of tariff items 4002.19.01, 4002.19.02, 4002.19.03 and 4002.19.99 is kept unchanged at US$0.34075 per kilogram for all U.S. exporters (it also covers Korea and Japan) and extended for five years from January 26, 2024. It is a trade-remedy duty and applies on top of the USMCA rate.",
+      "sourceIds": ["mx-dof-esbr-2025"]
+    },
+    {
       "id": "cn-pom-ad",
       "date": "2025-05-18",
       "type": "retaliation",
@@ -299,7 +481,20 @@
       "coversChapter": "yes",
       "status": "In force; 24-point suspension extended to Jan 10, 2027",
       "detail": "Rose 34% → 84% → 125% in April 2025 (125% from April 12), then cut to 10% from May 14, 2025 with 24 points suspended for 90 days. The suspension was extended for 90 days from August 12, 2025 and for one year from November 10, 2025, with the 10% kept. In September 2026 the two sides agreed to extend the arrangement to January 10, 2027. Applies to every U.S.-origin good on top of China’s normal rate.",
-      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09"]
+      "sourceIds": ["cn-sctc-125", "cn-sctc-may2025", "cn-sctc-aug2025", "cn-24-suspend", "cn-mofcom-2026-09", "cn-sctc-2026-6"]
+    },
+    {
+      "id": "in-wto-232-notice",
+      "date": "2025-05-12",
+      "type": "retaliation",
+      "countries": ["India"],
+      "title": "India notifies the WTO of possible retaliation for U.S. steel and aluminum tariffs; nothing applied",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Notified to the WTO; never applied",
+      "detail": "India told the WTO on May 12, 2025 (G/SG/N/12/IND/5) that it reserved the right to suspend concessions on U.S. goods to offset U.S. Section 232 tariffs on steel and aluminum, covering US$7.6 billion of Indian exports; it raised the duty figure to US$3.82 billion on July 9, 2025 after the U.S. moved to 50%. Similar notices followed for auto parts (July 4, 2025) and copper (October 30, 2025). None named products or rates, and India has published no customs notification applying them.",
+      "sourceIds": ["in-wto-1571", "in-wto-1571-add1"]
     },
     {
       "id": "uk-epd",
@@ -352,6 +547,45 @@
       "status": "Mostly removed Sept 1, 2025",
       "detail": "25% counter-tariff on C$30B of U.S. goods. Canada repealed most of it on Sept 1, 2025, keeping only the steel, aluminum and auto surtaxes.",
       "sourceIds": ["ca-2025-list", "ca-sor-2025-181"]
+    },
+    {
+      "id": "cn-us-logs-suspension",
+      "date": "2025-03-04",
+      "type": "retaliation",
+      "countries": ["China"],
+      "title": "China's customs suspends all imports of U.S. logs, lifted November 10, 2025",
+      "before": "U.S. logs admitted",
+      "now": "Admitted again since Nov 10, 2025",
+      "coversChapter": "no",
+      "status": "Lifted November 10, 2025",
+      "detail": "China's customs administration (GACC) suspended imports of U.S. logs from March 4, 2025 (GACC Announcement No. 29 of 2025), saying it had found quarantine pests such as bark beetles and longhorn beetles in U.S. shipments. It came the same day as China's first counter-tariffs on U.S. farm goods. GACC Announcement No. 216 of 2025, issued November 7, 2025 after the U.S.–China deal, repealed the suspension from November 10, 2025. No tariff was involved; logs pay China's normal rate plus its extra tariff on all U.S. goods.",
+      "sourceIds": ["cn-gacc-29-2025", "cn-gacc-216-2025", "usda-cn-solidwood-2025"]
+    },
+    {
+      "id": "ca-provinces-us-alcohol",
+      "date": "2025-03-04",
+      "type": "reference",
+      "countries": ["Canada"],
+      "title": "Canadian provinces pull U.S. alcohol from government liquor stores",
+      "before": null,
+      "now": null,
+      "coversChapter": "no",
+      "status": "Most provinces still not buying U.S. alcohol in late 2026",
+      "detail": "Not a tariff: from March 2025 most provincial liquor boards, which control alcohol sales in Canada, stopped buying and selling U.S. beer, wine and spirits. As of their latest official statements, British Columbia is retaining its ban (September 2026), Quebec's March 4, 2025 order to remove U.S. products stands, and Nova Scotia is not importing U.S. alcohol (September 2026). Alberta resumed sales in June 2025, and Saskatchewan now charges a 50% levy on U.S. alcohol (see that entry).",
+      "sourceIds": ["ca-bc-tariffs-page", "ca-qc-2025-03-04", "ca-ns-2026-09-22", "ca-ab-aglc-2025-06-06"]
+    },
+    {
+      "id": "in-bourbon-2025",
+      "date": "2025-02-13",
+      "type": "reference",
+      "countries": ["India"],
+      "title": "India cuts its tariff on bourbon whiskey from 150% to 100%",
+      "before": "150% (50% basic duty + 100% AIDC)",
+      "now": "100% (50% basic duty + 50% AIDC)",
+      "coversChapter": "no",
+      "status": "In force since February 13, 2025",
+      "detail": "Customs Notification No. 14/2025 (February 13, 2025) lowered India's agriculture infrastructure and development cess (AIDC) on bourbon whiskey (2208 30 11 and 2208 30 91) from 100% to 50%, so bourbon pays 100% in all instead of 150%. The cut applies to bourbon from any country, but the U.S. is its only source; other whiskies, spirits and wine still pay 150%.",
+      "sourceIds": ["in-cbic-14-2025", "in-fas-bourbon-2025"]
     },
     {
       "id": "cn-feb2025-energy",
@@ -777,6 +1011,356 @@
       "signed": null,
       "published": "2026-09-23",
       "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-ab-aglc-2025-06-06",
+      "publisher": "Alberta Gaming, Liquor and Cannabis (AGLC)",
+      "citation": "Liquor bulletin, June 6, 2025",
+      "document": "Bulletin",
+      "title": "Sale of U.S. Liquor Products - Resumption",
+      "signed": null,
+      "published": "2025-06-06",
+      "url": "https://aglc.ca/liquor-bulletins/sale-us-liquor-products-resumption"
+    },
+    {
+      "id": "ca-bc-tariffs-page",
+      "publisher": "Government of British Columbia",
+      "citation": "B.C.'s response to U.S. tariffs (updated Sept 18, 2026)",
+      "document": "Web page",
+      "title": "B.C.'s response to unjustified U.S. tariffs: B.C. is retaining its ban on U.S. liquor",
+      "signed": null,
+      "published": "2026-09-18",
+      "url": "https://www2.gov.bc.ca/gov/content/employment-business/tariffs"
+    },
+    {
+      "id": "ca-ns-2026-09-22",
+      "publisher": "Province of Nova Scotia",
+      "citation": "News release, Sept 22, 2026",
+      "document": "News release",
+      "title": "First-Quarter Results, 2026-27 (NSLC is not importing any additional U.S. products)",
+      "signed": null,
+      "published": "2026-09-22",
+      "url": "https://news.novascotia.ca/en/2026/09/22/first-quarter-results-2026-27"
+    },
+    {
+      "id": "ca-qc-2025-03-04",
+      "publisher": "Gouvernement du Québec",
+      "citation": "Actualité, March 4, 2025",
+      "document": "News release",
+      "title": "Tarifs douaniers américains – Priorité : protéger notre économie",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://www.quebec.ca/nouvelles/actualites/details/tarifs-douaniers-americains-priorite-proteger-notre-economie-61388"
+    },
+    {
+      "id": "ca-sk-levy-2026",
+      "publisher": "Government of Saskatchewan",
+      "citation": "News release, Aug 27, 2026",
+      "document": "News release",
+      "title": "Saskatchewan Responds to United States Trade Measures with Levy on American Alcohol",
+      "signed": null,
+      "published": "2026-08-27",
+      "url": "https://www.saskatchewan.ca/government/news-and-media/2026/august/27/saskatchewan-responds-to-us-trade-measures-with-levy-on-american-alcohol"
+    },
+    {
+      "id": "cn-gacc-216-2025",
+      "publisher": "Ministry of Commerce of China (China Foreign Trade and Economic Cooperation Gazette)",
+      "citation": "GACC Announcement No. 216 of 2025",
+      "document": "Announcement (listed in the 2025 Gazette index, issue 75)",
+      "title": "中华人民共和国海关总署公告2025年第216号 (repeals GACC Announcement No. 29 of 2025 from November 10, 2025)",
+      "signed": null,
+      "published": "2025-11-07",
+      "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2026/art_04ec4f21b1674e5aa57a4b005267e21e.html"
+    },
+    {
+      "id": "cn-gacc-29-2025",
+      "publisher": "General Administration of Customs of China (via MOFCOM)",
+      "citation": "GACC Announcement No. 29 of 2025",
+      "document": "Announcement",
+      "title": "关于暂停进口美国原木的公告 (Announcement on suspending imports of U.S. logs)",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://policy.mofcom.gov.cn/claw/clawContent.shtml?id=102128"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Continuing the suspension of 24 points of the additional tariff on imports originating in the United States for two months from November 10, 2026 (10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "eu-lobster-2020",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2020/2131",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2020/2131 of the European Parliament and of the Council of 16 December 2020 on the elimination of customs duties on certain goods",
+      "signed": "2020-12-16",
+      "published": "2020-12-18",
+      "url": "https://eur-lex.europa.eu/eli/reg/2020/2131/oj"
+    },
+    {
+      "id": "eu-lobster-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1461",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1461 of the European Parliament and of the Council of 25 June 2026 on the non-application of customs duties on imports of certain goods",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1461/oj"
+    },
+    {
+      "id": "in-cbic-14-2025",
+      "publisher": "Central Board of Indirect Taxes and Customs (India)",
+      "citation": "Notification No. 14/2025-Customs, G.S.R. 136(E)",
+      "document": "Customs notification",
+      "title": "Amending Notification No. 11/2021-Customs: AIDC on bourbon whiskey cut to 50%",
+      "signed": "2025-02-13",
+      "published": "2025-02-13",
+      "url": "https://taxinformation.cbic.gov.in/view-pdf/1010315/ENG/Notifications"
+    },
+    {
+      "id": "in-fas-bourbon-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2025-0011",
+      "document": "GAIN report",
+      "title": "India Modifies Tariff on US Bourbon",
+      "signed": null,
+      "published": "2025-02-24",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=India+Modifies+Tariff+on+US+Bourbon_Mumbai_India_IN2025-0011.pdf"
+    },
+    {
+      "id": "in-wto-1571",
+      "publisher": "World Trade Organization",
+      "citation": "G/SG/N/12/IND/5, G/L/1571",
+      "document": "Notification under Article 12.5 of the Agreement on Safeguards",
+      "title": "India: proposed suspension of concessions and other obligations (U.S. measures on steel and aluminium)",
+      "signed": null,
+      "published": "2025-05-12",
+      "url": "https://docs.wto.org/dol2fe/Pages/SS/directdoc.aspx?filename=q:/G/L/1571.pdf&Open=True"
+    },
+    {
+      "id": "in-wto-1571-add1",
+      "publisher": "World Trade Organization",
+      "citation": "G/SG/N/12/IND/5/Add.1, G/L/1571/Add.1",
+      "document": "Addendum",
+      "title": "India: proposed suspension of concessions (steel and aluminium), revised after the U.S. increase to 50%",
+      "signed": null,
+      "published": "2025-07-09",
+      "url": "https://docs.wto.org/dol2fe/Pages/SS/directdoc.aspx?filename=q:/G/L/1571A1.pdf&Open=True"
+    },
+    {
+      "id": "mx-ad-hollow-final",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Sep 4, 2026 (AD_28-24)",
+      "document": "Resolución final",
+      "title": "Resolución final del procedimiento administrativo de investigación antidumping sobre las importaciones de perfiles huecos de aluminio originarias de los Estados Unidos de América y la República Popular China, independientemente del país de procedencia",
+      "signed": null,
+      "published": "2026-09-04",
+      "url": "https://sidof.segob.gob.mx/notas/docFuente/5798041"
+    },
+    {
+      "id": "mx-ad-hollow-ita",
+      "publisher": "International Trade Administration",
+      "citation": "trade.gov, Mexico AD measures on aluminum hollow profiles",
+      "document": "Trade remedy notice",
+      "title": "Mexico Issues Antidumping Duty Measures on Aluminum Hollow Profiles from the United States and the People's Republic of China",
+      "signed": null,
+      "published": "2026-09-04",
+      "url": "https://www.trade.gov/mexico-issues-antidumping-duty-measures-aluminum-hollow-profiles-united-states-and-peoples-republic"
+    },
+    {
+      "id": "my-art-annex",
+      "publisher": "The White House",
+      "citation": "U.S.–Malaysia ART, Annex I, Schedule 1",
+      "document": "Annexes and Appendix",
+      "title": "Agreement between the United States and Malaysia on Reciprocal Trade: Annex I, Schedule 1 (Tariff Schedule of Malaysia)",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2025/10/MALAYSIA-ANNEX_APPENDIX.pdf"
+    },
+    {
+      "id": "my-art-text",
+      "publisher": "The White House",
+      "citation": "U.S.–Malaysia ART, Oct 26, 2025",
+      "document": "Agreement",
+      "title": "Agreement between the United States of America and Malaysia on Reciprocal Trade",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/10/agreement-between-the-united-states-of-america-and-malaysia-on-reciprocal-trade"
+    },
+    {
+      "id": "my-miti-2026-02",
+      "publisher": "Ministry of Investment, Trade and Industry (Malaysia)",
+      "citation": "MITI media release, Feb 21, 2026",
+      "document": "Media release",
+      "title": "Malaysia Safeguards National Interests Following U.S. Court Decision",
+      "signed": null,
+      "published": "2026-02-21",
+      "url": "https://www.miti.gov.my/miti/resources/Media%20Release/PR_Malaysia_Safeguards_National_Trade_Interests_Following_U.S_._Court_Decision_latest_.pdf"
+    },
+    {
+      "id": "th-art-2026",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Nov 17, 2026",
+      "document": "Joint Statement",
+      "title": "Joint Statement on an Agreement Between the United States of America and the Kingdom of Thailand on Reciprocal Trade",
+      "signed": "2026-11-17",
+      "published": "2026-11-17",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/11/joint-statement-on-an-agreement-between-the-united-states-of-america-and-the-kingdom-of-thailand-on-reciprocal-trade/"
+    },
+    {
+      "id": "th-art-framework-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Oct 26, 2025",
+      "document": "Joint Statement",
+      "title": "Joint Statement on a Framework for a United States-Thailand Agreement on Reciprocal Trade",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/10/joint-statement-on-a-framework-for-a-united-states-thailand-agreement-on-reciprocal-trade/"
+    },
+    {
+      "id": "usda-cn-solidwood-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2026-0020",
+      "document": "GAIN report: Solid Wood Annual 2025 (China)",
+      "title": "Solid Wood Annual 2025, China",
+      "signed": null,
+      "published": "2026-02-18",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Solid+Wood+Annual+2025_Beijing_China+-+People%27s+Republic+of_CH2026-0020.pdf"
+    },
+    {
+      "id": "ca-sor-2025-267",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-267",
+      "document": "Order",
+      "title": "Steel Derivative Goods Surtax Order",
+      "signed": "2025-12-11",
+      "published": "2025-12-31",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-12-31/html/sor-dors267-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-155",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-155",
+      "document": "Order",
+      "title": "Order Amending the Steel Derivative Goods Surtax Order",
+      "signed": "2026-06-22",
+      "published": "2026-07-01",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-07-01/html/sor-dors155-eng.html"
+    },
+    {
+      "id": "cn-mofcom-epdm-2025-81",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 81 of 2025",
+      "document": "Announcement",
+      "title": "关于对原产于美国、韩国和欧盟的进口三元乙丙橡胶所适用的反倾销措施发起期终复审调查的公告 (expiry review of anti-dumping measures on EPDM from the U.S., Korea and the EU)",
+      "signed": "2025-12-19",
+      "published": "2025-12-19",
+      "url": "https://www.mofcom.gov.cn/zwgk/zcfb/art/2025/art_50c8adab6b72437b84b0f04a69b5ab0d.html"
+    },
+    {
+      "id": "in-dgtr-hiir-2025",
+      "publisher": "Directorate General of Trade Remedies (India)",
+      "citation": "F.No. 6/59/2025-DGTR",
+      "document": "Initiation notification",
+      "title": "Initiation of an anti-dumping investigation concerning imports of Halo-Isobutene-Isoprene Rubber from China PR, Singapore and the USA",
+      "signed": "2025-10-31",
+      "published": "2025-10-31",
+      "url": "https://dgtr.gov.in/sites/default/files/2025-11/Hiir%20Eng_0001.pdf"
+    },
+    {
+      "id": "in-dgtr-soda-ad-ff",
+      "publisher": "Directorate General of Trade Remedies (India)",
+      "citation": "Case No. AD (OI)-29/2024, Final Findings",
+      "document": "Final Findings (non-confidential version)",
+      "title": "Anti-dumping investigation concerning imports of “Soda Ash” originating in or exported from Turkey, Russia, USA and Iran",
+      "signed": "2025-09-29",
+      "published": "2025-09-29",
+      "url": "https://dgtr.gov.in/sites/default/files/2025-09/FF_NCV_Soda%20Ash_29.09.25.pdf"
+    },
+    {
+      "id": "in-dgtr-soda-qr-ff",
+      "publisher": "Directorate General of Trade Remedies (India)",
+      "citation": "Case No. QR (OI)-001/2026, Final Findings",
+      "document": "Final Findings (non-confidential version)",
+      "title": "Final Findings in the Safeguard (Quantitative Restrictions) investigation concerning imports of “Soda Ash” into India",
+      "signed": null,
+      "published": "2026-11-04",
+      "url": "https://dgtr.gov.in/sites/default/files/2026-11/NCV_English_Soda%20Ash%20FF.pdf"
+    },
+    {
+      "id": "mx-dof-esbr-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, May 29, 2025 (E.C. Rev. 24/23)",
+      "document": "Resolución final",
+      "title": "Resolución final del examen de vigencia y de la revisión de oficio de las cuotas compensatorias impuestas a las importaciones de hule polibutadieno estireno en emulsión originarias de los Estados Unidos de América, la República de Corea y Japón",
+      "signed": null,
+      "published": "2025-05-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5758619&fecha=29/05/2025"
+    },
+    {
+      "id": "mx-dof-sosa-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, May 29, 2025",
+      "document": "Resolución final",
+      "title": "Resolución final del procedimiento administrativo de revisión de la cuota compensatoria impuesta a las importaciones de sosa cáustica líquida originarias de los Estados Unidos de América, independientemente del país de procedencia",
+      "signed": "2025-05-09",
+      "published": "2025-05-29",
+      "url": "https://sidof.segob.gob.mx/notas/docFuente/5758617"
+    },
+    {
+      "id": "mx-dof-sosa-ec17",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Jul 11, 2025 (EC_17-25)",
+      "document": "Resolución de inicio",
+      "title": "Resolución por la que se declara el inicio del procedimiento administrativo de examen de vigencia de la cuota compensatoria impuesta a las importaciones de sosa cáustica líquida originarias de los Estados Unidos de América",
+      "signed": null,
+      "published": "2025-07-11",
+      "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5762730&fecha=11/07/2025"
+    },
+    {
+      "id": "za-itac-3778",
+      "publisher": "International Trade Administration Commission of South Africa",
+      "citation": "Notice 3778 of 2026 (Government Gazette No. 54175)",
+      "document": "Notice",
+      "title": "Sunset review of the anti-dumping duty on disodium carbonate (soda ash) originating in or imported from the United States of America: final determination",
+      "signed": null,
+      "published": "2026-02-19",
+      "url": "https://itac.org.za/wp-content/uploads/Notice-3778-of-2026-Sunset-review-Soda-Ash.pdf"
+    },
+    {
+      "id": "in-cbic-46-2025",
+      "publisher": "Central Board of Indirect Taxes and Customs (India)",
+      "citation": "Notification No. 46/2025-Customs",
+      "document": "Customs notification",
+      "title": "Basic customs duty of 10% and AIDC of 20% on yellow peas (0713 10 10) from November 1, 2025",
+      "signed": "2025-10-29",
+      "published": "2025-10-29",
+      "url": "https://taxinformation.cbic.gov.in/view-pdf/1010497/ENG/Notifications"
+    },
+    {
+      "id": "in-dgft-70-2025",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "DGFT Notification No. 70/2025-26",
+      "document": "Notification",
+      "title": "Extension in import period for yellow peas under ITC (HS) 07131010 up to March 31, 2027",
+      "signed": "2026-03-31",
+      "published": "2026-03-31",
+      "url": "https://content.dgft.gov.in/Website/dgftprod/8652d04c-f30a-4985-8692-f20002b6e1a3/Noti-70-yellow-peas.pdf"
+    },
+    {
+      "id": "in-fas-yellow-peas-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2025-0069",
+      "document": "GAIN report",
+      "title": "India Increases Import Duty on Yellow Peas",
+      "signed": null,
+      "published": "2025-11-24",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=India+Increases+Import+Duty+on+Yellow+Peas_New+Delhi_India_IN2025-0069.pdf"
     }
   ]
 }

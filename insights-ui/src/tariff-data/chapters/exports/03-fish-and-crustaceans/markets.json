@@ -1,0 +1,998 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 3,
+    "padded": "03",
+    "slug": "3-fish-and-crustaceans",
+    "title": "Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/3-fish-and-crustaceans/markets",
+    "h1": "HTS Chapter 03: Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Seafood by Country: China, EU, Japan, Canada",
+      "shortDescription": "What each top buyer charges on U.S. lobster, salmon, pollock and roe in 2026: China 47% on live lobster, EU 0%, Canada and Korea free, Japan 1–10%.",
+      "keywords": [
+        "china tariffs on us lobster",
+        "lobster tariffs canada",
+        "seafood tariffs",
+        "seafood tariffs china",
+        "japan tariff us seafood",
+        "eu tariff us pollock",
+        "korea tariff us seafood",
+        "geoduck tariffs"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "What each large market charges on U.S. fish and seafood in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. Tariffs run from nothing to a lot. Canada (CUSMA), South Korea (KORUS) and Hong Kong charge nothing, and the EU charges 0% on lobster and on U.S. pollock, salmon and squid within its quotas. Japan, Viet Nam and Thailand charge their normal rates, and Japan also caps Alaska pollock, cod and cod roe with import quotas. China is the exception: most U.S. seafood pays its normal rate plus 40 points.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "0301",
+      "label": "Live fish",
+      "shortLabel": "Live fish"
+    },
+    {
+      "heading": "0302",
+      "label": "Fresh or chilled whole fish",
+      "shortLabel": "Fresh fish"
+    },
+    {
+      "heading": "0303",
+      "label": "Frozen whole fish",
+      "shortLabel": "Frozen fish"
+    },
+    {
+      "heading": "0304",
+      "label": "Fish fillets & other fish meat",
+      "shortLabel": "Fillets"
+    },
+    {
+      "heading": "0305",
+      "label": "Dried, salted & smoked fish",
+      "shortLabel": "Dried & smoked"
+    },
+    {
+      "heading": "0306",
+      "label": "Crustaceans: shrimp, lobster, crab",
+      "shortLabel": "Crustaceans"
+    },
+    {
+      "heading": "0307",
+      "label": "Molluscs: scallops, squid, oysters, clams",
+      "shortLabel": "Molluscs"
+    },
+    {
+      "heading": "0308",
+      "label": "Sea cucumbers, sea urchins & other aquatic invertebrates",
+      "shortLabel": "Other invertebrates"
+    },
+    {
+      "heading": "0309",
+      "label": "Edible seafood flours, meals & pellets",
+      "shortLabel": "Flours & meals"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA tariff (free on all Chapter 03 goods of U.S. origin); Canada's MFN rate is also free on most fish",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 1066751691,
+      "priorExportsUsd": 1114759982,
+      "sharePct": 20.6,
+      "changePct": -4.3,
+      "status": "unchanged",
+      "cells": {
+        "0301": {
+          "exportsUsd": 19009128,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and live fish."
+        },
+        "0302": {
+          "exportsUsd": 190870379,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and fresh or chilled fish."
+        },
+        "0303": {
+          "exportsUsd": 156470326,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and frozen fish (0303.11 sockeye, 0303.12 other Pacific salmon, 0303.67 Alaska pollock)."
+        },
+        "0304": {
+          "exportsUsd": 284445200,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and fillets (0304.75 Alaska pollock)."
+        },
+        "0305": {
+          "exportsUsd": 2017011,
+          "rate": "Free (CUSMA)",
+          "normalRate": "Up to 4% if not CUSMA-qualifying",
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and up to 4% on some dried, salted or smoked fish."
+        },
+        "0306": {
+          "exportsUsd": 361460890,
+          "rate": "Free (CUSMA)",
+          "normalRate": "Free on live lobster; up to 5% on some crab and other crustaceans if not CUSMA-qualifying",
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and live lobster (0306.32.00) free under both columns; some crustacean lines carry an MFN rate."
+        },
+        "0307": {
+          "exportsUsd": 51295933,
+          "rate": "Free (CUSMA)",
+          "normalRate": "Up to 5% on some molluscs if not CUSMA-qualifying",
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and several mollusc lines carry an MFN rate of 3–5%."
+        },
+        "0308": {
+          "exportsUsd": 1156624,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and other aquatic invertebrates."
+        },
+        "0309": {
+          "exportsUsd": 26200,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 3: the CUSMA (UST) rate is free on every line; the MFN rate is free on most fish and fish flours and meals for human consumption."
+        }
+      },
+      "profile": {
+        "headline": "Canada buys live lobster (about $241 million in 2025), salmon, crab and halibut, all duty-free under CUSMA. Neither Canada's 2025 counter-tariffs nor its September 2026 list included fish or seafood, so nothing extra is charged.",
+        "mainProducts": "Crustaceans: shrimp, lobster, crab (0306) · Fish fillets & other fish meat (0304)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "The Canadian importer needs a Safe Food for Canadians licence; some live and raw aquatic animals need a CFIA import permit and a NOAA aquatic-animal-health certificate (check CFIA's AIRS tool)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU Common Customs Tariff, with the U.S. tariff quotas of Regulation (EU) 2026/1455 and the 0% lobster duty of Regulation (EU) 2026/1461",
+      "usTradeAgreement": null,
+      "exportsUsd": 1051307984,
+      "priorExportsUsd": 850398101,
+      "sharePct": 20.3,
+      "changePct": 23.6,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 445834519,
+          "priorExportsUsd": 346076776,
+          "changePct": 28.8
+        },
+        {
+          "countryCode": 440,
+          "country": "Lithuania",
+          "exportsUsd": 123189300,
+          "priorExportsUsd": 85852108,
+          "changePct": 43.5
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 113196928,
+          "priorExportsUsd": 111191347,
+          "changePct": 1.8
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 108996319,
+          "priorExportsUsd": 77824018,
+          "changePct": 40.1
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 78661815,
+          "priorExportsUsd": 68861213,
+          "changePct": 14.2
+        }
+      ],
+      "cells": {
+        "0301": {
+          "exportsUsd": 1261269,
+          "rate": "EU normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026); a small group, check the CN line."
+        },
+        "0302": {
+          "exportsUsd": 1805090,
+          "rate": "2% on fresh Pacific salmon; other fish at the EU normal rate",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): fresh Pacific salmon (0302 13) 2%; other fresh fish not individually verified."
+        },
+        "0303": {
+          "exportsUsd": 328683072,
+          "rate": "0% within U.S. quotas on Alaska pollock and Pacific salmon",
+          "normalRate": "15% pollock, 2% salmon, 12% cod outside the quotas",
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): frozen Alaska pollock (0303 67) 15% and Pacific salmon (0303 11, 0303 12) 2% normal rate, 0% within the U.S. quotas of 340,000 t (pollock) and 20,000 t (salmon) from July 1, 2026; frozen cod (0303 63) 12%, with an EU-wide 0% quota for processing."
+        },
+        "0304": {
+          "exportsUsd": 547182572,
+          "rate": "0% within U.S. quotas on pollock fillets and meat, salmon and hake fillets",
+          "normalRate": "13.7% on pollock fillets, 14.2% on pollock meat outside the quotas",
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): frozen Alaska pollock fillets (0304 75) 13.7% and meat (0304 94) 14.2%, salmon fillets (0304 81) 2%, all 0% within the U.S. quotas of Regulation (EU) 2026/1455 Annex III; the EU also runs an all-origin 0% quota for pollock fillets."
+        },
+        "0305": {
+          "exportsUsd": 19891182,
+          "rate": "EU normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026); dried, salted and smoked fish lines were not checked one by one."
+        },
+        "0306": {
+          "exportsUsd": 85145950,
+          "rate": "Lobster 0%; frozen crab 7.5%",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): live and frozen lobster (0306 32 10, 0306 12, 0306 11 90) 0% from every country under Regulation (EU) 2026/1461 to July 31, 2030; frozen crab (0306 14) 7.5%."
+        },
+        "0307": {
+          "exportsUsd": 67204798,
+          "rate": "Squid 0% within a 5,000 t U.S. quota",
+          "normalRate": "6–8% on frozen squid outside the quota",
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): frozen squid (0307 43) 0% within the U.S. quota of 5,000 t from July 1, 2026; other molluscs at the EU normal rate."
+        },
+        "0308": {
+          "exportsUsd": 134051,
+          "rate": "11% on sea cucumbers",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026): sea cucumbers (0308 11) 11%."
+        },
+        "0309": {
+          "exportsUsd": 0,
+          "rate": "EU normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff 2026 (TARIC, November 2026); a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "The EU buys mostly frozen Alaska pollock fillets (about $292 million to the Netherlands alone) and surimi, salmon and hake. Since July 1, 2026 U.S. pollock, Pacific salmon, squid and hake enter duty-free within yearly quotas, and live and frozen lobster pays 0% from every country under a regulation renewed to July 31, 2030.",
+        "mainProducts": "Fish fillets & other fish meat (0304) · Frozen whole fish (0303)",
+        "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+        "regulator": {
+          "name": "European Commission (DG SANTE) and member-state border control posts",
+          "url": "https://food.ec.europa.eu/",
+          "requirement": "The plant must be on the EU's list of approved U.S. establishments (sent by FDA), and each lot needs a NOAA EU health certificate and, for wild fish, a catch (Legal Harvest) document."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's 2026 Customs Tariff plus its 2018–19 counter-tariffs on U.S. seafood (25% + 5%) and its 2025 extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 1040244017,
+      "priorExportsUsd": 918103642,
+      "sharePct": 20.1,
+      "changePct": 13.3,
+      "status": "raised",
+      "cells": {
+        "0301": {
+          "exportsUsd": 110336,
+          "rate": "Normal rate + 15%; live eels 22%",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): live food fish 7–10% (live eels 0301.92.90: 7%), on the 2019 list only (5%) plus the extra 10%; ornamental fish (10%) are on the 2018 list instead (25% + 10%)."
+        },
+        "0302": {
+          "exportsUsd": 390978,
+          "rate": "Normal rate (7–10%) + 10%",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): fresh or chilled fish (Pacific salmon 0302.13: 10%) is on neither the 2018 nor the 2019 counter-tariff list, so only the extra 10% on all U.S. goods applies."
+        },
+        "0303": {
+          "exportsUsd": 550733017,
+          "rate": "Normal rate (5–10%) + 40%; e.g. frozen salmon 47%, pollock 45%",
+          "normalRate": "Normal rate + 10% for a buyer holding an exclusion (only if the item is added to the eligible list)",
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): frozen Pacific salmon (0303.11, 0303.12) and roe (0303.91) 7%, Alaska pollock (0303.67) and cod (0303.63) 5% interim, flatfish 7–10%; plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), 5% under Announcement No. 4 of 2019 (10% from Sept 1, 2019, halved from Feb 14, 2020) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026)."
+        },
+        "0304": {
+          "exportsUsd": 13218416,
+          "rate": "Frozen fillets and surimi: normal rate (7%) + 40% = 47%; fresh fillets normal rate + 10%",
+          "normalRate": "Normal rate + 10% for a buyer holding an exclusion (only if the item is added to the eligible list)",
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): frozen Alaska pollock fillets (0304.75) and frozen fish meat (0304.94, 0304.99) 7%; plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), 5% under Announcement No. 4 of 2019 (10% from Sept 1, 2019, halved from Feb 14, 2020) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026). Fresh or chilled fillets are on neither counter-tariff list."
+        },
+        "0305": {
+          "exportsUsd": 16350,
+          "rate": "Normal rate + 10%; roe, fish flour and smoked Pacific salmon + 40%",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): most dried, salted and smoked fish pays only the extra 10%; dried roe and fish flour (0305.10, 0305.20) are on the 2018 and 2019 lists, and smoked Pacific salmon (0305.41.20) on the 2018–19 $60 billion list (25%) and the 2019 list."
+        },
+        "0306": {
+          "exportsUsd": 288514059,
+          "rate": "Normal rate (5–14%) + 40%; live lobster 47%",
+          "normalRate": "Normal rate + 10% for a buyer holding an exclusion: live lobster 17%",
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): live lobster (0306.32.90) 7%, frozen lobster (0306.12) 7%, live crab 7–14%, frozen crab 5–7%; plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), 5% under Announcement No. 4 of 2019 (10% from Sept 1, 2019, halved from Feb 14, 2020) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026). Every heading 0306 line is on China's 2020 list of goods eligible for market-based exclusion."
+        },
+        "0307": {
+          "exportsUsd": 185725470,
+          "rate": "Normal rate (7–12%) + 40%; e.g. live geoduck 50%, frozen squid 50–52%",
+          "normalRate": "Normal rate + 10% for a buyer holding an exclusion (only if the item is added to the eligible list)",
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): live clams including geoduck (0307.71.91) 10%, frozen squid (0307.43) 10–12%, live oysters 7%, scallops 7–10%; plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), 5% under Announcement No. 4 of 2019 (10% from Sept 1, 2019, halved from Feb 14, 2020) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026)."
+        },
+        "0308": {
+          "exportsUsd": 1170136,
+          "rate": "Normal rate (10%) + 40% = 50%",
+          "normalRate": "Normal rate + 10% for a buyer holding an exclusion (only if the item is added to the eligible list)",
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025): sea cucumbers (0308.11, 0308.12) and sea urchins (0308.21, 0308.22) 10%; plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), 5% under Announcement No. 4 of 2019 (10% from Sept 1, 2019, halved from Feb 14, 2020) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026)."
+        },
+        "0309": {
+          "exportsUsd": 365255,
+          "rate": "Normal rate + 10% (counter-tariffs not individually verified)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (Tariff Commission Announcement No. 12 of 2025) and 2026 interim rates (Announcement No. 11 of 2025); heading 0309 was created after the 2018–19 lists, so whether Customs carried the counter-tariffs over was not checked. A negligible group."
+        }
+      },
+      "profile": {
+        "headline": "China is the top buyer so far in 2026 (up 31% to $730 million through August): live lobster, pink salmon, squid, flatfish and other frozen fish. Most U.S. seafood pays China's normal rate plus 40 points (25% and 5% from its 2018–19 counter-tariffs and the extra 10% on all U.S. goods), so live lobster pays 47%, or 17% for a buyer holding an exclusion.",
+        "mainProducts": "Frozen whole fish (0303) · Crustaceans: shrimp, lobster, crab (0306)",
+        "tariffNow": "Normal rate + 40% on most seafood (live lobster 47%)",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "Seafood plants must be registered with GACC on the U.S. side's recommendation (a NOAA Approved Establishment on FDA's China export list), each shipment needs a NOAA China health certificate, and the Chinese importer must be registered with GACC."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's tariff schedule, WTO (MFN) rates: the U.S.–Japan Trade Agreement gives no preference on fish and seafood",
+      "usTradeAgreement": null,
+      "exportsUsd": 752809639,
+      "priorExportsUsd": 550694161,
+      "sharePct": 14.5,
+      "changePct": 36.7,
+      "status": "unchanged",
+      "cells": {
+        "0301": {
+          "exportsUsd": 204055,
+          "rate": "3.5% on live eels (fry free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: live eels (0301.92) 3.5%, eel fry free."
+        },
+        "0302": {
+          "exportsUsd": 2149040,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate; a small group, check the national line."
+        },
+        "0303": {
+          "exportsUsd": 610196008,
+          "rate": "3.5% on salmon, salmon roe and flatfish; 4.2% on pollock roe; 6% on pollock and cod",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: sockeye and other Pacific salmon (0303.11, 0303.12), salmon and other roe (0303.91-090) and flatfish 3.5%; cod and pollock roe (tarako, 0303.91-020) 4.2% temporary rate; frozen Alaska pollock (0303.67) and cod (0303.63) 6%. Pollock, cod, cod and pollock roe, herring and scallops also need a METI import quota."
+        },
+        "0304": {
+          "exportsUsd": 107682513,
+          "rate": "Surimi 3.5–4.2%; pollock fillets 10%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: pollock surimi (0304.94-010) 4.2% temporary rate, other surimi and most frozen fish meat (0304.99) 3.5%, frozen Alaska pollock fillets (0304.75) 10% (no WTO binding, general rate)."
+        },
+        "0305": {
+          "exportsUsd": 7597138,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate; a small group, check the national line."
+        },
+        "0306": {
+          "exportsUsd": 4838928,
+          "rate": "Lobster 1%; crab 4%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: live and frozen lobster (0306.32, 0306.12) 1%; live and frozen crab (0306.33, 0306.14) 4%."
+        },
+        "0307": {
+          "exportsUsd": 10779973,
+          "rate": "Clams including geoduck 7%; scallops 7–10%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: live clams other than hard clams, geoduck included (0307.71), 7%; scallops of Pecten, Chlamys and Placopecten 10% and other scallops 7%, with scallops under METI import quota."
+        },
+        "0308": {
+          "exportsUsd": 9361984,
+          "rate": "7% on fresh or frozen sea urchin and sea cucumber (live free)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate: sea urchins and sea cucumbers (0308.11–0308.22) free live, 7% fresh, chilled or frozen."
+        },
+        "0309": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026 (Japan Customs), Chapter 3: the Japan–US Trade Agreement column has no preference on any Chapter 03 line, so U.S. goods pay the WTO (MFN) rate; a small group, check the national line."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys frozen fish roe ($403 million in 2025, three-quarters of all U.S. roe exports), other frozen fish and surimi. U.S. seafood pays Japan's normal rates, from 1% on lobster to 10% on pollock fillets, while CPTPP and EU suppliers pay nothing on most lines, and Alaska pollock, cod, cod roe, herring and scallops also need a METI import quota.",
+        "mainProducts": "Frozen whole fish (0303) · Fish fillets & other fish meat (0304)",
+        "tariffNow": "Normal rate: 3.5–6% on most fish, 4.2% on pollock roe",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (MHLW) quarantine stations; METI for import quotas",
+          "url": "https://www.mhlw.go.jp/english/topics/importedfoods/index.html",
+          "requirement": "Every food shipment needs an import notification under the Food Sanitation Act; quota items such as Alaska pollock, cod, cod roe, herring and scallops also need a METI import quota and approval. NOAA certificates are needed only for live raw oysters, and a Legal Harvest certificate for cooked crab."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS tariff schedule: all staged cuts on U.S. fish and seafood completed by January 1, 2026",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 342491886,
+      "priorExportsUsd": 323807957,
+      "sharePct": 6.6,
+      "changePct": 5.8,
+      "status": "lowered",
+      "cells": {
+        "0301": {
+          "exportsUsd": 4310975,
+          "rate": "Free (KORUS)",
+          "normalRate": "10%; live eels 20% (2026 adjustment tariff)",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; live eels (0301.92) MFN 10% with a 20% adjustment tariff in 2026."
+        },
+        "0302": {
+          "exportsUsd": 115970,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; fresh fish not checked line by line."
+        },
+        "0303": {
+          "exportsUsd": 152824458,
+          "rate": "Free (KORUS)",
+          "normalRate": "10%; frozen pollock 22% in 2026 (adjustment tariff)",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; MFN 10% on frozen salmon, cod, flatfish and roe (USDA FAS GAIN KS2025-0046), with a 22% adjustment tariff on frozen pollock in 2026."
+        },
+        "0304": {
+          "exportsUsd": 173702926,
+          "rate": "Free (KORUS)",
+          "normalRate": "10%",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; pollock fillets (0304.75) free since 2021 and pollock surimi (0304.94) since 2014; MFN 10%."
+        },
+        "0305": {
+          "exportsUsd": 228613,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; dried, salted and smoked fish not checked line by line."
+        },
+        "0306": {
+          "exportsUsd": 4432051,
+          "rate": "Free (KORUS)",
+          "normalRate": "20%",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; live and frozen lobster and crab, MFN 20%."
+        },
+        "0307": {
+          "exportsUsd": 4245786,
+          "rate": "Free (KORUS)",
+          "normalRate": "20%",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; clams (geoduck included) and scallops, MFN 20%."
+        },
+        "0308": {
+          "exportsUsd": 2628357,
+          "rate": "Free (KORUS)",
+          "normalRate": "20%",
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; sea cucumbers and sea urchins, MFN 20%."
+        },
+        "0309": {
+          "exportsUsd": 2750,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "Korea's KORUS tariff schedule (Annex 2-B; trade.gov FTA Tariff Tool): duty-free on U.S.-origin goods; frozen Alaska pollock (0303.67) reached 0% on January 1, 2026; a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "South Korea buys surimi and other frozen fish meat ($139 million of 0304.99 in 2025), fish roe and other frozen fish. Everything enters duty-free under KORUS: frozen Alaska pollock, the last U.S. seafood line with a Korean duty, reached 0% on January 1, 2026, while suppliers without a trade agreement pay a 22% adjustment tariff on it this year.",
+        "mainProducts": "Fish fillets & other fish meat (0304) · Frozen whole fish (0303)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://impfood.mfds.go.kr/",
+          "requirement": "The overseas plant must be pre-registered with MFDS (valid two years) before the import declaration; live fish and shellfish and unprocessed abalone, oysters and shrimp also need a NOAA health certificate and quarantine by Korea's National Fishery Products Quality Management Service."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "Hong Kong customs tariff: free port, no import duty",
+      "usTradeAgreement": null,
+      "exportsUsd": 125784488,
+      "priorExportsUsd": 136328592,
+      "sharePct": 2.4,
+      "changePct": -7.7,
+      "status": "unchanged",
+      "cells": {
+        "0301": {
+          "exportsUsd": 8259281,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0302": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0303": {
+          "exportsUsd": 7080592,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0304": {
+          "exportsUsd": 1820440,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0305": {
+          "exportsUsd": 152936,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0306": {
+          "exportsUsd": 41758269,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0307": {
+          "exportsUsd": 64425843,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0308": {
+          "exportsUsd": 2287127,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        },
+        "0309": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no import tariff; excise duties apply only to liquor, tobacco, hydrocarbon oil and methyl alcohol (2026)."
+        }
+      },
+      "profile": {
+        "headline": "Hong Kong buys live geoduck clams (about $55 million in 2025), spiny and American lobster, sablefish and sea cucumbers and charges no tariff. Hong Kong is a separate customs territory, so China's extra duties do not apply there.",
+        "mainProducts": "Molluscs: scallops, squid, oysters, clams (0307) · Crustaceans: shrimp, lobster, crab (0306)",
+        "tariffNow": "Free (free port)",
+        "regulator": {
+          "name": "Centre for Food Safety (Food and Environmental Hygiene Department)",
+          "url": "https://www.cfs.gov.hk/english/index.html",
+          "requirement": "No import licence or health certificate is required for most seafood, but it must meet Hong Kong's food standards, including limits on metals such as mercury and on preservatives."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 764,
+      "name": "Thailand",
+      "rule": "Thailand's MFN tariff (WITS, 2023 reported rates); no U.S. trade agreement in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 124601989,
+      "priorExportsUsd": 78872392,
+      "sharePct": 2.4,
+      "changePct": 58,
+      "status": "unchanged",
+      "cells": {
+        "0301": {
+          "exportsUsd": 11988,
+          "rate": "30% on live eels",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: live eels (0301.92) 30%."
+        },
+        "0302": {
+          "exportsUsd": 7175,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force; a small group, check the national line."
+        },
+        "0303": {
+          "exportsUsd": 88041387,
+          "rate": "Free on frozen salmon, pollock, flatfish, cod and roe",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: 0303.11, 0303.12, 0303.33, 0303.39, 0303.63, 0303.67 and 0303.91 at 0%."
+        },
+        "0304": {
+          "exportsUsd": 23525019,
+          "rate": "5% on fillets and surimi",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: 0304.75, 0304.94 and 0304.99 at 5%."
+        },
+        "0305": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force; a small group, check the national line."
+        },
+        "0306": {
+          "exportsUsd": 7961012,
+          "rate": "Live lobster and crab free; frozen lobster and crab 5–20%",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: live lobster (0306.32) and live crab (0306.33) 0%; frozen lobster (0306.12) and crab (0306.14) 5–20% depending on the national line."
+        },
+        "0307": {
+          "exportsUsd": 5055408,
+          "rate": "5% on scallops and frozen clams (squid not individually verified)",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: scallops (0307.21, 0307.22) and frozen clams (0307.72) 5%, live clams 0–5%."
+        },
+        "0308": {
+          "exportsUsd": 0,
+          "rate": "Free; frozen sea cucumber 5%",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force: sea urchins and live sea cucumbers 0%, frozen sea cucumbers (0308.12) 5%."
+        },
+        "0309": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Thailand's MFN applied rates as reported to the World Bank WITS/TRAINS database (2023, latest reported); no U.S. trade agreement in force; a small group, check the national line."
+        }
+      },
+      "profile": {
+        "headline": "Thailand buys mostly frozen chum salmon ($69 million in 2025), plus pollock surimi and fillets and yellowfin sole. Frozen whole fish enters at 0% and fillets and surimi at 5%. The U.S.–Thailand reciprocal trade agreement, substantially concluded on November 17, 2026, is not yet signed.",
+        "mainProducts": "Frozen whole fish (0303) · Fish fillets & other fish meat (0304)",
+        "tariffNow": "Free on frozen fish; 5% on fillets and surimi",
+        "regulator": {
+          "name": "Department of Fisheries and the Thai Food and Drug Administration",
+          "url": "https://www.fisheries.noaa.gov/export-requirements-country-and-jurisdiction-n-z",
+          "requirement": "NOAA lists no certificate requirement for Thailand (a model certificate is available on request); labels must be in Thai and Thai limits on mercury and other contaminants apply."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Thailand import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam's MFN tariff (Decree 26/2023/ND-CP); no U.S. trade agreement in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 99242613,
+      "priorExportsUsd": 50175953,
+      "sharePct": 1.9,
+      "changePct": 97.8,
+      "status": "unchanged",
+      "cells": {
+        "0301": {
+          "exportsUsd": 411415,
+          "rate": "20% on live eels",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: live eels (0301.92) 20%."
+        },
+        "0302": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish; a small group, check the national line."
+        },
+        "0303": {
+          "exportsUsd": 61066010,
+          "rate": "10–15%: chum and pink salmon 10%, sockeye 15%, cod 14%, roe 12%",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: other Pacific salmon (0303.12) and Alaska pollock (0303.67) 10%, sockeye (0303.11) 15%, cod (0303.63) 14%, roe (0303.91) 12%, flatfish 12–20%."
+        },
+        "0304": {
+          "exportsUsd": 5338133,
+          "rate": "15% on fillets and surimi",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: pollock fillets (0304.75), pollock meat (0304.94) and other frozen fish meat (0304.99) 15%."
+        },
+        "0305": {
+          "exportsUsd": 174644,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish; a small group, check the national line."
+        },
+        "0306": {
+          "exportsUsd": 14206031,
+          "rate": "Live lobster 10%; frozen crab 3%; live crab free",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: live and frozen lobster (0306.32, 0306.12) 10%, frozen crab (0306.14) 3%, live crab (0306.33) 0%."
+        },
+        "0307": {
+          "exportsUsd": 18046380,
+          "rate": "Scallops 3%; clams 0–3% (squid not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: scallops (0307.21, 0307.22) 3%, live clams 3% and frozen clams 0%; frozen squid not checked line by line."
+        },
+        "0308": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish: sea cucumbers and sea urchins (0308.11–0308.22) 0%."
+        },
+        "0309": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP, Appendix II; no U.S. trade agreement, and Decree 73/2025/ND-CP's cuts on U.S. goods did not include fish; a small group, check the national line."
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam's purchases nearly doubled in 2025 (up 98%), mostly frozen chum salmon, squid, albacore, cod and cold-water shrimp. U.S. seafood pays Viet Nam's normal rates, 10–15% on most frozen fish, because its March 2025 tariff cuts on U.S. goods left fish out; the October 2025 U.S.–Viet Nam framework promises preferential access, but no agreement is signed.",
+        "mainProducts": "Frozen whole fish (0303) · Molluscs: scallops, squid, oysters, clams (0307)",
+        "tariffNow": "Normal rate: 10–15% on most frozen fish",
+        "regulator": {
+          "name": "Department of Livestock Production and Animal Health, Ministry of Agriculture and Environment",
+          "url": "https://cucthuy.gov.vn/en/web/guest/danh-sach-doanh-nghiep-xk-thuy-san",
+          "requirement": "Every shipment needs a NOAA health certificate, and the plant must be a NOAA Approved Establishment and on the department's list of approved U.S. seafood exporters (pre-packaged processed products are exempt from listing)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Japan",
+      "heading": "0303",
+      "exportsUsd": 610196008,
+      "rate": "Normal rate: roe 3.5–4.2%, salmon 3.5%, pollock 6%"
+    },
+    {
+      "market": "China",
+      "heading": "0303",
+      "exportsUsd": 550733017,
+      "rate": "Normal rate + 40%; e.g. frozen salmon 47%"
+    },
+    {
+      "market": "European Union",
+      "heading": "0304",
+      "exportsUsd": 547182572,
+      "rate": "0% within the U.S. pollock quota (13.7% outside)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0306",
+      "exportsUsd": 361460890,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "0303",
+      "exportsUsd": 328683072,
+      "rate": "0% within the U.S. pollock and salmon quotas"
+    },
+    {
+      "market": "China",
+      "heading": "0306",
+      "exportsUsd": 288514059,
+      "rate": "Live lobster 47% (17% with an exclusion)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0304",
+      "exportsUsd": 284445200,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0302",
+      "exportsUsd": 190870379,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are each market's 2026 schedule: Canada's Customs Tariff (CUSMA column), the EU Common Customs Tariff (TARIC) with Regulations (EU) 2026/1455 and 2026/1461, China's 2026 Customs Tariff and interim rates, Japan's Tariff Schedule of October 31, 2026, Korea's KORUS schedule, Viet Nam's Decree 26/2023/ND-CP and Thailand's 2023 rates as reported to WITS.",
+    "Each cell names the products that carry most of the trade in that group (for frozen fish: salmon, roe, pollock, flatfish and cod); other lines in the same heading can pay a different rate. Cells marked \"not individually verified\" are small groups not checked line by line.",
+    "China's cells add its 2018–19 counter-tariffs (25% under the 2018 List 1 and 5% under the 2019 list, both still in force) and its extra 10% on all U.S. goods to the normal rate. A buyer holding a market-based exclusion, valid until December 31, 2026, pays the normal rate plus 10%; every crustacean line (0306) is eligible, other seafood only if added.",
+    "Trade-agreement and quota rates apply only to goods that meet the rules of origin; the EU's U.S. quotas need proof of U.S. origin and stop applying once the yearly volume is used.",
+    "National 8–10-digit tariff lines can set a different rate than the six-digit subheading. Check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 03, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "eu-lobster-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1461",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1461 on the non-application of customs duties on imports of certain goods (lobster)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1461/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America (Annex III tariff quotas)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission",
+      "citation": "TARIC",
+      "document": "Integrated Tariff of the EU",
+      "title": "TARIC consultation, Chapter 03 measures for U.S. origin (reference date November 19, 2026)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/taric_consultation.jsp"
+    },
+    {
+      "id": "ca-tariff-2026",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 3",
+      "document": "Customs Tariff",
+      "title": "Departmental Consolidation of the Customs Tariff 2026, Chapter 3",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch03-eng.html"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 12 of 2025",
+      "document": "Customs Tariff of the People's Republic of China (2026)",
+      "title": "2026 Customs Tariff of the PRC",
+      "signed": null,
+      "published": "2025-12-31",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251231_3981044.htm"
+    },
+    {
+      "id": "cn-interim-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "2026 Tariff Adjustment Plan",
+      "title": "2026 tariff adjustment plan (interim import rates)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2018-list1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 5 of 2018",
+      "document": "Announcement",
+      "title": "Additional tariffs of 25% on US$50 billion of U.S. goods (List 1 from July 6, 2018, aquatic products included)",
+      "signed": null,
+      "published": "2018-06-16",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201806/t20180616_2930325.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Announcement",
+      "title": "Additional tariffs on about US$75 billion of U.S. goods (Annex 1, 10% from September 1, 2019; halved to 5% from February 14, 2020)",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-mbe-2020",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Announcement",
+      "title": "Market-based exclusion process for goods subject to counter-tariffs on U.S. Section 301 measures (eligible list includes heading 0306)",
+      "signed": "2020-02-17",
+      "published": "2020-02-18",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Continuing the suspension of 24 points of the additional tariff on U.S. goods for two months from November 10, 2026 (10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule (as of October 31, 2026), Chapter 3",
+      "document": "Tariff schedule",
+      "title": "Japan's Tariff Schedule, Chapter 3: fish and crustaceans, molluscs and other aquatic invertebrates",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_03.htm"
+    },
+    {
+      "id": "jp-meti-iq",
+      "publisher": "Ministry of Economy, Trade and Industry (Japan)",
+      "citation": "METI: import quotas for marine products",
+      "document": "Web page",
+      "title": "Import quota system for marine products (18 items, Alaska pollock, cod, cod roe, herring and scallops among them)",
+      "signed": null,
+      "published": "2025-07-03",
+      "url": "https://www.meti.go.jp/policy/external_economy/trade_control/03_import/04_suisan/"
+    },
+    {
+      "id": "kr-korus",
+      "publisher": "International Trade Administration",
+      "citation": "KORUS: Korea Tariff Schedule (Annex 2-B)",
+      "document": "Tariff schedule",
+      "title": "U.S.–Korea Free Trade Agreement, Korea's tariff schedule",
+      "signed": null,
+      "published": "2023-09-18",
+      "url": "https://www.trade.gov/sites/default/files/2023-09/Korea%20Tariff%20Schedule.pdf"
+    },
+    {
+      "id": "kr-gain-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN KS2025-0046",
+      "document": "GAIN report",
+      "title": "South Korea: Korea Seafood Market Update 2025",
+      "signed": null,
+      "published": "2025-11-25",
+      "url": "https://www.fas.usda.gov/data/south-korea-korea-seafood-market-update-2025"
+    },
+    {
+      "id": "vn-decree-26",
+      "publisher": "Government of Viet Nam",
+      "citation": "Decree 26/2023/ND-CP",
+      "document": "Decree",
+      "title": "Export and preferential import tariff schedules (Appendix II)",
+      "signed": "2023-05-31",
+      "published": "2023-05-31",
+      "url": "https://datafiles.chinhphu.vn/cpp/files/vbpq/2023/6/26-nd.signed.pdf"
+    },
+    {
+      "id": "th-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Thailand MFN 2023",
+      "document": "Tariff database",
+      "title": "Thailand MFN applied tariff rates, Chapter 03 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/THA/partner/USA/product/03"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 89% of 2025 U.S. Chapter 03 exports. A customs union (the EU) is one market: its members share one tariff."
+}

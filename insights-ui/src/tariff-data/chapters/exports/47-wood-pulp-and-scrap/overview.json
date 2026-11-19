@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 47,
+    "padded": "47",
+    "slug": "47-wood-pulp-and-scrap",
+    "title": "Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/47-wood-pulp-and-scrap",
+    "h1": "HTS Chapter 47: Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Wood Pulp, Fluff Pulp & OCC Exports by Country (HTS Ch. 47) | KoalaGains",
+      "shortDescription": "U.S. pulp and waste paper exports were $7.99B in 2025, down 6.3%. Fluff and kraft pulp, OCC, who buys them now that China bans waste paper, and what they pay.",
+      "keywords": [
+        "us wood pulp exports",
+        "occ exports",
+        "us waste paper exports",
+        "fluff pulp exports",
+        "pulp exports by country",
+        "waste paper exporters in usa",
+        "HS 47 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$7.99B** of wood pulp and recovered paper in 2025, down 6.3% on 2024 and 26% below the 2022 peak ($10.85B). Kraft pulp (4703) is **60%** of it ($4.81B), almost all bleached softwood kraft, the line that includes the fluff pulp used in diapers and other absorbent products (4703.21, **$4.33B**). Recovered paper (4707: waste paper, old corrugated containers or OCC, mixed paper) adds **$2.28B**, led by OCC (4707.10, $1.52B), and dissolving pulp (4702) $725M. **China ($996M, down 21.1%) and Mexico ($983M)** are the largest buyers, followed by India, Japan, Canada, Thailand, Viet Nam, Indonesia and Malaysia.\n\nTariffs are low: the EU, Japan, Mexico, Canada, Thailand, Indonesia and Malaysia charge 0% on U.S. pulp and recovered paper, and India charges 5% on pulp and 2.5% on recovered paper. Two buyers charge more. **China** adds a 10% extra duty on all U.S. goods, plus 5% on wood pulp under its 2018 counter-tariff list unless the buyer holds an exclusion, and **Canada** has charged a 50% surtax on U.S. dissolving pulp since September 8, 2026. For recovered paper the buyer's import rules matter more than the tariff: **China has banned all solid-waste imports, recovered paper included, since January 1, 2021** (it bought $4M of U.S. recovered paper in 2025), so U.S. OCC now goes to India, Mexico, Thailand, Viet Nam and Malaysia, which license or inspect scrap paper shipments. In the EU, deforestation due diligence applies to wood pulp from December 30, 2026.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$7.99B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-6.3%"
+    },
+    {
+      "label": "Largest product group (4703)",
+      "value": "60%",
+      "note": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "25%",
+      "note": "China, Mexico"
+    },
+    {
+      "label": "Buyers that raised tariffs",
+      "value": "2",
+      "note": "China (10% extra), Canada (dissolving pulp only)"
+    },
+    {
+      "label": "Buyers that raised tariffs",
+      "value": "2",
+      "note": "China (10% extra), Canada (dissolving pulp only)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. Chapter 47 exports fell 6.3% to $7.99B in 2025 and another 7.2% in January–August 2026 ($4.94B); bleached softwood kraft pulp, which includes fluff pulp (4703.21, $4.33B), and OCC (4707.10, $1.52B) are the two largest lines.",
+    "China is still the largest buyer ($996M) but takes almost only pulp ($773M of kraft pulp, $211M of dissolving pulp): its solid-waste import ban has kept out U.S. recovered paper since January 1, 2021. U.S. pulp pays 10% there, or 15% for buyers without an exclusion; watch December 31, 2026 and January 10, 2027.",
+    "U.S. recovered paper ($2.28B) now goes mainly to India ($369M), Mexico ($368M), Thailand ($354M), Viet Nam ($314M) and Malaysia ($294M), which charge 0–2.5%; meeting each buyer's licence, inspection and contamination rules decides whether a container clears.",
+    "Canada's 50% surtax since September 8, 2026 reaches only dissolving pulp (U.S. sales there were $62,000 in 2025); kraft pulp, fluff pulp and recovered paper enter Canada free. The EU charges 0% but requires deforestation due-diligence statements for wood pulp from December 30, 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 7626963741,
+      "partnerAUsd": 2196484912,
+      "partnerBUsd": 701821428,
+      "restUsd": 4728657401
+    },
+    {
+      "year": 2021,
+      "totalUsd": 9677032584,
+      "partnerAUsd": 1915154979,
+      "partnerBUsd": 965512000,
+      "restUsd": 6796365605
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10850826112,
+      "partnerAUsd": 2021375571,
+      "partnerBUsd": 1167358205,
+      "restUsd": 7662092336
+    },
+    {
+      "year": 2023,
+      "totalUsd": 8769625754,
+      "partnerAUsd": 1737112152,
+      "partnerBUsd": 1073310922,
+      "restUsd": 5959202680
+    },
+    {
+      "year": 2024,
+      "totalUsd": 8521994287,
+      "partnerAUsd": 1262746201,
+      "partnerBUsd": 1191762566,
+      "restUsd": 6067485520
+    },
+    {
+      "year": 2025,
+      "totalUsd": 7989129601,
+      "partnerAUsd": 996013345,
+      "partnerBUsd": 983150460,
+      "restUsd": 6009965796
+    }
+  ],
+  "byYearPartners": ["China", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 47 goods each year, split into the two largest 2025 buyers (China and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 4939650158,
+    "priorExportsUsd": 5322503055,
+    "changePct": -7.2,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 679329993,
+        "priorExportsUsd": 697679106,
+        "changePct": -2.6
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 449738600,
+        "priorExportsUsd": 455422307,
+        "changePct": -1.2
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 432556162,
+        "priorExportsUsd": 596662291,
+        "changePct": -27.5
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 318575826,
+        "priorExportsUsd": 320375326,
+        "changePct": -0.6
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 309167112,
+        "priorExportsUsd": 299720161,
+        "changePct": 3.2
+      },
+      {
+        "countryCode": 764,
+        "country": "Thailand",
+        "exportsUsd": 288995277,
+        "priorExportsUsd": 323242989,
+        "changePct": -10.6
+      },
+      {
+        "countryCode": 360,
+        "country": "Indonesia",
+        "exportsUsd": 259298113,
+        "priorExportsUsd": 273595925,
+        "changePct": -5.2
+      },
+      {
+        "countryCode": 704,
+        "country": "Viet Nam",
+        "exportsUsd": 248038960,
+        "priorExportsUsd": 232905410,
+        "changePct": 6.5
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 996013345,
+      "priorExportsUsd": 1262746201,
+      "sharePct": 12.5,
+      "changePct": -21.1,
+      "tariffNow": "0% MFN + 10% extra; recovered paper banned",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 983150460,
+      "priorExportsUsd": 1191762566,
+      "sharePct": 12.3,
+      "changePct": -17.5,
+      "tariffNow": "Free (USMCA; MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 689411342,
+      "priorExportsUsd": 707489844,
+      "sharePct": 8.6,
+      "changePct": -2.6,
+      "tariffNow": "5% on pulp, 2.5% on recovered paper (MFN)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 467685226,
+      "priorExportsUsd": 441470592,
+      "sharePct": 5.9,
+      "changePct": 5.9,
+      "tariffNow": "Free (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 467004436,
+      "priorExportsUsd": 566893811,
+      "sharePct": 5.8,
+      "changePct": -17.6,
+      "tariffNow": "Free (CUSMA); 50% surtax on dissolving pulp only",
+      "status": "raised"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 459457631,
+      "priorExportsUsd": 438650796,
+      "sharePct": 5.8,
+      "changePct": 4.7,
+      "tariffNow": "Free (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 401677303,
+      "priorExportsUsd": 306972143,
+      "sharePct": 5,
+      "changePct": 30.9,
+      "tariffNow": "Free (MFN 0%); 1% on mechanical and dissolving pulp",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 400422868,
+      "priorExportsUsd": 400761642,
+      "sharePct": 5,
+      "changePct": -0.1,
+      "tariffNow": "Free (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 334933575,
+      "priorExportsUsd": 393425736,
+      "sharePct": 4.2,
+      "changePct": -14.9,
+      "tariffNow": "Free (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 245074220,
+      "priorExportsUsd": 273925536,
+      "sharePct": 3.1,
+      "changePct": -10.5,
+      "tariffNow": "Free (EU MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "exportsUsd": 220275841,
+      "priorExportsUsd": 182650512,
+      "sharePct": 2.8,
+      "changePct": 20.6,
+      "tariffNow": "MFN 0% (WITS 2023)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 202122277,
+      "priorExportsUsd": 213364974,
+      "sharePct": 2.5,
+      "changePct": -5.3,
+      "tariffNow": "Free (EU MFN 0%)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 2121901077,
+  "othersPriorExportsUsd": 2141879934,
+  "byHeading": [
+    {
+      "heading": "4701",
+      "label": "Mechanical wood pulp",
+      "exportsUsd": 18211778,
+      "priorExportsUsd": 17226156,
+      "changePct": 5.7,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4702",
+      "label": "Dissolving pulp",
+      "exportsUsd": 724713501,
+      "priorExportsUsd": 669288897,
+      "changePct": 8.3,
+      "sharePct": 9.1
+    },
+    {
+      "heading": "4703",
+      "label": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff",
+      "exportsUsd": 4814235631,
+      "priorExportsUsd": 5186815129,
+      "changePct": -7.2,
+      "sharePct": 60.3
+    },
+    {
+      "heading": "4704",
+      "label": "Sulfite pulp",
+      "exportsUsd": 10965694,
+      "priorExportsUsd": 17559372,
+      "changePct": -37.6,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4705",
+      "label": "Semichemical (mechanical-chemical) pulp",
+      "exportsUsd": 9209635,
+      "priorExportsUsd": 23663769,
+      "changePct": -61.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4706",
+      "label": "Recycled-fiber, cotton linter & bamboo pulp",
+      "exportsUsd": 130365327,
+      "priorExportsUsd": 150970618,
+      "changePct": -13.6,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "4707",
+      "label": "Recovered paper (waste & scrap)",
+      "exportsUsd": 2281428035,
+      "priorExportsUsd": 2456470346,
+      "changePct": -7.1,
+      "sharePct": 28.6
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "4703.21",
+      "heading": "4703",
+      "description": "Wood pulp; chemical wood pulp, soda or sulphate, (other than dissolving grades), semi-bleached or bleached, of coniferous wood",
+      "exportsUsd": 4331632134,
+      "priorExportsUsd": 4568191220,
+      "changePct": -5.2,
+      "sharePct": 54.2
+    },
+    {
+      "hs6": "4707.10",
+      "heading": "4707",
+      "description": "Paper or paperboard; waste and scrap, of unbleached kraft paper or paperboard or corrugated paper or paperboard",
+      "exportsUsd": 1519891100,
+      "priorExportsUsd": 1656194985,
+      "changePct": -8.2,
+      "sharePct": 19
+    },
+    {
+      "hs6": "4702.00",
+      "heading": "4702",
+      "description": "Wood pulp; chemical wood pulp, dissolving grades",
+      "exportsUsd": 724713501,
+      "priorExportsUsd": 669288897,
+      "changePct": 8.3,
+      "sharePct": 9.1
+    },
+    {
+      "hs6": "4703.29",
+      "heading": "4703",
+      "description": "Wood pulp; chemical wood pulp, soda or sulphate, (other than dissolving grades), semi-bleached or bleached, of non-coniferous wood",
+      "exportsUsd": 428676590,
+      "priorExportsUsd": 547587005,
+      "changePct": -21.7,
+      "sharePct": 5.4
+    },
+    {
+      "hs6": "4707.20",
+      "heading": "4707",
+      "description": "Paper or paperboard; waste and scrap, paper or paperboard made mainly of bleached chemical pulp, not coloured in the mass",
+      "exportsUsd": 399524675,
+      "priorExportsUsd": 401429456,
+      "changePct": -0.5,
+      "sharePct": 5
+    },
+    {
+      "hs6": "4707.90",
+      "heading": "4707",
+      "description": "Paper or paperboard; waste and scrap, of paper or paperboard n.e.c. in heading no. 4707 and of unsorted waste and scrap",
+      "exportsUsd": 288163951,
+      "priorExportsUsd": 301908587,
+      "changePct": -4.6,
+      "sharePct": 3.6
+    },
+    {
+      "hs6": "4706.10",
+      "heading": "4706",
+      "description": "Pulp; cotton linters pulp",
+      "exportsUsd": 85736468,
+      "priorExportsUsd": 89938101,
+      "changePct": -4.7,
+      "sharePct": 1.1
+    },
+    {
+      "hs6": "4707.30",
+      "heading": "4707",
+      "description": "Paper or paperboard; waste and scrap, paper or paperboard made mainly of mechanical pulp (e.g. newspapers, journals and similar printed matter)",
+      "exportsUsd": 73848309,
+      "priorExportsUsd": 96937318,
+      "changePct": -23.8,
+      "sharePct": 0.9
+    },
+    {
+      "hs6": "4703.11",
+      "heading": "4703",
+      "description": "Wood pulp; chemical wood pulp, soda or sulphate, (other than dissolving grades), unbleached, of coniferous wood",
+      "exportsUsd": 52959343,
+      "priorExportsUsd": 67450944,
+      "changePct": -21.5,
+      "sharePct": 0.7
+    },
+    {
+      "hs6": "4706.20",
+      "heading": "4706",
+      "description": "Pulp; of fibres derived from recovered (waste and scrap) paper or paperboard",
+      "exportsUsd": 35734578,
+      "priorExportsUsd": 50660826,
+      "changePct": -29.5,
+      "sharePct": 0.4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 47, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 73% of 2025 U.S. Chapter 47 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

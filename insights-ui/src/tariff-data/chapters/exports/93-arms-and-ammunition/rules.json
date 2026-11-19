@@ -1,0 +1,341 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 93,
+    "padded": "93",
+    "slug": "93-arms-and-ammunition",
+    "title": "Arms and Ammunition; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/93-arms-and-ammunition/rules",
+    "h1": "HTS Chapter 93: Arms and Ammunition; Parts and Accessories Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Exporting Guns & Ammo from the U.S.: ITAR vs EAR Licence, Schedule B | KoalaGains",
+      "shortDescription": "Guns, gun parts and ammo need a BIS (EAR) or State Department (ITAR) export licence for almost every country, plus AES at any value. Schedule B codes and licence rules.",
+      "keywords": [
+        "export license for firearms",
+        "ammunition export license",
+        "itar firearms",
+        "exporting firearms from the us",
+        "ddtc registration",
+        "bis firearms rule",
+        "hs code for gun parts"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Almost everything in this chapter needs a **U.S. export licence** before it ships, whatever the destination. Since March 9, 2020, commercial firearms (non-automatic and semi-automatic rifles, pistols and shotguns), their parts and most small-arms ammunition are controlled by Commerce under the **EAR** (the “0x5zz” ECCNs, licensed by **BIS**). Fully automatic weapons, artillery, military ammunition and munitions — and, until November 20, 2026, silencers — stay on the State Department’s U.S. Munitions List under the **ITAR** (licensed by **DDTC**). Most firearms and ammunition exports must also be filed in AES at any value, Canada included.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Schedule B follows the HS headings: 9301 military weapons, 9302 pistols and revolvers, 9303 sporting rifles and shotguns, 9304 air guns, 9305 parts and accessories, 9306 cartridges and munitions, 9307 swords. The export-control classification (ECCN or USML category) is separate from the Schedule B number, and both go on the AES filing."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "For firearms going to the Americas, BIS has a policy of denying licences linked to drug trafficking, terrorism or transnational organized crime (15 CFR 742.17), so screen the end user and any distributor, not just the buyer."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Commercial firearms are ECCNs 0A501 (non-semi-automatic firearms and parts), 0A502 (shotguns), 0A506, 0A507 and 0A508 (semi-automatic rifles, pistols and shotguns), 0A509 (their parts) and 0A505 (ammunition). They are controlled for national security, regional stability and the Firearms Convention, so a licence is needed for nearly every country, Canada included; License Exception LVS allows up to $500 of some parts per shipment. Military items on USML Categories I–IV need a DDTC licence instead."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Arms embargoes reach further than OFAC’s programs: the ITAR denies licences for the countries in 22 CFR 126.1 (China and Russia among them), the EAR needs a licence for UN arms-embargoed countries (15 CFR 746.1), and 0A501.y.7 firearms need a licence to China."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Firearms (0A501.a and .b, 0A506, 0A507), shotguns with barrels under 18 inches and ammunition (0A505 except .c) must be filed in AES at any value and to any country, Canada included, giving the ECCN item paragraph (15 CFR 758.1(b)(9) and (g)(4)). Every ITAR export is also reported electronically (22 CFR 123.22)."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-0x5zz",
+      "agency": "BIS (Commerce)",
+      "title": "EAR licences for commercial firearms, parts and ammunition (0x5zz ECCNs): a licence is needed for nearly all destinations. To the 34 OAS member countries, including Canada, Mexico and Brazil, BIS generally issues it against the importing government’s Firearms Convention import certificate or an equivalent document. BIS’s April 2024 rule (89 FR 34680) that tightened these licences was rescinded on September 30, 2025 (90 FR 47170): licences are again valid for four years and the Congressional notification for semi-automatic firearm licences of $4M or more is gone; the new ECCNs 0A506 to 0A509 stayed.",
+      "citations": [
+        {
+          "label": "15 CFR 742.17 (Firearms Convention)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.17"
+        },
+        {
+          "label": "15 CFR 748.12 (import certificates)",
+          "url": "https://www.ecfr.gov/current/title-15/section-748.12"
+        },
+        {
+          "label": "90 FR 47170 (Sept. 30, 2025)",
+          "url": "https://www.federalregister.gov/documents/2025/09/30/2025-18992/revision-of-firearms-license-requirements"
+        },
+        {
+          "label": "89 FR 34680 (Apr. 30, 2024, rescinded)",
+          "url": "https://www.federalregister.gov/documents/2024/04/30/2024-08813/revision-of-firearms-license-requirements"
+        }
+      ]
+    },
+    {
+      "id": "ddtc-itar",
+      "agency": "State Department (DDTC)",
+      "title": "ITAR licences for military items: fully automatic firearms, guns and armament over .50 caliber, military ammunition and munitions (USML Categories I to IV) need a DDTC export licence, and the manufacturer or exporter must register with DDTC, even a manufacturer that does not export. A licence for Category I(a)–(g) items worth $1M or more needs prior certification to Congress. A company that only makes or exports EAR-controlled firearms does not register with DDTC for them.",
+      "citations": [
+        {
+          "label": "22 CFR 121.1 (U.S. Munitions List)",
+          "url": "https://www.ecfr.gov/current/title-22/section-121.1"
+        },
+        {
+          "label": "22 CFR 122.1 (registration)",
+          "url": "https://www.ecfr.gov/current/title-22/section-122.1"
+        },
+        {
+          "label": "22 CFR 123.15 (Congressional certification)",
+          "url": "https://www.ecfr.gov/current/title-22/section-123.15"
+        },
+        {
+          "label": "DDTC: registration",
+          "url": "https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_registration_landing"
+        }
+      ]
+    },
+    {
+      "id": "suppressors-2026",
+      "agency": "State Department / BIS",
+      "title": "Silencers, mufflers and sound suppressors for non-automatic and semi-automatic firearms leave USML Category I(e) on November 20, 2026 and become EAR items (new paragraphs 0A501.f and 0A502.f). From that date their export needs a BIS licence instead of a DDTC licence, with the same controls and licence exceptions as the firearms they fit.",
+      "citations": [
+        {
+          "label": "91 FR 46279 (State, July 23, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14943/international-traffic-in-arms-regulations-usml-category-i-firearm-suppressors"
+        },
+        {
+          "label": "91 FR 46252 (BIS, July 23, 2026)",
+          "url": "https://www.federalregister.gov/documents/2026/07/23/2026-14942/implementation-of-ear-export-controls-on-silencers-mufflers-and-sound-suppressors-and-other-firearms"
+        }
+      ]
+    },
+    {
+      "id": "atf-form-9",
+      "agency": "ATF",
+      "title": "National Firearms Act weapons (for example machine guns, short-barreled rifles and shotguns, and silencers) exported without paying the transfer tax need an approved ATF Form 9 (Firearms) permit, supported by the order or contract and showing the export licence number.",
+      "citations": [
+        {
+          "label": "27 CFR 479.114",
+          "url": "https://www.ecfr.gov/current/title-27/section-479.114"
+        }
+      ]
+    },
+    {
+      "id": "bis-temporary",
+      "agency": "BIS (Commerce)",
+      "title": "Temporary exports without a licence: a U.S. citizen or permanent resident may take up to three firearms and 1,000 rounds abroad for personal use under License Exception BAG, declared to CBP before departure; since July 23, 2026 License Exception TMP covers company-owned firearms used abroad as tools of trade within the same limits. Both require the goods to come back, and the destination’s own import rules still apply.",
+      "citations": [
+        {
+          "label": "15 CFR 740.14(e) (BAG)",
+          "url": "https://www.ecfr.gov/current/title-15/section-740.14"
+        },
+        {
+          "label": "15 CFR 740.9(a)(2) (TMP)",
+          "url": "https://www.ecfr.gov/current/title-15/section-740.9"
+        }
+      ]
+    },
+    {
+      "id": "bis-0a503",
+      "agency": "BIS (Commerce)",
+      "title": "Discharge-type arms and electric-shock devices (stun guns, shock batons, immobilization guns) are ECCN 0A503, which needs a licence to every destination except Canada.",
+      "citations": [
+        {
+          "label": "Commerce Control List, ECCN 0A503",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR 742.7 (crime control)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.7"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "9301",
+      "label": "Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns",
+      "ruleIds": ["ddtc-itar", "atf-form-9"],
+      "note": "Mostly ITAR: artillery, mortars, recoilless rifles and grenade launchers are USML Category II and fully automatic weapons Category I, so they need a DDTC licence and DDTC registration."
+    },
+    {
+      "heading": "9302",
+      "label": "Revolvers and pistols",
+      "ruleIds": ["bis-0x5zz", "bis-temporary", "atf-form-9"],
+      "note": "Semi-automatic pistols are ECCN 0A507 and revolvers 0A501; both need a BIS licence for nearly every destination and an AES filing at any value. Fully automatic pistols stay on the USML."
+    },
+    {
+      "heading": "9303",
+      "label": "Sporting and hunting shotguns and rifles, muzzle-loaders, blank-firing pistols, flare guns, captive-bolt and line-throwing guns",
+      "ruleIds": ["bis-0x5zz", "bis-temporary"],
+      "note": "Rifles are 0A501 or 0A506 and shotguns with barrels of 18 inches or more 0A502 or 0A508. Muzzle-loading and black-powder firearms under 20 mm made after 1937 for hunting or sport, and not otherwise listed, are EAR99."
+    },
+    {
+      "heading": "9304",
+      "label": "Air guns, airsoft guns, paintball markers, spring guns, truncheons and other arms",
+      "ruleIds": ["bis-0a503"],
+      "note": "Air, spring and gas guns are not firearms under the 0x5zz entries; check the Commerce Control List for each item, since discharge-type arms and electric-shock devices are ECCN 0A503."
+    },
+    {
+      "heading": "9305",
+      "label": "Gun parts and accessories: frames, receivers, barrels, stocks and other parts of firearms and air guns",
+      "ruleIds": ["bis-0x5zz", "ddtc-itar", "suppressors-2026"],
+      "note": "Barrels, receivers, bolts, triggers and similar parts are 0A501.c or 0A509, and magazines of 17 to 50 rounds 0A501.d; parts for fully automatic weapons and magazines of more than 50 rounds stay on USML Category I. Optical sights are ECCN 0A504."
+    },
+    {
+      "heading": "9306",
+      "label": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts",
+      "ruleIds": ["bis-0x5zz", "ddtc-itar", "bis-temporary"],
+      "note": "Small-arms cartridges are ECCN 0A505 (a licence for nearly every destination and AES at any value, except 0A505.c); military ammunition and munitions of war such as bombs, grenades, missiles and mines are on the USML (Categories III and IV) and need DDTC authorization."
+    },
+    {
+      "heading": "9307",
+      "label": "Swords, cutlasses, bayonets, lances and similar arms, scabbards and sheaths",
+      "ruleIds": [],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

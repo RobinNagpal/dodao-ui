@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 40,
+    "padded": "40",
+    "slug": "40-rubber-and-articles",
+    "title": "Rubber and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/40-rubber-and-articles/faq",
+    "h1": "HTS Chapter 40: Rubber and Articles Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Tire & Rubber Export Tariffs: FAQ (HTS Ch. 40) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. tires? What do China and Mexico charge on U.S. tires and synthetic rubber? HS codes for tires and gaskets, licences, and who buys the most.",
+      "keywords": [
+        "tariff on tires from us to canada",
+        "is there a tariff on tires in canada",
+        "hs code for tires",
+        "hs code rubber gaskets",
+        "anti dumping duty on butyl rubber",
+        "tire exporters usa",
+        "synthetic rubber hs code"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to what people search about exporting U.S. tires, synthetic rubber and rubber parts, each linked to the export page with the detail.",
+  "keyTakeaways": [
+    "Canada, Mexico, Chile, Australia, Japan and (since July 1, 2026) the EU charge nothing on qualifying U.S. tires; Canada's 25% surtax on U.S. tires ended on August 31, 2025.",
+    "China adds 10% to every U.S. good and charges 75.5–222% anti-dumping duties on U.S. EPDM, halobutyl and chloroprene rubber; Mexico and India have duties on U.S. emulsion SBR and butyl rubber.",
+    "New tires are HS 4011 (4011.10 cars, 4011.20 trucks and buses), gaskets 4016.93 and synthetic rubber 4002; most need no export licence, and shipments to Canada need no EEI."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com, November 19, 2026) for \"tariff on tires\", \"tires tariff\", \"tariff on tires canada\", \"tariff on tires from usa\", \"hs code for tires\", \"hs code rubber gaskets\", \"synthetic rubber hs code\", \"epdm hs code\", \"butyl rubber hs code\", \"anti dumping duty on rubber\", \"tire export\", \"rubber exports\" and \"mexico tariff\".",
+  "faqs": [
+    {
+      "id": "canada-tire-tariff",
+      "question": "Is there a tariff on tires from the U.S. to Canada?",
+      "searchedAs": [
+        "tariff on tires from us to canada",
+        "is there a tariff on tires in canada",
+        "tires tariff canada",
+        "tire tariffs canada",
+        "tariff on tires canada"
+      ],
+      "answer": "Not today. U.S. tires that qualify under CUSMA enter Canada free; others pay Canada's 7% MFN rate on car and truck tires. Canada charged a 25% counter-surtax on U.S. new tires (except tires for original equipment), retreaded and used tires and rubber mats from March 4 to August 31, 2025, and repealed it from September 1, 2025. Its September 8, 2026 surtax list has no tire or other rubber item.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "mexico-tire-tariff",
+      "question": "What tariff does Mexico charge on U.S. tires in 2026?",
+      "searchedAs": ["mexico tariffs on us goods", "mexico tariff schedule 2026", "mexico tariffs on us"],
+      "answer": "Nothing on tires that meet the USMCA rule of origin. Tires that do not qualify pay Mexico's general rate, which rose on January 1, 2026 to 35% for car and farm tires and 25–35% for bus and truck tires; construction and mining tires were not in the decree. Mexico bought $1.27B of U.S. tires in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-tire-tariff",
+      "question": "Does the EU charge a tariff on U.S. tires?",
+      "searchedAs": ["eu tariff rates", "eu tariff schedule"],
+      "answer": "Not since July 1, 2026. Regulation (EU) 2026/1455 cut the EU's duty on U.S. goods of Chapter 40 to 0%, including its 4.5% duty on car and truck tires, 2.5% on gaskets and 6.5% on conveyor belts. Synthetic rubber, the EU's largest U.S. rubber purchase, was already free.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-tire-tariff",
+      "question": "What does China charge on U.S. tires?",
+      "searchedAs": ["china rubber tariff", "tariff on tires from usa"],
+      "answer": "China charges its MFN rate plus a 10% extra duty on all U.S. goods: 20% in total on car and truck tires (10% MFN) and 27–35% on construction and mining tires (17–25% MFN). Its 2019 counter-tariffs add 5% on car and truck tires and 25% plus 2.5% on most mining tires unless the Chinese buyer holds an exclusion, valid until December 31, 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-rubber-antidumping",
+      "question": "Does China charge anti-dumping duties on U.S. synthetic rubber?",
+      "searchedAs": ["anti dumping duty on rubber", "anti dumping duty on butyl rubber", "china rubber tariff"],
+      "answer": "Yes, on three rubbers: 214.9–222.0% on U.S. EPDM, 75.5% on halogenated butyl (bromobutyl and chlorobutyl) rubber, extended to August 2029, and 151% on chloroprene rubber, extended to May 2028. China opened an expiry review of the EPDM duty on December 20, 2025; it must end before December 20, 2026. These apply on top of the MFN rate and the 10% extra duty.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "india-butyl-antidumping",
+      "question": "Does India charge anti-dumping duty on U.S. butyl rubber?",
+      "searchedAs": ["anti dumping duty on butyl rubber in india", "anti dumping duty on butyl rubber"],
+      "answer": "Yes. U.S. butyl rubber (4002.31) pays US$781–859 per tonne under Notification 17/2024-Customs (ADD) of September 27, 2024, on top of India's 10% basic duty. India also opened an anti-dumping investigation into U.S. halobutyl rubber on October 31, 2025; we found no duty published from it yet.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "hs-code-tires",
+      "question": "What is the HS code for tires?",
+      "searchedAs": ["hs code for tires", "hs code tires", "hts code tires", "hs code for tires new", "hs code 4011", "hs code for tyres"],
+      "answer": "New pneumatic rubber tires are heading 4011, split by vehicle: 4011.10 passenger cars, 4011.20 buses and trucks, 4011.30 aircraft, 4011.40 motorcycles, 4011.50 bicycles, 4011.70 farm and forestry machines, 4011.80 construction, mining and industrial vehicles and 4011.90 other. Retreaded and used tires are 4012. The first six digits of the U.S. Schedule B number are the HS code.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-gaskets",
+      "question": "What is the HS code for rubber gaskets and seals?",
+      "searchedAs": ["hs code rubber gaskets", "rubber gasket hs code", "hs code for rubber seal", "hs code 401693", "epdm gasket hs code"],
+      "answer": "Gaskets, washers and other seals of soft vulcanized rubber are 4016.93, whatever the rubber (EPDM, nitrile, silicone or fluoroelastomer). It was the largest single U.S. Chapter 40 export line in 2025, at $1.80B. Rubber hoses are 4009 and conveyor and drive belts 4010.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-synthetic-rubber",
+      "question": "What is the HS code for synthetic rubber such as EPDM, butyl, SBR or nitrile?",
+      "searchedAs": ["synthetic rubber hs code", "epdm hs code", "epdm rubber hs code", "butyl rubber hs code", "nitrile rubber hs code", "hs code 4002"],
+      "answer": "Synthetic rubber in primary forms, plates, sheets or strip is heading 4002: SBR 4002.11–4002.19, butadiene rubber 4002.20, butyl 4002.31, halobutyl 4002.39, chloroprene 4002.41–4002.49, nitrile (NBR) 4002.51–4002.59, isoprene 4002.60 and EPDM 4002.70. Finished EPDM gaskets or sheets move to 4016.93 or 4008.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-license-tires",
+      "question": "Do I need an export license to ship tires or rubber parts?",
+      "searchedAs": ["do i need an export license", "do i need export license in usa"],
+      "answer": "Usually not: most tires, synthetic rubber and rubber articles are EAR99. A licence is needed for fluoroelastomer seals made for aircraft (ECCN 1A001.a), for tires, hoses and gaskets specially designed for military aircraft or vehicles going to China, Russia or Venezuela (9A610.y, 0A606.y), and for 42 six-digit Chapter 40 codes, truck and aircraft tires and gaskets among them, shipped to Russia or Belarus.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "eei-canada",
+      "question": "Do tire shipments to Canada need an EEI filing?",
+      "searchedAs": ["eei filing requirements", "eei filing exemption codes"],
+      "answer": "No, unless the shipment needs a licence or another exception applies: exports to Canada are exempt from EEI filing under 15 CFR 30.36. Shipments to Mexico and overseas need EEI when one Schedule B number is worth over $2,500, which a truckload of tires almost always is.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "who-buys",
+      "question": "How much rubber and how many tires does the U.S. export, and who buys them?",
+      "searchedAs": ["tire exporters usa", "rubber exports by country", "synthetic rubber export by country", "rubber exports"],
+      "answer": "U.S. exports of Chapter 40 goods were $13.89B in 2025, down 3.8%. New tires were $4.58B (33%), gaskets, seals and other rubber parts $3.33B and synthetic rubber $2.55B. Canada ($3.86B) and Mexico ($3.55B) bought 53%, followed by Brazil, Australia, Belgium, China and Chile.",
+      "link": "exports"
+    }
+  ]
+}

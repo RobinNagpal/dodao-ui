@@ -72,7 +72,7 @@ import { parseArgs, parsePositiveInt } from '../tickers/lib';
  *                                                       # that `pnpm tariff:calc-readiness` reports NOT READY
  *
  * Any string that still contains "TODO" (a placeholder left by `pnpm tariff:generate-chapter` for the writer
- * agents) is an ERROR, so a half-written chapter can't ship.
+ * agents) or the filler word "stub" is an ERROR, so a half-written chapter can't ship.
  *
  * Exits 1 when any ERROR is found. WARNINGs (unknown source hosts, stale
  * check dates, a newer HTS revision) are printed but don't fail the run unless
@@ -127,6 +127,7 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'comtrade.un.org',
   'comtradeplus.un.org',
   'wto.org',
+  'basel.int', // Basel Convention secretariat (UNEP)
   'wits.worldbank.org', // World Bank / UNCTAD tariff data
   // Foreign official
   'eur-lex.europa.eu',
@@ -137,6 +138,8 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'cbsa-asfc.gc.ca',
   'gob.mx',
   'dof.gob.mx',
+  'mma.gob.cl', // Chile Ministry of the Environment
+  'sfda.gov.sa', // Saudi Food and Drug Authority
   'mofcom.gov.cn',
   'customs.gov.cn',
   'gov.cn', // other PRC ministries / regulators (e.g. NMPA)
@@ -151,6 +154,8 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'plantprotection.gov.pk', // Pakistan Department of Plant Protection
   'nyce.org.mx', // Mexico — NYCE (NOM product-certification body)
   'mcmc.gov.my', // Malaysia Communications and Multimedia Commission
+  'miti.gov.my', // Malaysia Ministry of Investment, Trade and Industry (metal-scrap import rules, U.S. trade agreement)
+  'customs.go.th', // Thai Customs Department (metal-scrap inspection)
   'caa.co.uk', // UK Civil Aviation Authority
   'faa.gov', // U.S. Federal Aviation Administration (export airworthiness approval)
   'fincen.gov', // Treasury FinCEN (anti-money-laundering rules for precious-metal dealers)
@@ -163,18 +168,33 @@ export const OFFICIAL_SOURCE_DOMAINS: readonly string[] = [
   'gov.in', // India government sites (Ministry of Petroleum and Natural Gas)
   'energy.gov', // U.S. Department of Energy (LNG export authorization)
   'gov.vn', // Viet Nam government sites (Plant Protection Department)
+  'chinhphu.vn', // Viet Nam Government portal (decrees, e.g. Decree 26/2023/ND-CP tariff schedules)
   'gov.ph', // Philippines government sites (Department of Agriculture)
   'gov.tw', // Taiwan government sites (TFDA, BAPHIQ)
   'gov.co', // Colombia government sites (ICA, INVIMA)
   'gob.do', // Dominican Republic government sites (Ministry of Agriculture)
+  'go.cr', // Costa Rica government sites (Servicio Fitosanitario del Estado)
   'gov.hk', // Hong Kong government sites (Centre for Food Safety)
   'go.kr', // Korea government sites (APQA, MAFRA)
+  'go.th', // Thailand government sites (Department of Industrial Works)
+  'go.id', // Indonesia government sites (Ministry of Agriculture livestock directorate)
+  'gov.bc.ca', // British Columbia government (U.S. liquor ban)
+  'quebec.ca', // Quebec government
+  'novascotia.ca', // Nova Scotia government
+  'saskatchewan.ca', // Saskatchewan government (levy on U.S. alcohol)
+  'aglc.ca', // Alberta Gaming, Liquor and Cannabis (provincial agency)
+  'itac.org.za', // South Africa's International Trade Administration Commission (trade remedies)
+  'gov.il', // Israel government (Firearm Licensing Department)
+  'rcmp.ca', // Royal Canadian Mounted Police (Canadian Firearms Program)
 ];
 
 /** Keys whose string value is a date. All must be ISO YYYY-MM-DD and not in the future. */
 const DATE_KEYS = new Set(['date', 'published', 'signed', 'released', 'inForceFrom', 'effectiveFrom', 'lastCheckedAt', 'asOf', 'regulationsAsOf']);
-/** Placeholder left by the chapter generator for a writer agent (`pnpm tariff:generate-chapter`). */
-const PLACEHOLDER_RE = /\bTODO\b/;
+/**
+ * Placeholder left by the chapter generator for a writer agent (`pnpm tariff:generate-chapter`), or filler a
+ * writer's fill script used to get past the TODO check ("stub", "stub basis", "stub intro").
+ */
+const PLACEHOLDER_RE = /\bTODO\b|\b[Ss]tub\b/;
 /** Keys whose age drives the freshness warning. */
 const FRESHNESS_KEYS = new Set(['lastCheckedAt', 'asOf']);
 /** Section slugs a FAQ `link` may point at ('' = the chapter overview). */

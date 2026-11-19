@@ -262,6 +262,55 @@
         "label": "Country Commercial Guide: Georgia import requirements",
         "url": "https://www.trade.gov/country-commercial-guides/georgia-import-requirements-and-documentation"
       }
+    },
+    {
+      "countryCodes": [764],
+      "marketCode": 764,
+      "name": "Thailand",
+      "usTradeAgreement": null,
+      "countryGuide": {
+        "label": "Country Commercial Guide: Thailand import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [188],
+      "marketCode": 188,
+      "name": "Costa Rica",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Costa Rica import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [320],
+      "marketCode": 320,
+      "name": "Guatemala",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Guatemala import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/guatemala-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [152],
+      "marketCode": 152,
+      "name": "Chile",
+      "usTradeAgreement": "U.S.–Chile Free Trade Agreement",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Chile import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/chile-import-requirements-and-documentation"
+      }
+    },
+    {
+      "countryCodes": [376],
+      "name": "Israel",
+      "usTradeAgreement": "U.S.–Israel Free Trade Agreement",
+      "countryGuide": {
+        "label": "Country Commercial Guide: Israel import requirements",
+        "url": "https://www.trade.gov/country-commercial-guides/israel-import-requirements-and-documentation"
+      }
     }
   ]
 }

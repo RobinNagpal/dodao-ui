@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 28,
+    "padded": "28",
+    "slug": "28-inorganic-and-metal-compounds",
+    "title": "Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/28-inorganic-and-metal-compounds/faq",
+    "h1": "HTS Chapter 28: Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Soda Ash, Caustic Soda & Rare Earth Export FAQ (HTS 28) | KoalaGains",
+      "shortDescription": "Answers on U.S. soda ash exports, HS codes for soda ash and caustic soda, India's soda ash duty, China's rare-earth tariff, export licences and the mercury export ban.",
+      "keywords": [
+        "us soda ash exports",
+        "hs code soda ash",
+        "soda ash anti dumping duty india",
+        "us china rare earth tariff",
+        "hs code caustic soda liquid",
+        "mercury export ban act",
+        "export license for chemicals"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. soda ash, caustic soda, rare-earth compounds and other Chapter 28 inorganic chemicals, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Soda ash (2836.20, $1.47B) and liquid caustic soda (2815.12, $1.41B) are the largest U.S. Chapter 28 exports; Mexico, Canada, South Korea and, since July 1, 2026, the EU charge nothing on qualifying U.S. goods.",
+    "The costs are product-specific: China's 10% extra duty, Mexico's US$195-per-tonne duty on liquid caustic soda, and India's recommended soda ash quotas if they are notified.",
+    "Most of these chemicals need no U.S. export licence, but cyanides, fluorides and other precursors need BIS licences for some countries, iodine needs a DEA declaration, uranium an NRC licence, and mercury cannot be exported."
+  ],
+  "questionSource": "Google search-suggestion queries for \"soda ash export\", \"us soda ash exports\", \"soda ash tariff\", \"soda ash anti dumping\", \"soda ash india\", \"hs code soda ash\", \"rare earth tariff china\", \"does china tariff us rare earth\", \"caustic soda tariff\", \"caustic soda mexico\", \"hs code caustic soda\", \"mexico tariff on us\", \"eu tariffs on us\", \"china tariff pause\", \"chemical export license\", \"do i need an export license\", \"eccn 1c350\", \"dea list 1 chemicals\", \"iodine dea\", \"dea form 486\" and \"mercury export ban\"; the other questions follow the Overview, Markets, Tariff updates and Export rules pages.",
+  "faqs": [
+    {
+      "id": "us-soda-ash-exports",
+      "question": "How much soda ash does the U.S. export, and who buys it?",
+      "searchedAs": ["us soda ash exports", "soda ash exporting countries", "soda ash exports"],
+      "answer": "The U.S. exported $1.47B of soda ash (disodium carbonate, 2836.20) in 2025, down 14.1%, making it the largest line in Chapter 28. Mexico, Chile and Brazil are the largest buyers of U.S. carbonates (2836), followed by Canada and Indonesia.",
+      "link": "exports"
+    },
+    {
+      "id": "hs-code-soda-ash",
+      "question": "What is the HS code or Schedule B number for soda ash?",
+      "searchedAs": ["hs code soda ash", "hs code soda ash light", "hs code soda ash dense", "soda ash tariff code"],
+      "answer": "Soda ash, light or dense, is HS 2836.20 (disodium carbonate), and its Schedule B number starts with those six digits. Sodium bicarbonate is 2836.30. Soda ash needs no U.S. export licence or permit and is not on BIS's Russia and Belarus HS list.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "india-soda-ash",
+      "question": "Does India charge an anti-dumping duty on U.S. soda ash?",
+      "searchedAs": ["soda ash anti dumping duty india", "soda ash anti dumping duty", "soda ash india"],
+      "answer": "No. India's trade-remedy authority (DGTR) recommended anti-dumping duties on U.S. soda ash on September 29, 2025 (US$27 per tonne for Sisecam Wyoming, US$79 for other U.S. producers), but no duty was imposed. On November 4, 2026 it recommended country import quotas instead, 159,388 tonnes a year for U.S. supply, which apply only once the Government notifies them. U.S. soda ash pays India's 7.5% basic duty.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "mexico-soda-ash",
+      "question": "What tariff does Mexico charge on U.S. soda ash?",
+      "searchedAs": ["soda ash tariffs", "mexico tariff usmca", "mexico tariff on us goods"],
+      "answer": "None, if it qualifies under USMCA. Mexico raised its general rate on soda ash from 7% to 35% on April 24, 2026, so the USMCA preference now saves 35% compared with suppliers from countries without a trade agreement with Mexico.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-rare-earth",
+      "question": "Does China put a tariff on U.S. rare earths?",
+      "searchedAs": ["us china rare earth tariff", "china us tariff rare earth", "rare earth tariff china"],
+      "answer": "Yes. U.S. rare-earth compounds (2846) pay China's 10% extra duty on all U.S. goods; China's 2026 provisional rate on the compounds themselves is 0% (normally 5%). Its 2019 counter-tariffs add 7.5–27.5% depending on the line unless the buyer holds an exclusion. U.S. exports of rare-earth compounds to China were $68M in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-pause-end",
+      "question": "When could China's tariff on U.S. chemicals go up?",
+      "searchedAs": ["china tariff pause end date", "when does china tariff pause end", "us china tariff pause end date"],
+      "answer": "China's exclusions from its 2019 counter-tariffs end December 31, 2026, and its suspension of 24 points of the extra duty on U.S. goods ends January 10, 2027. If the suspension lapses, the extra duty rises from 10% to 34%: U.S. soda ash would go from 15% to 39%.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "caustic-soda-mexico",
+      "question": "Does Mexico charge an anti-dumping duty on U.S. caustic soda?",
+      "searchedAs": ["caustic soda mexico", "caustic soda tariff", "mexico tariff on us goods"],
+      "answer": "Yes, on liquid caustic soda (2815.12.01): US$195 per tonne on a dry basis since May 30, 2025, replacing a reference-price duty, on top of the USMCA rate of 0%. Mexico opened a sunset review on July 11, 2025 and the duty stays in force while it runs. Solid caustic soda is not covered.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "hs-code-caustic-soda",
+      "question": "What is the HS code for liquid caustic soda and caustic soda flakes?",
+      "searchedAs": ["hs code caustic soda liquid", "hs code caustic soda flakes", "hs code caustic soda lye", "hs code for caustic soda solution"],
+      "answer": "Caustic soda in aqueous solution (lye, liquid soda) is HS 2815.12; solid caustic soda, including flakes, is 2815.11. Liquid caustic soda was a $1.41B U.S. export in 2025 and is on BIS's Russia and Belarus HS list.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence-chemicals",
+      "question": "Do I need an export licence for inorganic chemicals?",
+      "searchedAs": ["chemical export license", "do i need an export license", "do i need export license in usa", "eccn 1c350"],
+      "answer": "Usually not: soda ash, caustic soda, carbon black, phosphoric acid and rare-earth compounds are not on the Commerce Control List. Chemical-weapons precursors such as hydrogen fluoride, sodium and potassium cyanide, sodium sulfide, fluorides and phosphorus chlorides (ECCN 1C350) need a BIS licence for countries such as Brazil, China and Viet Nam, and uranium and other nuclear material need an NRC licence.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "dea-iodine",
+      "question": "What does DEA require to export iodine or hydriodic acid?",
+      "searchedAs": ["iodine dea list 1", "dea list 1 chemicals", "dea form 486", "dea list 1 and 2 chemicals"],
+      "answer": "Both are DEA List I chemicals. File a DEA Form 486 export declaration at least 15 calendar days before the shipment is released: for every export of iodine, and for hydriodic acid from 1.7 kg (1 litre). Hydrochloric and sulfuric acid (List II) need one from 50 gallons for designated countries.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "mercury-export-ban",
+      "question": "Can mercury be exported from the U.S.?",
+      "searchedAs": ["mercury export ban act", "mercury export ban act of 2008", "mercury export ban"],
+      "answer": "No. Exporting elemental mercury has been banned since January 1, 2013, and exporting mercury(I) chloride, mercury(II) oxide, sulfate and nitrate and cinnabar since January 1, 2020, with only narrow exceptions set out in the statute.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "eu-tariff-chemicals",
+      "question": "What does the EU charge on U.S. inorganic chemicals?",
+      "searchedAs": ["eu tariffs on us goods", "eu tariffs on us products", "eu tariff on us goods"],
+      "answer": "Nothing since July 1, 2026: Regulation (EU) 2026/1455 cut the EU's duty on every Chapter 28 good of U.S. origin to zero until December 31, 2029, down from up to 5.5% (5.5% on soda ash and caustic soda). The EU bought $2.24B in 2025, led by uranium and isotopes for nuclear fuel.",
+      "link": "exports/markets"
+    }
+  ]
+}

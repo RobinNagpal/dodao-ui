@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 74,
+    "padded": "74",
+    "slug": "74-copper-and-articles",
+    "title": "Copper and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/74-copper-and-articles/rules",
+    "h1": "HTS Chapter 74: Copper and Articles Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Copper Export Rules: Schedule B, Licence & Scrap (HTS Ch. 74) | KoalaGains",
+      "shortDescription": "Schedule B numbers for copper and brass scrap, when copper needs an export licence (Russia, Belarus), the status of U.S. copper scrap curbs, EEI and drawback.",
+      "keywords": [
+        "copper export license",
+        "us copper export ban",
+        "copper scrap export restrictions",
+        "schedule b copper scrap",
+        "hs code copper scrap",
+        "copper scrap export ban"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. exporter of copper, copper scrap or copper products takes the same five steps as every exporter, and for most Chapter 74 goods that is all. Copper goods are almost all **EAR99**, so they need no export licence, and **there is no U.S. export ban, quota or licence for copper scrap**. Three things are specific to this chapter. **Russia and Belarus:** all 49 six-digit Chapter 74 codes are on the Commerce sanctions list, so any shipment there needs a licence. **Scrap policy:** Proclamation 10962 (July 30, 2025) told Commerce to set a domestic-sales requirement for high-quality copper scrap under the Defense Production Act, but no implementing rule had been published by November 19, 2026. **Drawback:** the 50% Section 232 duty paid on imported semi-finished copper cannot be refunded when it is exported. Scrap shipped for recycling needs no EPA export notice, but buyers in China, India, Thailand and other markets set their own grade and inspection rules (see Markets).",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Copper scrap (7404, $6.01B in 2025) is split by grade in Schedule B: 7404.00.0010 No. 1 bare bright wire, 7404.00.0015 other No. 1 copper, 7404.00.0025 No. 2 copper, 7404.00.0030 other refined-copper scrap, 7404.00.0041 to 7404.00.0066 red, semi-red and yellow brass by lead content, 7404.00.0075 other alloy scrap and 7404.00.0085 or 7404.00.0095 mixed copper and alloy scrap, all reported in kilograms. Cathode is 7403.11.0000, and refined wire over 6 mm (wire rod) is 7408.11.3000 above 9.5 mm or 7408.11.6000 from 6 to 9.5 mm."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Copper scrap and cathode are often sold through traders and resold afloat, so screen the consuming smelter or mill and the final consignee, not only the trader on the contract."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Almost all Chapter 74 goods (scrap, cathode, rod, wire, sheet, tube and fittings) are EAR99 and need no licence for most destinations. No export quota, ban or licence applies to copper scrap. The domestic-sales requirement for high-quality scrap that Proclamation 10962 told Commerce to put in place had no published rule as of November 19, 2026, and the July 30, 2026 presidential determination behind BIS's sales order on black mass and tungsten scrap excludes copper scrap."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: all 49 six-digit Chapter 74 codes, from cathode and scrap to wire, tube and copper articles, are listed in Supplement No. 4 to 15 CFR Part 746, so every Chapter 74 export to either country needs a Commerce licence. Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Most scrap and cathode leaves by ocean container or bulk vessel. File the EEI and give the carrier the ITN at least 24 hours before the cargo is loaded. Shipments to Canada are exempt from EEI unless a licence is needed; shipments to Mexico are not."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for every Chapter 74 good, because all 49 six-digit codes are in Supplement No. 4 to Part 746 (15 CFR 746.8(a)(5))",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to Part 746 (industry sector list)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ]
+    },
+    {
+      "id": "bis-copper-scrap-dpa",
+      "agency": "Bureau of Industry and Security (BIS), Defense Production Act",
+      "title": "High-quality copper scrap: Proclamation 10962 (July 30, 2025) directs Commerce to put in place the domestic-sales requirement it recommended (25% of high-quality scrap sold in the U.S.) under the Defense Production Act. No order or rule had been published in the Federal Register by November 19, 2026, so copper scrap exports are not restricted today. The July 30, 2026 determination on recoverable critical minerals excludes copper scrap",
+      "citations": [
+        {
+          "label": "Proclamation 10962 (90 FR 37727), clause (8)",
+          "url": "https://www.federalregister.gov/documents/2025/08/05/2025-14893/adjusting-imports-of-copper-into-the-united-states"
+        },
+        {
+          "label": "BIS information collection on DPA official actions (91 FR 5887)",
+          "url": "https://www.federalregister.gov/documents/2026/02/10/2026-02578/agency-information-collection-activities-submission-to-the-office-of-management-and-budget-omb-for-review-and-approval-comment"
+        },
+        {
+          "label": "Presidential Determination No. 2026-19 (91 FR 50465)",
+          "url": "https://www.federalregister.gov/documents/2026/08/04/2026-15859/presidential-determination-pursuant-to-section-101-of-the-defense-production-act-of-1950-as-amended"
+        }
+      ]
+    },
+    {
+      "id": "epa-scrap",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Copper scrap being recycled is excluded (processed, home and prompt scrap) or exempt (other scrap metal) from hazardous-waste rules, so no EPA export notice or consent is needed. Scrap mixed with hazardous waste, such as batteries, circuit boards or PCB-containing parts, is not covered",
+      "citations": [
+        {
+          "label": "40 CFR 261.4(a)(13) (excluded scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.4"
+        },
+        {
+          "label": "40 CFR 261.6(a)(3)(ii) (other scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.6"
+        },
+        {
+          "label": "40 CFR 261.1(c)(6) (definition of scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.1"
+        }
+      ]
+    },
+    {
+      "id": "cbp-232-drawback",
+      "agency": "U.S. Customs and Border Protection (CBP)",
+      "title": "No drawback of the Section 232 copper duty on imported goods of 7406–7419 (powders, bars, wire, sheet, foil, tube, fittings and articles), even when they or products made from them are exported. Proclamation 10962, clause (10), barred drawback; Proclamation 11021, clauses 13–14, allows manufacturing drawback only for certain derivative articles of trade-agreement partners. Ordinary duties on the same entry can still be claimed. Cathode, anodes, master alloys and scrap (7401–7405) are outside the Section 232 copper duty",
+      "citations": [
+        {
+          "label": "Proclamation 11021 (91 FR 18201), clauses 13–14",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states"
+        },
+        {
+          "label": "Proclamation 10962 (90 FR 37727), clause (10)",
+          "url": "https://www.federalregister.gov/documents/2025/08/05/2025-14893/adjusting-imports-of-copper-into-the-united-states"
+        },
+        {
+          "label": "19 CFR Part 190 (drawback)",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "7401",
+      "label": "Copper mattes & cement copper",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7402",
+      "label": "Unrefined copper & anodes",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Anodes are outside the Section 232 copper duty, so drawback of U.S. duty on imported anodes follows the normal rules."
+    },
+    {
+      "heading": "7403",
+      "label": "Refined copper & alloys, unwrought (cathode)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Cathode is outside the Section 232 copper duty, so drawback of U.S. duty on imported cathode follows the normal rules."
+    },
+    {
+      "heading": "7404",
+      "label": "Copper waste & scrap",
+      "ruleIds": ["bis-russia-belarus", "bis-copper-scrap-dpa", "epa-scrap"],
+      "note": "Scrap is outside the Section 232 copper duty. Foreign buyers usually ask for a grade specification and a radiation-free certificate; China and India also set their own scrap-import rules (see Markets)."
+    },
+    {
+      "heading": "7405",
+      "label": "Master alloys of copper",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7406",
+      "label": "Copper powders & flakes",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7407",
+      "label": "Copper bars, rods & profiles",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7408",
+      "label": "Copper wire",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7409",
+      "label": "Copper plates, sheets & strip",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7410",
+      "label": "Copper foil & copper-clad laminates",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7411",
+      "label": "Copper tubes & pipes",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7412",
+      "label": "Copper tube & pipe fittings",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7413",
+      "label": "Stranded wire, cables & plaited bands",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7415",
+      "label": "Copper nails, screws, bolts & washers",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7418",
+      "label": "Household & sanitary ware of copper",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7419",
+      "label": "Other articles of copper",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "ca-surtax-remission",
+      "title": "Help the Canadian buyer claim remission of Canada's surtax on copper wire",
+      "saves": "Canada's 50% surtax on U.S. refined copper wire (7408.11, 7408.19), refunded or waived when the wire is used in Canadian manufacturing.",
+      "appliesTo": "U.S. refined copper wire imported into Canada for use in the manufacture or processing of goods in Canada, for example wire rod drawn into wire or built into cable. Section 3 of the United States Surtax Remission Order (2025) has covered goods under the United States Surtax Order (2026) since September 8, 2026.",
+      "document": "A remission claim by the Canadian importer to the Canada Border Services Agency (for the Minister of Public Safety) within two years of import.",
+      "caveat": "Only the Canadian importer can claim, and wire bought for resale rather than for manufacturing does not qualify. The U.S. exporter helps by giving the exact tariff classification and confirming the end use.",
+      "citations": [
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122 (consolidated), ss. 3 and 5",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+        },
+        {
+          "label": "United States Surtax Order (2026), SOR/2026-186",
+          "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Ask the Chinese buyer to apply for a tariff exclusion",
+      "saves": "China's 2018–2019 counter-tariff on the goods covered, which is 25% on U.S. copper scrap and cathode. The 10% extra duty and China's normal rate still apply.",
+      "appliesTo": "U.S. goods on China's counter-tariff lists bought by a Chinese company under the Tariff Commission's market-based exclusion process. Exclusions are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
+      "document": "An application by the Chinese importer to China's State Council Tariff Commission. Once approved, the exclusion covers only that importer's purchases from the U.S., up to the approved amount.",
+      "caveat": "Only the Chinese buyer can apply. No extension past December 31, 2026 has been announced (see Tariff updates).",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020 (exclusion process)",
+          "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal, Nov 1, 2025",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

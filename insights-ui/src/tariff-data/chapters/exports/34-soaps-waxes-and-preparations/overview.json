@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 34,
+    "padded": "34",
+    "slug": "34-soaps-waxes-and-preparations",
+    "title": "Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/34-soaps-waxes-and-preparations",
+    "h1": "HTS Chapter 34: Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Soap, Detergent & Lubricant Exports and Foreign Tariffs (HTS Ch. 34) | KoalaGains",
+      "shortDescription": "U.S. exports of soap, detergents, lubricants, waxes and candles were $8.41B in 2025. Who buys them (Canada 37%), what sells, and which buyers charge more: China.",
+      "keywords": ["US soap exports", "US detergent exports", "lubricant exports", "tariffs on US lubricants", "China tariff on US detergents", "HS 34 exports"]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$8.41B** of soap, detergents, lubricating preparations, waxes, polishes and candles in 2025, 1.3% more than in 2024. Surfactants, laundry and dish detergents and cleaners (3402) were **46%** of it, lubricating preparations such as greases, cutting oils and synthetic lubricants (3403) 25%, and soap and liquid hand soap (3401) 14%. Canada alone took **37%** and Mexico 10%. In January–August 2026 exports were $5.65B, 1% less than in the same months of 2025.\n\nMost large buyers charge nothing on U.S. goods: Canada and Mexico under USMCA, Singapore, Korea under KORUS, and the EU on the whole chapter since July 1, 2026. **China** is the exception: on top of its normal 6.5–10% rate it adds a 10% extra tariff on all U.S. goods and its 2018–2019 counter-tariffs of 5–25%, so U.S. lubricants pay **45%** there. Canada charged a 25% surtax on U.S. soaps from March 4 to August 31, 2025, but nothing in this chapter is on its 2026 list. Beyond tariffs, chemical registration in the buyer's market (REACH in the EU, K-REACH in Korea, China's new-substance registration) decides access, covered on the Markets page.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$8.41B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+1.3%"
+    },
+    {
+      "label": "Largest product group (3402)",
+      "value": "46%",
+      "note": "Surfactants, detergents & cleaners"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "47%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top 12 buyers charging more than in Jan 2025",
+      "value": "1",
+      "note": "China; Canada's 2025 soap surtax was removed"
+    }
+  ],
+  "keyTakeaways": [
+    "Canada, the largest buyer at $3.11B, charges nothing on U.S. Chapter 34 goods that qualify for CUSMA. Its 25% surtax on U.S. soaps (3401) ran only from March 4 to August 31, 2025, and its September 2026 counter-tariff list names no Chapter 34 goods.",
+    "In China, U.S. lubricating preparations (3403.19, 3403.99) and non-ionic surfactants (3402.42) pay about 45% and 41.5%: a normal rate of 10% or 6.5%, a 25% counter-tariff from 2018 and the 10% extra on all U.S. goods. Their product exclusion ran out on February 28, 2025, and U.S. sales to China fell 9% in 2025.",
+    "The EU cut its duty on all U.S. Chapter 34 goods to zero from July 1, 2026, removing 4% on detergents and surfactants and 4.6–6.5% on lubricants. Its 2025 counter-tariff list named nearly the whole chapter at 10–30% but was never applied.",
+    "Two China dates matter: its market-based exclusions end on December 31, 2026, and its extra tariff could rise from 10% to 34% on January 10, 2027."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 6929342738,
+      "partnerAUsd": 2494269115,
+      "partnerBUsd": 617742001,
+      "restUsd": 3817331622
+    },
+    {
+      "year": 2021,
+      "totalUsd": 7707374598,
+      "partnerAUsd": 2452516801,
+      "partnerBUsd": 766233388,
+      "restUsd": 4488624409
+    },
+    {
+      "year": 2022,
+      "totalUsd": 8440858526,
+      "partnerAUsd": 2837390907,
+      "partnerBUsd": 862759665,
+      "restUsd": 4740707954
+    },
+    {
+      "year": 2023,
+      "totalUsd": 8004948418,
+      "partnerAUsd": 2912366011,
+      "partnerBUsd": 949926714,
+      "restUsd": 4142655693
+    },
+    {
+      "year": 2024,
+      "totalUsd": 8304828407,
+      "partnerAUsd": 3045317928,
+      "partnerBUsd": 900806519,
+      "restUsd": 4358703960
+    },
+    {
+      "year": 2025,
+      "totalUsd": 8411655509,
+      "partnerAUsd": 3112772566,
+      "partnerBUsd": 858818655,
+      "restUsd": 4440064288
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 34 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 5648229348,
+    "priorExportsUsd": 5703241960,
+    "changePct": -1,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2098661324,
+        "priorExportsUsd": 2065282555,
+        "changePct": 1.6
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 621670613,
+        "priorExportsUsd": 580326360,
+        "changePct": 7.1
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 290990776,
+        "priorExportsUsd": 363282059,
+        "changePct": -19.9
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 172485501,
+        "priorExportsUsd": 179843686,
+        "changePct": -4.1
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 168901936,
+        "priorExportsUsd": 166762310,
+        "changePct": 1.3
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 152663786,
+        "priorExportsUsd": 188125399,
+        "changePct": -18.8
+      },
+      {
+        "countryCode": 702,
+        "country": "Singapore",
+        "exportsUsd": 132685901,
+        "priorExportsUsd": 152945794,
+        "changePct": -13.2
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 130539796,
+        "priorExportsUsd": 143144685,
+        "changePct": -8.8
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3112772566,
+      "priorExportsUsd": 3045317928,
+      "sharePct": 37,
+      "changePct": 2.2,
+      "tariffNow": "Free (CUSMA); 2025 25% soap surtax removed",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 858818655,
+      "priorExportsUsd": 900806519,
+      "sharePct": 10.2,
+      "changePct": -4.7,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 500463581,
+      "priorExportsUsd": 549139788,
+      "sharePct": 5.9,
+      "changePct": -8.9,
+      "tariffNow": "MFN 6.5–10% + 10% extra + counter-tariffs of 5–25%",
+      "status": "raised"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 251893858,
+      "priorExportsUsd": 242337614,
+      "sharePct": 3,
+      "changePct": 3.9,
+      "tariffNow": "2–18% (Mercosur tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 247922778,
+      "priorExportsUsd": 229236829,
+      "sharePct": 2.9,
+      "changePct": 8.2,
+      "tariffNow": "Free (EU–US framework since July 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 240786724,
+      "priorExportsUsd": 246331024,
+      "sharePct": 2.9,
+      "changePct": -2.3,
+      "tariffNow": "Free (EU–US framework since July 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 238210466,
+      "priorExportsUsd": 213505268,
+      "sharePct": 2.8,
+      "changePct": 11.6,
+      "tariffNow": "Free; 3.1–4.4% on lubricants",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 215819869,
+      "priorExportsUsd": 199459746,
+      "sharePct": 2.6,
+      "changePct": 8.2,
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 207576508,
+      "priorExportsUsd": 192513895,
+      "sharePct": 2.5,
+      "changePct": 7.8,
+      "tariffNow": "Free (EU–US framework since July 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 201974037,
+      "priorExportsUsd": 238731332,
+      "sharePct": 2.4,
+      "changePct": -15.4,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 166282553,
+      "priorExportsUsd": 128145391,
+      "sharePct": 2,
+      "changePct": 29.8,
+      "tariffNow": "Free (no customs tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 161906031,
+      "priorExportsUsd": 161220940,
+      "sharePct": 1.9,
+      "changePct": 0.4,
+      "tariffNow": "MFN; U.S.–Taiwan agreement not yet in force",
+      "status": "pending"
+    }
+  ],
+  "othersExportsUsd": 2007227883,
+  "othersPriorExportsUsd": 1958082133,
+  "byHeading": [
+    {
+      "heading": "3401",
+      "label": "Soap & skin-washing preparations",
+      "exportsUsd": 1195697357,
+      "priorExportsUsd": 1239932355,
+      "changePct": -3.6,
+      "sharePct": 14.2
+    },
+    {
+      "heading": "3402",
+      "label": "Surfactants, detergents & cleaners",
+      "exportsUsd": 3880102128,
+      "priorExportsUsd": 3805816654,
+      "changePct": 2,
+      "sharePct": 46.1
+    },
+    {
+      "heading": "3403",
+      "label": "Lubricating preparations",
+      "exportsUsd": 2070096538,
+      "priorExportsUsd": 2011535699,
+      "changePct": 2.9,
+      "sharePct": 24.6
+    },
+    {
+      "heading": "3404",
+      "label": "Artificial & prepared waxes",
+      "exportsUsd": 509284790,
+      "priorExportsUsd": 501457545,
+      "changePct": 1.6,
+      "sharePct": 6.1
+    },
+    {
+      "heading": "3405",
+      "label": "Polishes & scouring preparations",
+      "exportsUsd": 516462537,
+      "priorExportsUsd": 491742649,
+      "changePct": 5,
+      "sharePct": 6.1
+    },
+    {
+      "heading": "3406",
+      "label": "Candles",
+      "exportsUsd": 167464940,
+      "priorExportsUsd": 179521699,
+      "changePct": -6.7,
+      "sharePct": 2
+    },
+    {
+      "heading": "3407",
+      "label": "Modeling pastes & dental waxes",
+      "exportsUsd": 72547219,
+      "priorExportsUsd": 74821806,
+      "changePct": -3,
+      "sharePct": 0.9
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3402.50",
+      "heading": "3402",
+      "description": "Washing and cleaning preparations; powders, flakes and granules, surface-active, whether or not containing soap (excluding those of heading no. 3401), put up for retail sale",
+      "exportsUsd": 1548915221,
+      "priorExportsUsd": 1480783337,
+      "changePct": 4.6,
+      "sharePct": 18.4
+    },
+    {
+      "hs6": "3403.99",
+      "heading": "3403",
+      "description": "Lubricating preparations; other than for the treatment of textile and similar materials, not containing petroleum oils or oils obtained from bituminous minerals",
+      "exportsUsd": 1097131996,
+      "priorExportsUsd": 1039043557,
+      "changePct": 5.6,
+      "sharePct": 13
+    },
+    {
+      "hs6": "3402.90",
+      "heading": "3402",
+      "description": "Washing and cleaning preparations; surface-active, whether or not containing soap (excluding those of heading no. 3401), including auxiliary washing preparations, not for retail sale",
+      "exportsUsd": 981616053,
+      "priorExportsUsd": 939445239,
+      "changePct": 4.5,
+      "sharePct": 11.7
+    },
+    {
+      "hs6": "3403.19",
+      "heading": "3403",
+      "description": "Lubricating preparations; (other than for the treatment of textile and similar materials), containing less than 70% (by weight) of petroleum oils or oils obtained from bituminous minerals",
+      "exportsUsd": 885539107,
+      "priorExportsUsd": 885062840,
+      "changePct": 0.1,
+      "sharePct": 10.5
+    },
+    {
+      "hs6": "3402.42",
+      "heading": "3402",
+      "description": "Organic surface-active agents; non-ionic (other than soap), whether or not put up for retail sale",
+      "exportsUsd": 799034318,
+      "priorExportsUsd": 810664154,
+      "changePct": -1.4,
+      "sharePct": 9.5
+    },
+    {
+      "hs6": "3401.30",
+      "heading": "3401",
+      "description": "Organic surface-active products and preparations for washing the skin, in the form of liquid or cream and put up for retail sale, whether or not containing soap",
+      "exportsUsd": 664384523,
+      "priorExportsUsd": 700431365,
+      "changePct": -5.1,
+      "sharePct": 7.9
+    },
+    {
+      "hs6": "3404.90",
+      "heading": "3404",
+      "description": "Waxes; artificial and prepared, other than of polyethylene glycol",
+      "exportsUsd": 478573278,
+      "priorExportsUsd": 474748054,
+      "changePct": 0.8,
+      "sharePct": 5.7
+    },
+    {
+      "hs6": "3405.90",
+      "heading": "3405",
+      "description": "Polishes, creams and similar preparations; n.e.c. in heading no. 3405, excluding waxes of heading no. 3404",
+      "exportsUsd": 405103325,
+      "priorExportsUsd": 375900666,
+      "changePct": 7.8,
+      "sharePct": 4.8
+    },
+    {
+      "hs6": "3401.11",
+      "heading": "3401",
+      "description": "Soap and organic surface-active products; in the form of bars, cakes, moulded shapes, and paper, wadding, felt and nonwovens, impregnated, coated or covered with soap or detergent, for toilet use (including medicated products)",
+      "exportsUsd": 356601160,
+      "priorExportsUsd": 346714623,
+      "changePct": 2.9,
+      "sharePct": 4.2
+    },
+    {
+      "hs6": "3402.39",
+      "heading": "3402",
+      "description": "Anionic organic surface-active agents (other than soap); other than linear alkylbenzene sulphonic acids and their salts, whether or not put up for retail sale",
+      "exportsUsd": 299249490,
+      "priorExportsUsd": 304753105,
+      "changePct": -1.8,
+      "sharePct": 3.6
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 34, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 76% of 2025 U.S. Chapter 34 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

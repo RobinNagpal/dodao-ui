@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 74,
+    "padded": "74",
+    "slug": "74-copper-and-articles",
+    "title": "Copper and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/74-copper-and-articles/faq",
+    "h1": "HTS Chapter 74: Copper and Articles Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Copper Export FAQ: China, Canada, Scrap HS Codes (HTS Ch. 74) | KoalaGains",
+      "shortDescription": "Does China tariff U.S. copper scrap? Does Canada tariff U.S. copper? Is there a U.S. copper export ban? HS codes, licences and top buyers, answered briefly.",
+      "keywords": [
+        "does china import copper",
+        "canada tariff on us copper",
+        "us copper export ban",
+        "hs code copper scrap",
+        "copper export license",
+        "us copper scrap exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. copper, copper scrap and copper products, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Scrap and cathode enter most big markets duty-free. The exceptions are China (35% unless the importer holds an exclusion) and, for refined copper wire only, Canada (50% since September 8, 2026).",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions and its 24-point tariff suspension both expire unless extended.",
+    "There is no U.S. export ban or licence for copper scrap. Copper needs a licence only for Russia, Belarus and other embargoed destinations."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"tariff on us copper\", \"canada tariff on us copper\", \"canada copper tariff\", \"china tariff on copper\", \"copper scrap import china\", \"us copper exports\", \"us copper scrap exports\", \"copper export ban\", \"export copper scrap\", \"hs code copper scrap\", \"copper cathode export\", \"india copper scrap import duty\", \"mexico copper tariff\" and \"copper export license\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "china-tariff-scrap",
+      "question": "Does China have a tariff on U.S. copper scrap?",
+      "searchedAs": ["china tariff on copper", "copper scrap import china", "copper scrap china tariff", "tariff on us copper scrap"],
+      "answer": "Yes. U.S. copper scrap pays 35% in China unless the Chinese importer holds an exclusion: China's 0% 2026 rate for recycled copper raw material, plus the 25% counter-tariff on 7404 in force since August 23, 2018, plus the 10% extra duty on all U.S. goods since May 14, 2025. U.S. cathode pays the same 35%, and wire rod 39%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-imports",
+      "question": "Does China still import copper scrap from the U.S.?",
+      "searchedAs": ["does china import copper", "copper scrap exports to china", "does china import copper scrap from us"],
+      "answer": "Yes, but far less. U.S. copper exports to China fell from $2.94B in 2024 to $781M in 2025, $648M of it scrap, as U.S. scrap went to Japan, Korea, Thailand, India and Belgium instead. Since November 15, 2024, scrap must also meet China's recycled-copper raw-material standards to be imported.",
+      "link": "exports"
+    },
+    {
+      "id": "china-dates",
+      "question": "When do China's tariff exclusions and its tariff suspension for U.S. goods end?",
+      "searchedAs": ["copper tariff china retaliation"],
+      "answer": "China's exclusions from its 2018–2019 counter-tariffs are valid until December 31, 2026, and the suspension of 24 points of its extra duty runs to January 10, 2027. If the suspension lapses, U.S. copper scrap and cathode without an exclusion would go from 35% to 59%. No extension of the exclusions has been announced.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have a tariff on U.S. copper?",
+      "searchedAs": [
+        "canada tariff on us copper",
+        "does canada tariff us copper",
+        "canada tariffs copper wire",
+        "canada copper tariffs",
+        "canada us copper tariff"
+      ],
+      "answer": "Only on refined copper wire. Since September 8, 2026, Canada has charged a 50% surtax on U.S. refined copper wire (7408.11 and 7408.19, mostly wire rod), even when it qualifies for CUSMA. U.S. copper scrap, cathode, anodes, alloy wire, sheet and tube still enter Canada free.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-remission",
+      "question": "Can Canada's surtax on U.S. copper wire be refunded?",
+      "searchedAs": ["canada us copper tariffs impact", "canada copper tariff"],
+      "answer": "Yes, if the wire is used in manufacturing or processing in Canada, for example drawn into wire or built into cable. The Canadian importer claims remission from the Canada Border Services Agency within two years of import under the United States Surtax Remission Order (2025).",
+      "link": "exports/rules"
+    },
+    {
+      "id": "mexico-tariff",
+      "question": "What tariff does Mexico charge on U.S. copper?",
+      "searchedAs": ["copper tariff mexico", "mexico copper tariff"],
+      "answer": "None on copper that qualifies for USMCA, which covers most U.S. cathode and wire rod shipped to Mexico, the largest buyer ($3.96B in 2025). Copper that fails the rule of origin pays Mexico's normal rate: 0% on cathode and scrap, 5% on wire and stranded wire, up to 15% on sanitary ware. Mexico's January 2026 tariff increases skipped copper.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "india-scrap-duty",
+      "question": "What is the import duty on copper scrap in India?",
+      "searchedAs": [
+        "copper scrap import duty india",
+        "india copper scrap import duty",
+        "can we import copper scrap in india",
+        "how to import copper scrap in india"
+      ],
+      "answer": "Nil since February 2, 2025 on copper scrap and brass scrap (tariff items 7404 00 12, 7404 00 19 and 7404 00 22); it was 2.5% before. U.S. scrap cleared at one of eight listed ports needs only the supplier's certificate that it is free of radioactive material and explosives, not a pre-shipment inspection certificate.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "export-ban",
+      "question": "Is there a U.S. ban on copper scrap exports?",
+      "searchedAs": ["us copper export ban", "copper scrap export ban", "copper export ban", "copper scrap export restrictions"],
+      "answer": "No. The July 30, 2025 copper proclamation told Commerce to set a domestic-sales requirement for high-quality copper scrap under the Defense Production Act, but no rule had been published by November 19, 2026, so exports are not restricted. The 2026 sales controls on recoverable critical minerals also exclude copper scrap.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence",
+      "question": "Do I need an export license to ship copper or copper scrap?",
+      "searchedAs": ["copper export license", "export copper scrap"],
+      "answer": "Usually not: almost all Chapter 74 goods are EAR99 and need no licence. The exception is Russia and Belarus, where all 49 six-digit Chapter 74 codes need a Commerce licence, and the embargoed destinations (Cuba, Iran, North Korea, Syria). Copper scrap for recycling needs no EPA export notice.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-scrap",
+      "question": "What is the HS code (Schedule B number) for copper scrap?",
+      "searchedAs": ["hs code copper scrap", "hs code for copper waste and scrap", "hs code copper wire scrap", "schedule b copper scrap"],
+      "answer": "The HS code is 7404.00. The 10-digit Schedule B number depends on the grade: 7404.00.0010 for No. 1 bare bright wire, 7404.00.0015 for other No. 1 copper, 7404.00.0025 for No. 2 copper, and 7404.00.0041 to 7404.00.0066 for brass scrap by type and lead content. Mixed copper scrap is 7404.00.0085 or 7404.00.0095.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-cathode",
+      "question": "What is the HS code for exporting copper cathode?",
+      "searchedAs": ["copper cathode hs code export", "copper cathode export"],
+      "answer": "Refined copper cathode is HS 7403.11, Schedule B 7403.11.0000. The U.S. exported $1.71B of it in 2025, mostly to Mexico. It enters Mexico, Canada, the EU and Japan duty-free, and China at 35% unless the importer holds an exclusion.",
+      "link": "exports"
+    },
+    {
+      "id": "us-exports",
+      "question": "How much copper and copper scrap does the U.S. export, and who buys it?",
+      "searchedAs": ["us copper exports", "us copper scrap exports", "united states copper scrap exporters", "who buys us copper scrap"],
+      "answer": "$12.61B of Chapter 74 goods in 2025, up 3.2%, of which copper scrap was $6.01B (48%). Mexico ($3.96B) and Canada ($2.44B) are the largest buyers, followed by Japan, China, Korea, Thailand, India and Belgium. In January–August 2026, exports were $10.70B, up 30.3%.",
+      "link": "exports"
+    }
+  ]
+}

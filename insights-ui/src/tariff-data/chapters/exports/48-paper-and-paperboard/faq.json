@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 48,
+    "padded": "48",
+    "slug": "48-paper-and-paperboard",
+    "title": "Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/48-paper-and-paperboard/faq",
+    "h1": "HTS Chapter 48: Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Paper Export FAQ: Canada Surtax, China, Kraftliner (HTS Ch. 48) | KoalaGains",
+      "shortDescription": "Short answers on Canada's tariff on U.S. paper and boxes, China's tariffs and sack kraft anti-dumping duty, Mexico and USMCA, Schedule B codes and export licences.",
+      "keywords": [
+        "tariff on us paper products canada",
+        "kraft paper export",
+        "linerboard anti dumping china",
+        "canada surtax paper products",
+        "schedule b kraft paper",
+        "us paper exports by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to common questions about exporting U.S. kraftliner, boxes, coated board, tissue and other paper, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada charges a 50% surtax on U.S. corrugated boxes, bags, tissue parent rolls and some coated boards, and 25% on toilet paper and tissues, since September 8, 2026, even under CUSMA; kraftliner, fluting and folding cartons are not on its list.",
+    "Mexico, Costa Rica and Guatemala charge nothing on qualifying U.S. paper, and the EU, the UK and Japan charge 0% on paper anyway; China adds 10% to its 2–7.5% rates.",
+    "Paper is EAR99 and needs no U.S. export licence except for Russia, Belarus and embargoed destinations; file EEI when one Schedule B number in a shipment is worth over $2,500."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com, checked 2026-11-19) for \"tariff on paper\", \"canada tariff paper\", \"paper products tariff canada\", \"tissue paper tariff\", \"corrugated box tariff\", \"hs code kraft paper\", \"kraft paper export\" and \"schedule b paper\", plus market and rule phrasings from the research brief (\"linerboard anti dumping china\", \"mexico tariff on paper\", \"eu tariff on paper\", \"usmca rules of origin paper\").",
+  "faqs": [
+    {
+      "id": "canada-tariff-us-paper",
+      "question": "Does Canada have a tariff on U.S. paper products?",
+      "searchedAs": ["tariff on us paper products canada", "canada tariff paper products", "paper products tariff us canada", "tariff on paper from canada"],
+      "answer": "Yes, on 17 tariff items. Since September 8, 2026 Canada charges a 50% surtax on U.S. corrugated boxes (4819.10), paper bags, tissue parent rolls, several coated papers and boards, envelopes, notebooks, binders and paper cups and trays, and 25% on toilet paper, facial tissue and towels, other kraft paper (4804.39) and coated bleached board (4810.31). It applies even when the goods qualify for CUSMA. Kraftliner, fluting, folding cartons and uncoated printing paper are not on the list.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-tariff-us-toilet-paper",
+      "question": "Did Canada put a tariff on U.S. toilet paper?",
+      "searchedAs": ["did canada tariff toilet paper", "toilet paper tariff canada", "canada tariff toilet paper", "tariff on toilet paper"],
+      "answer": "Yes. Since September 8, 2026 Canada charges a 25% surtax on U.S. toilet paper, facial tissue and towels, and 50% on tissue parent rolls, even when the goods qualify for CUSMA. Before that, U.S. toilet paper had been on Canada's 2025 counter-tariff list at 25%, which was repealed from September 1, 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-removed-paper-tariffs",
+      "question": "Did Canada remove its tariffs on U.S. paper?",
+      "searchedAs": ["canada remove tariffs on us goods", "canada counter tariffs removed"],
+      "answer": "It removed the first round and later imposed a second. A 25% surtax on 16 Chapter 48 items, including U.S. envelopes, tissue products, boxes and bags, stationery and paper cups, applied from March 4, 2025 and was repealed from September 1, 2025. On September 8, 2026 Canada imposed new counter-surtaxes answering U.S. Section 338 tariffs, at 25% or 50% on 17 paper items.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-surtax-remission",
+      "question": "Can a Canadian buyer avoid the surtax on U.S. boxes or paperboard?",
+      "searchedAs": ["canada surtax remission", "canada surtax remission food packaging"],
+      "answer": "Often. Canada's United States Surtax Remission Order (2025) remits the surtax on U.S. goods imported for use in manufacturing or processing in Canada, in agricultural production or to package food or beverages, so a food processor buying U.S. corrugated boxes or a converter buying coated board can claim it back. The Canadian importer files the claim within two years of import; goods bought for resale do not qualify.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "mexico-tariff-paper",
+      "question": "What tariff does Mexico charge on U.S. paper?",
+      "searchedAs": ["mexico tariff on paper", "usmca paper products tariff"],
+      "answer": "Nothing on paper that meets the USMCA rule of origin, which paper made in a U.S. mill from pulp meets wherever the pulp came from. Goods that fail it pay Mexico's normal rate, which a decree raised to 25–35% from January 1, 2026 on 49 Chapter 48 lines, including corrugated boxes, folding cartons, coated board and uncoated printing paper. Kraftliner (4804.11) is not on the decree.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-tariff-kraft-paper",
+      "question": "Does China tariff U.S. kraft paper and linerboard?",
+      "searchedAs": ["china tariff on us paper", "china tariff kraft paper", "kraft linerboard china tariff"],
+      "answer": "Yes. U.S. kraftliner (4804.11) pays China's 5% MFN rate plus the 10% extra duty on all U.S. goods, 15% in total, and another 5% under China's 2018 counter-tariff list unless the Chinese buyer holds an exclusion. Most other U.S. paper pays 2–7.5% MFN plus 10%, and 20–25% more under the older lists without an exclusion. U.S. paper exports to China fell 37.6% in 2025 to $352M.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-anti-dumping-paper",
+      "question": "Does China have an anti-dumping duty on U.S. linerboard or kraft paper?",
+      "searchedAs": ["linerboard anti dumping china", "china anti dumping kraft paper"],
+      "answer": "Not on kraftliner. The anti-dumping duty China charges on U.S. kraft paper is on unbleached sack kraft paper (Chinese lines 4804.21 and 4804.31, used for cement and flour sacks): 14.9% for every U.S. company. It has applied since April 10, 2016, was extended for five years from April 10, 2022, and expires on April 9, 2027 unless Chinese producers obtain an expiry review.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-tariff-dates",
+      "question": "When could China's tariffs on U.S. paper change?",
+      "searchedAs": ["china tariff suspension end date", "china tariff exclusions 2026"],
+      "answer": "Three dates: December 31, 2026, when China's exclusions from its 2018–2019 counter-tariffs end unless extended; January 10, 2027, when the suspension of 24 points of its extra duty ends, which would raise the 10% to 34%; and April 9, 2027, when the 14.9% anti-dumping duty on U.S. sack kraft paper expires unless reviewed.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff-paper",
+      "question": "What tariff does the EU charge on U.S. paper?",
+      "searchedAs": ["eu tariff on paper", "eu import duty paper products"],
+      "answer": "0%. The EU's normal tariff on all Chapter 48 paper and paper products is zero, and its €93B countermeasure list, which named almost every paper line at 25% or 30%, was never applied. From December 30, 2026 EU importers of paper must file deforestation due-diligence statements; the EU rates the United States low-risk, so simplified due diligence applies.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "us-paper-exports",
+      "question": "How much paper does the U.S. export, and who buys it?",
+      "searchedAs": ["us paper exports", "us paper exports by country", "kraft paper export"],
+      "answer": "$14.31B of Chapter 48 goods in 2025, down 7.4%, and $9.20B in January–August 2026, down 6.8%. Canada ($5.56B) and Mexico ($4.00B) buy 67%; China, Japan, Costa Rica, Guatemala and the UK follow. Kraftliner (4804.11, $2.21B) and corrugated boxes (4819.10, $1.31B) are the largest lines.",
+      "link": "exports"
+    },
+    {
+      "id": "schedule-b-kraft-paper",
+      "question": "What is the Schedule B or HS code for kraft paper, linerboard and corrugated boxes?",
+      "searchedAs": ["hs code kraft paper", "schedule b for paper", "corrugated box hs code", "cardboard box tariff code"],
+      "answer": "Unbleached kraftliner is HS 4804.11; the 10-digit Schedule B number starts with those six digits and is found with the Census Bureau's Schedule B search tool. Corrugated boxes are 4819.10 and folding cartons 4819.20. Waste paper and old corrugated containers are 4707, in Chapter 47, not Chapter 48.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-license-paper",
+      "question": "Do I need an export licence for paper products?",
+      "searchedAs": ["export license paper products", "eccn for paper"],
+      "answer": "Usually not. Paper, paperboard and paper articles are EAR99, so most destinations need no licence. The exceptions are embargoed destinations, restricted parties and Russia and Belarus, where 62 six-digit Chapter 48 codes, including kraftliner, coated board and folding cartons, need a Commerce licence.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "usmca-paper-origin",
+      "question": "Does U.S. paper made from imported pulp qualify for USMCA?",
+      "searchedAs": ["usmca rules of origin paper"],
+      "answer": "Yes for most paper. Newsprint, tissue stock, kraft paper and board and fluting (48.01, 48.03–48.07) qualify when made from material of another chapter, such as wood pulp, wherever it came from, and boxes, bags and other paper articles (48.17–48.22) qualify when converted from paper or board of a heading outside that group. A certification of origin lets the Mexican buyer claim 0%.",
+      "link": "exports/rules"
+    }
+  ]
+}

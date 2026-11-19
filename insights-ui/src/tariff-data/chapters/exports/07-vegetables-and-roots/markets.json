@@ -1,0 +1,1554 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 7,
+    "padded": "07",
+    "slug": "7-vegetables-and-roots",
+    "title": "Edible Vegetables and Certain Roots and Tubers"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/7-vegetables-and-roots/markets",
+    "h1": "HTS Chapter 07: Edible Vegetables and Certain Roots and Tubers — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "What Canada, Mexico, EU, Japan & China Charge on U.S. Vegetables",
+      "shortDescription": "Tariffs on U.S. vegetables, potatoes and pulses in 2026, market by market: 0% in Canada and Mexico, 30% on yellow peas in India, about 42–48% on pulses in China.",
+      "keywords": [
+        "tariff on vegetables",
+        "india tariff on us yellow peas",
+        "china yellow pea tariff",
+        "canadian tariffs on us produce",
+        "eu tariff us vegetables",
+        "japan potato import",
+        "vegetable export tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "What each large market charges on U.S. vegetables, potatoes and pulses in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. India is added at the end, although it bought only $6.7 million in 2025, because its yellow-pea duty is one of the few tariff increases on these goods since 2025. For most of the trade the tariff is zero: Canada and Mexico under USMCA, the Dominican Republic and Costa Rica under CAFTA-DR (except Costa Rica’s potato and onion quotas), and the EU on pulses and, since July 2026, on many vegetables. Japan charges nothing on most U.S. potatoes, onions and frozen vegetables. Taiwan (15–25% on fresh vegetables), China and India cost real money. For fresh vegetables, the buyer’s plant-health rules usually decide whether a product can be sold at all.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "0701",
+      "label": "Potatoes",
+      "shortLabel": "Potatoes"
+    },
+    {
+      "heading": "0702",
+      "label": "Tomatoes",
+      "shortLabel": "Tomatoes"
+    },
+    {
+      "heading": "0703",
+      "label": "Onions, garlic & leeks",
+      "shortLabel": "Onions, garlic & leeks"
+    },
+    {
+      "heading": "0704",
+      "label": "Cabbage, broccoli & cauliflower",
+      "shortLabel": "Cabbage, broccoli & cauliflower"
+    },
+    {
+      "heading": "0705",
+      "label": "Lettuce & chicory",
+      "shortLabel": "Lettuce & chicory"
+    },
+    {
+      "heading": "0706",
+      "label": "Carrots, beets & other roots",
+      "shortLabel": "Carrots, beets & other roots"
+    },
+    {
+      "heading": "0707",
+      "label": "Cucumbers",
+      "shortLabel": "Cucumbers"
+    },
+    {
+      "heading": "0708",
+      "label": "Fresh peas & beans",
+      "shortLabel": "Fresh peas & beans"
+    },
+    {
+      "heading": "0709",
+      "label": "Other fresh vegetables",
+      "shortLabel": "Other fresh vegetables"
+    },
+    {
+      "heading": "0710",
+      "label": "Frozen vegetables",
+      "shortLabel": "Frozen vegetables"
+    },
+    {
+      "heading": "0711",
+      "label": "Provisionally preserved vegetables",
+      "shortLabel": "Provisionally preserved vegetables"
+    },
+    {
+      "heading": "0712",
+      "label": "Dried vegetables",
+      "shortLabel": "Dried vegetables"
+    },
+    {
+      "heading": "0713",
+      "label": "Dried beans, peas & lentils",
+      "shortLabel": "Dried beans, peas & lentils"
+    },
+    {
+      "heading": "0714",
+      "label": "Cassava, sweet potatoes & other roots",
+      "shortLabel": "Cassava, sweet potatoes & other roots"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2951964715,
+      "priorExportsUsd": 3454493821,
+      "sharePct": 59.4,
+      "changePct": -14.5,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "0701": {
+          "exportsUsd": 82816162,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0702": {
+          "exportsUsd": 257205891,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free. Canada’s 25% counter-tariff on U.S. tomatoes (0702.00) applied from March 4 to August 31, 2025."
+        },
+        "0703": {
+          "exportsUsd": 226012137,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0704": {
+          "exportsUsd": 412701954,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0705": {
+          "exportsUsd": 505819992,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0706": {
+          "exportsUsd": 137896298,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0707": {
+          "exportsUsd": 48152400,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0708": {
+          "exportsUsd": 94248932,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free. Canada’s 25% counter-tariff on U.S. fresh beans (0708.20) applied from March 4 to August 31, 2025."
+        },
+        "0709": {
+          "exportsUsd": 812922955,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0710": {
+          "exportsUsd": 82060310,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0711": {
+          "exportsUsd": 408396,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0712": {
+          "exportsUsd": 57617723,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0713": {
+          "exportsUsd": 137326150,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        },
+        "0714": {
+          "exportsUsd": 96775415,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. vegetables, potatoes and pulses enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada takes 59% of U.S. vegetable exports (lettuce, peppers, broccoli and cauliflower, tomatoes, onions) and charges nothing on them under CUSMA. Its 2025 counter-tariff hit U.S. tomatoes and fresh beans from March 4 to August 31, 2025; its September 2026 counter-tariffs skip vegetables.",
+        "mainProducts": "Other fresh vegetables (0709) · Lettuce & chicory (0705)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "The importer needs a Safe Food for Canadians licence. CFIA’s Automated Import Reference System (AIRS) sets the plant-health conditions for each vegetable and U.S. origin, including when a USDA phytosanitary certificate is needed."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) tariff elimination on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 616691078,
+      "priorExportsUsd": 863278217,
+      "sharePct": 12.4,
+      "changePct": -28.6,
+      "status": "unchanged",
+      "cells": {
+        "0701": {
+          "exportsUsd": 108101754,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0702": {
+          "exportsUsd": 5407757,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0703": {
+          "exportsUsd": 43669290,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0704": {
+          "exportsUsd": 41773700,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0705": {
+          "exportsUsd": 39533203,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0706": {
+          "exportsUsd": 8131774,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0707": {
+          "exportsUsd": 169257,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0708": {
+          "exportsUsd": 16477054,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0709": {
+          "exportsUsd": 66354453,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0710": {
+          "exportsUsd": 40778332,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0711": {
+          "exportsUsd": 3713463,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0712": {
+          "exportsUsd": 25285823,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0713": {
+          "exportsUsd": 209840086,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        },
+        "0714": {
+          "exportsUsd": 7455132,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. goods of this group enter duty-free. Mexico's January 2026 increase in general tariffs does not apply to USMCA goods."
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the second-largest buyer, led by dry beans and other pulses ($210 million) and fresh potatoes ($108 million), all duty-free under USMCA. Since May 2022 U.S. fresh potatoes can be sold throughout Mexico, not just within 26 km of the border.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Potatoes (0701)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Service of Agro-Alimentary Health, Safety and Quality)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "SENASICA sets the phytosanitary import requirement for each product and origin; fresh potatoes, vegetables and pulses are inspected at entry against it, usually with a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU Common Customs Tariff with the 2026 preferences for U.S. goods (Regulation (EU) 2026/1455)",
+      "usTradeAgreement": null,
+      "exportsUsd": 287748186,
+      "priorExportsUsd": 319241922,
+      "sharePct": 5.8,
+      "changePct": -9.9,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 74863098,
+          "priorExportsUsd": 64102076,
+          "changePct": 16.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 71635182,
+          "priorExportsUsd": 80524833,
+          "changePct": -11
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 49889195,
+          "priorExportsUsd": 63773311,
+          "changePct": -21.8
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 29096351,
+          "priorExportsUsd": 36900657,
+          "changePct": -21.1
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 16268313,
+          "priorExportsUsd": 20088933,
+          "changePct": -19
+        }
+      ],
+      "cells": {
+        "0701": {
+          "exportsUsd": 67597,
+          "rate": "0% on paper; U.S. potatoes are not admitted",
+          "normalRate": "11.5% on ware potatoes",
+          "basis": "Regulation (EU) 2026/1455, Annex I: ware potatoes (0701 90 50, 0701 90 90) 0% from July 1, 2026 (normal rate 11.5%). But Implementing Regulation (EU) 2019/2072, Annex VI (entries 15 and 17), prohibits potato tubers from the United States, so the preference cannot be used."
+        },
+        "0702": {
+          "exportsUsd": 164985,
+          "rate": "% duty removed; any entry-price duty remains",
+          "normalRate": "8.8% plus entry-price duty",
+          "basis": "Regulation (EU) 2026/1455, Annex II: the 8.8% ad valorem part of the duty on tomatoes is suspended to zero for U.S. goods from July 1, 2026; the specific duty that applies when the import price is below the entry price is kept."
+        },
+        "0703": {
+          "exportsUsd": 1737462,
+          "rate": "Onions 0% (U.S. preference)",
+          "normalRate": "9.6% on onions",
+          "basis": "Regulation (EU) 2026/1455, Annex I: onions other than sets (0703 10 19) 0% from July 1, 2026 (normal rate 9.6%). Garlic, shallots and leeks keep the normal rate."
+        },
+        "0704": {
+          "exportsUsd": 39031,
+          "rate": "EU normal rate (12–13.6%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026 (TARIC, origin US): cauliflower and broccoli (0704 10 00) 13.6% (minimum €1.60/100 kg) in season, otherwise 12%. Not in the 2026/1455 annexes."
+        },
+        "0705": {
+          "exportsUsd": 423836,
+          "rate": "EU normal rate (10.4–12%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026 (TARIC, origin US): head lettuce (0705 11 00) 12% (minimum €2/100 kg/br) from April to November, other lettuce (0705 19 00) 10.4%. Not in the 2026/1455 annexes."
+        },
+        "0706": {
+          "exportsUsd": 377042,
+          "rate": "EU normal rate (13.6% carrots)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026 (TARIC, origin US): carrots and turnips (0706 10 00) 13.6%. Not in the 2026/1455 annexes."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "% duty removed; any entry-price duty remains",
+          "normalRate": "12.8% plus entry-price duty",
+          "basis": "Regulation (EU) 2026/1455, Annex II: the 12.8% ad valorem part of the duty on cucumbers (0707 00 05) is suspended to zero for U.S. goods; the entry-price specific duty is kept."
+        },
+        "0708": {
+          "exportsUsd": 472062,
+          "rate": "Fresh beans 0% (U.S. preference)",
+          "normalRate": "10.4% on fresh beans",
+          "basis": "Regulation (EU) 2026/1455, Annex I: fresh or chilled beans (0708 20 00) 0% from July 1, 2026 (normal rate 10.4%, minimum €1.60/100 kg in season). Fresh peas keep the normal rate."
+        },
+        "0709": {
+          "exportsUsd": 33859778,
+          "rate": "Asparagus and sweet peppers 0%; others normal rate",
+          "normalRate": "7.2–12.8%",
+          "basis": "Regulation (EU) 2026/1455, Annex I: asparagus (0709 20 00, normal 10.2%) and sweet peppers (0709 60 10, normal 7.2%) 0% from July 1, 2026; Annex II removes the % duty on globe artichokes and courgettes. Celery (12.8%) and most other fresh vegetables keep the normal rate."
+        },
+        "0710": {
+          "exportsUsd": 427256,
+          "rate": "Listed frozen vegetables 0%; others normal rate",
+          "normalRate": "14.4% on most frozen vegetables",
+          "basis": "Regulation (EU) 2026/1455, Annex I: frozen mushrooms other than Agaricus (0710 80 69) and other frozen vegetables (0710 80 95) 0% from July 1, 2026 (normal 14.4%). Frozen potatoes (14.4%) and sweet corn (5.1% + €9.40/100 kg) keep the normal rate."
+        },
+        "0711": {
+          "exportsUsd": 668405,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026 (TARIC, origin US). Not in the 2026/1455 annexes, so the normal rate applies; check TARIC for the exact CN line."
+        },
+        "0712": {
+          "exportsUsd": 32625433,
+          "rate": "Dried onions and most dried vegetables 0%",
+          "normalRate": "12.8%",
+          "basis": "Regulation (EU) 2026/1455, Annex I: dried onions (0712 20 00) and other dried vegetables and mixtures (0712 90 90) 0% from July 1, 2026 (normal rate 12.8%)."
+        },
+        "0713": {
+          "exportsUsd": 164688691,
+          "rate": "0% (EU normal rate)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026 (TARIC, origin US): dried peas (0713 10 90), chickpeas (0713 20 00), kidney and other beans (0713 33 90) and lentils (0713 40 00) are duty-free for U.S. goods."
+        },
+        "0714": {
+          "exportsUsd": 52196608,
+          "rate": "Fresh sweet potatoes 0% (U.S. preference)",
+          "normalRate": "3% on fresh sweet potatoes",
+          "basis": "Regulation (EU) 2026/1455, Annex I: fresh, whole sweet potatoes for human consumption (0714 20 10) 0% from July 1, 2026 (normal rate 3%)."
+        }
+      },
+      "profile": {
+        "headline": "The EU buys mainly dry beans, chickpeas and lentils, which enter at its 0% normal rate, and sweet potatoes, mostly through the Netherlands. Since July 1, 2026 U.S. onions, fresh sweet potatoes, asparagus, sweet peppers, fresh beans and several dried and frozen vegetables are duty-free too, but EU plant-health rules still keep out U.S. potatoes.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Cassava, sweet potatoes & other roots (0714)",
+        "tariffNow": "Pulses free; onions, sweet potatoes and other listed vegetables 0% since July 2026",
+        "regulator": {
+          "name": "Member-state plant-health authorities (Regulation (EU) 2016/2031 and Implementing Regulation (EU) 2019/2072)",
+          "url": "https://eur-lex.europa.eu/eli/reg_impl/2019/2072/oj",
+          "requirement": "Fresh vegetables need a USDA phytosanitary certificate and plant-health checks at the EU border. Potato tubers (seed and ware) from the United States are prohibited (Annex VI, entries 15 and 17)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's WTO rates with the 2020 Japan–U.S. Trade Agreement cuts",
+      "usTradeAgreement": null,
+      "exportsUsd": 188389905,
+      "priorExportsUsd": 162362161,
+      "sharePct": 3.8,
+      "changePct": 16,
+      "status": "unchanged",
+      "cells": {
+        "0701": {
+          "exportsUsd": 41516374,
+          "rate": "Free (Japan–U.S. agreement); chipping potatoes only",
+          "normalRate": "4.3%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0701.90: JP-US Trade Agreement rate Free (WTO rate 4.3%); seed potatoes (0701.10) 3%. Japan admits U.S. fresh potatoes only for making chips."
+        },
+        "0702": {
+          "exportsUsd": 2395979,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0702.00: WTO rate 3%; no Japan–U.S. concession."
+        },
+        "0703": {
+          "exportsUsd": 21391026,
+          "rate": "Onions free (Japan–U.S. agreement)",
+          "normalRate": "8.5% or a per-kg duty on low-value onions",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0703.10: JP-US rate Free on onions; Japan’s own rate is 8.5%, or a per-kg duty on onions valued 67–73.70 yen/kg, and free above that. Garlic and leeks 3%."
+        },
+        "0704": {
+          "exportsUsd": 1336792,
+          "rate": "Free (Japan–U.S. agreement)",
+          "normalRate": "3%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0704: cauliflower, broccoli, Brussels sprouts and cabbage Free in the JP-US column (WTO rate 3%)."
+        },
+        "0705": {
+          "exportsUsd": 5302456,
+          "rate": "Head lettuce free; other lettuce 3%",
+          "normalRate": "3%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0705.11 (head lettuce): JP-US Free; 0705.19 (other lettuce): WTO rate 3%."
+        },
+        "0706": {
+          "exportsUsd": 173850,
+          "rate": "Carrots 3%; other roots free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0706.10 (carrots and turnips): WTO rate 3%; most of 0706.90: JP-US Free."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0707.00: WTO rate 3%; no Japan–U.S. concession."
+        },
+        "0708": {
+          "exportsUsd": 538762,
+          "rate": "Free (Japan–U.S. agreement)",
+          "normalRate": "3%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0708: fresh peas and beans Free in the JP-US column (WTO rate 3%)."
+        },
+        "0709": {
+          "exportsUsd": 12786215,
+          "rate": "Celery, spinach, sweet corn free; asparagus, peppers 3%",
+          "normalRate": "3–6%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0709: celery, spinach, pumpkins and sweet corn Free in the JP-US column; asparagus (0709.20) and peppers (0709.60) at the WTO rate of 3%."
+        },
+        "0710": {
+          "exportsUsd": 63036679,
+          "rate": "Free on frozen potatoes, peas, beans, sweet corn, broccoli",
+          "normalRate": "6–10.6%",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0710: frozen potatoes, peas, beans, sweet corn (WTO rate 10.6%), broccoli and mixtures Free in the JP-US column; frozen spinach 6%."
+        },
+        "0711": {
+          "exportsUsd": 0,
+          "rate": "Mostly 9%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0711: WTO rate 9% on most provisionally preserved vegetables."
+        },
+        "0712": {
+          "exportsUsd": 31911507,
+          "rate": "Dried onions 9%; other dried vegetables 9–12.8%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0712.20 (dried onions): WTO rate 9%, no Japan–U.S. concession; dried potatoes 12.8%; dried Agaricus mushrooms Free."
+        },
+        "0713": {
+          "exportsUsd": 8000265,
+          "rate": "Lentils, chickpeas free; dried beans and peas free within the import quota",
+          "normalRate": "354 yen/kg on dried beans and peas outside the quota",
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0713: lentils (0713.40) and chickpeas (0713.20) Free in the JP-US column (WTO rate 8.5%); dried peas and kidney beans are import-quota goods, Free for U.S. goods within the quota and 354 yen/kg outside it."
+        },
+        "0714": {
+          "exportsUsd": 0,
+          "rate": "Japan's WTO rate (9–12.8%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule of October 31, 2026, 0714: sweet potatoes 12.8% (frozen 12%), other roots 9–12%; no Japan–U.S. concession."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys frozen vegetables, chipping potatoes, dried vegetables and onions. The 2020 Japan–U.S. Trade Agreement made most of these duty-free; U.S. fresh potatoes are admitted only for making chips, year-round since February 2020.",
+        "mainProducts": "Frozen vegetables (0710) · Potatoes (0701)",
+        "tariffNow": "Free on potatoes, onions, frozen vegetables, lentils; 3% on some fresh",
+        "regulator": {
+          "name": "Plant Protection Station, Ministry of Agriculture, Forestry and Fisheries (MAFF)",
+          "url": "https://www.maff.go.jp/pps/e/",
+          "requirement": "Fresh vegetables need a USDA phytosanitary certificate and import inspection. U.S. fresh potatoes are admitted only for chipping, from fields free of cyst nematodes, in APHIS-sealed containers, and must be processed into chips."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 214,
+      "name": "Dominican Republic",
+      "rule": "CAFTA-DR tariff elimination on qualifying U.S. goods (phase-outs completed in 2025)",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 110640589,
+      "priorExportsUsd": 122156059,
+      "sharePct": 2.2,
+      "changePct": -9.4,
+      "status": "unchanged",
+      "cells": {
+        "0701": {
+          "exportsUsd": 11161424,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0702": {
+          "exportsUsd": 14161,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0703": {
+          "exportsUsd": 432857,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0704": {
+          "exportsUsd": 648123,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0705": {
+          "exportsUsd": 2202938,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0706": {
+          "exportsUsd": 31647,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0707": {
+          "exportsUsd": 5002710,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0708": {
+          "exportsUsd": 2823379,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0709": {
+          "exportsUsd": 1203935,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0710": {
+          "exportsUsd": 2100749,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0711": {
+          "exportsUsd": 41838,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0712": {
+          "exportsUsd": 3041724,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        },
+        "0713": {
+          "exportsUsd": 81850033,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "89% on dried kidney beans for goods that do not qualify",
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026). The Dominican Republic reports an 89% MFN rate on dried kidney beans (0713.33) to WITS (2023)."
+        },
+        "0714": {
+          "exportsUsd": 85071,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Dominican Republic schedule: the last phase-outs (up to 20 years) ended in 2025, so qualifying U.S. goods enter duty-free in 2026 (trade.gov Country Commercial Guide, February 2026)."
+        }
+      },
+      "profile": {
+        "headline": "Dry beans and other pulses are $82 million of the Dominican Republic’s $111 million. The last CAFTA-DR phase-outs ended in 2025, so qualifying U.S. goods enter duty-free; beans that do not qualify face an 89% normal rate.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Potatoes (0701)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "Ministry of Agriculture (Departamento de Sanidad Vegetal)",
+          "url": "https://agricultura.gob.do/",
+          "requirement": "The Ministry of Agriculture sets the plant-health import conditions; APHIS’s Phytosanitary Export Database lists what it requires for each product, usually a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Dominican Republic import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (no U.S. trade agreement covering vegetables)",
+      "usTradeAgreement": null,
+      "exportsUsd": 79995706,
+      "priorExportsUsd": 89654490,
+      "sharePct": 1.6,
+      "changePct": -10.8,
+      "status": "unchanged",
+      "cells": {
+        "0701": {
+          "exportsUsd": 0,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): ware potatoes (0701 90 90) 10%, seed potatoes 4%."
+        },
+        "0702": {
+          "exportsUsd": 97492,
+          "rate": "8%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): tomatoes (0702) 8%."
+        },
+        "0703": {
+          "exportsUsd": 2090788,
+          "rate": "8% on onions",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): onions (0703 10 19) 8%; garlic 8% + £100/100 kg; leeks 10%."
+        },
+        "0704": {
+          "exportsUsd": 0,
+          "rate": "8–12%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): headed broccoli 8%, cauliflower, cabbage and Brussels sprouts 12%."
+        },
+        "0705": {
+          "exportsUsd": 0,
+          "rate": "Head lettuce 0%; other lettuce 10%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): head lettuce (0705 11) 0%, other lettuce (0705 19) 10%."
+        },
+        "0706": {
+          "exportsUsd": 518738,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): carrots and other roots 12% (celeriac 10%)."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): cucumbers and gherkins 12%."
+        },
+        "0708": {
+          "exportsUsd": 362252,
+          "rate": "8–10%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): fresh peas 8%, fresh beans 10%."
+        },
+        "0709": {
+          "exportsUsd": 21169043,
+          "rate": "0–12% (sweet peppers 6%, asparagus 10%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): sweet peppers 6%, asparagus 10%, celery 12%, Agaricus mushrooms and artichokes 0%."
+        },
+        "0710": {
+          "exportsUsd": 1168271,
+          "rate": "Mostly 14%; frozen peas 0%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): most frozen vegetables 14%, frozen peas and sweet peppers 0%, sweet corn 4% + £7.80/100 kg."
+        },
+        "0711": {
+          "exportsUsd": 69378,
+          "rate": "0%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): provisionally preserved vegetables 0%."
+        },
+        "0712": {
+          "exportsUsd": 3965792,
+          "rate": "12% (dried onions)",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): dried onions and most dried vegetables 12%; dried potatoes 10%."
+        },
+        "0713": {
+          "exportsUsd": 16875861,
+          "rate": "0%",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): dried peas, chickpeas, beans and lentils 0%."
+        },
+        "0714": {
+          "exportsUsd": 33678091,
+          "rate": "2% on fresh sweet potatoes",
+          "normalRate": null,
+          "basis": "UK Global Tariff, November 2026 (no U.S. preference): fresh whole sweet potatoes for human consumption (0714 20 10) 2%; other sweet potatoes £5.30/100 kg."
+        }
+      },
+      "profile": {
+        "headline": "The UK buys U.S. sweet potatoes ($34 million), fresh vegetables and pulses. The 2025 U.S.–UK deal gave no vegetable concessions, so the UK Global Tariff applies: 2% on fresh sweet potatoes, nothing on pulses, 6–12% on most fresh vegetables.",
+        "mainProducts": "Cassava, sweet potatoes & other roots (0714) · Other fresh vegetables (0709)",
+        "tariffNow": "Pulses free; sweet potatoes 2%; most fresh vegetables 6–12%",
+        "regulator": {
+          "name": "Department for Environment, Food and Rural Affairs (Defra) and APHA plant health",
+          "url": "https://www.gov.uk/guidance/import-plants-and-plant-products-from-non-eu-countries-to-great-britain",
+          "requirement": "Fresh vegetables and potatoes are regulated plant products: the importer pre-notifies in IPAFFS and the goods need a USDA phytosanitary certificate and plant-health checks."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs import tariff, column 1 (WTO) rates; U.S.–Taiwan reciprocal trade agreement signed February 2026, not in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 63859448,
+      "priorExportsUsd": 57816534,
+      "sharePct": 1.3,
+      "changePct": 10.5,
+      "status": "pending",
+      "cells": {
+        "0701": {
+          "exportsUsd": 21100412,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: fresh potatoes other than seed (0701.90) 15%; seed potatoes 0%."
+        },
+        "0702": {
+          "exportsUsd": 74960,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: tomatoes 10%."
+        },
+        "0703": {
+          "exportsUsd": 11487143,
+          "rate": "25% on onions",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: onions (0703.10) 25%, shallots and leeks 20%, garlic NT$27/kg."
+        },
+        "0704": {
+          "exportsUsd": 589710,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: cauliflower, broccoli, cabbage and other brassicas 20%."
+        },
+        "0705": {
+          "exportsUsd": 17877868,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: head and other lettuce 20%."
+        },
+        "0706": {
+          "exportsUsd": 106321,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: carrots, turnips and radishes 20%."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: cucumbers 20%."
+        },
+        "0708": {
+          "exportsUsd": 0,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: fresh peas and beans 20%."
+        },
+        "0709": {
+          "exportsUsd": 5513307,
+          "rate": "5–25% (celery 15%, peppers 20%)",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: asparagus 5%, celery 15%, peppers, spinach and sweet corn 20%, most others 25%."
+        },
+        "0710": {
+          "exportsUsd": 1875211,
+          "rate": "15–25%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: frozen potatoes and peas 15%, sweet corn and spinach 20%, carrots 25%."
+        },
+        "0711": {
+          "exportsUsd": 19505,
+          "rate": "10–20%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: provisionally preserved vegetables 10–20%."
+        },
+        "0712": {
+          "exportsUsd": 1733100,
+          "rate": "20% (dried onions)",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: dried onions, potatoes and other dried vegetables 20%; dried mushrooms 30%."
+        },
+        "0713": {
+          "exportsUsd": 3409474,
+          "rate": "Dried peas 0%; beans and lentils 5%",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: dried peas (0713.10) 0%, kidney beans (0713.33) and lentils 5%, chickpeas 8.5%, adzuki beans NT$22/kg."
+        },
+        "0714": {
+          "exportsUsd": 72437,
+          "rate": "10% (sweet potatoes)",
+          "normalRate": null,
+          "basis": "Taiwan Customs Import Tariff, column 1 (WTO) rate, November 2026: fresh or dried sweet potatoes 10%, frozen 20%."
+        }
+      },
+      "profile": {
+        "headline": "Taiwan buys U.S. potatoes, lettuce and onions and charges its normal rates: 15% on potatoes, 20% on lettuce, 25% on onions. The February 2026 U.S.–Taiwan agreement would cut most of them, but Taiwan’s legislature has not yet approved it.",
+        "mainProducts": "Potatoes (0701) · Lettuce & chicory (0705)",
+        "tariffNow": "Normal tariff: potatoes 15%, lettuce 20%, onions 25%",
+        "regulator": {
+          "name": "Animal and Plant Health Inspection Agency (APHIA)",
+          "url": "https://www.aphia.gov.tw/",
+          "requirement": "Fresh vegetables need a USDA phytosanitary certificate and import inspection. U.S. potatoes for processing must meet Taiwan’s Quarantine Requirements for the Importation of U.S. Processing Potatoes (February 6, 2026)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 188,
+      "name": "Costa Rica",
+      "rule": "CAFTA-DR tariff elimination; fresh potatoes and onions only through a duty-free quota",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 50522354,
+      "priorExportsUsd": 46511522,
+      "sharePct": 1,
+      "changePct": 8.6,
+      "status": "unchanged",
+      "cells": {
+        "0701": {
+          "exportsUsd": 3957279,
+          "rate": "Free within the CAFTA-DR quota",
+          "normalRate": "Costa Rica's normal rate above the quota",
+          "basis": "CAFTA-DR, Costa Rica schedule: fresh potatoes are excluded from tariff elimination; a tariff-rate quota that grows every year gives duty-free access for a set quantity (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0702": {
+          "exportsUsd": 5933,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0703": {
+          "exportsUsd": 230810,
+          "rate": "Free within the CAFTA-DR quota (onions)",
+          "normalRate": "Costa Rica's normal rate above the quota",
+          "basis": "CAFTA-DR, Costa Rica schedule: fresh onions are excluded from tariff elimination; a tariff-rate quota that grows every year gives duty-free access for a set quantity (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0704": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0705": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0706": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0708": {
+          "exportsUsd": 3521633,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0709": {
+          "exportsUsd": 32154,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0710": {
+          "exportsUsd": 626759,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0711": {
+          "exportsUsd": 54643,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0712": {
+          "exportsUsd": 825775,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0713": {
+          "exportsUsd": 41242143,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        },
+        "0714": {
+          "exportsUsd": 25225,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR, Costa Rica schedule: all U.S. agricultural products enter duty-free except fresh potatoes and onions (trade.gov Country Commercial Guide, June 2026)."
+        }
+      },
+      "profile": {
+        "headline": "Costa Rica buys mostly U.S. dry beans ($41 million of $51 million), duty-free under CAFTA-DR. Fresh potatoes and onions are the exception: they enter duty-free only within a tariff-rate quota that grows every year.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Potatoes (0701)",
+        "tariffNow": "Free (CAFTA-DR); potatoes and onions within a quota",
+        "regulator": {
+          "name": "Servicio Fitosanitario del Estado (SFE)",
+          "url": "https://www.sfe.go.cr/",
+          "requirement": "The SFE sets the phytosanitary import conditions for each product and origin; APHIS’s Phytosanitary Export Database lists what Costa Rica requires, usually a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Costa Rica import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's normal rate plus its 2018–19 counter-tariffs and the extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 49602065,
+      "priorExportsUsd": 59429249,
+      "sharePct": 1,
+      "changePct": -16.5,
+      "status": "raised",
+      "cells": {
+        "0701": {
+          "exportsUsd": 7455,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0702": {
+          "exportsUsd": 0,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0703": {
+          "exportsUsd": 0,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0704": {
+          "exportsUsd": 248542,
+          "rate": "About 50–53%",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0705": {
+          "exportsUsd": 0,
+          "rate": "About 50% (10% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0706": {
+          "exportsUsd": 0,
+          "rate": "About 53%; 23% with an exclusion",
+          "normalRate": "13% + 10% for a buyer holding an exclusion",
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027). Carrots, turnips and radishes are on the exclusion-eligible list (Tariff Commission Announcement No. 2 of 2020)."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0708": {
+          "exportsUsd": 207601,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0709": {
+          "exportsUsd": 0,
+          "rate": "About 50–53%",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most fresh vegetables, 10% on lettuce), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0710": {
+          "exportsUsd": 8604833,
+          "rate": "Normal rate + 10–15% + 10%; frozen sweet corn 35%",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 10–13%); frozen vegetables are not on the 2018 List 1. Frozen sweet corn (0710.40) pays 10% + 10% under Announcement No. 3 of 2019 (Annex 3) + 5% under Announcement No. 4 of 2019 as halved + the extra 10%; other lines carry different 2019 rates (not individually verified)."
+        },
+        "0711": {
+          "exportsUsd": 215380,
+          "rate": "Normal rate + 2.5% + 10% (not individually verified)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13%), plus 2.5% under Announcement No. 4 of 2019 as halved, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027); other 2018–19 lists not checked line by line."
+        },
+        "0712": {
+          "exportsUsd": 3061499,
+          "rate": "About 53% (13% + 25% + 5% + 10%)",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on most dried vegetables), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        },
+        "0713": {
+          "exportsUsd": 37251772,
+          "rate": "Normal rate (5–7.5%) + 25% + 2.5–5% + 10%; dried peas 42.5%, kidney beans 47.5%",
+          "normalRate": "Normal rate alone: 5–7.5%",
+          "basis": "China's normal rate (WITS, 2023: dried peas 5%, lentils and chickpeas 7%, kidney beans 7.5%), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 2.5% (peas, lentils, chickpeas) or 5% (kidney beans) under Tariff Commission Announcement No. 4 of 2019 as halved from February 14, 2020, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027). Pulses are not eligible for China’s exclusion process."
+        },
+        "0714": {
+          "exportsUsd": 4983,
+          "rate": "About 53% on sweet potatoes",
+          "normalRate": null,
+          "basis": "China's normal rate (WITS, 2023: 13% on fresh sweet potatoes), plus 25% under Tariff Commission Announcement No. 5 of 2018 (List 1, from July 6, 2018), plus 5% under Tariff Commission Announcement No. 4 of 2019 (10% from September 1, 2019, halved from February 14, 2020), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, 24 points suspended to January 10, 2027)."
+        }
+      },
+      "profile": {
+        "headline": "China bought $50 million in 2025, mostly dried peas, beans and other pulses ($37 million) and frozen vegetables. U.S. pulses pay about 42–48% because China’s 2018 counter-tariff of 25% still applies and pulses cannot get an exclusion; its separate 10% on U.S. farm goods ended on November 10, 2025.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Frozen vegetables (0710)",
+        "tariffNow": "Normal rate + 2018–19 counter-tariffs + 10%; dried peas 42.5%",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "Fresh vegetables are admitted only under an APHIS–GACC protocol; plants that pack dried beans and dried or frozen vegetables for China must be registered with GACC, and each lot needs a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's customs tariff (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 6734646,
+      "priorExportsUsd": 80617722,
+      "sharePct": 0.1,
+      "changePct": -91.6,
+      "status": "raised",
+      "cells": {
+        "0701": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0702": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0703": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0704": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0705": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0706": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0707": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0708": {
+          "exportsUsd": 11448,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0709": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0710": {
+          "exportsUsd": 2970,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0711": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0712": {
+          "exportsUsd": 701291,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        },
+        "0713": {
+          "exportsUsd": 6018937,
+          "rate": "Yellow peas 30%; other pulses India's normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Notification No. 46/2025-Customs: yellow peas (0713 10 10) 10% basic customs duty + 20% AIDC on bills of lading from November 1, 2025, for all origins; imports stay \"Free\" to March 31, 2027 (DGFT Notification No. 70/2025-26). Lentils, chickpeas and beans: check the CBIC schedule."
+        },
+        "0714": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Rate not checked line by line; check the CBIC schedule."
+        }
+      },
+      "profile": {
+        "headline": "U.S. sales to India fell from $80.6 million in 2024 to $6.7 million in 2025, almost all pulses. Since November 1, 2025 yellow peas from every country pay 30%, after nearly two years duty-free, and the February 2026 U.S.–India framework does not name pulses.",
+        "mainProducts": "Dried beans, peas & lentils (0713) · Dried vegetables (0712)",
+        "tariffNow": "Yellow peas 30% (all origins, since Nov 2025)",
+        "regulator": {
+          "name": "Directorate of Plant Protection, Quarantine & Storage (PPQS) and FSSAI",
+          "url": "https://ppqs.gov.in/",
+          "requirement": "An import permit under India’s Plant Quarantine (Regulation of Import into India) Order, 2003 and a USDA phytosanitary certificate; FSSAI clears food at the port. Yellow pea imports must also be registered in India’s online Import Monitoring System."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "0709",
+      "exportsUsd": 812922955,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0705",
+      "exportsUsd": 505819992,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0704",
+      "exportsUsd": 412701954,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0702",
+      "exportsUsd": 257205891,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0703",
+      "exportsUsd": 226012137,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "0713",
+      "exportsUsd": 209840086,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "0713",
+      "exportsUsd": 164688691,
+      "rate": "0% (EU normal rate)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0706",
+      "exportsUsd": 137896298,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are each market's 2026 schedule: Canada's and Mexico's USMCA schedules, the EU Common Customs Tariff (TARIC, November 2026) with Regulation (EU) 2026/1455, Japan's Tariff Schedule of October 31, 2026 (including its Japan–U.S. Trade Agreement column), the UK Global Tariff, Taiwan's customs import tariff (column 1), CAFTA-DR for the Dominican Republic and Costa Rica, China's normal rates as reported to WITS (2023) with its additional duties, and India's customs notifications.",
+    "Each cell names the products that carry most of the trade in that group; other lines in the same heading can pay a different rate. Cells marked \"not individually verified\" are small groups where the rate was not checked line by line.",
+    "Trade-agreement rates apply only to goods that meet the agreement's rules of origin; the EU's 2026 U.S. preferences need proof of U.S. origin, and quota rates apply only while the quota lasts.",
+    "China's cells add its 2018–19 counter-tariffs (25% under the 2018 List 1 on fresh and dried vegetables, pulses and roots; 2.5–5% under the 2019 list after the 2020 halving; 10% under the 2019 list on some frozen vegetables) and its extra 10% on all U.S. goods to its normal rate. Only carrots, turnips and radishes (0706) can get a market-based exclusion.",
+    "National 8–10-digit lines can set a different rate than the six-digit subheading. Check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 07, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation (EU) 2026/1455 of 25 June 2026",
+      "title": "Adjustment of customs duties on imports of certain goods originating in the United States and opening of tariff quotas",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-2019-2072",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2019/2072, Annex VI",
+      "document": "Commission Implementing Regulation (EU) 2019/2072",
+      "title": "Uniform conditions for implementing Regulation (EU) 2016/2031 on protective measures against pests of plants (Annex VI: plants whose introduction is prohibited)",
+      "signed": "2019-11-28",
+      "published": "2019-12-10",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2019/2072/oj"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (DG TAXUD)",
+      "citation": "TARIC, origin United States, consulted November 19, 2026",
+      "document": "TARIC consultation",
+      "title": "Integrated Tariff of the European Union: measures for goods from the United States",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/taric_consultation.jsp?Lang=en"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, October 31, 2026, Chapter 7",
+      "document": "Japan's Tariff Schedule (Statistical Code for Import)",
+      "title": "Chapter 7: Edible vegetables and certain roots and tubers (with the JP-US Trade Agreement column)",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_07.htm"
+    },
+    {
+      "id": "fas-jp-chipping-2020",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN report, Tokyo, March 3, 2020",
+      "document": "GAIN report",
+      "title": "Import Requirements for US Chipping Potatoes Destined for Japan",
+      "signed": null,
+      "published": "2020-03-03",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Import+Requirements+for+US+Chipping+Potatoes+Destined+for+Japan+_Tokyo_Japan_03-03-2020"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "HM Revenue & Customs / Department for Business and Trade",
+      "citation": "UK Trade Tariff, Chapter 07, consulted November 19, 2026",
+      "document": "UK Global Tariff (third-country duty)",
+      "title": "UK Trade Tariff: Chapter 07 edible vegetables and certain roots and tubers",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.trade-tariff.service.gov.uk/chapters/07"
+    },
+    {
+      "id": "tw-tariff",
+      "publisher": "Customs Administration, Ministry of Finance (Taiwan)",
+      "citation": "Customs Import Tariff open data, consulted November 19, 2026",
+      "document": "Customs Import Tariff (column 1 rates)",
+      "title": "海關進口稅則資料 (Customs Import Tariff data)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://opendata.customs.gov.tw/data/80871/csv.csv"
+    },
+    {
+      "id": "tw-art-text",
+      "publisher": "Office of the U.S. Trade Representative",
+      "citation": "AIT-TECRO Agreement on Reciprocal Trade",
+      "document": "Agreement text (paragraph 53: processing potatoes)",
+      "title": "Agreement on Reciprocal Trade between AIT and TECRO",
+      "signed": "2026-02-12",
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/AIT-TECRO%20ART%20sanitized.pdf"
+    },
+    {
+      "id": "do-ccg-tariffs",
+      "publisher": "International Trade Administration",
+      "citation": "Country Commercial Guide: Dominican Republic import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Dominican Republic: import tariffs (CAFTA-DR phase-outs of up to 20 years ended in 2025)",
+      "signed": null,
+      "published": "2026-02-25",
+      "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-tariffs"
+    },
+    {
+      "id": "wits-do-2023",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS TRAINS, Dominican Republic MFN applied rates, 2023",
+      "document": "Tariff data (reported MFN applied rate, HS 0713.33)",
+      "title": "Dominican Republic: MFN applied tariff on dried kidney beans (0713.33)",
+      "signed": null,
+      "published": "2023-12-31",
+      "url": "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/214/partner/000/product/071333/year/2023/datatype/reported"
+    },
+    {
+      "id": "cr-ccg-tariffs",
+      "publisher": "International Trade Administration",
+      "citation": "Country Commercial Guide: Costa Rica import tariffs",
+      "document": "Country Commercial Guide",
+      "title": "Costa Rica: import tariffs (all U.S. agricultural products duty-free except potatoes and onions, which use TRQs)",
+      "signed": null,
+      "published": "2026-06-23",
+      "url": "https://www.trade.gov/country-commercial-guides/costa-rica-import-tariffs"
+    },
+    {
+      "id": "aphis-mx-potatoes-2022",
+      "publisher": "USDA APHIS",
+      "citation": "APHIS bulletin, May 12, 2022",
+      "document": "Stakeholder announcement",
+      "title": "U.S. Fresh Potatoes Begin Export To Mexico (beyond the 26-kilometer border zone)",
+      "signed": null,
+      "published": "2022-05-12",
+      "url": "https://content.govdelivery.com/accounts/USDAAPHIS/bulletins/3178527"
+    },
+    {
+      "id": "wits-cn-2023",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS TRAINS, China MFN applied rates, 2023",
+      "document": "Tariff data (reported MFN applied rates by HS six-digit subheading)",
+      "title": "China: MFN applied tariff rates, HS chapter 07",
+      "signed": null,
+      "published": "2023-12-31",
+      "url": "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/156/partner/000/product/all/year/2023/datatype/reported"
+    },
+    {
+      "id": "cn-2018-list1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 5 of 2018",
+      "document": "Announcement and Annex 1 (545 items, 25% from July 6, 2018)",
+      "title": "国务院关税税则委员会关于对原产于美国500亿美元进口商品加征关税的公告",
+      "signed": null,
+      "published": "2018-06-16",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201806/t20180616_2930325.htm"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Annex 3 (974 items at 10% from June 1, 2019)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Announcement and Annex 1 (10% and 5% from September 1, 2019)",
+      "title": "国务院关税税则委员会关于对原产于美国的约750亿美元进口商品加征关税的公告",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Announcement",
+      "title": "Rates of the September 2019 additional tariffs on U.S. goods halved (10% to 5%, 5% to 2.5%) from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-2020-exclusion",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Announcement and annex (goods eligible for exclusion)",
+      "title": "Market-based purchase exclusion process for U.S. goods subject to China's additional tariffs",
+      "signed": null,
+      "published": "2020-02-17",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on U.S. goods (cut to 10% from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "in-cbic-46-2025",
+      "publisher": "Central Board of Indirect Taxes and Customs (India)",
+      "citation": "Notification No. 46/2025-Customs",
+      "document": "Customs notification",
+      "title": "Basic customs duty of 10% and AIDC of 20% on yellow peas (0713 10 10) from November 1, 2025",
+      "signed": "2025-10-29",
+      "published": "2025-10-29",
+      "url": "https://taxinformation.cbic.gov.in/view-pdf/1010497/ENG/Notifications"
+    },
+    {
+      "id": "in-dgft-70-2025",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "DGFT Notification No. 70/2025-26",
+      "document": "Notification",
+      "title": "Extension in import period for yellow peas under ITC (HS) 07131010 up to March 31, 2027",
+      "signed": "2026-03-31",
+      "published": "2026-03-31",
+      "url": "https://content.dgft.gov.in/Website/dgftprod/8652d04c-f30a-4985-8692-f20002b6e1a3/Noti-70-yellow-peas.pdf"
+    },
+    {
+      "id": "in-fas-yellow-peas-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2025-0069",
+      "document": "GAIN report",
+      "title": "India Increases Import Duty on Yellow Peas",
+      "signed": null,
+      "published": "2025-11-24",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=India+Increases+Import+Duty+on+Yellow+Peas_New+Delhi_India_IN2025-0069.pdf"
+    },
+    {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "United States-India Joint Statement, Feb. 6, 2026",
+      "document": "Joint statement",
+      "title": "United States-India Joint Statement",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    }
+  ],
+  "coverageNote": "The 9 largest markets take 89% of 2025 U.S. Chapter 07 exports; India (0.1%) is added because of its 2025 duty on yellow peas. A customs union (the EU) is one market: its members share one tariff."
+}

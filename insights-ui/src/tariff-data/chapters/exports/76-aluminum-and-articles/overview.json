@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 76,
+    "padded": "76",
+    "slug": "76-aluminum-and-articles",
+    "title": "Aluminum and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/76-aluminum-and-articles",
+    "h1": "HTS Chapter 76: Aluminum and Articles Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Aluminum & Scrap Exports and Foreign Tariffs (HTS Ch. 76) | KoalaGains",
+      "shortDescription": "U.S. aluminum exports were $13.67B in 2025, a third of it scrap. Who buys it, what Canada, China, Mexico and Asia charge, and what changed since January 2025.",
+      "keywords": [
+        "us aluminum exports",
+        "us aluminum scrap exports",
+        "aluminum exports by country",
+        "us aluminum exports to canada",
+        "aluminum scrap exporters usa",
+        "HS 76 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$13.67B** of aluminum and aluminum products in 2025, down 5.2% from 2024 and 6% below the 2022 peak of $14.51B. A third of it (**33%**, $4.46B) was aluminum scrap (7602) — used beverage cans, wheels, turnings and other recyclable aluminum — shipped mostly to Thailand, India, Malaysia, Hong Kong and South Korea. Most of the rest is sheet and plate (7606, $2.55B), other articles (7616), ingot and billet (7601) and extrusions (7604), much of it for **Mexico and Canada**, which together took **50%**. Exports have jumped in 2026: **$11.47B** from January to August, up 25%.\n\nScrap enters most Asian buyers duty-free, so there the buyer's permit, inspection and purity rules decide access. **China** is the exception: U.S. scrap pays **35%** there (a 25% counter-tariff from 2018 plus the 10% extra duty on all U.S. goods). For finished aluminum, **Canada** has surtaxed U.S. ingot, extrusions, sheet, foil and most articles since March 13, 2025, at **50% since September 8, 2026**, even when they qualify for CUSMA; scrap and cans are not covered. **Mexico** takes USMCA-qualifying aluminum free but charges a US$1.72/kg anti-dumping duty on U.S. hollow profiles, and the **EU** cut its duty on U.S. aluminum to 0% from July 1, 2026.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$13.67B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-5.2%"
+    },
+    {
+      "label": "Largest product group (7602)",
+      "value": "33%",
+      "note": "Aluminum waste and scrap"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "50%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top buyers that raised tariffs",
+      "value": "3 of 12",
+      "note": "Canada, Mexico (hollow profiles), China"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. aluminum exports were $13.67B in 2025 (−5.2%) and are up 25% in January–August 2026; scrap (7602, $4.46B) is the largest product, sold mostly to Thailand, India, Malaysia, Hong Kong and South Korea.",
+    "Scrap pays 0% in Thailand, Malaysia, Korea and Hong Kong and 2.5–5% in India, but 35% in China; buyers' purity, inspection and permit rules (China's recycled-aluminum standard, Malaysia's SIRIM certificate, India's pre-shipment inspection, Thailand's container checks) decide whether a load clears.",
+    "Canada ($3.03B) has charged a 50% surtax on most U.S. aluminum since September 8, 2026, with no CUSMA exemption; scrap, cans and gas cylinders are exempt, and aluminum imported before July 1, 2027 for Canadian manufacturing or food and beverage packaging can have it remitted.",
+    "Mexico ($3.83B) still takes qualifying aluminum free under USMCA, but U.S. hollow profiles pay a US$1.72/kg anti-dumping duty since September 2026, and Mexico's general rates on many aluminum lines rose to 25–35% in 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 9389712361,
+      "partnerAUsd": 2804926019,
+      "partnerBUsd": 2477636410,
+      "restUsd": 4107149932
+    },
+    {
+      "year": 2021,
+      "totalUsd": 12022206026,
+      "partnerAUsd": 3695168638,
+      "partnerBUsd": 3045794942,
+      "restUsd": 5281242446
+    },
+    {
+      "year": 2022,
+      "totalUsd": 14511112356,
+      "partnerAUsd": 4765180499,
+      "partnerBUsd": 3606218999,
+      "restUsd": 6139712858
+    },
+    {
+      "year": 2023,
+      "totalUsd": 14277975455,
+      "partnerAUsd": 4395413120,
+      "partnerBUsd": 3343014121,
+      "restUsd": 6539548214
+    },
+    {
+      "year": 2024,
+      "totalUsd": 14411570822,
+      "partnerAUsd": 4161541740,
+      "partnerBUsd": 3210375337,
+      "restUsd": 7039653745
+    },
+    {
+      "year": 2025,
+      "totalUsd": 13666320519,
+      "partnerAUsd": 3832944898,
+      "partnerBUsd": 3034799454,
+      "restUsd": 6798576167
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 76 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 11470190618,
+    "priorExportsUsd": 9175580400,
+    "changePct": 25,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 3370810040,
+        "priorExportsUsd": 2674441362,
+        "changePct": 26
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2226848541,
+        "priorExportsUsd": 2150600370,
+        "changePct": 3.5
+      },
+      {
+        "countryCode": 764,
+        "country": "Thailand",
+        "exportsUsd": 918657135,
+        "priorExportsUsd": 633472893,
+        "changePct": 45
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 794557287,
+        "priorExportsUsd": 527371844,
+        "changePct": 50.7
+      },
+      {
+        "countryCode": 458,
+        "country": "Malaysia",
+        "exportsUsd": 652302930,
+        "priorExportsUsd": 482525109,
+        "changePct": 35.2
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 559995183,
+        "priorExportsUsd": 424836895,
+        "changePct": 31.8
+      },
+      {
+        "countryCode": 344,
+        "country": "China, Hong Kong SAR",
+        "exportsUsd": 495512454,
+        "priorExportsUsd": 305990184,
+        "changePct": 61.9
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 317835687,
+        "priorExportsUsd": 267970088,
+        "changePct": 18.6
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 3832944898,
+      "priorExportsUsd": 4161541740,
+      "sharePct": 28,
+      "changePct": -7.9,
+      "tariffNow": "Free (USMCA); US$1.72/kg AD duty on hollow profiles",
+      "status": "raised"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3034799454,
+      "priorExportsUsd": 3210375337,
+      "sharePct": 22.2,
+      "changePct": -5.5,
+      "tariffNow": "Free (CUSMA) + 50% surtax on most aluminum (not scrap or cans)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 1022841272,
+      "priorExportsUsd": 758521401,
+      "sharePct": 7.5,
+      "changePct": 34.8,
+      "tariffNow": "Free on scrap; 3–10% MFN on aluminum products",
+      "status": "pending"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 853469432,
+      "priorExportsUsd": 792522558,
+      "sharePct": 6.2,
+      "changePct": 7.7,
+      "tariffNow": "2.5–5% on scrap; 7.5–10% on aluminum products",
+      "status": "pending"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 713143786,
+      "priorExportsUsd": 1299426338,
+      "sharePct": 5.2,
+      "changePct": -45.1,
+      "tariffNow": "Free on scrap; 20–30% on most aluminum products",
+      "status": "pending"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 689911231,
+      "priorExportsUsd": 805644585,
+      "sharePct": 5,
+      "changePct": -14.4,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 567748013,
+      "priorExportsUsd": 336990987,
+      "sharePct": 4.2,
+      "changePct": 68.5,
+      "tariffNow": "Free (no tariffs)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 417103309,
+      "priorExportsUsd": 385432600,
+      "sharePct": 3.1,
+      "changePct": 8.2,
+      "tariffNow": "35% on scrap; MFN + 10% + counter-tariffs on the rest",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 317559414,
+      "priorExportsUsd": 404046709,
+      "sharePct": 2.3,
+      "changePct": -21.4,
+      "tariffNow": "Free on ingot and scrap; up to 7.5% on extrusions and foil (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 194005776,
+      "priorExportsUsd": 208904868,
+      "sharePct": 1.4,
+      "changePct": -7.1,
+      "tariffNow": "Free on scrap; 6% on most aluminum products (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 188328147,
+      "priorExportsUsd": 225628143,
+      "sharePct": 1.4,
+      "changePct": -16.5,
+      "tariffNow": "Free (EU 0% on U.S. goods since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 174957804,
+      "priorExportsUsd": 177821395,
+      "sharePct": 1.3,
+      "changePct": -1.6,
+      "tariffNow": "Free (EU 0% on U.S. goods since July 1, 2026)",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 1659507983,
+  "othersPriorExportsUsd": 1644714161,
+  "byHeading": [
+    {
+      "heading": "7601",
+      "label": "Unwrought aluminum (ingot, billet, slab)",
+      "exportsUsd": 1157230718,
+      "priorExportsUsd": 1709784804,
+      "changePct": -32.3,
+      "sharePct": 8.5
+    },
+    {
+      "heading": "7602",
+      "label": "Aluminum waste and scrap",
+      "exportsUsd": 4455567647,
+      "priorExportsUsd": 3982005145,
+      "changePct": 11.9,
+      "sharePct": 32.6
+    },
+    {
+      "heading": "7603",
+      "label": "Aluminum powders and flakes",
+      "exportsUsd": 89345483,
+      "priorExportsUsd": 196591547,
+      "changePct": -54.6,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "7604",
+      "label": "Bars, rods and profiles (extrusions)",
+      "exportsUsd": 1023612717,
+      "priorExportsUsd": 1008264023,
+      "changePct": 1.5,
+      "sharePct": 7.5
+    },
+    {
+      "heading": "7605",
+      "label": "Aluminum wire",
+      "exportsUsd": 82481617,
+      "priorExportsUsd": 85886230,
+      "changePct": -4,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "7606",
+      "label": "Plates, sheets and strip (over 0.2 mm)",
+      "exportsUsd": 2548728125,
+      "priorExportsUsd": 3023320324,
+      "changePct": -15.7,
+      "sharePct": 18.6
+    },
+    {
+      "heading": "7607",
+      "label": "Aluminum foil (0.2 mm or less)",
+      "exportsUsd": 650794365,
+      "priorExportsUsd": 651623644,
+      "changePct": -0.1,
+      "sharePct": 4.8
+    },
+    {
+      "heading": "7608",
+      "label": "Tubes and pipes",
+      "exportsUsd": 298148762,
+      "priorExportsUsd": 314285583,
+      "changePct": -5.1,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "7609",
+      "label": "Tube or pipe fittings",
+      "exportsUsd": 185526234,
+      "priorExportsUsd": 187995755,
+      "changePct": -1.3,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "7610",
+      "label": "Structures, doors, windows and frames",
+      "exportsUsd": 454617061,
+      "priorExportsUsd": 505861462,
+      "changePct": -10.1,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "7611",
+      "label": "Reservoirs and tanks (over 300 l)",
+      "exportsUsd": 31625162,
+      "priorExportsUsd": 62065863,
+      "changePct": -49,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7612",
+      "label": "Casks, drums, cans and boxes (up to 300 l)",
+      "exportsUsd": 833874722,
+      "priorExportsUsd": 792940551,
+      "changePct": 5.2,
+      "sharePct": 6.1
+    },
+    {
+      "heading": "7613",
+      "label": "Containers for compressed or liquefied gas",
+      "exportsUsd": 161326999,
+      "priorExportsUsd": 140496597,
+      "changePct": 14.8,
+      "sharePct": 1.2
+    },
+    {
+      "heading": "7614",
+      "label": "Stranded wire and cables (not insulated)",
+      "exportsUsd": 19562028,
+      "priorExportsUsd": 20855820,
+      "changePct": -6.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7615",
+      "label": "Household, kitchen and sanitary articles",
+      "exportsUsd": 92283407,
+      "priorExportsUsd": 107889996,
+      "changePct": -14.5,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "7616",
+      "label": "Other articles of aluminum",
+      "exportsUsd": 1581595472,
+      "priorExportsUsd": 1621703478,
+      "changePct": -2.5,
+      "sharePct": 11.6
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7602.00",
+      "heading": "7602",
+      "description": "Aluminium; waste and scrap",
+      "exportsUsd": 4455567647,
+      "priorExportsUsd": 3982005145,
+      "changePct": 11.9,
+      "sharePct": 32.6
+    },
+    {
+      "hs6": "7606.12",
+      "heading": "7606",
+      "description": "Aluminium; plates, sheets and strip, thickness exceeding 0.2mm, alloys, rectangular (including square)",
+      "exportsUsd": 2357846336,
+      "priorExportsUsd": 2821381566,
+      "changePct": -16.4,
+      "sharePct": 17.3
+    },
+    {
+      "hs6": "7616.99",
+      "heading": "7616",
+      "description": "Aluminium; articles n.e.c. in heading 7616",
+      "exportsUsd": 1298521504,
+      "priorExportsUsd": 1332589411,
+      "changePct": -2.6,
+      "sharePct": 9.5
+    },
+    {
+      "hs6": "7601.20",
+      "heading": "7601",
+      "description": "Aluminium; unwrought, alloys",
+      "exportsUsd": 1040530596,
+      "priorExportsUsd": 1488719239,
+      "changePct": -30.1,
+      "sharePct": 7.6
+    },
+    {
+      "hs6": "7612.90",
+      "heading": "7612",
+      "description": "Aluminium; casks, drums, cans, boxes and the like for any material (not compressed or liquefied gas), 300l capacity or less, whether or not lined or heat-insulated, no mechanical or thermal equipment",
+      "exportsUsd": 826595037,
+      "priorExportsUsd": 784332867,
+      "changePct": 5.4,
+      "sharePct": 6
+    },
+    {
+      "hs6": "7604.29",
+      "heading": "7604",
+      "description": "Aluminium; alloys, bars, rods and profiles, other than hollow",
+      "exportsUsd": 746656014,
+      "priorExportsUsd": 799060600,
+      "changePct": -6.6,
+      "sharePct": 5.5
+    },
+    {
+      "hs6": "7607.11",
+      "heading": "7607",
+      "description": "Aluminium; foil, (not backed), rolled (but not further worked), of a thickness not exceeding 0.2mm",
+      "exportsUsd": 347211882,
+      "priorExportsUsd": 369547110,
+      "changePct": -6,
+      "sharePct": 2.5
+    },
+    {
+      "hs6": "7610.90",
+      "heading": "7610",
+      "description": "Aluminium; structures (excluding prefabricated buildings of heading no. 9406) and parts of structures, n.e.c. in heading no. 7610, plates, rods, profiles, tubes and the like",
+      "exportsUsd": 311295293,
+      "priorExportsUsd": 370361712,
+      "changePct": -15.9,
+      "sharePct": 2.3
+    },
+    {
+      "hs6": "7616.10",
+      "heading": "7616",
+      "description": "Aluminium; nails, tacks, staples (other than those of heading no. 8305), screws, bolts, nuts, screw hooks, rivets, cotters, cotter-pins, washers and similar articles",
+      "exportsUsd": 258359966,
+      "priorExportsUsd": 272002880,
+      "changePct": -5,
+      "sharePct": 1.9
+    },
+    {
+      "hs6": "7608.20",
+      "heading": "7608",
+      "description": "Aluminium; tubes and pipes, alloys",
+      "exportsUsd": 251703537,
+      "priorExportsUsd": 265236596,
+      "changePct": -5.1,
+      "sharePct": 1.8
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 76, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: tariff and trade data",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 88% of 2025 U.S. Chapter 76 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

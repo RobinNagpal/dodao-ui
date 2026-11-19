@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 94,
+    "padded": "94",
+    "slug": "94-furniture-and-lighting-fittings",
+    "title": "Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; luminaires and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated nameplates and the like; prefabricated buildings"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/94-furniture-and-lighting-fittings/faq",
+    "h1": "HTS Chapter 94: Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; luminaires and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated nameplates and the like; prefabricated buildings — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Furniture Export FAQ: Canada & Mexico Tariffs, HS Codes",
+      "shortDescription": "Short answers: does Canada tariff U.S. furniture (25–50% on listed lines), is there duty USA to Canada, Mexico, China and EU rates, and furniture HS codes.",
+      "keywords": [
+        "does canada have tariffs on us furniture",
+        "is there duty on furniture from usa to canada",
+        "mexico furniture tariff",
+        "hs code for furniture parts",
+        "hs code for office chair",
+        "does china have tariffs on us goods"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to what people search about exporting U.S. furniture, seats, mattresses and lighting, each drawn from the other export pages of this report.",
+  "keyTakeaways": [
+    "Canada charges U.S. household seats, kitchen cabinets, bedroom, metal and plastic furniture and LED fixtures 25% or 50% since September 8, 2026; seat parts, mattresses and medical furniture still enter free under CUSMA.",
+    "Mexico (USMCA), the EU (since July 1, 2026) and Australia (AUSFTA) let U.S. furniture in free; China adds 10% to its normal rate.",
+    "Most Chapter 94 goods are EAR99; the HS code, the first six digits of the Schedule B number, is 9401 for seats, 9403 for furniture, 9404 for mattresses and 9405 for lighting."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com, November 19, 2026) for queries such as \"canada tariff on us furniture\", \"tariff on furniture from usa to canada\", \"duty on furniture from usa to canada\", \"canada tariffs september 2026\", \"kitchen cabinets tariff canada\", \"mexico tariff furniture\", \"mexico tariffs on us goods\", \"does china have tariffs on us\", \"eu tariffs on us goods\", \"uk tariffs on us goods\", \"hs code furniture parts\", \"hs code for office chair\", \"hs code for sofa\", \"hs code lighting fixtures\", \"car seat hs code\", \"hs code prefabricated building\", \"steel derivative surtax canada\" and \"us furniture exports\".",
+  "faqs": [
+    {
+      "id": "canada-tariff-us-furniture",
+      "question": "Does Canada have tariffs on U.S. furniture?",
+      "answer": "Yes, on much of it. Since September 8, 2026 Canada's United States Surtax Order (2026) charges 50% on U.S. office swivel chairs, metal-frame seats, other metal furniture, wooden bedroom and other wooden furniture, plastic furniture and LED light fixtures, and 25% on upholstered wooden-frame sofas and chairs, wooden kitchen cabinets and wooden furniture parts, with no CUSMA exemption. Since December 26, 2025 a separate 25% global surtax also covers U.S. steel office furniture, other furniture parts and prefabricated buildings.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["canada tariffs on us furniture", "does canada have tariffs on us furniture", "canada tariff on us furniture"]
+    },
+    {
+      "id": "duty-usa-to-canada",
+      "question": "Is there duty on furniture shipped from the USA to Canada?",
+      "answer": "U.S.-made furniture that qualifies under CUSMA pays no Canadian customs duty (the normal rate is 8–9.5% on household furniture). The cost comes from Canada's surtaxes, charged on goods of U.S. origin whether or not they qualify for CUSMA: 25% or 50% on most household seats, cabinets, bedroom, metal and plastic furniture and LED fixtures, and 25% on steel office furniture and prefabricated buildings. Seat parts, motor-vehicle seats, medical furniture, mattresses and bedding pay neither.",
+      "link": "exports/markets",
+      "searchedAs": [
+        "is there duty on furniture from usa to canada",
+        "what is the duty on furniture from usa to canada",
+        "tariff on furniture from us to canada",
+        "are there tariffs on furniture from usa to canada",
+        "duty on furniture from us to canada"
+      ]
+    },
+    {
+      "id": "canada-sept-2026-cabinets",
+      "question": "What did Canada's September 8, 2026 tariffs do to U.S. kitchen cabinets and lighting?",
+      "answer": "Canada answered the U.S. Section 338 tariffs with counter-tariffs of 15%, 25% and 50% on listed U.S. goods from September 8, 2026. Wooden kitchen furniture such as cabinets (9403.40) pays 25%, and LED ceiling and wall fittings and other LED luminaires (9405.11, 9405.42) and lamp parts pay 50%. A $1 million shipment of U.S. kitchen cabinets now pays $250,000, against nothing in January 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["canadian tariffs sept 8 2026", "canada tariffs september 2026", "kitchen cabinets tariff canada", "did canada put tariffs on us goods"]
+    },
+    {
+      "id": "mexico-tariff-furniture",
+      "question": "Does Mexico charge tariffs on U.S. furniture?",
+      "answer": "Not on U.S. furniture that qualifies under USMCA: it enters Mexico free, and Mexico has published no counter-tariff on U.S. goods. From January 1, 2026 Mexico raised its general rates on most seats, furniture and mattress supports to 25% or 35% (other metal furniture went from 7% to 35%), so goods that fail the USMCA origin rules now pay much more.",
+      "link": "exports/markets",
+      "searchedAs": ["mexico furniture tariff", "does mexico have tariffs on us goods", "mexico tariffs on us products", "current mexico tariffs on us goods"]
+    },
+    {
+      "id": "china-tariff-us-furniture",
+      "question": "Does China have tariffs on U.S. furniture?",
+      "answer": "Yes. China's normal rate on furniture is 0%, but it adds a 10% extra tariff to every U.S. good, so a $1 million shipment of U.S. office or bedroom furniture pays $100,000. Mattresses and bedding pay 10% plus 10%, LED fixtures 6–10% plus 10%. The extra tariff would rise to 34% if China's suspension ends on January 10, 2027.",
+      "link": "exports/markets",
+      "searchedAs": ["does china have tariffs on us goods", "does china have tariffs on us products", "does china have tariffs on us"]
+    },
+    {
+      "id": "eu-uk-tariff-us-furniture",
+      "question": "What do the EU and the UK charge on U.S. furniture?",
+      "answer": "Since July 1, 2026 the EU charges 0% on every U.S. Chapter 94 good under Regulation (EU) 2026/1455, until December 31, 2029; before, seat parts paid up to 2.7%, bedding 3.7% and lamps up to 4.7%. The UK charges its normal UK Global Tariff: most finished furniture is free and seats, bedding and lamps pay 0–4%.",
+      "link": "exports/markets",
+      "searchedAs": ["eu tariffs on us goods", "eu tariffs on us goods list", "uk tariffs on us goods", "uk tariffs on american goods"]
+    },
+    {
+      "id": "hs-code-furniture-parts",
+      "question": "What is the HS code for furniture parts?",
+      "answer": "Parts of seats are 9401.91 if of wood and 9401.99 otherwise; parts of other furniture are 9403.91 if of wood and 9403.99 otherwise. Parts of medical furniture stay in 9402 and lamp parts are 9405.91 to 9405.99. These six digits are also the start of the 10-digit Schedule B number used for U.S. export filing.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code furniture parts",
+        "hs code for furniture parts",
+        "hs code chair parts",
+        "hs code for wooden furniture parts",
+        "metal furniture parts h.s code",
+        "hs code for office chair parts"
+      ]
+    },
+    {
+      "id": "hs-code-office-chair-sofa",
+      "question": "What is the HS code for an office chair or a sofa?",
+      "answer": "An office swivel chair with height adjustment is 9401.39 (9401.31 if of wood). An upholstered sofa or chair with a wooden frame is 9401.61 and one with a metal frame 9401.71. Office desks and cabinets are 9403.10 (metal) or 9403.30 (wood), and mattresses are 9404.21 or 9404.29.",
+      "link": "exports/rules",
+      "searchedAs": ["hs code for office chair", "hs code for sofa", "hs code for sofa set", "hs code 940161", "hs code 940171", "hs code mattress"]
+    },
+    {
+      "id": "hs-code-led-fixtures",
+      "question": "What is the HS code for LED light fixtures?",
+      "answer": "LED chandeliers and ceiling or wall fittings are 9405.11, LED table, desk and floor lamps 9405.21, and other LED luminaires 9405.42. Lamp parts are 9405.91 (glass), 9405.92 (plastic) and 9405.99 (other).",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code lighting fixtures",
+        "hs code for led lighting fixtures",
+        "hs code led light fixture",
+        "hs code for ceiling light fixtures",
+        "hs code 940542"
+      ]
+    },
+    {
+      "id": "hs-code-car-seat",
+      "question": "What is the HS code for car seats and seat parts?",
+      "answer": "Seats of a kind used in motor vehicles are 9401.20, aircraft seats 9401.10, and parts of seats 9401.99 (9401.91 if of wood). Seat parts, 9401.99, are the largest single U.S. Chapter 94 export line. For Russia and Belarus, motor-vehicle and aircraft seats need a BIS licence.",
+      "link": "exports/rules",
+      "searchedAs": ["car seat hs code", "hs code for car seat parts", "hs code for seat parts", "hs code 940199", "hs code for aircraft seat parts"]
+    },
+    {
+      "id": "canada-steel-derivative-prefab",
+      "question": "What is Canada's steel derivative surtax, and does it hit U.S. prefabricated buildings?",
+      "answer": "Yes. Since December 26, 2025 Canada's Steel Derivative Goods Surtax Order charges 25% on listed steel derivative goods from every country, the U.S. included. In Chapter 94 it covers steel modular building units (9406.20) and other prefabricated buildings (9406.90), metal office furniture (9403.10) and furniture parts other than of wood (9403.99); goods already under Canada's U.S. surtax do not pay it twice.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["steel derivative surtax canada", "steel derivative goods surtax order canada", "hs code prefabricated buildings"]
+    },
+    {
+      "id": "us-furniture-exports",
+      "question": "How much furniture does the U.S. export, and who buys it?",
+      "answer": "The U.S. exported $9.41 billion of Chapter 94 goods in 2025, down 1.9% from 2024: $3.67 billion of seats and seat parts, $2.73 billion of furniture, $1.42 billion of lighting and $796 million of medical furniture. Canada bought 46% and Mexico 19%; the UK, the Netherlands, Japan and Germany follow at about 2–3% each.",
+      "link": "exports",
+      "searchedAs": ["us furniture exports", "furniture exports by country"]
+    }
+  ]
+}

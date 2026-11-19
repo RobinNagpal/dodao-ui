@@ -1,0 +1,1840 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 38,
+    "padded": "38",
+    "slug": "38-misc-chemical-products",
+    "title": "Miscellaneous Chemical Products"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/38-misc-chemical-products/markets",
+    "h1": "HTS Chapter 38: Miscellaneous Chemical Products — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Chemical Products by Country (HTS Ch. 38) | KoalaGains",
+      "shortDescription": "What the EU, Canada, Mexico, China, Japan, Brazil, South Korea and Singapore charge on U.S. pesticides, reagents, catalysts and other Chapter 38 goods, and which regulator approves them.",
+      "keywords": [
+        "tariffs on US chemical products",
+        "EU tariff on US chemicals",
+        "China tariff on US pesticides",
+        "pesticide registration export markets",
+        "HS 38 tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Tariffs are zero for most of this chapter's trade: Canada, Mexico and South Korea charge nothing on qualifying U.S. goods, Singapore charges nothing at all, and the EU has charged nothing since July 1, 2026 (except 3809.10 and 3824.60). China adds a 10% extra duty to MFN rates of up to 13%, Brazil charges the Mercosur tariff of up to 14%, and Japan up to 3.9%. For most Chapter 38 goods the real gate is product approval in the buyer's market: pesticide and biocide registration (PMRA in Canada, MAPA in Brazil, the EU's plant-protection and biocides rules), diagnostic-device approval for reagents (3822), and chemical registration such as REACH, K-REACH and China's new-substance rules. Each market's regulator is listed below.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "3801",
+      "label": "Artificial graphite & carbon pastes",
+      "shortLabel": "Graphite"
+    },
+    {
+      "heading": "3802",
+      "label": "Activated carbon",
+      "shortLabel": "Activated carbon"
+    },
+    {
+      "heading": "3803",
+      "label": "Tall oil",
+      "shortLabel": "Tall oil"
+    },
+    {
+      "heading": "3804",
+      "label": "Lignin sulfonates & wood-pulp lyes",
+      "shortLabel": "Lignosulfonates"
+    },
+    {
+      "heading": "3805",
+      "label": "Turpentine & pine oil",
+      "shortLabel": "Turpentine"
+    },
+    {
+      "heading": "3806",
+      "label": "Rosin & ester gums",
+      "shortLabel": "Rosin"
+    },
+    {
+      "heading": "3807",
+      "label": "Wood tar & brewers' pitch",
+      "shortLabel": "Wood tar"
+    },
+    {
+      "heading": "3808",
+      "label": "Pesticides, herbicides & disinfectants",
+      "shortLabel": "Pesticides"
+    },
+    {
+      "heading": "3809",
+      "label": "Textile, paper & leather finishing agents",
+      "shortLabel": "Finishing agents"
+    },
+    {
+      "heading": "3810",
+      "label": "Pickling preparations & soldering fluxes",
+      "shortLabel": "Fluxes"
+    },
+    {
+      "heading": "3811",
+      "label": "Fuel & lubricant additives",
+      "shortLabel": "Additives"
+    },
+    {
+      "heading": "3812",
+      "label": "Rubber accelerators, plasticizers & stabilizers",
+      "shortLabel": "Rubber chemicals"
+    },
+    {
+      "heading": "3813",
+      "label": "Fire-extinguisher charges",
+      "shortLabel": "Fire extinguishers"
+    },
+    {
+      "heading": "3814",
+      "label": "Solvents, thinners & paint removers",
+      "shortLabel": "Solvents"
+    },
+    {
+      "heading": "3815",
+      "label": "Catalysts",
+      "shortLabel": "Catalysts"
+    },
+    {
+      "heading": "3816",
+      "label": "Refractory cements & mortars",
+      "shortLabel": "Refractories"
+    },
+    {
+      "heading": "3817",
+      "label": "Mixed alkylbenzenes (LAB)",
+      "shortLabel": "Alkylbenzenes"
+    },
+    {
+      "heading": "3818",
+      "label": "Doped silicon wafers & electronic chemicals",
+      "shortLabel": "Wafers"
+    },
+    {
+      "heading": "3819",
+      "label": "Brake & hydraulic fluids",
+      "shortLabel": "Brake fluid"
+    },
+    {
+      "heading": "3820",
+      "label": "Antifreeze & deicing fluids",
+      "shortLabel": "Antifreeze"
+    },
+    {
+      "heading": "3821",
+      "label": "Culture media",
+      "shortLabel": "Culture media"
+    },
+    {
+      "heading": "3822",
+      "label": "Diagnostic & laboratory reagents",
+      "shortLabel": "Lab reagents"
+    },
+    {
+      "heading": "3823",
+      "label": "Industrial fatty acids & fatty alcohols",
+      "shortLabel": "Fatty acids"
+    },
+    {
+      "heading": "3824",
+      "label": "Other chemical preparations (n.e.s.)",
+      "shortLabel": "Other preparations"
+    },
+    {
+      "heading": "3825",
+      "label": "Chemical, municipal & clinical waste",
+      "shortLabel": "Waste"
+    },
+    {
+      "heading": "3826",
+      "label": "Biodiesel",
+      "shortLabel": "Biodiesel"
+    },
+    {
+      "heading": "3827",
+      "label": "Refrigerant & other halogenated blends",
+      "shortLabel": "Refrigerant blends"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists 'ex 38': all of Chapter 38 except 3809.10 and 3824.60) from July 1, 2026 to December 31, 2029, replacing the EU common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 8322419060,
+      "priorExportsUsd": 8203379956,
+      "sharePct": 23,
+      "changePct": 1.5,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 2233367846,
+          "priorExportsUsd": 2184690031,
+          "changePct": 2.2
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 1612403268,
+          "priorExportsUsd": 1593681006,
+          "changePct": 1.2
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 1279114038,
+          "priorExportsUsd": 1158649474,
+          "changePct": 10.4
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 1095536577,
+          "priorExportsUsd": 1108151230,
+          "changePct": -1.1
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 572543082,
+          "priorExportsUsd": 598448643,
+          "changePct": -4.3
+        }
+      ],
+      "cells": {
+        "3801": {
+          "exportsUsd": 43823261,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.6% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.6% for HS 380110 (2023) before that date"
+        },
+        "3802": {
+          "exportsUsd": 113328444,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.2% for HS 380210 (2023) before that date"
+        },
+        "3803": {
+          "exportsUsd": 211611929,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2% (lines 0%–4.1%) for HS 380300 (2023) before that date"
+        },
+        "3804": {
+          "exportsUsd": 14340783,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5% for HS 380400 (2023) before that date"
+        },
+        "3805": {
+          "exportsUsd": 2591581,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "2.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 2.5% (lines 1.7%–3.4%) for HS 380590 (2023) before that date"
+        },
+        "3806": {
+          "exportsUsd": 998775,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5% for HS 380610 (2023) before that date"
+        },
+        "3807": {
+          "exportsUsd": 25602057,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.3% (lines 2.1%–4.6%) for HS 380700 (2023) before that date"
+        },
+        "3808": {
+          "exportsUsd": 366238959,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.1% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.1% (lines 6%–6.5%) for HS 380893 (2023) before that date"
+        },
+        "3809": {
+          "exportsUsd": 21772642,
+          "rate": "Free (EU–US framework); 3809.10 excepted",
+          "normalRate": "6.3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.3% for HS 380991 (2023) before that date. Subheading 3809.10 (starch-based finishing agents) is excepted from Annex I and keeps the normal EU duty"
+        },
+        "3810": {
+          "exportsUsd": 20640657,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381010 (2023) before that date"
+        },
+        "3811": {
+          "exportsUsd": 507515646,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5.3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5.3% for HS 381121 (2023) before that date"
+        },
+        "3812": {
+          "exportsUsd": 79544587,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381239 (2023) before that date"
+        },
+        "3813": {
+          "exportsUsd": 6757222,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381300 (2023) before that date"
+        },
+        "3814": {
+          "exportsUsd": 13803738,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381400 (2023) before that date"
+        },
+        "3815": {
+          "exportsUsd": 562997881,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381512 (2023) before that date"
+        },
+        "3816": {
+          "exportsUsd": 9982137,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.4% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 1.4% (lines 0%–2.7%) for HS 381600 (2023) before that date"
+        },
+        "3817": {
+          "exportsUsd": 32663813,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.3% for HS 381700 (2023) before that date"
+        },
+        "3818": {
+          "exportsUsd": 267734658,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 381800 (2023) before that date"
+        },
+        "3819": {
+          "exportsUsd": 25755865,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 381900 (2023) before that date"
+        },
+        "3820": {
+          "exportsUsd": 2444655,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 382000 (2023) before that date"
+        },
+        "3821": {
+          "exportsUsd": 324447990,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5% for HS 382100 (2023) before that date"
+        },
+        "3822": {
+          "exportsUsd": 4342146822,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 382219 (2023) before that date"
+        },
+        "3823": {
+          "exportsUsd": 112709399,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.8% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.8% for HS 382370 (2023) before that date"
+        },
+        "3824": {
+          "exportsUsd": 1178468361,
+          "rate": "Free (EU–US framework); 3824.60 excepted",
+          "normalRate": "4.6% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 4.6% (lines 0%–6.5%) for HS 382499 (2023) before that date. Subheading 3824.60 (sorbitol other than 2905.44) is excepted from Annex I and keeps the normal EU duty"
+        },
+        "3825": {
+          "exportsUsd": 324825,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 382530 (2023) before that date"
+        },
+        "3826": {
+          "exportsUsd": 3956656,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 382600 (2023) before that date"
+        },
+        "3827": {
+          "exportsUsd": 30215717,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 38'), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 382768 (2023) before that date"
+        }
+      },
+      "profile": {
+        "headline": "The EU is the largest market ($8.32B, 23% of the chapter, up 1.5%), led by diagnostic and laboratory reagents (3822, $4.34B), most of which were already duty-free. Since July 1, 2026 Regulation (EU) 2026/1455 has also zeroed the EU's duties of up to 6.5% on U.S. chemical preparations, catalysts and fuel additives; registration under REACH, the biocides rules or the IVD Regulation still decides whether a product can be sold.",
+        "mainProducts": "Diagnostic & laboratory reagents (3822) · Other chemical preparations (n.e.s.) (3824)",
+        "tariffNow": "Free (EU–US framework); 3809.10 and 3824.60 excepted",
+        "regulator": {
+          "name": "European Chemicals Agency (REACH, biocides), Member State pesticide authorities and IVDR notified bodies",
+          "url": "https://echa.europa.eu/regulations/reach/understanding-reach",
+          "requirement": "Substances in a preparation imported at 1 tonne a year or more must be registered under REACH; biocides need approval under Regulation (EU) 528/2012, plant protection products an EU-approved active substance plus a Member State authorisation (Regulation (EC) 1107/2009), and diagnostic reagents CE marking under Regulation (EU) 2017/746"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 38 item",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 5594980410,
+      "priorExportsUsd": 5750786416,
+      "sharePct": 15.5,
+      "changePct": -2.7,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 19917134,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380110 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3802": {
+          "exportsUsd": 65407262,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380210 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3803": {
+          "exportsUsd": 9077572,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380300 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3804": {
+          "exportsUsd": 10200461,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380400 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3805": {
+          "exportsUsd": 1302260,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380590 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3806": {
+          "exportsUsd": 62266749,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380610 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3807": {
+          "exportsUsd": 4043536,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380700 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3808": {
+          "exportsUsd": 1792676670,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.2% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3.2% (lines 0%–6.5%) for HS 380893 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3809": {
+          "exportsUsd": 160350690,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 380991 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3810": {
+          "exportsUsd": 26093309,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381010 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3811": {
+          "exportsUsd": 429115476,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381121 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3812": {
+          "exportsUsd": 103183667,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381239 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3813": {
+          "exportsUsd": 20560443,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381300 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3814": {
+          "exportsUsd": 51042305,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381400 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3815": {
+          "exportsUsd": 440570700,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381512 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3816": {
+          "exportsUsd": 123228546,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381600 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3817": {
+          "exportsUsd": 6428699,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381700 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3818": {
+          "exportsUsd": 7346643,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 381800 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3819": {
+          "exportsUsd": 48856709,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 381900 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3820": {
+          "exportsUsd": 88217381,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 382000 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3821": {
+          "exportsUsd": 55062425,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382100 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3822": {
+          "exportsUsd": 837064014,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382219 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3823": {
+          "exportsUsd": 78374215,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382370 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3824": {
+          "exportsUsd": 853308471,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382499 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3825": {
+          "exportsUsd": 7791653,
+          "rate": "Free (CUSMA)",
+          "normalRate": "7.3% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 7.3% (lines 0%–15.5%) for HS 382530 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3826": {
+          "exportsUsd": 257018438,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382600 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        },
+        "3827": {
+          "exportsUsd": 36474982,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 382768 (2023); certification of origin required. Canada's 2025 and 2026 counter-tariff lists have no Chapter 38 item"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($5.59B, down 2.7%) is the largest single buyer and takes 40% of U.S. pesticide exports (3808, $1.79B) and most U.S. biodiesel. Qualifying goods enter free and neither of Canada's counter-tariff lists has a Chapter 38 item; the gate is PMRA registration for any pest control product.",
+        "mainProducts": "Pesticides, herbicides & disinfectants (3808) · Other chemical preparations (n.e.s.) (3824)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Health Canada's Pest Management Regulatory Agency (PMRA), plus Health Canada device licensing and ECCC New Substances",
+          "url": "https://www.canada.ca/en/health-canada/corporate/about-health-canada/branches-agencies/pest-management-regulatory-agency.html",
+          "requirement": "A pest control product must be registered under the Pest Control Products Act before it is imported, sold or used; Class II–IV diagnostic devices need a medical device licence, and a chemical not on the Domestic Substances List must be notified before import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 4024861966,
+      "priorExportsUsd": 4377296046,
+      "sharePct": 11.1,
+      "changePct": -8.1,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 34071506,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.5% (lines 0%–5%) for HS 380110 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3802": {
+          "exportsUsd": 137477547,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6% for HS 380210 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3803": {
+          "exportsUsd": 1543658,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 380300 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3804": {
+          "exportsUsd": 5757823,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 380400 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3805": {
+          "exportsUsd": 937220,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.5% (lines 0%–5%) for HS 380590 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3806": {
+          "exportsUsd": 15591453,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.5% (lines 0%–5%) for HS 380610 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3807": {
+          "exportsUsd": 85042,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 380700 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3808": {
+          "exportsUsd": 400288889,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 380893 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3809": {
+          "exportsUsd": 52771151,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6% for HS 380991 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3810": {
+          "exportsUsd": 141726533,
+          "rate": "Free (USMCA)",
+          "normalRate": "3% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 3% for HS 381010 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3811": {
+          "exportsUsd": 326753243,
+          "rate": "Free (USMCA)",
+          "normalRate": "4.4% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 4.4% (lines 0%–15%) for HS 381121 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3812": {
+          "exportsUsd": 92355304,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.2% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.2% (lines 0%–6%) for HS 381239 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3813": {
+          "exportsUsd": 4100337,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 381300 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3814": {
+          "exportsUsd": 66039923,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6% for HS 381400 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3815": {
+          "exportsUsd": 969857411,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 381512 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3816": {
+          "exportsUsd": 38021804,
+          "rate": "Free (USMCA)",
+          "normalRate": "3.8% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 3.8% (lines 0%–5%) for HS 381600 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3817": {
+          "exportsUsd": 144701784,
+          "rate": "Free (USMCA)",
+          "normalRate": "1.2% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 1.2% (lines 0%–5%) for HS 381700 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3818": {
+          "exportsUsd": 1030783,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 381800 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3819": {
+          "exportsUsd": 22478423,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6% (lines 5%–7%) for HS 381900 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3820": {
+          "exportsUsd": 46751016,
+          "rate": "Free (USMCA)",
+          "normalRate": "6% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 6% for HS 382000 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3821": {
+          "exportsUsd": 54211821,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 382100 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3822": {
+          "exportsUsd": 332346303,
+          "rate": "Free (USMCA)",
+          "normalRate": "1.7% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 1.7% (lines 0%–5%) for HS 382200 (the HS 2017 predecessor of 382219) (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3823": {
+          "exportsUsd": 110637529,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 382370 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3824": {
+          "exportsUsd": 918284040,
+          "rate": "Free (USMCA)",
+          "normalRate": "0.2% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0.2% (lines 0%–6%) for HS 382499 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3825": {
+          "exportsUsd": 45233462,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 382530 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3826": {
+          "exportsUsd": 759281,
+          "rate": "Free (USMCA)",
+          "normalRate": "5% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 5% for HS 382600 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        },
+        "3827": {
+          "exportsUsd": 61048680,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 382478 (the HS 2017 predecessor of 382768) (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 38 line"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($4.02B, down 8.1%) buys catalysts (3815, $0.97B) and chemical preparations (3824, $0.92B) for its refineries and plants. Qualifying goods enter free; Mexico's MFN rates on the national lines in the sample run 0%–15%, so a valid USMCA certification of origin matters.",
+        "mainProducts": "Catalysts (3815) · Other chemical preparations (n.e.s.) (3824)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS (pesticide registrations and import permits, diagnostic reagents)",
+          "url": "https://www.gob.mx/cofepris",
+          "requirement": "Pesticides and disinfectants need a COFEPRIS registration and import permit, and diagnostic reagents are health supplies that need a COFEPRIS sanitary registration; confirm the permit with the importer of record"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule plus the 10% extra duty on all U.S.-origin goods (in force since May 14, 2025)",
+      "usTradeAgreement": null,
+      "exportsUsd": 2586215005,
+      "priorExportsUsd": 3286681792,
+      "sharePct": 7.1,
+      "changePct": -21.3,
+      "status": "raised",
+      "cells": {
+        "3801": {
+          "exportsUsd": 22653972,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380110 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3802": {
+          "exportsUsd": 23346727,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380210 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3803": {
+          "exportsUsd": 6219507,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380300 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3804": {
+          "exportsUsd": 4989989,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380400 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3805": {
+          "exportsUsd": 1606144,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380590 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3806": {
+          "exportsUsd": 4038711,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 10% for HS 380610 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3807": {
+          "exportsUsd": 636178,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380700 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3808": {
+          "exportsUsd": 59883416,
+          "rate": "17% (7% MFN + 10% extra)",
+          "normalRate": "7% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 7% (lines 5%–9%) for HS 380893 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3809": {
+          "exportsUsd": 26501337,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 380991 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3810": {
+          "exportsUsd": 19139162,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 381010 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3811": {
+          "exportsUsd": 213645505,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 381121 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3812": {
+          "exportsUsd": 35061299,
+          "rate": "16.2% (6.2% MFN + 10% extra)",
+          "normalRate": "6.2% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.2% (lines 6%–6.5%) for HS 381239 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3813": {
+          "exportsUsd": 1734067,
+          "rate": "18.2% (8.2% MFN + 10% extra)",
+          "normalRate": "8.2% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 8.2% (lines 6.5%–10%) for HS 381300 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3814": {
+          "exportsUsd": 3347527,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 10% for HS 381400 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3815": {
+          "exportsUsd": 353259042,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 381512 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3816": {
+          "exportsUsd": 4644997,
+          "rate": "14.8% (4.8% MFN + 10% extra)",
+          "normalRate": "4.8% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 4.8% (lines 3%–6.5%) for HS 381600 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3817": {
+          "exportsUsd": 23387240,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 381700 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3818": {
+          "exportsUsd": 147213556,
+          "rate": "10% (0% MFN + 10% extra)",
+          "normalRate": "0% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 0% for HS 381800 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3819": {
+          "exportsUsd": 3099296,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 381900 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3820": {
+          "exportsUsd": 2176603,
+          "rate": "20% (10% MFN + 10% extra)",
+          "normalRate": "10% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 10% for HS 382000 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3821": {
+          "exportsUsd": 111416963,
+          "rate": "13% (3% MFN + 10% extra)",
+          "normalRate": "3% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 3% for HS 382100 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3822": {
+          "exportsUsd": 1070826289,
+          "rate": "13% (3% MFN + 10% extra)",
+          "normalRate": "3% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 3% for HS 382219 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3823": {
+          "exportsUsd": 13002334,
+          "rate": "23% (13% MFN + 10% extra)",
+          "normalRate": "13% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 13% for HS 382370 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3824": {
+          "exportsUsd": 433983884,
+          "rate": "16.6% (6.6% MFN + 10% extra)",
+          "normalRate": "6.6% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.6% (lines 6.5%–9%) for HS 382499 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3825": {
+          "exportsUsd": 70714,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 382530 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3826": {
+          "exportsUsd": 24320,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 382600 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        },
+        "3827": {
+          "exportsUsd": 306226,
+          "rate": "16.5% (6.5% MFN + 10% extra)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "China's MFN tariff; WITS/TRAINS simple-average MFN 6.5% for HS 382768 (2023); plus the 10% extra duty on all U.S. goods (Tariff Commission Announcement 2025 No. 4 as adjusted, most recently by 2026 No. 6, with 24 points suspended). China's 2018–2019 counter-tariffs on listed lines are not added (see assumptions)"
+        }
+      },
+      "profile": {
+        "headline": "China ($2.59B, down 21.3%) buys mainly diagnostic reagents (3822, $1.07B) and chemical preparations. Every line pays the 10% extra duty on top of China's 0%–13% MFN rates, and some lines also face China's 2018–2019 counter-tariffs unless an exclusion applies; China's Board of Trade list names culture media, fatty acids and alcohols and 'other' preparations (3824.99) for possible tariff cuts, with none published yet.",
+        "mainProducts": "Diagnostic & laboratory reagents (3822) · Other chemical preparations (n.e.s.) (3824)",
+        "tariffNow": "MFN + 10% extra on all U.S. goods",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment (new chemical substances), NMPA (diagnostic reagents) and ICAMA (pesticides)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/202608/t20260804_1163416.html",
+          "requirement": "A substance not on China's chemical inventory needs MEE new-substance registration before import, diagnostic reagents need NMPA registration, and pesticides need registration with the Ministry of Agriculture and Rural Affairs (handled by ICAMA)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff schedule; no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 2383901054,
+      "priorExportsUsd": 2122850839,
+      "sharePct": 6.6,
+      "changePct": 12.3,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 10971236,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 380110 (2023)"
+        },
+        "3802": {
+          "exportsUsd": 39314089,
+          "rate": "2.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.9% for HS 380210 (2023)"
+        },
+        "3803": {
+          "exportsUsd": 23333832,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 380300 (2023)"
+        },
+        "3804": {
+          "exportsUsd": 1365420,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 380400 (2023)"
+        },
+        "3805": {
+          "exportsUsd": 815977,
+          "rate": "1.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 1.2% (lines 0%–2.5%) for HS 380590 (2023)"
+        },
+        "3806": {
+          "exportsUsd": 2609600,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 380610 (2023)"
+        },
+        "3807": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 380700 (2023)"
+        },
+        "3808": {
+          "exportsUsd": 50950574,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 380893 (2023)"
+        },
+        "3809": {
+          "exportsUsd": 14239651,
+          "rate": "3.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.2% for HS 380991 (2023)"
+        },
+        "3810": {
+          "exportsUsd": 2076760,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 381010 (2023)"
+        },
+        "3811": {
+          "exportsUsd": 112289870,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 381121 (2023)"
+        },
+        "3812": {
+          "exportsUsd": 9850401,
+          "rate": "3.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.5% (lines 2.6%–4.4%) for HS 381239 (2023)"
+        },
+        "3813": {
+          "exportsUsd": 1137585,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 381300 (2023)"
+        },
+        "3814": {
+          "exportsUsd": 1949565,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 381400 (2023)"
+        },
+        "3815": {
+          "exportsUsd": 127056524,
+          "rate": "0.7%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0.7% (lines 0%–2.2%) for HS 381512 (2023)"
+        },
+        "3816": {
+          "exportsUsd": 2872698,
+          "rate": "2.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.2% (lines 0%–3.3%) for HS 381600 (2023)"
+        },
+        "3817": {
+          "exportsUsd": 466980,
+          "rate": "1.6%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 1.6% (lines 0%–3.3%) for HS 381700 (2023)"
+        },
+        "3818": {
+          "exportsUsd": 245527954,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 381800 (2023)"
+        },
+        "3819": {
+          "exportsUsd": 3185521,
+          "rate": "2.6%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.6% for HS 381900 (2023)"
+        },
+        "3820": {
+          "exportsUsd": 288731,
+          "rate": "2.6%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.6% for HS 382000 (2023)"
+        },
+        "3821": {
+          "exportsUsd": 54863273,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 382100 (2023)"
+        },
+        "3822": {
+          "exportsUsd": 1393437506,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 382219 (2023)"
+        },
+        "3823": {
+          "exportsUsd": 49587141,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 382370 (2023)"
+        },
+        "3824": {
+          "exportsUsd": 234919918,
+          "rate": "0.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0.9% (lines 0%–2%) for HS 382499 (2023)"
+        },
+        "3825": {
+          "exportsUsd": 337679,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 382530 (2023)"
+        },
+        "3826": {
+          "exportsUsd": 69292,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2% for HS 382600 (2023)"
+        },
+        "3827": {
+          "exportsUsd": 383277,
+          "rate": "1.3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 1.3% for HS 382768 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($2.38B, up 12.3%) buys mostly diagnostic reagents (3822, $1.39B), which are duty-free, and doped silicon wafers (3818, $0.25B), also free. Other lines pay MFN rates of up to 3.9% with no U.S. trade agreement; in vitro diagnostics need PMDA/MHLW approval or certification.",
+        "mainProducts": "Diagnostic & laboratory reagents (3822) · Doped silicon wafers & electronic chemicals (3818)",
+        "tariffNow": "MFN 0%–3.9% (no U.S. FTA)",
+        "regulator": {
+          "name": "PMDA / MHLW (in vitro diagnostics), plus the Chemical Substances Control Law and MAFF pesticide registration",
+          "url": "https://www.pmda.go.jp/english/",
+          "requirement": "In vitro diagnostic reagents need approval or certification under the PMD Act through a Japanese marketing authorization holder; new chemical substances must be notified under the Chemical Substances Control Law, and pesticides registered under the Agricultural Chemicals Regulation Act"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Mercosur common external tariff as applied by Brazil; no U.S. free-trade agreement. Brazil has imposed no extra tariff on U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 1732873930,
+      "priorExportsUsd": 1958267025,
+      "sharePct": 4.8,
+      "changePct": -11.5,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 4602625,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 2% for HS 380110 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3802": {
+          "exportsUsd": 21670111,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 380210 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3803": {
+          "exportsUsd": 726690,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 7% (lines 2%–12%) for HS 380300 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3804": {
+          "exportsUsd": 11292046,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 380400 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3805": {
+          "exportsUsd": 929827,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 380590 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3806": {
+          "exportsUsd": 2392616,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 380610 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3807": {
+          "exportsUsd": 324095,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 380700 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3808": {
+          "exportsUsd": 837695298,
+          "rate": "12.2%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12.2% (lines 0%–14%) for HS 380893 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3809": {
+          "exportsUsd": 3423472,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 380991 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3810": {
+          "exportsUsd": 5557053,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 381010 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3811": {
+          "exportsUsd": 177548098,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% (lines 2%–14%) for HS 381121 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3812": {
+          "exportsUsd": 17789585,
+          "rate": "11.6%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 11.6% (lines 2%–14%) for HS 381239 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3813": {
+          "exportsUsd": 1053612,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 381300 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3814": {
+          "exportsUsd": 3341156,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 381400 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3815": {
+          "exportsUsd": 107195563,
+          "rate": "8.7%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 8.7% (lines 2%–12%) for HS 381512 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3816": {
+          "exportsUsd": 4339991,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% (lines 2%–14%) for HS 381600 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3817": {
+          "exportsUsd": 2884479,
+          "rate": "13%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 13% (lines 12%–14%) for HS 381700 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3818": {
+          "exportsUsd": 27747,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 2% for HS 381800 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3819": {
+          "exportsUsd": 7030602,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 381900 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3820": {
+          "exportsUsd": 3603918,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 382000 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3821": {
+          "exportsUsd": 16761662,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 0% for HS 382100 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3822": {
+          "exportsUsd": 293667734,
+          "rate": "1%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 1% (lines 0%–2%) for HS 382200 (the HS 2017 predecessor of 382219) (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3823": {
+          "exportsUsd": 40766471,
+          "rate": "11%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 11% (lines 2%–14%) for HS 382370 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3824": {
+          "exportsUsd": 167025690,
+          "rate": "8.2%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 8.2% (lines 0%–14%) for HS 382499 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3825": {
+          "exportsUsd": 9891,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 382530 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3826": {
+          "exportsUsd": 0,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 382600 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3827": {
+          "exportsUsd": 1213898,
+          "rate": "8%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 8% (lines 2%–14%) for HS 382478 (the HS 2017 predecessor of 382768) (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        }
+      },
+      "profile": {
+        "headline": "Brazil ($1.73B, down 11.5%) is the second-largest market for U.S. pesticides (3808, $0.84B). It charges the Mercosur tariff, up to 14% in the sample and 12.2% on average for herbicides, with no U.S. trade agreement; every pesticide needs federal registration before it can be imported.",
+        "mainProducts": "Pesticides, herbicides & disinfectants (3808) · Diagnostic & laboratory reagents (3822)",
+        "tariffNow": "MFN 0%–14% (no U.S. FTA)",
+        "regulator": {
+          "name": "Ministry of Agriculture and Livestock (MAPA), with ANVISA and IBAMA",
+          "url": "https://www.gov.br/agricultura/pt-br/assuntos/insumos-agropecuarios/insumos-agricolas/agrotoxicos",
+          "requirement": "Pesticides must be registered under Law 14,785 of 2023 (MAPA registers, after ANVISA health and IBAMA environmental evaluations) before they can be imported, sold or used; diagnostic reagents need ANVISA registration"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 1327368717,
+      "priorExportsUsd": 1487905248,
+      "sharePct": 3.7,
+      "changePct": -10.8,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 12291457,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.2% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 5.2% (lines 4%–6.5%) for HS 380110 (2023); certification of origin required"
+        },
+        "3802": {
+          "exportsUsd": 42941313,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380210 (2023); certification of origin required"
+        },
+        "3803": {
+          "exportsUsd": 2298488,
+          "rate": "Free (KORUS)",
+          "normalRate": "5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 5% for HS 380300 (2023); certification of origin required"
+        },
+        "3804": {
+          "exportsUsd": 534010,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380400 (2023); certification of origin required"
+        },
+        "3805": {
+          "exportsUsd": 73335,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380590 (2023); certification of origin required"
+        },
+        "3806": {
+          "exportsUsd": 891249,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380610 (2023); certification of origin required"
+        },
+        "3807": {
+          "exportsUsd": 21741,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380700 (2023); certification of origin required"
+        },
+        "3808": {
+          "exportsUsd": 36043290,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380893 (2023); certification of origin required"
+        },
+        "3809": {
+          "exportsUsd": 14597109,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 380991 (2023); certification of origin required"
+        },
+        "3810": {
+          "exportsUsd": 13771951,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381010 (2023); certification of origin required"
+        },
+        "3811": {
+          "exportsUsd": 67999569,
+          "rate": "Free (KORUS)",
+          "normalRate": "5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 5% for HS 381121 (2023); certification of origin required"
+        },
+        "3812": {
+          "exportsUsd": 16041150,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381239 (2023); certification of origin required"
+        },
+        "3813": {
+          "exportsUsd": 1158599,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381300 (2023); certification of origin required"
+        },
+        "3814": {
+          "exportsUsd": 4140403,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381400 (2023); certification of origin required"
+        },
+        "3815": {
+          "exportsUsd": 319644514,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381512 (2023); certification of origin required"
+        },
+        "3816": {
+          "exportsUsd": 2683316,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.8% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 5.8% (lines 3%–6.5%) for HS 381600 (2023); certification of origin required"
+        },
+        "3817": {
+          "exportsUsd": 1338982,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381700 (2023); certification of origin required"
+        },
+        "3818": {
+          "exportsUsd": 167934836,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 0% for HS 381800 (2023); certification of origin required"
+        },
+        "3819": {
+          "exportsUsd": 3983347,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 381900 (2023); certification of origin required"
+        },
+        "3820": {
+          "exportsUsd": 2462140,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 382000 (2023); certification of origin required"
+        },
+        "3821": {
+          "exportsUsd": 108183005,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 382100 (2023); certification of origin required"
+        },
+        "3822": {
+          "exportsUsd": 283778295,
+          "rate": "Free (KORUS)",
+          "normalRate": "2% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 2% (lines 0%–8%) for HS 382219 (2023); certification of origin required"
+        },
+        "3823": {
+          "exportsUsd": 8391511,
+          "rate": "Free (KORUS)",
+          "normalRate": "4.2% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 4.2% (lines 2%–5%) for HS 382370 (2023); certification of origin required"
+        },
+        "3824": {
+          "exportsUsd": 215901092,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.3% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.3% (lines 2%–6.5%) for HS 382499 (2023); certification of origin required"
+        },
+        "3825": {
+          "exportsUsd": 185614,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.6% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 5.6% (lines 0%–8%) for HS 382530 (2023); certification of origin required"
+        },
+        "3826": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 382600 (2023); certification of origin required"
+        },
+        "3827": {
+          "exportsUsd": 78401,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 382768 (2023); certification of origin required"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($1.33B, down 10.8%) buys catalysts (3815, $0.32B), reagents and doped wafers for its refining and chip industries. Qualifying goods enter free under KORUS instead of Korea's MFN rate (6.5% on most lines in the sample); K-REACH registration is the gate.",
+        "mainProducts": "Catalysts (3815) · Diagnostic & laboratory reagents (3822)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Environment (K-REACH), RDA (pesticides) and MFDS (diagnostics)",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-standards-trade",
+          "requirement": "New chemical substances, and existing substances imported at 1 tonne a year or more, must be registered under K-REACH, usually through a Korean importer or only representative; pesticides and in vitro diagnostics need their own approvals"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "Singapore applies 0% MFN on these goods; the U.S.–Singapore FTA also gives 0%",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 1153809502,
+      "priorExportsUsd": 1220466619,
+      "sharePct": 3.2,
+      "changePct": -5.5,
+      "status": "unchanged",
+      "cells": {
+        "3801": {
+          "exportsUsd": 4767206,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380110 (2023)"
+        },
+        "3802": {
+          "exportsUsd": 4366005,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380210 (2023)"
+        },
+        "3803": {
+          "exportsUsd": 15305,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380300 (2023)"
+        },
+        "3804": {
+          "exportsUsd": 52890,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380400 (2023)"
+        },
+        "3805": {
+          "exportsUsd": 338401,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380590 (2023)"
+        },
+        "3806": {
+          "exportsUsd": 37916,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380610 (2023)"
+        },
+        "3807": {
+          "exportsUsd": 59837,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380700 (2023)"
+        },
+        "3808": {
+          "exportsUsd": 5000108,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380893 (2023)"
+        },
+        "3809": {
+          "exportsUsd": 4962702,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 380991 (2023)"
+        },
+        "3810": {
+          "exportsUsd": 13074655,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381010 (2023)"
+        },
+        "3811": {
+          "exportsUsd": 266077425,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381121 (2023)"
+        },
+        "3812": {
+          "exportsUsd": 6546989,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381239 (2023)"
+        },
+        "3813": {
+          "exportsUsd": 7941014,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381300 (2023)"
+        },
+        "3814": {
+          "exportsUsd": 5558676,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381400 (2023)"
+        },
+        "3815": {
+          "exportsUsd": 60765326,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381512 (2023)"
+        },
+        "3816": {
+          "exportsUsd": 326566,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381600 (2023)"
+        },
+        "3817": {
+          "exportsUsd": 6498967,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381700 (2023)"
+        },
+        "3818": {
+          "exportsUsd": 132864791,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381800 (2023)"
+        },
+        "3819": {
+          "exportsUsd": 10555450,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 381900 (2023)"
+        },
+        "3820": {
+          "exportsUsd": 3246603,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382000 (2023)"
+        },
+        "3821": {
+          "exportsUsd": 42224338,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382100 (2023)"
+        },
+        "3822": {
+          "exportsUsd": 407906104,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382200 (the HS 2017 predecessor of 382219) (2023)"
+        },
+        "3823": {
+          "exportsUsd": 50215910,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382370 (2023)"
+        },
+        "3824": {
+          "exportsUsd": 119479148,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382499 (2023)"
+        },
+        "3825": {
+          "exportsUsd": 91107,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382530 (2023)"
+        },
+        "3826": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382600 (2023)"
+        },
+        "3827": {
+          "exportsUsd": 836063,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Singapore's MFN rate is 0% on these goods, and the U.S.–Singapore FTA also gives 0%; WITS/TRAINS simple-average MFN 0% for HS 382478 (the HS 2017 predecessor of 382768) (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Singapore ($1.15B, down 5.5%) is a regional hub for reagents (3822, $0.41B) and lubricant additives (3811, $0.27B). It charges no tariff on these goods; hazardous substances need a licence from the National Environment Agency.",
+        "mainProducts": "Diagnostic & laboratory reagents (3822) · Fuel & lubricant additives (3811)",
+        "tariffNow": "Free (U.S.–Singapore FTA)",
+        "regulator": {
+          "name": "National Environment Agency (hazardous substances) and Health Sciences Authority (diagnostics)",
+          "url": "https://www.nea.gov.sg/our-services/pollution-control/chemical-safety/hazardous-substances",
+          "requirement": "Hazardous substances listed under the Environmental Protection and Management Act need an NEA licence and import permit; in vitro diagnostic devices must be registered with the Health Sciences Authority"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "3822",
+      "exportsUsd": 4342146822,
+      "rate": "Free (EU–US framework)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3808",
+      "exportsUsd": 1792676670,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "3822",
+      "exportsUsd": 1393437506,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "3824",
+      "exportsUsd": 1178468361,
+      "rate": "Free (EU–US framework); 3824.60 excepted"
+    },
+    {
+      "market": "China",
+      "heading": "3822",
+      "exportsUsd": 1070826289,
+      "rate": "13% (3% MFN + 10% extra)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3815",
+      "exportsUsd": 969857411,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3824",
+      "exportsUsd": 918284040,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3824",
+      "exportsUsd": 853308471,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "MFN rates are the World Bank/UNCTAD WITS (TRAINS) simple-average applied rates for one representative six-digit subheading per heading — the subheading with the largest 2025 U.S. exports in that heading (for example 3822.19 for diagnostic reagents, 3824.99 for other chemical preparations and 3808.93 for herbicides) — for 2023, the latest year WITS holds for these markets. National 8–10-digit lines can differ, and where a subheading has several national lines the basis gives their range.",
+    "For Mexico, Brazil and Singapore, WITS holds 2023 schedules only in HS 2017 codes, so 3822.19 uses HS 3822.00 and 3827.68 uses HS 3824.78 (the codes these goods were classified under before HS 2022).",
+    "USMCA (Mexico, Canada), KORUS (South Korea) and the U.S.–Singapore FTA give 0% to U.S. goods that meet the agreement's rules of origin; the normal-rate column shows each market's MFN rate for goods that do not qualify.",
+    "For the EU, Regulation (EU) 2026/1455 sets 0% on U.S.-origin goods of Chapter 38 except 3809.10 and 3824.60 from July 1, 2026 to December 31, 2029, on proof of non-preferential U.S. origin; the normal-rate column shows the rate the EU charged before then. The Commission can suspend the cut.",
+    "China's cells add the 10% extra duty on all U.S. goods to its MFN rate. China's 2018–2019 counter-tariffs (answering the U.S. Section 301 tariffs) also still apply to listed lines — Annex 3 of the May 2019 notice alone lists 22 Chapter 38 lines at 10% — unless an exclusion has been granted; they are not added because exclusions are granted line by line.",
+    "Brazil and Japan show MFN rates. India, not in this table, charges a basic customs duty of 0%–10% on the same subheadings (WITS, 2023), before surcharges."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 38, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS / UNCTAD TRAINS tariff data",
+      "document": "WITS API (TRAINS, MFN applied, reported)",
+      "title": "MFN applied tariff rates by reporter and HS six-digit subheading, 2023",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-nov2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for two months from November 10, 2026; 10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Annex 3 (10% list)",
+      "title": "Additional tariffs on goods originating in the United States from June 1, 2019 — Annex 3",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 75% of 2025 U.S. Chapter 38 exports. A customs union (the EU) is one market: its members share one tariff."
+}

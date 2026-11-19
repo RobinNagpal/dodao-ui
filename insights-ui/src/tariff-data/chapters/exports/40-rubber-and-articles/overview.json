@@ -1,0 +1,553 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 40,
+    "padded": "40",
+    "slug": "40-rubber-and-articles",
+    "title": "Rubber and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/40-rubber-and-articles",
+    "h1": "HTS Chapter 40: Rubber and Articles Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Tire & Rubber Exports by Country and Foreign Tariffs (HTS Ch. 40) | KoalaGains",
+      "shortDescription": "U.S. rubber exports were $13.89B in 2025, a third of it new tires. Who buys U.S. tires, gaskets and synthetic rubber, and what Canada, Mexico and China charge.",
+      "keywords": [
+        "us tire exports",
+        "tire exporters usa",
+        "us rubber exports",
+        "synthetic rubber export by country",
+        "rubber exports by country",
+        "tariff on tires from usa",
+        "HS 40 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$13.89B** of rubber and rubber goods in 2025, down 3.8% from 2024 and 5% below the 2022 peak of $14.66B. New tires (4011) are a third of it (**33%, $4.58B**): construction, mining and industrial tires ($1.50B), truck and bus tires ($1.45B) and car tires ($1.33B). Rubber gaskets, seals and other parts (4016, $3.33B, led by gaskets at $1.80B) and synthetic rubber (4002, $2.55B: EPDM, butadiene, SBR and halobutyl) follow, with hoses (4009, $1.19B). **Canada ($3.86B) and Mexico ($3.55B) buy 53%**, mostly tires and auto parts; January–August 2026 exports were $9.65B, up 1.2%.\n\nMost of this trade pays no tariff: Canada, Mexico, Chile, Peru and Australia take qualifying U.S. goods free under trade agreements, Japan charges nothing on tires or synthetic rubber, and the EU cut its duties on U.S. rubber goods (4.5% on car tires) to 0% from July 1, 2026. **Canada** charged a 25% counter-surtax on U.S. tires from March 4 to August 31, 2025, and its 2026 surtax list leaves rubber out. **Mexico** raised its general rate on car and farm tires to 35% in 2026, which U.S. tires escape when they meet the USMCA rule of origin. **China** adds 10% to every U.S. good on top of its 7.5–25% rates, and charges anti-dumping duties of **214.9–222.0%** on U.S. EPDM, **75.5%** on halobutyl rubber and **151%** on chloroprene rubber, which keep most U.S. synthetic rubber out.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$13.89B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-3.8%"
+    },
+    {
+      "label": "Largest product group (4011)",
+      "value": "33%",
+      "note": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "53%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top buyers charging more than in Jan 2025",
+      "value": "1 of 12",
+      "note": "China (10% extra on all U.S. goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. Chapter 40 exports were $13.89B in 2025 (−3.8%) and $9.65B in January–August 2026 (+1.2%); new tires (4011, $4.58B) and gaskets, seals and other rubber parts (4016, $3.33B) are 57% of the total.",
+    "Canada ($3.86B) and Mexico ($3.55B) take qualifying U.S. tires and rubber parts free; Canada's 25% surtax on U.S. tires lasted from March 4 to August 31, 2025, and none of its 2026 surtaxes covers rubber.",
+    "Mexico's general tariff on car and farm tires rose to 35% (25–35% on truck tires, 25% on one gasket line) on January 1, 2026, so the USMCA certification of origin now matters more for tires sold to Mexico.",
+    "China ($408M, −15.3%) is the one top buyer charging more than in January 2025: 10% extra on every U.S. good, on top of anti-dumping duties of 214.9–222.0% on EPDM (under expiry review, ruling due by December 19, 2026), 75.5% on halobutyl and 151% on chloroprene rubber."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 11164742263,
+      "partnerAUsd": 3245012816,
+      "partnerBUsd": 2700414407,
+      "restUsd": 5219315040
+    },
+    {
+      "year": 2021,
+      "totalUsd": 13140740030,
+      "partnerAUsd": 3878880805,
+      "partnerBUsd": 3336250462,
+      "restUsd": 5925608763
+    },
+    {
+      "year": 2022,
+      "totalUsd": 14656597865,
+      "partnerAUsd": 4145686178,
+      "partnerBUsd": 3952326553,
+      "restUsd": 6558585134
+    },
+    {
+      "year": 2023,
+      "totalUsd": 14646520856,
+      "partnerAUsd": 4249554439,
+      "partnerBUsd": 4281770928,
+      "restUsd": 6115195489
+    },
+    {
+      "year": 2024,
+      "totalUsd": 14427090513,
+      "partnerAUsd": 4067725117,
+      "partnerBUsd": 4022460712,
+      "restUsd": 6336904684
+    },
+    {
+      "year": 2025,
+      "totalUsd": 13886059139,
+      "partnerAUsd": 3863029586,
+      "partnerBUsd": 3551147551,
+      "restUsd": 6471882002
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 40 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 9647179244,
+    "priorExportsUsd": 9533429622,
+    "changePct": 1.2,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2591833803,
+        "priorExportsUsd": 2654729573,
+        "changePct": -2.4
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 2585574588,
+        "priorExportsUsd": 2449696048,
+        "changePct": 5.5
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 389135228,
+        "priorExportsUsd": 427278054,
+        "changePct": -8.9
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 350846885,
+        "priorExportsUsd": 350879217,
+        "changePct": 0
+      },
+      {
+        "countryCode": 36,
+        "country": "Australia",
+        "exportsUsd": 321574841,
+        "priorExportsUsd": 363620017,
+        "changePct": -11.6
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 282677556,
+        "priorExportsUsd": 283092424,
+        "changePct": -0.1
+      },
+      {
+        "countryCode": 152,
+        "country": "Chile",
+        "exportsUsd": 244470579,
+        "priorExportsUsd": 248418126,
+        "changePct": -1.6
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 238485664,
+        "priorExportsUsd": 245716599,
+        "changePct": -2.9
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3863029586,
+      "priorExportsUsd": 4067725117,
+      "sharePct": 27.8,
+      "changePct": -5,
+      "tariffNow": "Free (CUSMA); 25% surtax on tires ended Aug 31, 2025",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 3551147551,
+      "priorExportsUsd": 4022460712,
+      "sharePct": 25.6,
+      "changePct": -11.7,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 590523478,
+      "priorExportsUsd": 545836682,
+      "sharePct": 4.3,
+      "changePct": 8.2,
+      "tariffNow": "MFN 2–16% (no U.S. FTA); 30% on car tires approved",
+      "status": "pending"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 545972324,
+      "priorExportsUsd": 506889896,
+      "sharePct": 3.9,
+      "changePct": 7.7,
+      "tariffNow": "Free (tires: MFN 0%; other goods AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 495272506,
+      "priorExportsUsd": 451168111,
+      "sharePct": 3.6,
+      "changePct": 9.8,
+      "tariffNow": "Free (EU–US framework, from July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 408094922,
+      "priorExportsUsd": 481600377,
+      "sharePct": 2.9,
+      "changePct": -15.3,
+      "tariffNow": "MFN + 10% extra (20% on car tires); anti-dumping duties on 3 synthetic rubbers",
+      "status": "raised"
+    },
+    {
+      "countryCode": 152,
+      "country": "Chile",
+      "exportsUsd": 387588362,
+      "priorExportsUsd": 337807815,
+      "sharePct": 2.8,
+      "changePct": 14.7,
+      "tariffNow": "Free (U.S.–Chile FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 355173439,
+      "priorExportsUsd": 418723453,
+      "sharePct": 2.6,
+      "changePct": -15.2,
+      "tariffNow": "Free (EU–US framework, from July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 312211050,
+      "priorExportsUsd": 245045977,
+      "sharePct": 2.2,
+      "changePct": 27.4,
+      "tariffNow": "MFN 10–15% (U.S.–India framework not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 258131998,
+      "priorExportsUsd": 199756508,
+      "sharePct": 1.9,
+      "changePct": 29.2,
+      "tariffNow": "Free on tires and synthetic rubber (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 232353642,
+      "priorExportsUsd": 274929910,
+      "sharePct": 1.7,
+      "changePct": -15.5,
+      "tariffNow": "MFN 0–6% (4% on car tires)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 604,
+      "country": "Peru",
+      "exportsUsd": 178512460,
+      "priorExportsUsd": 178309258,
+      "sharePct": 1.3,
+      "changePct": 0.1,
+      "tariffNow": "Free (U.S.–Peru TPA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 2708047821,
+  "othersPriorExportsUsd": 2696836697,
+  "byHeading": [
+    {
+      "heading": "4001",
+      "label": "Natural rubber: latex, smoked sheets, TSNR, balata, gutta-percha, chicle",
+      "exportsUsd": 67898248,
+      "priorExportsUsd": 88488410,
+      "changePct": -23.3,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "4002",
+      "label": "Synthetic rubber: SBR, butadiene, butyl, chloroprene, NBR, EPDM, isoprene",
+      "exportsUsd": 2548354674,
+      "priorExportsUsd": 2642390811,
+      "changePct": -3.6,
+      "sharePct": 18.4
+    },
+    {
+      "heading": "4003",
+      "label": "Reclaimed rubber",
+      "exportsUsd": 25529617,
+      "priorExportsUsd": 28760898,
+      "changePct": -11.2,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4004",
+      "label": "Rubber waste, scrap, powder and crumb",
+      "exportsUsd": 99587023,
+      "priorExportsUsd": 69427454,
+      "changePct": 43.4,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "4005",
+      "label": "Compounded rubber, unvulcanized (masterbatch, solutions, sheets)",
+      "exportsUsd": 775727706,
+      "priorExportsUsd": 833414406,
+      "changePct": -6.9,
+      "sharePct": 5.6
+    },
+    {
+      "heading": "4006",
+      "label": "Other unvulcanized forms: camel-back retread strips, rods, tubes, discs",
+      "exportsUsd": 96022966,
+      "priorExportsUsd": 90443133,
+      "changePct": 6.2,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "4007",
+      "label": "Vulcanized rubber thread and cord",
+      "exportsUsd": 3929360,
+      "priorExportsUsd": 6516764,
+      "changePct": -39.7,
+      "sharePct": 0
+    },
+    {
+      "heading": "4008",
+      "label": "Plates, sheets, strip, rods and profiles of vulcanized rubber, incl. foam",
+      "exportsUsd": 397043605,
+      "priorExportsUsd": 382876260,
+      "changePct": 3.7,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "4009",
+      "label": "Tubes, pipes and hoses, incl. brake hoses",
+      "exportsUsd": 1191294683,
+      "priorExportsUsd": 1234888839,
+      "changePct": -3.5,
+      "sharePct": 8.6
+    },
+    {
+      "heading": "4010",
+      "label": "Conveyor belts and transmission belts (V-belts, timing belts)",
+      "exportsUsd": 449973012,
+      "priorExportsUsd": 450163231,
+      "changePct": 0,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "4011",
+      "label": "New pneumatic tires: car, light truck, truck and bus, OTR, farm, aircraft, motorcycle, bicycle",
+      "exportsUsd": 4576068404,
+      "priorExportsUsd": 4941275622,
+      "changePct": -7.4,
+      "sharePct": 33
+    },
+    {
+      "heading": "4012",
+      "label": "Retreaded and used tires, solid tires, tire treads and flaps",
+      "exportsUsd": 142264253,
+      "priorExportsUsd": 153786589,
+      "changePct": -7.5,
+      "sharePct": 1
+    },
+    {
+      "heading": "4013",
+      "label": "Inner tubes",
+      "exportsUsd": 10750283,
+      "priorExportsUsd": 11585794,
+      "changePct": -7.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4014",
+      "label": "Hygienic and pharmaceutical articles: condoms, nursing nipples",
+      "exportsUsd": 27673371,
+      "priorExportsUsd": 27315140,
+      "changePct": 1.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4015",
+      "label": "Rubber gloves and apparel: medical, surgical, nitrile and latex gloves, aprons",
+      "exportsUsd": 142587563,
+      "priorExportsUsd": 170059731,
+      "changePct": -16.2,
+      "sharePct": 1
+    },
+    {
+      "heading": "4016",
+      "label": "Other articles of vulcanized rubber: gaskets, seals, O-rings, mats, bands, anti-vibration parts",
+      "exportsUsd": 3325412475,
+      "priorExportsUsd": 3287207565,
+      "changePct": 1.2,
+      "sharePct": 23.9
+    },
+    {
+      "heading": "4017",
+      "label": "Hard rubber (ebonite) and articles of hard rubber",
+      "exportsUsd": 5941896,
+      "priorExportsUsd": 8489866,
+      "changePct": -30,
+      "sharePct": 0
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "4016.93",
+      "heading": "4016",
+      "description": "Rubber; vulcanised (other than hard rubber), gaskets, washers and other seals, of non-cellular rubber",
+      "exportsUsd": 1804556413,
+      "priorExportsUsd": 1811636743,
+      "changePct": -0.4,
+      "sharePct": 13
+    },
+    {
+      "hs6": "4011.80",
+      "heading": "4011",
+      "description": "Rubber; new pneumatic tyres, of a kind used on construction, mining or industrial handling vehicles and machines",
+      "exportsUsd": 1499426478,
+      "priorExportsUsd": 1314468654,
+      "changePct": 14.1,
+      "sharePct": 10.8
+    },
+    {
+      "hs6": "4011.20",
+      "heading": "4011",
+      "description": "Rubber; new pneumatic tyres, of a kind used on buses or lorries",
+      "exportsUsd": 1448783701,
+      "priorExportsUsd": 1802098386,
+      "changePct": -19.6,
+      "sharePct": 10.4
+    },
+    {
+      "hs6": "4011.10",
+      "heading": "4011",
+      "description": "Rubber; new pneumatic tyres, of a kind used on motor cars (including station wagons and racing cars)",
+      "exportsUsd": 1332183660,
+      "priorExportsUsd": 1454138378,
+      "changePct": -8.4,
+      "sharePct": 9.6
+    },
+    {
+      "hs6": "4016.99",
+      "heading": "4016",
+      "description": "Rubber; vulcanised (other than hard rubber), articles n.e.c. in heading no. 4016, of non-cellular rubber",
+      "exportsUsd": 1272989354,
+      "priorExportsUsd": 1246190008,
+      "changePct": 2.2,
+      "sharePct": 9.2
+    },
+    {
+      "hs6": "4002.70",
+      "heading": "4002",
+      "description": "Rubber; synthetic, ethylene-propylene-non-conjugated diene rubber (EPDM), in primary forms or in plates, sheets or strip",
+      "exportsUsd": 572063541,
+      "priorExportsUsd": 525536964,
+      "changePct": 8.9,
+      "sharePct": 4.1
+    },
+    {
+      "hs6": "4005.10",
+      "heading": "4005",
+      "description": "Rubber; unvulcanised, compounded with carbon black or silica, in primary forms or in plates, sheets or strip",
+      "exportsUsd": 506601788,
+      "priorExportsUsd": 539164336,
+      "changePct": -6,
+      "sharePct": 3.6
+    },
+    {
+      "hs6": "4002.20",
+      "heading": "4002",
+      "description": "Rubber; synthetic, butadiene rubber (BR), in primary forms or in plates, sheets or strip",
+      "exportsUsd": 449510470,
+      "priorExportsUsd": 470802236,
+      "changePct": -4.5,
+      "sharePct": 3.2
+    },
+    {
+      "hs6": "4002.19",
+      "heading": "4002",
+      "description": "Rubber; synthetic, styrene-butadiene rubber (SBR) and carboxylated styrene-butadiene rubber (XSBR), (other than latex), in primary forms or in plates, sheets or strip",
+      "exportsUsd": 446783888,
+      "priorExportsUsd": 508978312,
+      "changePct": -12.2,
+      "sharePct": 3.2
+    },
+    {
+      "hs6": "4002.39",
+      "heading": "4002",
+      "description": "Rubber; synthetic, halo-isobutene-isoprene rubber (CIIR or BIIR), in primary forms or in plates, sheets or strip",
+      "exportsUsd": 336057968,
+      "priorExportsUsd": 327010940,
+      "changePct": 2.8,
+      "sharePct": 2.4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 40, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2022–2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: MFN applied rates for HS chapter 40 by market",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 81% of 2025 U.S. Chapter 40 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

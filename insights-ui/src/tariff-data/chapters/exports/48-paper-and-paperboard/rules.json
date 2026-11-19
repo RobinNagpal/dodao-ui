@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 48,
+    "padded": "48",
+    "slug": "48-paper-and-paperboard",
+    "title": "Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/48-paper-and-paperboard/rules",
+    "h1": "HTS Chapter 48: Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Paper Export Rules: Schedule B, Licences, EEI (HTS Ch. 48) | KoalaGains",
+      "shortDescription": "Schedule B codes for kraftliner, boxes and tissue, why paper is EAR99 except for Russia and Belarus, AES filing, the USMCA origin rule for paper and Canada's surtax remission.",
+      "keywords": [
+        "schedule b kraft paper",
+        "schedule b code for paper",
+        "export license paper products",
+        "eccn for paper",
+        "usmca rules of origin paper",
+        "canada surtax remission"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. paper exporter takes the same five steps as every exporter. No U.S. agency issues an export permit or certificate for paper, paperboard or paper products, and they are **EAR99**, so a licence is needed only for embargoed destinations, restricted parties and **Russia and Belarus**, where 62 six-digit Chapter 48 codes, kraftliner and coated board among them, are on Commerce's licence list. Waste paper and old corrugated containers for recycling are not Chapter 48: they are classified in heading 4707 (Chapter 47). The money questions are abroad: keeping goods USMCA-qualifying for Mexico, helping a Canadian buyer claim remission of Canada's surtax, and, for EU buyers, supplying deforestation due-diligence data from December 30, 2026.",
+  "regulationsAsOf": "2026-10-08",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Kraftliner (4804.11, $2.21B in 2025) and corrugated boxes (4819.10, $1.31B) are the two largest lines. Classify to six digits before quoting, because tariffs abroad split headings: Canada surtaxes coated bleached board 4810.31 at 25% but 4810.32 at 50%, and corrugated boxes (4819.10) at 50% but folding cartons (4819.20) not at all; China's anti-dumping duty covers only unbleached sack kraft (Chinese lines 4804.21 and 4804.31). Recovered paper and old corrugated containers (OCC) are 4707, in Chapter 47."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Paper and board are often sold through brokers, traders and converters; screen the end buyer and the final destination, not only the party that places the order."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Paper, paperboard and paper articles are almost always EAR99 and ship without a licence (NLR) to most destinations. The exceptions are set by destination and party, not by product: see the sanctions step."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: Supplement No. 4 to Part 746 lists 62 six-digit Chapter 48 codes, including all kraft paper and board (4804), fluting and testliner (4805), clay-coated and most plastic-coated paper (4810, 4811), folding cartons (4819.20) and paper cups, trays and molded pulp (4823.61–4823.70), so they need a Commerce licence. Corrugated boxes (4819.10), toilet paper and tissues (4818) and notebooks (4820) are not on that list."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Paper has no special filing rule: file when one Schedule B number in a shipment is worth over $2,500. Shipments to Canada need no EEI unless a licence is required; a truck or container load of paper to Mexico is almost always over the threshold."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the 62 Chapter 48 HS codes in Supplement No. 4 to Part 746 (15 CFR 746.8)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "15 CFR Part 746, Supplement No. 4",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "4801",
+      "label": "Newsprint",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps, and newsprint is not on the Russia list."
+    },
+    {
+      "heading": "4802",
+      "label": "Uncoated printing, writing & copy paper",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only paper base for photosensitive and wallpaper paper and some uncoated printing paper (4802.20, 4802.40, 4802.58, 4802.61) are on the Russia list; copy paper of 4802.56 and 4802.57 is not."
+    },
+    {
+      "heading": "4803",
+      "label": "Tissue & towel stock (parent rolls)",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps; tissue stock is not on the Russia list."
+    },
+    {
+      "heading": "4804",
+      "label": "Uncoated kraft paper & paperboard (kraftliner, sack kraft)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4805",
+      "label": "Other uncoated paper & paperboard (fluting, testliner, recycled board)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4806",
+      "label": "Vegetable parchment, greaseproof, tracing paper & glassine",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4807",
+      "label": "Composite (laminated) paper & paperboard",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4808",
+      "label": "Corrugated, creped & embossed paper",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Corrugated paper (4808.10), creped kraft (4808.40) and other creped or embossed paper (4808.90) are on the Russia list."
+    },
+    {
+      "heading": "4809",
+      "label": "Carbon & self-copy paper (large rolls or sheets)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4810",
+      "label": "Coated paper & paperboard (clay-coated)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4811",
+      "label": "Paper coated with plastics, wax or adhesive; thermal & gift wrap",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "All of 4811 except self-adhesive and other gummed paper (4811.41, 4811.49) is on the Russia list."
+    },
+    {
+      "heading": "4812",
+      "label": "Filter blocks, slabs & plates of paper pulp",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps."
+    },
+    {
+      "heading": "4813",
+      "label": "Cigarette paper",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps; cigarette paper is not on the Russia list."
+    },
+    {
+      "heading": "4814",
+      "label": "Wallpaper & wallcoverings",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only 4814.90 is on the Russia list; vinyl-coated wallpaper (4814.20) is not."
+    },
+    {
+      "heading": "4816",
+      "label": "Carbon & self-copy paper (cut, boxed)",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps."
+    },
+    {
+      "heading": "4817",
+      "label": "Envelopes & correspondence cards",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps."
+    },
+    {
+      "heading": "4818",
+      "label": "Toilet paper, tissues, towels & napkins",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps; toilet paper, tissues and towels are not on the Russia list."
+    },
+    {
+      "heading": "4819",
+      "label": "Boxes, cartons, bags & paper packaging",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only folding cartons (4819.20) are on the Russia list; corrugated boxes (4819.10) and bags are not."
+    },
+    {
+      "heading": "4820",
+      "label": "Notebooks, diaries, binders & business forms",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps."
+    },
+    {
+      "heading": "4821",
+      "label": "Paper labels",
+      "ruleIds": [],
+      "note": "No U.S. agency rule beyond the five steps."
+    },
+    {
+      "heading": "4822",
+      "label": "Bobbins, spools & cores",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "4823",
+      "label": "Paper cups, plates, molded pulp & other paper articles",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Filter paper (4823.20), recorder paper (4823.40), paper cups, plates and trays (4823.61, 4823.69), molded pulp (4823.70) and other articles (4823.90) are on the Russia list."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "usmca-paper-origin",
+      "title": "Meet the USMCA rule of origin for paper",
+      "saves": "Mexico's MFN rate on non-qualifying paper (25–35% on 49 Chapter 48 lines since January 1, 2026, 0–15% on the rest); it does not remove Canada's surtax, which applies to U.S.-origin goods whether they qualify or not.",
+      "appliesTo": "U.S. paper sold to Mexico and Canada. Newsprint, tissue stock, kraft paper and board, fluting and testliner, greaseproof and composite paper (48.01, 48.03–48.07) qualify when made from pulp or other material of another chapter, so paper made in a U.S. mill from imported Canadian or Brazilian pulp qualifies. Boxes, bags, envelopes, tissue products, notebooks and labels (48.17–48.22) qualify when converted from paper or board of a heading outside that group other than 48.23, so boxes made from imported linerboard qualify. Copy paper and other small sheets or narrow rolls of 48.02, 48.10 and 48.11 qualify when cut from larger rolls or sheets of the same heading.",
+      "document": "A USMCA certification of origin with the nine data elements, backed by mill records or bills of material showing what the paper was made from.",
+      "caveat": "Keep the records for at least five years; Mexico's customs authority can verify origin. Composite, coated or printed articles of 48.23 have their own narrower rules; check Annex 4-B for the exact heading.",
+      "citations": [
+        {
+          "label": "USMCA Annex 4-B, Chapter 48",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04-Rules-of-Origin.pdf"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        }
+      ]
+    },
+    {
+      "id": "ca-surtax-remission",
+      "title": "Help the Canadian buyer claim remission of Canada's surtax",
+      "saves": "The 25% or 50% surtax Canada charges on listed U.S. paper goods, refunded to (or not collected from) the Canadian importer.",
+      "appliesTo": "Goods imported for use in Canada in the manufacture or processing of any good, in agricultural production or in the packaging of a food product or beverage (section 3 of the United States Surtax Remission Order (2025)), for example corrugated boxes or coated board bought by a food processor or a converter; and goods imported before July 1, 2027 for health care, public health, public safety or defence users (sections 1 and 2).",
+      "document": "The Canadian importer's claim for remission to the Minister of Public Safety, filed within two years of import, with records of how the goods were used.",
+      "caveat": "Remission is the Canadian importer's claim, not the exporter's. Tissue, toilet paper and stationery bought for resale do not qualify, and no other relief may have been claimed on the same goods.",
+      "citations": [
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+        },
+        {
+          "label": "CBSA Customs Notice 26-23",
+          "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn26-23-eng.html"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

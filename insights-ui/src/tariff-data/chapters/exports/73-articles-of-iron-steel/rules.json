@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 73,
+    "padded": "73",
+    "slug": "73-articles-of-iron-steel",
+    "title": "Articles of Iron or Steel"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/73-articles-of-iron-steel/rules",
+    "h1": "HTS Chapter 73: Articles of Iron or Steel — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Steel Article Export Rules: Licences, EEI & Drawback (HTS Ch. 73) | KoalaGains",
+      "shortDescription": "What U.S. exporters of fasteners, pipe, fittings, tanks and other steel articles must do before shipping, the USMCA rule of origin for steel articles, and why Section 232 drawback is now limited.",
+      "keywords": [
+        "steel export license",
+        "schedule b number for stainless steel",
+        "usmca steel rules of origin",
+        "duty drawback on section 232 tariffs",
+        "canada steel surtax remission"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "A U.S. exporter of steel articles takes the same five steps as every exporter. No U.S. agency issues an export certificate or permit for these goods, and almost all of them are **EAR99**, so a licence is needed only for embargoed destinations, restricted parties and **Russia and Belarus**, where nearly every Chapter 73 code is on Commerce's licence lists. The exceptions to watch are lined or high-nickel chemical storage tanks and multi-walled piping, which can be controlled under ECCN 2B350, and filled gas cylinders, which ship as hazardous materials. The bigger money questions are abroad: keeping goods USMCA-qualifying for Mexico, helping a Canadian buyer claim surtax remission, and knowing that U.S. drawback no longer refunds most Section 232 duty paid on imported steel.",
+  "regulationsAsOf": "2026-11-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Two six-digit lines carry a third of the chapter: other articles of iron or steel (7326.90, $5.77B in 2025) and screws and bolts (7318.15, $2.49B). Classify to at least six digits before quoting, because surtaxes and quotas abroad split headings: Canada surtaxes leaf springs (7320.10) at 25% but helical springs (7320.20) at 50%, and the EU and UK steel quotas cover welded pipe but not pipe fittings."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Pipe, fittings and pressure parts for oil, gas and chemical projects are often resold through distributors; screen the end user and the final destination, not only the consignee."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Almost all Chapter 73 goods are EAR99. Two exceptions: storage tanks over 100 liters whose wetted surfaces are glass-lined, enameled, fluoropolymer-lined or made of high-nickel alloy, and multi-walled lined piping with a leak-detection port, can be ECCN 2B350 (chemical-weapons controls), which needs a licence for destinations such as China. Standard fasteners, washers, springs and wire are not \"specially designed\" under 15 CFR 772.1, so they generally stay EAR99 even when made for aircraft or controlled machinery."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: Supplement No. 4 to Part 746 lists almost every six-digit Chapter 73 code, from sheet piling (7301.10) to wire articles (7326.20); line pipe, drill pipe, casing and gas cylinders are also in Supplement No. 2, and other articles of 7326.90 worth $300 or more in Supplement No. 5. In practice most of the chapter needs a Commerce licence for those two countries."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Steel articles have no special filing rule: file when one Schedule B number in a shipment is worth over $2,500, and shipments to Canada need no EEI unless a licence is required. A truckload of fasteners or fittings to Mexico is usually over the threshold."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-2b350",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Storage tanks over 100 liters with glass, enamel, fluoropolymer or high-nickel-alloy wetted surfaces, and multi-walled lined piping with leak detection, can be ECCN 2B350 (CB, AT): a licence is needed where the Country Chart marks CB Column 2, for example China",
+      "citations": [
+        {
+          "label": "Commerce Control List, Category 2 (ECCN 2B350)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "Commerce Country Chart (15 CFR 738 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-738/appendix-Supplement%20No.%201%20to%20Part%20738"
+        }
+      ]
+    },
+    {
+      "id": "bis-fasteners",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Fasteners, washers, springs and wire are not \"specially designed\", whatever their form or fit (15 CFR 772.1(b)(2)), so they are not caught by a CCL entry just because they go into controlled equipment",
+      "citations": [
+        {
+          "label": "15 CFR 772.1 (definition of \"specially designed\")",
+          "url": "https://www.ecfr.gov/current/title-15/section-772.1"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the Chapter 73 HS codes in Supplements No. 2, 4 and 5 to Part 746 (15 CFR 746.8)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "15 CFR Part 746 (supplements)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ]
+    },
+    {
+      "id": "phmsa-cylinders",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Gas cylinders shipped filled, or empty but not cleaned, are hazardous materials: they ship under 49 CFR 173.301, and UN-marked pressure receptacles must meet 49 CFR 178.70",
+      "citations": [
+        {
+          "label": "49 CFR 173.301 (cylinders)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.301"
+        },
+        {
+          "label": "49 CFR 178.70 (UN pressure receptacles)",
+          "url": "https://www.ecfr.gov/current/title-49/section-178.70"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "7301",
+      "label": "Sheet piling & welded shapes",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7302",
+      "label": "Railway track material",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7303",
+      "label": "Cast-iron pipe & tube",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7304",
+      "label": "Seamless pipe & tube (OCTG, line pipe)",
+      "ruleIds": ["bis-2b350", "bis-russia-belarus"],
+      "note": "Line pipe, drill pipe and casing (7304.11–7304.29) are on both Russia lists (Supplements No. 2 and 4). Multi-walled lined piping with a leak-detection port can be ECCN 2B350."
+    },
+    {
+      "heading": "7305",
+      "label": "Large welded pipe (over 406.4 mm)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Line pipe and casing over 406.4 mm are on both Russia lists (Supplements No. 2 and 4)."
+    },
+    {
+      "heading": "7306",
+      "label": "Welded pipe, tube & hollow sections",
+      "ruleIds": ["bis-2b350", "bis-russia-belarus"],
+      "note": "Welded line pipe and casing (7306.11–7306.29) are on both Russia lists. Multi-walled lined piping with a leak-detection port can be ECCN 2B350."
+    },
+    {
+      "heading": "7307",
+      "label": "Pipe fittings (flanges, elbows, couplings)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7308",
+      "label": "Structures & structural parts",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7309",
+      "label": "Tanks & vats over 300 liters",
+      "ruleIds": ["bis-2b350", "bis-russia-belarus"],
+      "note": "Plain carbon or stainless steel tanks are EAR99; glass-lined, enameled, fluoropolymer-lined or high-nickel-alloy tanks over 100 liters can be ECCN 2B350."
+    },
+    {
+      "heading": "7310",
+      "label": "Drums, cans & containers (300 l or less)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7311",
+      "label": "Gas cylinders",
+      "ruleIds": ["phmsa-cylinders", "bis-russia-belarus"],
+      "note": "Empty new cylinders ship as ordinary cargo; filled or uncleaned cylinders are hazardous materials. Cylinders are on both Russia lists."
+    },
+    {
+      "heading": "7312",
+      "label": "Wire rope, cable & strand",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7313",
+      "label": "Barbed wire",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7314",
+      "label": "Wire mesh, netting, fencing & expanded metal",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7315",
+      "label": "Chain & chain parts",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7316",
+      "label": "Anchors & grapnels",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7317",
+      "label": "Nails, tacks & staples",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7318",
+      "label": "Screws, bolts, nuts & washers",
+      "ruleIds": ["bis-fasteners", "bis-russia-belarus"],
+      "note": "Standard fasteners stay EAR99 even when they go into aircraft or controlled machinery, unless an ECCN names them."
+    },
+    {
+      "heading": "7319",
+      "label": "Sewing needles, pins & similar",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7320",
+      "label": "Springs & leaf springs",
+      "ruleIds": ["bis-fasteners", "bis-russia-belarus"],
+      "note": "Springs are excluded from \"specially designed\", so they are generally EAR99."
+    },
+    {
+      "heading": "7321",
+      "label": "Stoves, grills & barbecues",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7322",
+      "label": "Radiators & air heaters",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7323",
+      "label": "Kitchenware & household articles",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7324",
+      "label": "Sinks, baths & sanitary ware",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7325",
+      "label": "Cast articles (manhole covers, grinding balls)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7326",
+      "label": "Other articles (forgings, wire articles, hangers)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Other articles of 7326.90 worth $300 or more each are also on the Russia and Belarus luxury-goods list (Supplement No. 5)."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "For steel inputs the refund is now narrow. Since Proclamation 11021 (April 2026), Section 232 duty is refundable only through manufacturing drawback, only on articles listed in Annex I-B (the 25% derivative list) or Annex III of that proclamation, and only when the goods and the steel in them come from a Trade Agreement Partner (the UK, EU, Japan, Korea, Mexico or Canada). Section 232 duty on imported flat steel, bar, wire rod, pipe and most derivatives (the 50% list) is not refunded, nor are antidumping and countervailing duties. Ordinary duties and other duties still qualify, CBP takes no paper claims, and the refund does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        },
+        {
+          "label": "Proclamation 11021, clauses 13–14 (91 FR 18201)",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states"
+        }
+      ]
+    },
+    {
+      "id": "usmca-steel-origin",
+      "title": "Meet the USMCA rule of origin for steel articles",
+      "saves": "Mexico's MFN rate on non-qualifying goods (35% on many Chapter 73 lines since January 1, 2026) and Canada's MFN rate (up to 8%); it does not remove Canada's surtax, which applies to U.S.-origin goods whether they qualify or not.",
+      "appliesTo": "U.S. steel articles sold to Mexico and Canada. Fasteners (73.18) qualify when made from steel of another heading, such as imported wire rod or wire; other articles (73.25–73.26) from any heading outside that group. Sheet piling, rails, cast-iron pipe (73.01–73.03) and seamless tube (73.04) must be made from material of another chapter, so seamless tube pierced from imported Chapter 72 billet does not qualify. Pipe of 73.05–73.07, structures (7308), wire rope, barbed wire, mesh, some chain and nails need at least 70% by weight of the steel inputs to be originating, or a regional value content of 75% (transaction value) or 65% (net cost).",
+      "document": "A USMCA certification of origin with the nine data elements, backed by mill certificates and bills of material showing where the steel inputs were made.",
+      "caveat": "The 70% steel test has applied since July 2022 for structures and since July 2023 for pipe, wire products and nails; U.S., Canadian and Mexican steel all count as originating. Keep supplier records for at least five years; the buyer's customs authority can verify origin.",
+      "citations": [
+        {
+          "label": "USMCA Annex 4-B, Chapter 73",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04-Rules-of-Origin.pdf"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        }
+      ]
+    },
+    {
+      "id": "ca-surtax-remission",
+      "title": "Help the Canadian buyer claim remission of Canada's steel surtax",
+      "saves": "The 25% or 50% surtax Canada charges on U.S. steel goods, refunded to the Canadian importer.",
+      "appliesTo": "Products listed by tariff item in Schedules 2 and 6 of the United States Surtax Remission Order (2025) because they are in short supply or not made in Canada (many seamless tube lines, rails, sheet piling, some fittings, tanks and fasteners); goods imported before July 1, 2027 to make motor vehicles, aircraft and their parts, or for public health, safety and defence; and goods the buyer re-exports under Canada's Duties Relief and Drawback programs.",
+      "document": "The importer's remission claim to the Minister of Public Safety within two years of import, with the entry documents; the U.S. seller supplies product specifications that match the schedule's description.",
+      "caveat": "Remission is the buyer's claim and is granted only for the listed descriptions and dates; the general relief for steel used in other Canadian manufacturing ended January 31, 2026. The surtax applies to goods of U.S. origin under the CUSMA marking rules.",
+      "citations": [
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+        },
+        {
+          "label": "CBSA Customs Notice 25-11",
+          "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn25-11-eng.html"
+        }
+      ]
+    },
+    {
+      "id": "uk-us-steel-quota",
+      "title": "Use the U.S. share of the UK steel quotas",
+      "saves": "The 50% UK duty above quota on welded pipe and tube: within its quota a U.S. shipment pays 0%.",
+      "appliesTo": "Large welded tubes (category 25A) and other welded tubes (category 26), where the U.S. has its own country quota under the UK Steel Trade Measure from July 1, 2026 (3,649 tonnes a year in category 26).",
+      "document": "The UK importer's customs declaration claiming the U.S. quota order number for the category; quotas are released each quarter, first come first served.",
+      "caveat": "Once the quarter's U.S. quota is used up, the 50% duty applies until the next quarter. Other Chapter 73 categories use the quota for other countries.",
+      "citations": [
+        {
+          "label": "GOV.UK: UK's steel trade measure from 1 July 2026",
+          "url": "https://www.gov.uk/government/publications/uks-steel-trade-measure-from-1-july-2026/uks-steel-trade-measure-from-1-july-2026"
+        },
+        {
+          "label": "UK Trade Tariff: 7306 30 80 00",
+          "url": "https://www.trade-tariff.service.gov.uk/commodities/7306308000"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}
