@@ -59,9 +59,9 @@ Each fact has one home. Other pages link to it instead of repeating it.
 7. `pnpm lint && pnpm prettier-check && pnpm compile`, PR, deploy, then flush
    `/industry-tariff-report/exports/chapters/<slug>` and `/<slug>/*` from CloudFront.
 
-**Sitemap:** export pages are left out of `/industry-tariff-report/sitemap.xml` for now, while their
-content is being finalized. When they are ready to be indexed, add them back in
-`src/app/industry-tariff-report/sitemap.xml/route.ts`.
+**Sitemap:** `/industry-tariff-report/sitemap.xml` lists all five export pages of every chapter registered in
+`EXPORTS_BY_SLUG`, each with its own `page.lastCheckedAt` as `lastmod`
+(`src/app/industry-tariff-report/sitemap.xml/route.ts`). Registering a chapter adds its export pages there.
 
 ## Writing rules for every export page
 
