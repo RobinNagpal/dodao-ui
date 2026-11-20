@@ -1,7 +1,9 @@
 import { prisma } from '@/prisma';
 import { KoalaGainsSpaceId } from '@/types/koalaGainsConstants';
 import { getCanonicalUrl } from '@/utils/getBaseUrlForServerSidePages';
+import { getExportPageContent, hasChapterExports } from '@/utils/tariff-reports/chapter-exports';
 import { getStoredChapterPrototype } from '@/utils/tariff-reports/chapter-prototype';
+import { CHAPTER_EXPORT_SECTIONS, chapterExportHref } from '@/utils/tariff-reports/chapter-route-helpers';
 import { delayedSitemapLastmod } from '@/utils/sitemap-lastmod-utils';
 import { Prisma } from '@prisma/client';
 import { NextResponse } from 'next/server';
@@ -56,9 +58,15 @@ async function generateTariffReportUrls(): Promise<SiteMapUrl[]> {
     if (row.tariffEngineering !== null || prototype?.tariffEngineering) {
       urls.push({ url: `${chapterPath}/tariff-engineering`, changefreq: 'weekly', priority: 0.7, lastmod });
     }
-    // The export pages (/industry-tariff-report/exports/chapters/<slug>/…) are left out on purpose while
-    // their content is being finalized; add them back here (CHAPTER_EXPORT_SECTIONS + chapterExportHref)
-    // once they are ready to be indexed.
+    // Export pages (/industry-tariff-report/exports/chapters/<slug>/…) exist only for chapters registered in
+    // EXPORTS_BY_SLUG. They render from content files, so each page's own lastCheckedAt is safe to advertise
+    // as-is (shipping a content file is a deploy, followed by a CloudFront flush of the chapter's export paths).
+    if (hasChapterExports(row.slug)) {
+      for (const section of CHAPTER_EXPORT_SECTIONS) {
+        const exportLastmod = getExportPageContent(row.slug, section.slug)?.page.lastCheckedAt;
+        urls.push({ url: chapterExportHref(row.slug, section.slug), changefreq: 'weekly', priority: 0.7, lastmod: exportLastmod });
+      }
+    }
   }
 
   return urls;
