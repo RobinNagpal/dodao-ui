@@ -1,0 +1,1511 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 70,
+    "padded": "70",
+    "slug": "70-glass-and-glassware",
+    "title": "Glass and Glassware"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/70-glass-and-glassware/markets",
+    "h1": "HTS Chapter 70: Glass and Glassware — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariff on U.S. Glass by Country: Canada, China, EU, Mexico (HTS Ch. 70) | KoalaGains",
+      "shortDescription": "What Canada, the EU, Mexico, Japan, China, Korea, the UK and India charge on U.S. fiberglass, mirrors, bottles, flat glass and glassware, market by market.",
+      "keywords": ["tariff on us glass", "glass tariff china", "fiberglass tariffs", "canada tariff glass bottles", "mexico tariff glass", "eu tariff on glass"]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Most U.S. glass enters its big markets duty-free. **Canada, Mexico and Korea** charge 0% on goods that qualify for their trade agreements, the **EU** has charged 0% on U.S.-origin glass since July 1, 2026 (normally up to 11%), and **Japan** charges 0% on mirrors, fiberglass and most other lines. Two exceptions cost money: **Canada's 50% surtax** on U.S. glass bottles and jars (7010.90) since September 8, 2026, and **China**, where U.S. glass pays its normal 7–15% rate plus a 10–25% counter-tariff plus a 10% extra duty, 27–50% in all unless the importer holds an exclusion. **India** charges 10–20% and the **UK** 6–7% on fiberglass and 10% on glassware. Where the tariff is zero, the buyer's product rules decide access instead: vehicle type approval for rear-view mirrors and safety glass, food-contact rules for bottles and tableware.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7001",
+      "label": "Cullet, glass waste & scrap; glass in the mass",
+      "shortLabel": "Cullet & glass mass"
+    },
+    {
+      "heading": "7002",
+      "label": "Glass balls, rods & tubes, unworked (incl. fused quartz)",
+      "shortLabel": "Balls, rods & tubes"
+    },
+    {
+      "heading": "7003",
+      "label": "Cast & rolled glass sheets and profiles (patterned glass)",
+      "shortLabel": "Cast & rolled glass"
+    },
+    {
+      "heading": "7004",
+      "label": "Drawn & blown sheet glass",
+      "shortLabel": "Drawn sheet glass"
+    },
+    {
+      "heading": "7005",
+      "label": "Float glass & polished plate glass (incl. LCD glass)",
+      "shortLabel": "Float glass"
+    },
+    {
+      "heading": "7006",
+      "label": "Bent, edge-worked, enameled or engraved flat glass",
+      "shortLabel": "Worked flat glass"
+    },
+    {
+      "heading": "7007",
+      "label": "Safety glass: tempered & laminated, incl. windshields",
+      "shortLabel": "Safety glass"
+    },
+    {
+      "heading": "7008",
+      "label": "Insulating glass units (double glazing)",
+      "shortLabel": "Insulating glass"
+    },
+    {
+      "heading": "7009",
+      "label": "Mirrors, incl. vehicle rear-view mirrors",
+      "shortLabel": "Mirrors"
+    },
+    {
+      "heading": "7010",
+      "label": "Glass bottles, jars, vials & closures",
+      "shortLabel": "Bottles & jars"
+    },
+    {
+      "heading": "7011",
+      "label": "Glass envelopes for lamps & CRTs",
+      "shortLabel": "Lamp envelopes"
+    },
+    {
+      "heading": "7013",
+      "label": "Glassware: drinking glasses, tableware, kitchen & decor",
+      "shortLabel": "Glassware"
+    },
+    {
+      "heading": "7014",
+      "label": "Signaling glassware & optical glass elements",
+      "shortLabel": "Optical & signal glass"
+    },
+    {
+      "heading": "7015",
+      "label": "Watch glasses & spectacle-lens glass",
+      "shortLabel": "Watch & lens glass"
+    },
+    {
+      "heading": "7016",
+      "label": "Glass blocks, bricks, mosaic tiles & leaded glass",
+      "shortLabel": "Glass blocks & mosaics"
+    },
+    {
+      "heading": "7017",
+      "label": "Laboratory & pharmaceutical glassware",
+      "shortLabel": "Lab glassware"
+    },
+    {
+      "heading": "7018",
+      "label": "Glass beads, imitation pearls & stones, microspheres",
+      "shortLabel": "Glass beads"
+    },
+    {
+      "heading": "7019",
+      "label": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool",
+      "shortLabel": "Fiberglass"
+    },
+    {
+      "heading": "7020",
+      "label": "Other articles of glass (incl. vacuum flask inners, quartz tubes)",
+      "shortLabel": "Other glass articles"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (Canada's MFN rate is 0% on almost all glass anyway). On top of it, the United States Surtax Order (2026) has charged 50% on U.S.-origin glass containers (7010.90.00) since September 8, 2026, with no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 1708937771,
+      "priorExportsUsd": 1697503488,
+      "sharePct": 29.3,
+      "changePct": 0.7,
+      "status": "raised",
+      "cells": {
+        "7001": {
+          "exportsUsd": 3435471,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7001.00 (2023). Not on any Canadian surtax list"
+        },
+        "7002": {
+          "exportsUsd": 2853183,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7002.31 (2023). Not on any Canadian surtax list"
+        },
+        "7003": {
+          "exportsUsd": 3375109,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7003.19 (2023). Not on any Canadian surtax list"
+        },
+        "7004": {
+          "exportsUsd": 626420,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7004.90 (2023). Not on any Canadian surtax list"
+        },
+        "7005": {
+          "exportsUsd": 286442439,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7005.10 (2023). Not on any Canadian surtax list"
+        },
+        "7006": {
+          "exportsUsd": 5824946,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7006.00 (2023). Not on any Canadian surtax list"
+        },
+        "7007": {
+          "exportsUsd": 157560161,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7007.19 (2023). Not on any Canadian surtax list"
+        },
+        "7008": {
+          "exportsUsd": 143574977,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7008.00 (2023). Not on any Canadian surtax list"
+        },
+        "7009": {
+          "exportsUsd": 258808567,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7009.10 (2023). Not on any Canadian surtax list"
+        },
+        "7010": {
+          "exportsUsd": 259028346,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% (MFN also 0%, WITS/TRAINS 2023 for HS 7010.90); plus the 50% surtax of the United States Surtax Order (2026), SOR/2026-186, Schedule 3, from September 8, 2026 on tariff item 7010.90.00. It applies to goods of U.S. origin under the CUSMA marking rules, with no CUSMA exemption"
+        },
+        "7011": {
+          "exportsUsd": 710001,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7011.90 (2023). Not on any Canadian surtax list"
+        },
+        "7013": {
+          "exportsUsd": 98060526,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7013.49 (2023). Carried a 25% surtax from March 4 to September 1, 2025 (SOR/2025-66); not on the 2026 surtax list"
+        },
+        "7014": {
+          "exportsUsd": 4886121,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7014.00 (2023). Not on any Canadian surtax list"
+        },
+        "7015": {
+          "exportsUsd": 453450,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7015.90 (2023). Not on any Canadian surtax list"
+        },
+        "7016": {
+          "exportsUsd": 10804230,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7016.90 (2023). Not on any Canadian surtax list"
+        },
+        "7017": {
+          "exportsUsd": 38782621,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7017.90 (2023). Not on any Canadian surtax list"
+        },
+        "7018": {
+          "exportsUsd": 13444398,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7018.20 (2023). Not on any Canadian surtax list"
+        },
+        "7019": {
+          "exportsUsd": 401869537,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7019.90 (2023). Not on any Canadian surtax list"
+        },
+        "7020": {
+          "exportsUsd": 18397268,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.2% avg (0–6.5%) MFN",
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS simple-average MFN 3.2% avg (0–6.5%) for HS 7020.00 (2023). Not on any Canadian surtax list"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest market ($1.71B, up 0.7%): fiberglass (7019, $402M), float glass (7005, $286M), glass bottles and jars (7010, $259M), car mirrors (7009, $259M) and safety glass and insulating units for its window and vehicle plants. Everything enters free under CUSMA except glass containers, which have paid a 50% surtax since September 8, 2026, even when they qualify. Bottles used to package food or drinks, or used in manufacturing, can get the surtax back.",
+        "mainProducts": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool (7019) · Float glass & polished plate glass (incl. LCD glass) (7005)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on glass bottles and jars (7010.90)",
+        "regulator": {
+          "name": "Canada Border Services Agency (surtax and remission claims)",
+          "url": "https://www.cbsa-asfc.gc.ca/",
+          "requirement": "Glass needs no Canadian import permit. CBSA collects the 50% surtax on U.S. glass containers, and the importer files any remission claim, for containers used to package food or beverages or in manufacturing, within two years of import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff, set to 0% for U.S.-origin goods of Chapter 70 under Regulation (EU) 2026/1455 from July 1, 2026 (normally 0–11%: 3% on most glass, 4% on vehicle mirrors, 5% on bottles, 7% on glass fibres, 11% on glassware)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1081493304,
+      "priorExportsUsd": 1109488039,
+      "sharePct": 18.5,
+      "changePct": -2.5,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 701494743,
+          "priorExportsUsd": 737060282,
+          "changePct": -4.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 82688600,
+          "priorExportsUsd": 70631043,
+          "changePct": 17.1
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 55915593,
+          "priorExportsUsd": 58179736,
+          "changePct": -3.9
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 51654208,
+          "priorExportsUsd": 46270110,
+          "changePct": 11.6
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 34801364,
+          "priorExportsUsd": 32759152,
+          "changePct": 6.2
+        }
+      ],
+      "cells": {
+        "7001": {
+          "exportsUsd": 7107825,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "1% avg (0–3%) MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7001.00 lines (WITS/TRAINS simple-average MFN 1% avg (0–3%) for HS 7001.00 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7002": {
+          "exportsUsd": 60304944,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7002.31 lines (WITS/TRAINS simple-average MFN 3% for HS 7002.31 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7003": {
+          "exportsUsd": 2420183,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7003.19 lines (WITS/TRAINS simple-average MFN 3% for HS 7003.19 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7004": {
+          "exportsUsd": 2269213,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7004.90 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7005": {
+          "exportsUsd": 8091142,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "2.2% avg (2–3%) MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7005.10 lines (WITS/TRAINS simple-average MFN 2.2% avg (2–3%) for HS 7005.10 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7006": {
+          "exportsUsd": 9854835,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7006.00 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7007": {
+          "exportsUsd": 27285747,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7007.19 lines (WITS/TRAINS simple-average MFN 3% for HS 7007.19 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7008": {
+          "exportsUsd": 580029,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7008.00 lines (WITS/TRAINS simple-average MFN 3% for HS 7008.00 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7009": {
+          "exportsUsd": 524715467,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7009.10 lines (WITS/TRAINS simple-average MFN 4% for HS 7009.10 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7010": {
+          "exportsUsd": 50866089,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "5% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7010.90 lines (WITS/TRAINS simple-average MFN 5% for HS 7010.90 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7011": {
+          "exportsUsd": 1745129,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "4% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 4% for HS 7011.90 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7013": {
+          "exportsUsd": 9123978,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "11% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7013.49 lines (WITS/TRAINS simple-average MFN 11% for HS 7013.49 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7014": {
+          "exportsUsd": 74307334,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7014.00 lines (WITS/TRAINS simple-average MFN 3% for HS 7014.00 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7015": {
+          "exportsUsd": 93658,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7015.90 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7016": {
+          "exportsUsd": 2407884,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7016.90 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7017": {
+          "exportsUsd": 89450936,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7017.90 lines (WITS/TRAINS simple-average MFN 3% for HS 7017.90 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7018": {
+          "exportsUsd": 15696748,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% MFN",
+          "basis": "WITS/TRAINS simple-average MFN 3% for HS 7018.20 (2023); 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7019": {
+          "exportsUsd": 158227559,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "7% MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7019.90 lines (WITS/TRAINS simple-average MFN 7% for HS 7019.90 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "7020": {
+          "exportsUsd": 36944604,
+          "rate": "Free (EU–U.S. framework)",
+          "normalRate": "3% avg (0–6%) MFN",
+          "basis": "TARIC (checked November 19, 2026): third-country duty for CN 7020.00 lines (WITS/TRAINS simple-average MFN 3% avg (0–6%) for HS 7020.00 (2023)); 0% U.S. tariff preference under Regulation (EU) 2026/1455 from July 1, 2026"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.08B, down 2.5%) buys mostly vehicle rear-view mirrors (7009, $525M, almost all to Germany), then fiberglass (7019, $158M), laboratory glassware (7017, $90M) and signalling glass (7014, $74M). Since July 1, 2026 every U.S. glass line enters at 0%, against 4% on mirrors, 7% on fiberglass and 11% on glassware before. The EU's countermeasure list of 2025, which had much of the chapter at 25–30%, stays suspended.",
+        "mainProducts": "Mirrors, incl. vehicle rear-view mirrors (7009) · Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool (7019)",
+        "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+        "regulator": {
+          "name": "EU vehicle type approval (Regulation (EU) 2019/2144) and food-contact rules (Regulation (EC) No 1935/2004)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2019/2144/oj",
+          "requirement": "Rear-view mirrors and safety glazing for cars and trucks must be type-approved to UN Regulations No 46 and No 43, which Annex I of Regulation (EU) 2019/2144 requires. Glass bottles, jars and tableware that touch food must meet the general safety rules of Regulation (EC) No 1935/2004"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin. Goods that do not qualify pay Mexico's general rate, raised on January 1, 2026 to 35% on many flat-glass, safety-glass, insulating-unit and glass-container lines and 25–36% on glassware; glass fibres, mirrors and laboratory glass were not raised",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 884625334,
+      "priorExportsUsd": 1070473158,
+      "sharePct": 15.1,
+      "changePct": -17.4,
+      "status": "unchanged",
+      "cells": {
+        "7001": {
+          "exportsUsd": 614583,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7001.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7002": {
+          "exportsUsd": 54026928,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7002.31 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7003": {
+          "exportsUsd": 2135742,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7003.19.02 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7003.19 (2023) before)"
+        },
+        "7004": {
+          "exportsUsd": 271542,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 15% for HS 7004.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7005": {
+          "exportsUsd": 64253993,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7005.10.02 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7005.10 (2023) before)"
+        },
+        "7006": {
+          "exportsUsd": 1505391,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7006.00.04 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7006.00 (2023) before)"
+        },
+        "7007": {
+          "exportsUsd": 69273906,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7007.19.99 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7007.19 (2023) before)"
+        },
+        "7008": {
+          "exportsUsd": 4875394,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7008.00.01 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7008.00 (2023) before)"
+        },
+        "7009": {
+          "exportsUsd": 152037194,
+          "rate": "Free (USMCA)",
+          "normalRate": "7.5% avg (0–15%) MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 7.5% avg (0–15%) for HS 7009.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7010": {
+          "exportsUsd": 16686548,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7010.90.99 to 35% from January 1, 2026 (WITS/TRAINS simple-average MFN 10% for HS 7010.90 (2023) before)"
+        },
+        "7011": {
+          "exportsUsd": 1621800,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7011.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7013": {
+          "exportsUsd": 11673388,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7013.49.99 to 25% from January 1, 2026 (WITS/TRAINS simple-average MFN 15% for HS 7013.49 (2023) before)"
+        },
+        "7014": {
+          "exportsUsd": 982111,
+          "rate": "Free (USMCA)",
+          "normalRate": "3% avg (0–15%) MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 3% avg (0–15%) for HS 7014.00 (2023). The December 29, 2025 decree raised only the borosilicate headlamp-lens fraction 7014.00.04, to 25%"
+        },
+        "7015": {
+          "exportsUsd": 2322602,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7015.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7016": {
+          "exportsUsd": 5032444,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% MFN (since Jan 1, 2026)",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods. Mexico's decree of December 29, 2025 raised the general rate on fraction 7016.90.99 to 25% from January 1, 2026 (WITS/TRAINS simple-average MFN 0% for HS 7016.90 (2023) before)"
+        },
+        "7017": {
+          "exportsUsd": 7292426,
+          "rate": "Free (USMCA)",
+          "normalRate": "3.3% avg (0–5%) MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 3.3% avg (0–5%) for HS 7017.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7018": {
+          "exportsUsd": 4847281,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% avg (0–5%) MFN",
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 2.5% avg (0–5%) for HS 7018.20 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7019": {
+          "exportsUsd": 466018621,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7019.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "7020": {
+          "exportsUsd": 19153440,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS simple-average MFN 0% for HS 7020.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($885M, down 17.4%) is the largest buyer of U.S. fiberglass (7019, $466M) for its composite, auto-parts and appliance plants, followed by car mirrors (7009, $152M) and safety glass (7007, $69M). Qualifying U.S. glass enters free under USMCA. Mexico's January 2026 increases to 25–36% on flat glass, bottles and glassware matter only for goods that fail the rule of origin.",
+        "mainProducts": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool (7019) · Mirrors, incl. vehicle rear-view mirrors (7009)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Servicio de Administración Tributaria (importer registry) and USMCA origin rules",
+          "url": "https://www.gob.mx/sat",
+          "requirement": "Glass and fiberglass need no product approval in Mexico. The importer must be in the importers' registry (Padrón de Importadores) and needs a USMCA certification of origin to claim 0%"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff, no U.S. free-trade agreement for glass: 0% on rear-view mirrors, glass fibres, bottles, laboratory glass and most other lines; 2.8–4.2% on some float glass, 3.5% on tempered glass, 3.9% on glassware, 6.6% on glass microspheres",
+      "usTradeAgreement": null,
+      "exportsUsd": 587645300,
+      "priorExportsUsd": 541339865,
+      "sharePct": 10.1,
+      "changePct": 8.6,
+      "status": "unchanged",
+      "cells": {
+        "7001": {
+          "exportsUsd": 65192219,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7001.00 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7002": {
+          "exportsUsd": 11065202,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7002.31 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7003": {
+          "exportsUsd": 1074204,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7003.19 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7004": {
+          "exportsUsd": 862170,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7004.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7005": {
+          "exportsUsd": 13352250,
+          "rate": "2.8% avg (0–4.2%)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 2.8% avg (0–4.2%) for HS 7005.10 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7006": {
+          "exportsUsd": 1591472,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7006.00 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7007": {
+          "exportsUsd": 544696,
+          "rate": "3.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.5% for HS 7007.19 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7008": {
+          "exportsUsd": 3975,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7008.00 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7009": {
+          "exportsUsd": 402617827,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7009.10 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7010": {
+          "exportsUsd": 8520242,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7010.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7011": {
+          "exportsUsd": 320372,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7011.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7013": {
+          "exportsUsd": 1933269,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 3.9% for HS 7013.49 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7014": {
+          "exportsUsd": 6140916,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7014.00 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7015": {
+          "exportsUsd": 11280,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7015.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7016": {
+          "exportsUsd": 201303,
+          "rate": "1.5% avg (0–3.1%)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 1.5% avg (0–3.1%) for HS 7016.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7017": {
+          "exportsUsd": 12407772,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7017.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7018": {
+          "exportsUsd": 1742734,
+          "rate": "6.6%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 6.6% for HS 7018.20 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7019": {
+          "exportsUsd": 53705066,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7019.90 (2023). No U.S. free-trade agreement covers glass"
+        },
+        "7020": {
+          "exportsUsd": 6358331,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS simple-average MFN 0% for HS 7020.00 (2023). No U.S. free-trade agreement covers glass"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($588M, up 8.6%) is a mirror market: vehicle rear-view mirrors (7009, $403M) are two-thirds of it, followed by cullet (7001, $65M) and fiberglass (7019, $54M). Mirrors, fiberglass and cullet enter duty-free; Japan charges 3.5–3.9% only on tempered glass and glassware, unchanged since January 2025.",
+        "mainProducts": "Mirrors, incl. vehicle rear-view mirrors (7009) · Cullet, glass waste & scrap; glass in the mass (7001)",
+        "tariffNow": "Free on mirrors and fiberglass; up to 6.6% on some lines",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (Food Sanitation Act import notification)",
+          "url": "https://www.mhlw.go.jp/english/topics/importedfoods/index.html",
+          "requirement": "Glass tableware, bottles and other containers sold for food use need an import notification to an MHLW quarantine station under the Food Sanitation Act. Mirrors, flat glass and fiberglass need no import approval"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's tariff (MFN 7–15% on most glass, with 2026 provisional cuts on some display and optical-fibre glass) plus the 10% extra duty on all U.S.-origin goods since May 14, 2025, plus China's 2018–2019 counter-tariffs (10%, 20% or 25% by line) unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 484393405,
+      "priorExportsUsd": 573587901,
+      "sharePct": 8.3,
+      "changePct": -15.6,
+      "status": "raised",
+      "cells": {
+        "7001": {
+          "exportsUsd": 41083251,
+          "rate": "32% (12% + 10% + 10%)",
+          "normalRate": "12% MFN",
+          "basis": "China customs tariff for HS 7001.00: 12% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7002": {
+          "exportsUsd": 64291464,
+          "rate": "32–36%",
+          "normalRate": "1% provisional on waveguide-grade quartz tubes for optical fibre (5% MFN); 12% on other fused-quartz tubes",
+          "basis": "China customs tariff for HS 7002.31: 1% provisional on waveguide-grade quartz tubes for optical fibre (5% MFN); 12% on other fused-quartz tubes (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% on waveguide tubes (2019 Annex 1); 10% on other (Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7003": {
+          "exportsUsd": 142574155,
+          "rate": "35% (15% + 10% + 10%); 23–25% on display glass",
+          "normalRate": "15% MFN; 3% provisional on LCD/OLED substrate glass, 5% on phone and tablet cover glass",
+          "basis": "China customs tariff for HS 7003.19: 15% MFN; 3% provisional on LCD/OLED substrate glass, 5% on phone and tablet cover glass (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7004": {
+          "exportsUsd": 1257900,
+          "rate": "35% (15% + 10% + 10%)",
+          "normalRate": "15% MFN (9% provisional on optical flat glass under 0.7 mm)",
+          "basis": "China customs tariff for HS 7004.90: 15% MFN (9% provisional on optical flat glass under 0.7 mm) (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7005": {
+          "exportsUsd": 1132332,
+          "rate": "35% (15% + 10% + 10%)",
+          "normalRate": "15% MFN",
+          "basis": "China customs tariff for HS 7005.10: 15% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3) on coated float glass; 20% on other float glass (Annex 2). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7006": {
+          "exportsUsd": 1402976,
+          "rate": "45% (10% + 25% + 10%)",
+          "normalRate": "10% MFN (4% provisional on LCD substrate glass above Gen 6)",
+          "basis": "China customs tariff for HS 7006.00: 10% MFN (4% provisional on LCD substrate glass above Gen 6) (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% (2019 Annex 1). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7007": {
+          "exportsUsd": 910526,
+          "rate": "49% (14% + 25% + 10%)",
+          "normalRate": "14% MFN",
+          "basis": "China customs tariff for HS 7007.19: 14% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% on tempered glass of 7007.19 (2019 Annex 1); 10% on vehicle and aircraft sizes (7007.11). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7008": {
+          "exportsUsd": 687010,
+          "rate": "34–49%",
+          "normalRate": "14% MFN",
+          "basis": "China customs tariff for HS 7008.00: 14% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% or 25% (2019 Annexes 1 and 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7009": {
+          "exportsUsd": 103605694,
+          "rate": "30% (10% + 10% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China customs tariff for HS 7009.10: 10% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7010": {
+          "exportsUsd": 4096124,
+          "rate": "34–49% (14% + 10–25% + 10%)",
+          "normalRate": "14% MFN",
+          "basis": "China customs tariff for HS 7010.90: 14% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% on most sizes (2019 Annex 1); 10% on containers of 0.33–1 l (Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7011": {
+          "exportsUsd": 514968,
+          "rate": "28–44%",
+          "normalRate": "8–14% MFN",
+          "basis": "China customs tariff for HS 7011.90: 8–14% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10–20% (2019 Annexes 2 and 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7013": {
+          "exportsUsd": 1226308,
+          "rate": "42% (7% + 25% + 10%)",
+          "normalRate": "7% MFN",
+          "basis": "China customs tariff for HS 7013.49: 7% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% (2019 Annex 1); low-expansion glassware 10% + 5%. The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7014": {
+          "exportsUsd": 10607877,
+          "rate": "45–50%",
+          "normalRate": "10–15% MFN",
+          "basis": "China customs tariff for HS 7014.00: 10–15% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% (2019 Annex 1). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7015": {
+          "exportsUsd": 150680,
+          "rate": "47–50%",
+          "normalRate": "12–15% MFN",
+          "basis": "China customs tariff for HS 7015.90: 12–15% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% on most lines (2019 Annex 1). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7016": {
+          "exportsUsd": 1810649,
+          "rate": "35% (15% + 10% + 10%)",
+          "normalRate": "15% MFN",
+          "basis": "China customs tariff for HS 7016.90: 15% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3) on most lines; 25% on glass cubes and leaded lights. The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7017": {
+          "exportsUsd": 22449317,
+          "rate": "28% (8% + 10% + 10%)",
+          "normalRate": "8% MFN (0% on fused-quartz ware)",
+          "basis": "China customs tariff for HS 7017.90: 8% MFN (0% on fused-quartz ware) (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% (2019 Annex 3). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7018": {
+          "exportsUsd": 5263922,
+          "rate": "50% (15% + 25% + 10%)",
+          "normalRate": "15% MFN (5.5% provisional on fused spherical silica powder)",
+          "basis": "China customs tariff for HS 7018.20: 15% MFN (5.5% provisional on fused spherical silica powder) (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 25% (2019 Annex 1). The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7019": {
+          "exportsUsd": 59934338,
+          "rate": "27–30% (7–10% + 10% + 10%)",
+          "normalRate": "7–10% MFN",
+          "basis": "China customs tariff for HS 7019.90: 7–10% MFN (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% on most fibre products (2019 Annex 3); 25% on rovings, 20% on chopped strands. The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "7020": {
+          "exportsUsd": 21393914,
+          "rate": "about 29% (8.9% avg + 10% + 10%)",
+          "normalRate": "0–20% MFN (8.9% average)",
+          "basis": "China customs tariff for HS 7020.00: 0–20% MFN (8.9% average) (WITS/TRAINS 2023; Tariff Commission 2026 provisional rates); plus the 10% extra duty on all U.S. goods; counter-tariff: 10% on most lines (2019 Annex 3); 25% on conductive glass. The counter-tariff falls away only if the importer holds an exclusion (valid until December 31, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "China ($484M, down 15.6%) buys cast and rolled glass sheet (7003, $143M, much of it display-grade), car mirrors (7009, $104M), glass tubes and rods (7002, $64M) and fiberglass (7019, $60M). Without an exclusion, U.S. mirrors pay 30% and glass sheet 35%: China's normal rate, plus the 10% or 25% counter-tariff from 2019, plus the 10% extra duty. Exclusions run only to December 31, 2026.",
+        "mainProducts": "Cast & rolled glass sheets and profiles (patterned glass) (7003) · Mirrors, incl. vehicle rear-view mirrors (7009)",
+        "tariffNow": "Normal rate + 10–25% counter-tariff + 10% unless excluded",
+        "regulator": {
+          "name": "State Council Tariff Commission (exclusion process) and General Administration of Customs",
+          "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm",
+          "requirement": "Glass and fiberglass need no import licence. The Chinese importer can apply to the Tariff Commission to buy U.S. goods without the 2018–2019 counter-tariff; customs collects the normal rate, the 10% extra duty and any counter-tariff at entry"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (Korea's MFN rate is 8% on most glass)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 165432162,
+      "priorExportsUsd": 179992541,
+      "sharePct": 2.8,
+      "changePct": -8.1,
+      "status": "unchanged",
+      "cells": {
+        "7001": {
+          "exportsUsd": 7803110,
+          "rate": "Free (KORUS)",
+          "normalRate": "4% avg (3–5%) MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 4% avg (3–5%) for HS 7001.00 (2023)"
+        },
+        "7002": {
+          "exportsUsd": 20216819,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.5% avg (3–8%) MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 5.5% avg (3–8%) for HS 7002.31 (2023)"
+        },
+        "7003": {
+          "exportsUsd": 80708,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7003.19 (2023)"
+        },
+        "7004": {
+          "exportsUsd": 119341,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7004.90 (2023)"
+        },
+        "7005": {
+          "exportsUsd": 1358511,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7005.10 (2023)"
+        },
+        "7006": {
+          "exportsUsd": 1324298,
+          "rate": "Free (KORUS)",
+          "normalRate": "5.4% avg (3–8%) MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 5.4% avg (3–8%) for HS 7006.00 (2023)"
+        },
+        "7007": {
+          "exportsUsd": 654975,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7007.19 (2023)"
+        },
+        "7008": {
+          "exportsUsd": 131841,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7008.00 (2023)"
+        },
+        "7009": {
+          "exportsUsd": 87527498,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7009.10 (2023)"
+        },
+        "7010": {
+          "exportsUsd": 1236182,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7010.90 (2023)"
+        },
+        "7011": {
+          "exportsUsd": 327856,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7011.90 (2023)"
+        },
+        "7013": {
+          "exportsUsd": 564639,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7013.49 (2023)"
+        },
+        "7014": {
+          "exportsUsd": 1873824,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7014.00 (2023)"
+        },
+        "7015": {
+          "exportsUsd": 41638,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7015.90 (2023)"
+        },
+        "7016": {
+          "exportsUsd": 318092,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7016.90 (2023)"
+        },
+        "7017": {
+          "exportsUsd": 7824593,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7017.90 (2023)"
+        },
+        "7018": {
+          "exportsUsd": 318122,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7018.20 (2023)"
+        },
+        "7019": {
+          "exportsUsd": 21091150,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 8% for HS 7019.90 (2023)"
+        },
+        "7020": {
+          "exportsUsd": 12618965,
+          "rate": "Free (KORUS)",
+          "normalRate": "5% avg (0–8%) MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS simple-average MFN 5% avg (0–8%) for HS 7020.00 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($165M, down 8.1%) buys car mirrors (7009, $88M), fiberglass (7019, $21M) and glass tubes and rods (7002, $20M). All of it enters free under KORUS, against Korea's normal 8%, so a certification of origin is worth having on every shipment.",
+        "mainProducts": "Mirrors, incl. vehicle rear-view mirrors (7009) · Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool (7019)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Korea Customs Service (KORUS origin claims)",
+          "url": "https://www.customs.go.kr/english/main.do",
+          "requirement": "Glass needs no product approval in Korea. The importer claims the KORUS rate with a certification of origin from the U.S. exporter, producer or importer, and Korea Customs can verify it"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (no U.S. free-trade agreement): 0% on mirrors, bottles, flat and safety glass, laboratory glass and most other lines; 6–7% on glass-fibre rovings, yarn, mats and other fibres; 10% on glassware",
+      "usTradeAgreement": null,
+      "exportsUsd": 144882135,
+      "priorExportsUsd": 156063182,
+      "sharePct": 2.5,
+      "changePct": -7.2,
+      "status": "unchanged",
+      "cells": {
+        "7001": {
+          "exportsUsd": 255595,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7001.00 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7002": {
+          "exportsUsd": 10255258,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7002.31 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7003": {
+          "exportsUsd": 2454517,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7003.19 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7004": {
+          "exportsUsd": 23691,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7004.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7005": {
+          "exportsUsd": 523092,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7005.10 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7006": {
+          "exportsUsd": 1281964,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7006.00 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7007": {
+          "exportsUsd": 2398741,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7007.19 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7008": {
+          "exportsUsd": 60129,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7008.00 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7009": {
+          "exportsUsd": 35851448,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7009.10 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7010": {
+          "exportsUsd": 7281367,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7010.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7011": {
+          "exportsUsd": 33006,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7011.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7013": {
+          "exportsUsd": 2833395,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 10% for HS 7013.49 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7014": {
+          "exportsUsd": 1689994,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7014.00 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7015": {
+          "exportsUsd": 63304,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7015.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7016": {
+          "exportsUsd": 124621,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7016.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7017": {
+          "exportsUsd": 4880754,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7017.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7018": {
+          "exportsUsd": 11964208,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7018.20 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7019": {
+          "exportsUsd": 59902407,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 6% for HS 7019.90 (2023). No U.S.–UK tariff preference covers glass"
+        },
+        "7020": {
+          "exportsUsd": 3004644,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026); WITS/TRAINS simple-average MFN 0% for HS 7020.00 (2023). No U.S.–UK tariff preference covers glass"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($145M, down 7.2%) buys fiberglass (7019, $60M), car mirrors (7009, $36M) and glass microspheres (7018, $12M). Mirrors and most glass enter free; fiberglass pays 6–7% and glassware 10%. The 2025 U.S.–UK Economic Prosperity Deal did not change UK duties on glass.",
+        "mainProducts": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool (7019) · Mirrors, incl. vehicle rear-view mirrors (7009)",
+        "tariffNow": "Free on most glass; 6–7% on fiberglass, 10% on glassware",
+        "regulator": {
+          "name": "UK Trade Tariff (HMRC)",
+          "url": "https://www.trade-tariff.service.gov.uk/",
+          "requirement": "Glass needs no UK import licence or product approval. The importer declares the UK commodity code and pays the UK Global Tariff rate shown for it"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (no U.S. free-trade agreement): 10% on most glass and fiberglass, 15% on mirrors and safety glass, 20% on glassware",
+      "usTradeAgreement": null,
+      "exportsUsd": 78789236,
+      "priorExportsUsd": 57361174,
+      "sharePct": 1.3,
+      "changePct": 37.4,
+      "status": "pending",
+      "cells": {
+        "7001": {
+          "exportsUsd": 673639,
+          "rate": "8.3% avg (5–10%)",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 8.3% avg (5–10%) for HS 7001.00 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7002": {
+          "exportsUsd": 21871008,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7002.31 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7003": {
+          "exportsUsd": 162071,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7003.19 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7004": {
+          "exportsUsd": 15676,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7004.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7005": {
+          "exportsUsd": 609719,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7005.10 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7006": {
+          "exportsUsd": 543432,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7006.00 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7007": {
+          "exportsUsd": 8003321,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 15% for HS 7007.19 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7008": {
+          "exportsUsd": 84569,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7008.00 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7009": {
+          "exportsUsd": 19736162,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 15% for HS 7009.10 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7010": {
+          "exportsUsd": 3721527,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7010.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7011": {
+          "exportsUsd": 1079006,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7011.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7013": {
+          "exportsUsd": 1395583,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 20% for HS 7013.49 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7014": {
+          "exportsUsd": 1443401,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7014.00 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7015": {
+          "exportsUsd": 186840,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7015.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7016": {
+          "exportsUsd": 511223,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7016.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7017": {
+          "exportsUsd": 5140779,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7017.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7018": {
+          "exportsUsd": 60308,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7018.20 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7019": {
+          "exportsUsd": 13393160,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7019.90 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        },
+        "7020": {
+          "exportsUsd": 157812,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India's basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 7020.00 (2023). No U.S. free-trade agreement; the February 2026 framework has not changed India's rates"
+        }
+      },
+      "profile": {
+        "headline": "India ($79M, up 37.4%) buys glass tubes and rods (7002, $22M), car mirrors (7009, $20M) and fiberglass (7019, $13M). Duties are high by comparison: 10% on most glass, 15% on mirrors and safety glass, 20% on glassware. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods, but no rates or dates are published.",
+        "mainProducts": "Glass balls, rods & tubes, unworked (incl. fused quartz) (7002) · Mirrors, incl. vehicle rear-view mirrors (7009)",
+        "tariffNow": "10% on most glass; 15% on mirrors and safety glass; 20% on glassware",
+        "regulator": {
+          "name": "Directorate General of Foreign Trade (Importer-Exporter Code)",
+          "url": "https://www.dgft.gov.in/",
+          "requirement": "The Indian importer needs an Importer-Exporter Code (IEC) from DGFT. Glass and fiberglass need no import licence"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "7009",
+      "exportsUsd": 524715467,
+      "rate": "Free (EU–U.S. framework)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7019",
+      "exportsUsd": 466018621,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "7009",
+      "exportsUsd": 402617827,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "7019",
+      "exportsUsd": 401869537,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7005",
+      "exportsUsd": 286442439,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7010",
+      "exportsUsd": 259028346,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Canada",
+      "heading": "7009",
+      "exportsUsd": 258808567,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "7019",
+      "exportsUsd": 158227559,
+      "rate": "Free (EU–U.S. framework)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. They come from the WITS (TRAINS) simple-average MFN applied rate for one representative six-digit subheading per heading, the one with the largest 2025 U.S. exports in that heading (for example 7009.10 for rear-view mirrors, 7019.90 for glass fibres, 7010.90 for bottles and jars, 7005.10 for float glass and 7017.90 for laboratory glassware), for 2023, the latest year WITS holds. They are updated where a national 2026 schedule or notice was checked: EU TARIC, the UK Trade Tariff, Mexico's December 2025 decree, China's 2026 provisional rates and Canada's surtax orders. National 8–10-digit lines can differ.",
+    "Canada, Mexico and Korea show the free-trade-agreement rate for goods that qualify; the normal-rate column shows the MFN rate a non-qualifying good pays. Mexico's normal rates include the increases of January 1, 2026.",
+    "Canada's 7010 cells add the 50% surtax of the United States Surtax Order (2026) on tariff item 7010.90.00. Remission for containers used to package food or beverages, or in manufacturing, is on Export rules.",
+    "The EU cells show 0% for U.S.-origin goods under Regulation (EU) 2026/1455 from July 1, 2026; the normal-rate column shows the third-country duty other origins pay.",
+    "China's cells add three layers: China's 2026 rate (provisional where one exists, otherwise MFN), the 10% extra duty on all U.S. goods, and the 2018–2019 counter-tariff of the line (10%, 20% or 25%). An importer with an exclusion pays only the first two.",
+    "India's cells show basic customs duty only.",
+    "Trade agreements that are signed or announced but not in force (Taiwan, Malaysia, Thailand, India) are not applied; see Tariff updates."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 70, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: tariff and trade data",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (TARIC)",
+      "citation": "TARIC consultation, origin US, November 19, 2026",
+      "document": "TARIC measure information",
+      "title": "TARIC measures for U.S.-origin glass (CN 7001 00 10, 7002 31, 7003 19, 7005 10 25, 7007 19, 7008 00 81, 7009 10, 7010 90 45, 7013 49 99, 7014, 7017 90, 7019 90, 7020 00 80): third-country duty and the 0% U.S. tariff preference (Regulation 2026/1455)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261119&Area=US&Taric=7019900000&LangDescr=en"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "UK Trade Tariff (HMRC/DBT)",
+      "citation": "UK Global Tariff, checked November 19, 2026",
+      "document": "UK Trade Tariff commodity pages",
+      "title": "UK Global Tariff third-country duties for glass (Chapter 70): 0% on mirrors, bottles, flat and safety glass; 6–7% on glass-fibre rovings, yarn and mats; 10% on glassware",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.trade-tariff.service.gov.uk/headings/7019"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026): surtaxes of 15%, 25% and 50% on listed U.S. goods from September 8, 2026",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-66",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-66",
+      "document": "United States Surtax Order (2025-1)",
+      "title": "United States Surtax Order (2025-1): 25% surtax on listed U.S. goods from March 4, 2025",
+      "signed": "2025-03-03",
+      "published": "2025-03-12",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors66-eng.html"
+    },
+    {
+      "id": "ca-remission",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2025-122 (consolidated)",
+      "document": "United States Surtax Remission Order (2025)",
+      "title": "United States Surtax Remission Order (2025), current to October 29, 2026",
+      "signed": null,
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE",
+      "title": "Mexico's decree raising general tariffs from January 1, 2026",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025, Annex 1",
+      "document": "2026 Tariff Adjustment Plan, Annex 1 (provisional import rates)",
+      "title": "2026 provisional import rates, including 1% on waveguide-grade quartz tubes for optical fibre, 3% on LCD/OLED substrate glass and 5% on cover-glass sheet for phones and tablets",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Tariff Commission Announcement No. 3 of 2019 and Annexes 1–4 (25%, 20%, 10% and 5% lists)",
+      "title": "Higher additional tariffs on part of the U.S. goods on the US$60 billion list, from June 1, 2019",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Tariff Commission Announcement No. 4 of 2019 (third batch, Lists 1 and 2)",
+      "title": "Additional tariffs on US$75 billion of U.S. goods from September 1 and December 15, 2019",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Tariff Commission Announcement No. 1 of 2020",
+      "title": "Rates of the September 2019 additional tariffs on U.S. goods halved from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Tariff Commission Announcement No. 7 of 2025",
+      "title": "Extra tariff on U.S. goods cut to 10% from May 14, 2025",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-2020-exclusion",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Tariff Commission Announcement No. 2 of 2020",
+      "title": "Market-based purchase exclusion process for U.S. goods subject to China's additional tariffs",
+      "signed": null,
+      "published": "2020-02-17",
+      "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm"
+    },
+    {
+      "id": "th-art-framework-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Oct 26, 2025",
+      "document": "Joint Statement",
+      "title": "Joint Statement on a Framework for a United States-Thailand Agreement on Reciprocal Trade",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/10/joint-statement-on-a-framework-for-a-united-states-thailand-agreement-on-reciprocal-trade/"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 88% of 2025 U.S. Chapter 70 exports. A customs union (the EU) is one market: its members share one tariff."
+}

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 93,
+    "padded": "93",
+    "slug": "93-arms-and-ammunition",
+    "title": "Arms and Ammunition; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/93-arms-and-ammunition/faq",
+    "h1": "HTS Chapter 93: Arms and Ammunition; Parts and Accessories Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Gun & Ammo Export FAQ: HS Codes, ITAR & EAR Licences, Tariffs | KoalaGains",
+      "shortDescription": "Short answers to what people search about exporting U.S. guns and ammo: HS and Schedule B codes, export licences, DDTC registration, Canada shipping and tariffs.",
+      "keywords": [
+        "hs code ammunition",
+        "hs code for gun parts",
+        "export license for firearms",
+        "itar firearms",
+        "can you ship ammo from the us to canada",
+        "us arms exports by country",
+        "tariffs on guns and ammo"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. firearms, gun parts and ammunition, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "U.S. arms and ammunition exports were $8.40B in 2025; ammunition and munitions (heading 9306) made up 74%, and Israel and the UAE bought 35%.",
+    "Almost every gun, gun part or cartridge needs a U.S. export licence — BIS under the EAR for commercial items, the State Department under the ITAR for military items — and most firearms and ammunition are filed in AES at any value.",
+    "Tariffs abroad are low: five of the eight largest markets charge 0% on qualifying U.S. goods, and Canada’s 2025 counter-tariff on U.S. guns and cartridges ended on September 1, 2025."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"hs code ammunition\", \"hs code for pistol\", \"hs code for rifle\", \"export license firearms\", \"export ammunition\", \"itar firearms\", \"ddtc registration\", \"bis firearms rule\", \"can you ship ammo to canada\", \"can i ship guns to canada\", \"tariffs on guns\", \"tariff on ammunition\", \"us arms exports by country\", \"us arms exports to israel\" and \"export firearms from us\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "hs-code-ammunition",
+      "question": "What is the HS code for ammunition?",
+      "searchedAs": ["hs code ammunition", "hs code for arms and ammunition"],
+      "answer": "Ammunition is HS heading 9306: shotgun cartridges and their parts (9306.21 and 9306.29), other cartridges and parts (9306.30), and other munitions and parts (9306.90). The U.S. export code, the Schedule B number, starts with the same six digits. The export licence classification (ECCN 0A505 for small-arms ammunition, or a USML category for military ammunition) is separate and also goes on the AES filing.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-guns",
+      "question": "What is the HS code for guns and gun parts?",
+      "searchedAs": ["hs code for guns", "hs code for firearms", "hs code for pistol", "hs code for rifle", "hs code for gun parts"],
+      "answer": "Pistols and revolvers are 9302, sporting and hunting rifles and shotguns 9303, air guns 9304, military weapons 9301 and swords 9307. Gun parts and accessories are 9305. Use the Census Schedule B search to get the full 10-digit export code; its first six digits are the HS code.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence",
+      "question": "Do I need an export license to export firearms or ammunition from the U.S.?",
+      "searchedAs": ["export license for firearms", "ammunition export license", "exporting firearms from the us", "exporting firearms accessories from usa"],
+      "answer": "Almost always. Commercial firearms, their parts and small-arms ammunition are 0x5zz ECCNs under the EAR and need a BIS licence for nearly every country, Canada included; License Exception LVS covers up to $500 of some parts per shipment. Military items such as fully automatic weapons and military munitions need a State Department (DDTC) licence under the ITAR.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "itar-firearms",
+      "question": "Are firearms covered by ITAR?",
+      "searchedAs": ["itar firearms", "what is considered itar", "what does itar stand for"],
+      "answer": "Only some. ITAR (the International Traffic in Arms Regulations) still covers fully automatic firearms, guns over .50 caliber, military ammunition and munitions. Non-automatic and semi-automatic firearms, most of their parts and most small-arms ammunition moved to Commerce’s EAR on March 9, 2020. Silencers for those firearms move from the ITAR to the EAR on November 20, 2026.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "ddtc-registration",
+      "question": "Who needs DDTC registration?",
+      "searchedAs": ["ddtc registration", "ddtc registration requirements"],
+      "answer": "Anyone in the U.S. in the business of manufacturing or exporting defense articles on the U.S. Munitions List must register with the State Department’s DDTC, even a manufacturer that does not export. A company that only makes or exports EAR-controlled firearms does not register with DDTC for them; it needs BIS licences instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "bis-firearms-rule",
+      "question": "What happened to the BIS firearms export rule?",
+      "searchedAs": ["bis firearms rule", "bis rules"],
+      "answer": "BIS’s April 30, 2024 interim rule tightened firearms export licences from May 30, 2024. BIS rescinded it on September 30, 2025, keeping only the new ECCNs 0A506 to 0A509 and the AES reporting of the ECCN item paragraph. Licences are again valid for four years, and the Congressional notification for semi-automatic firearm licences of $4M or more was removed.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "ship-to-canada",
+      "question": "Can you ship guns or ammo from the U.S. to Canada?",
+      "searchedAs": ["can you ship ammo from the us to canada", "can i ship ammo to canada", "can i ship gun parts to canada", "can you ship a gun to canada"],
+      "answer": "Yes, with licences on both sides. The U.S. exporter needs a BIS licence, because Canada is covered by the Firearms Convention controls, and must file in AES. The Canadian importer needs a firearms licence, also for barrels, handgun slides, ammunition and magazines; a handgun needs a Global Affairs Canada import permit and is allowed only in certain circumstances, and prohibited firearms cannot be newly imported. Qualifying U.S. goods enter duty-free under CUSMA.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "tariffs-abroad",
+      "question": "Are there tariffs on U.S. guns and ammo abroad?",
+      "searchedAs": ["tariffs on guns", "tariffs on guns and ammo", "are there tariffs on guns", "tariffs on ammunition"],
+      "answer": "They are low. Israel, the EU, Australia, South Korea and Canada charge 0% on qualifying U.S. arms and ammunition; Japan charges 5.4–8.4% and the UAE and Saudi Arabia 5%. China adds a 10% extra tariff on all U.S. goods, but it bought only $172,466 of these goods in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "retaliation",
+      "question": "Did Canada or the EU put retaliatory tariffs on U.S. guns and ammunition?",
+      "searchedAs": ["tariffs on guns and ammo", "are there tariffs on guns"],
+      "answer": "Canada did: a 25% counter-tariff on U.S. revolvers and pistols, sporting rifles and shotguns, air guns and shotgun and other cartridges from March 4, 2025, removed on September 1, 2025. The EU listed the same kinds of goods for a 30% extra duty, but the measure was suspended and never applied, and since July 1, 2026 the EU charges 0% on all U.S. Chapter 93 goods.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "exports-by-country",
+      "question": "How much ammunition and arms does the U.S. export, and to which countries?",
+      "searchedAs": ["us ammunition export", "us arms exports by country", "us weapons exports by country", "us arms exports by country 2025"],
+      "answer": "U.S. exports of HS Chapter 93 goods were $8.40B in 2025, up 32.3% from 2024, and $5.51B in January–August 2026. The largest buyers in 2025 were Israel ($1.93B), the United Arab Emirates ($1.00B), Japan ($571M), Saudi Arabia ($527M) and Germany ($423M). These figures cover HS Chapter 93 goods only, not aircraft, vehicles or other defense equipment.",
+      "link": "exports"
+    },
+    {
+      "id": "exports-israel",
+      "question": "How much does the U.S. export to Israel in arms and ammunition?",
+      "searchedAs": ["us arms exports to israel", "us military exports to israel", "us arms sales to israel 2025"],
+      "answer": "In UN Comtrade trade data, U.S. exports of HS Chapter 93 goods to Israel were $1.93B in 2025, up 21% and 23% of the total; $1.81B of it was ammunition and munitions (heading 9306). U.S. goods enter Israel duty-free under the U.S.–Israel FTA.",
+      "link": "exports"
+    }
+  ]
+}

@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 3,
+    "padded": "03",
+    "slug": "3-fish-and-crustaceans",
+    "title": "Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/3-fish-and-crustaceans",
+    "h1": "HTS Chapter 03: Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Seafood Exports: Lobster, Salmon & Pollock Buyers, Tariffs",
+      "shortDescription": "The U.S. exported $5.18 billion of fish and seafood in 2025 (live lobster $550 million). Who buys it — Canada, China, Japan, the EU — and what each charges.",
+      "keywords": [
+        "us seafood exports",
+        "us fish exports",
+        "us lobster exports",
+        "maine lobster exports to china",
+        "lobster exports by country",
+        "seafood exports by country",
+        "us salmon exports",
+        "alaska pollock exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$5.18 billion** of fish and seafood (HS Chapter 03) in 2025, up **14.9%** from 2024. Frozen whole fish is the largest group (**43%**): frozen sockeye, pink and chum salmon ($628 million), fish roe ($535 million, three-quarters of it to Japan) and Alaska pollock. **Live lobster** is the largest single line at **$550 million**: Canada took $241 million and China $202 million. Frozen Alaska pollock fillets ($399 million) go mostly to the Netherlands. Canada (21%), China (20%) and Japan (15%) are the largest buyers, and China leads so far in 2026.\n\nFor most buyers tariffs are low. Canada and Mexico take U.S. seafood duty-free under USMCA and South Korea under KORUS, Hong Kong charges nothing, and the EU charges **0% on lobster** from every country and, since July 1, 2026, nothing on U.S. pollock, salmon, squid and hake within yearly quotas. Japan, Viet Nam and Thailand charge their normal rates. China is the costly market: most U.S. seafood pays its normal rate plus **40 points**, so live lobster pays **47%** (17% for a buyer holding an exclusion). What often decides access is paperwork: a NOAA export health certificate and a plant on the buyer's approved list.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$5.18B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+14.9%"
+    },
+    {
+      "label": "Largest product group (0303)",
+      "value": "43%",
+      "note": "Frozen whole fish"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "41%",
+      "note": "Canada, China"
+    },
+    {
+      "label": "Top 12 buyers charging an extra duty on U.S. seafood",
+      "value": "1 of 12",
+      "note": "China: normal rate + 40% on most seafood"
+    }
+  ],
+  "keyTakeaways": [
+    "Lobster, salmon, roe and pollock are the business: live lobster alone was $550 million in 2025, frozen Pacific salmon $628 million and frozen roe $535 million.",
+    "China is the one costly buyer: most U.S. seafood pays its normal rate plus 40 points (live lobster 47%), and two dates could change that: its exclusions end December 31, 2026 and its 24-point suspension January 10, 2027.",
+    "The EU got cheaper: 0% on lobster renewed to July 31, 2030 and duty-free U.S. quotas for pollock, salmon, squid and hake since July 1, 2026. Canada never put counter-tariffs on fish.",
+    "Before shipping, line up the NOAA export health certificate and, for China, the EU and Korea, the plant listing or registration; seafood needs no Commerce export licence."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 4007582849,
+      "partnerAUsd": 884923928,
+      "partnerBUsd": 696987374,
+      "restUsd": 2425671547
+    },
+    {
+      "year": 2021,
+      "totalUsd": 4861823031,
+      "partnerAUsd": 1342591052,
+      "partnerBUsd": 777398595,
+      "restUsd": 2741833384
+    },
+    {
+      "year": 2022,
+      "totalUsd": 5077262230,
+      "partnerAUsd": 1107824015,
+      "partnerBUsd": 967696642,
+      "restUsd": 3001741573
+    },
+    {
+      "year": 2023,
+      "totalUsd": 4709610800,
+      "partnerAUsd": 1060425873,
+      "partnerBUsd": 907373928,
+      "restUsd": 2741810999
+    },
+    {
+      "year": 2024,
+      "totalUsd": 4513304851,
+      "partnerAUsd": 1114759982,
+      "partnerBUsd": 918103642,
+      "restUsd": 2480441227
+    },
+    {
+      "year": 2025,
+      "totalUsd": 5183960376,
+      "partnerAUsd": 1066751691,
+      "partnerBUsd": 1040244017,
+      "restUsd": 3076964668
+    }
+  ],
+  "byYearPartners": ["Canada", "China"],
+  "byYearCaption": "U.S. exports of Chapter 03 goods each year, split into the two largest 2025 buyers (Canada and China) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 3163146199,
+    "priorExportsUsd": 3156100767,
+    "changePct": 0.2,
+    "topBuyers": [
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 729590711,
+        "priorExportsUsd": 557161011,
+        "changePct": 30.9
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 600566953,
+        "priorExportsUsd": 633694446,
+        "changePct": -5.2
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 377463170,
+        "priorExportsUsd": 457389204,
+        "changePct": -17.5
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 289162031,
+        "priorExportsUsd": 299738200,
+        "changePct": -3.5
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 250680535,
+        "priorExportsUsd": 244990163,
+        "changePct": 2.3
+      },
+      {
+        "countryCode": 251,
+        "country": "France",
+        "exportsUsd": 82515273,
+        "priorExportsUsd": 76538971,
+        "changePct": 7.8
+      },
+      {
+        "countryCode": 344,
+        "country": "China, Hong Kong SAR",
+        "exportsUsd": 73101893,
+        "priorExportsUsd": 68003863,
+        "changePct": 7.5
+      },
+      {
+        "countryCode": 764,
+        "country": "Thailand",
+        "exportsUsd": 68562639,
+        "priorExportsUsd": 46533476,
+        "changePct": 47.3
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 1066751691,
+      "priorExportsUsd": 1114759982,
+      "sharePct": 20.6,
+      "changePct": -4.3,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 1040244017,
+      "priorExportsUsd": 918103642,
+      "sharePct": 20.1,
+      "changePct": 13.3,
+      "tariffNow": "Normal rate + 40% on most seafood (live lobster 47%)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 752809639,
+      "priorExportsUsd": 550694161,
+      "sharePct": 14.5,
+      "changePct": 36.7,
+      "tariffNow": "Normal rate: 3.5–6% on most fish, 4.2% on pollock roe",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 445834519,
+      "priorExportsUsd": 346076776,
+      "sharePct": 8.6,
+      "changePct": 28.8,
+      "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 342491886,
+      "priorExportsUsd": 323807957,
+      "sharePct": 6.6,
+      "changePct": 5.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 125784488,
+      "priorExportsUsd": 136328592,
+      "sharePct": 2.4,
+      "changePct": -7.7,
+      "tariffNow": "Free (free port)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 124601989,
+      "priorExportsUsd": 78872392,
+      "sharePct": 2.4,
+      "changePct": 58,
+      "tariffNow": "Free on frozen fish; 5% on fillets and surimi",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 440,
+      "country": "Lithuania",
+      "exportsUsd": 123189300,
+      "priorExportsUsd": 85852108,
+      "sharePct": 2.4,
+      "changePct": 43.5,
+      "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 113196928,
+      "priorExportsUsd": 111191347,
+      "sharePct": 2.2,
+      "changePct": 1.8,
+      "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 108996319,
+      "priorExportsUsd": 77824018,
+      "sharePct": 2.1,
+      "changePct": 40.1,
+      "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 99242613,
+      "priorExportsUsd": 50175953,
+      "sharePct": 1.9,
+      "changePct": 97.8,
+      "tariffNow": "Normal rate: 10–15% on most frozen fish",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 78661815,
+      "priorExportsUsd": 68861213,
+      "sharePct": 1.5,
+      "changePct": 14.2,
+      "tariffNow": "Lobster 0%; pollock, salmon, squid free within U.S. quotas",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 762155172,
+  "othersPriorExportsUsd": 650756710,
+  "byHeading": [
+    {
+      "heading": "0301",
+      "label": "Live fish",
+      "exportsUsd": 36019370,
+      "priorExportsUsd": 46898768,
+      "changePct": -23.2,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "0302",
+      "label": "Fresh or chilled whole fish",
+      "exportsUsd": 204569444,
+      "priorExportsUsd": 219209067,
+      "changePct": -6.7,
+      "sharePct": 3.9
+    },
+    {
+      "heading": "0303",
+      "label": "Frozen whole fish",
+      "exportsUsd": 2208554031,
+      "priorExportsUsd": 1644471121,
+      "changePct": 34.3,
+      "sharePct": 42.6
+    },
+    {
+      "heading": "0304",
+      "label": "Fish fillets & other fish meat",
+      "exportsUsd": 1279646478,
+      "priorExportsUsd": 1193184474,
+      "changePct": 7.2,
+      "sharePct": 24.7
+    },
+    {
+      "heading": "0305",
+      "label": "Dried, salted & smoked fish",
+      "exportsUsd": 43725792,
+      "priorExportsUsd": 21398776,
+      "changePct": 104.3,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "0306",
+      "label": "Crustaceans: shrimp, lobster, crab",
+      "exportsUsd": 933835609,
+      "priorExportsUsd": 961049930,
+      "changePct": -2.8,
+      "sharePct": 18
+    },
+    {
+      "heading": "0307",
+      "label": "Molluscs: scallops, squid, oysters, clams",
+      "exportsUsd": 459646951,
+      "priorExportsUsd": 402951793,
+      "changePct": 14.1,
+      "sharePct": 8.9
+    },
+    {
+      "heading": "0308",
+      "label": "Sea cucumbers, sea urchins & other aquatic invertebrates",
+      "exportsUsd": 17265699,
+      "priorExportsUsd": 23779642,
+      "changePct": -27.4,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "0309",
+      "label": "Edible seafood flours, meals & pellets",
+      "exportsUsd": 697002,
+      "priorExportsUsd": 361280,
+      "changePct": 92.9,
+      "sharePct": 0
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "0306.32",
+      "heading": "0306",
+      "description": "Crustaceans; live, fresh or chilled, lobsters (Homarus spp.), whether in shell or not",
+      "exportsUsd": 549979884,
+      "priorExportsUsd": 536742090,
+      "changePct": 2.5,
+      "sharePct": 10.6
+    },
+    {
+      "hs6": "0303.91",
+      "heading": "0303",
+      "description": "Fish; frozen, livers, roes and milt",
+      "exportsUsd": 535409538,
+      "priorExportsUsd": 278270595,
+      "changePct": 92.4,
+      "sharePct": 10.3
+    },
+    {
+      "hs6": "0304.99",
+      "heading": "0304",
+      "description": "Fish meat, excluding fillets, whether or not minced; frozen, n.e.c. in item no. 0304.9",
+      "exportsUsd": 413757047,
+      "priorExportsUsd": 433449986,
+      "changePct": -4.5,
+      "sharePct": 8
+    },
+    {
+      "hs6": "0303.89",
+      "heading": "0303",
+      "description": "Fish; frozen, n.e.c. in heading 0303, excluding fillets, fish meat of 0304, and edible fish offal of subheadings 0303.91 to 0303.99",
+      "exportsUsd": 408702374,
+      "priorExportsUsd": 382349549,
+      "changePct": 6.9,
+      "sharePct": 7.9
+    },
+    {
+      "hs6": "0304.75",
+      "heading": "0304",
+      "description": "Fish fillets; frozen, Alaska pollock (Theragra chalcogramma)",
+      "exportsUsd": 398837974,
+      "priorExportsUsd": 346652213,
+      "changePct": 15.1,
+      "sharePct": 7.7
+    },
+    {
+      "hs6": "0303.12",
+      "heading": "0303",
+      "description": "Fish; frozen, Pacific salmon (Oncorhynchus gorbuscha/keta/tschawytscha/ kisutch/masou/rhodurus) other than sockeye salmon (Oncorhynchus nerka), excluding fillets, fish meat of 0304, and edible fish offal of subheadings 0303.91 to 0303.99",
+      "exportsUsd": 361407970,
+      "priorExportsUsd": 194824260,
+      "changePct": 85.5,
+      "sharePct": 7
+    },
+    {
+      "hs6": "0303.11",
+      "heading": "0303",
+      "description": "Fish; frozen, Pacific salmon, sockeye salmon (red salmon) (Oncorhynchus nerka), excluding fillets, fish meat of 0304, and edible fish offal of subheadings 0303.91 to 0303.99",
+      "exportsUsd": 266210326,
+      "priorExportsUsd": 204904814,
+      "changePct": 29.9,
+      "sharePct": 5.1
+    },
+    {
+      "hs6": "0307.43",
+      "heading": "0307",
+      "description": "Molluscs; cuttle fish and squid, whether in shell or not, frozen",
+      "exportsUsd": 204551047,
+      "priorExportsUsd": 155070786,
+      "changePct": 31.9,
+      "sharePct": 3.9
+    },
+    {
+      "hs6": "0303.39",
+      "heading": "0303",
+      "description": "Fish; frozen, flat fish, n.e.c. in item no. 0303.3, excluding fillets, fish meat of 0304, and edible fish offal of subheadings 0303.91 to 0303.99",
+      "exportsUsd": 157921219,
+      "priorExportsUsd": 158238553,
+      "changePct": -0.2,
+      "sharePct": 3
+    },
+    {
+      "hs6": "0303.63",
+      "heading": "0303",
+      "description": "Fish; frozen, cod (Gadus morhua, Gadus ogac, Gadus macrocephalus), excluding fillets, fish meat of 0304, and edible fish offal of subheadings 0303.91 to 0303.99",
+      "exportsUsd": 150940729,
+      "priorExportsUsd": 155873115,
+      "changePct": -3.2,
+      "sharePct": 2.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 03, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "noaa-foss",
+      "publisher": "NOAA Fisheries",
+      "citation": "NOAA Fisheries foreign trade data, 2025",
+      "document": "Fisheries One Stop Shop (FOSS), U.S. foreign trade in fishery products",
+      "title": "U.S. exports of fishery products by product and country, 2025 (Census data compiled by NOAA Fisheries)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.fisheries.noaa.gov/foss"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 85% of 2025 U.S. Chapter 03 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

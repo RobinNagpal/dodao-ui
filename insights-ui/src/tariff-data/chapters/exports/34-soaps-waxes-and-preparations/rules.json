@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 34,
+    "padded": "34",
+    "slug": "34-soaps-waxes-and-preparations",
+    "title": "Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/34-soaps-waxes-and-preparations/rules",
+    "h1": "HTS Chapter 34: Soap, organic surface-active agents, washing preparations, lubricating preparations, artificial waxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modeling pastes, \"dental waxes\" and dental preparations with a basis of plaster — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Exporting Soap, Detergents & Lubricants from the U.S.: Schedule B, Licences & Hazmat (HTS Ch. 34) | KoalaGains",
+      "shortDescription": "Schedule B and HS codes for soap, laundry detergent, dish soap, grease, lubricants, wax and candles, the Russia licence for lubricants, TSCA 12(b), hazmat and how to pay less duty abroad.",
+      "keywords": [
+        "hs code for soap",
+        "hs code for laundry detergent",
+        "hs code for lubricants",
+        "hs code for candles",
+        "schedule b grease",
+        "export license lubricants"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "What the U.S. requires before soap, detergents, lubricants, waxes, polishes and candles leave the country, and the legal ways to pay less abroad. For most products the work is routine: find the Schedule B number, screen the buyer and file the export in AES. No U.S. agency approves these goods before export. The product decides the rest: lubricating preparations (3403) need a **BIS licence for Russia and Belarus**, chemicals under certain TSCA actions need an **EPA export notice**, corrosive cleaners and aerosol polishes ship as **hazardous materials**, and liquid hand soaps and dental waxes can need an **FDA** certificate when the buyer asks for one.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Chapter 34 Schedule B numbers start with the six digits shown on the Overview: 3401.11 for bar soap, 3401.30 for liquid hand soap and body wash, 3402.50 for laundry detergent, dish soap and other cleaners put up for retail sale, 3402.90 for other washing and cleaning preparations, 3402.42 for non-ionic surfactants, 3403.19 for lubricants and greases with less than 70% petroleum oil, 3403.99 for lubricants with none (synthetic and silicone greases), 3404.90 for prepared waxes, 3405.30 for car polish and wax, 3405.10 for shoe polish, 3406.00 for candles and 3407.00 for modelling pastes and dental wax. Lubricating oils with 70% or more petroleum oil are 2710.19 (Chapter 27), and lubricating-oil additives are 3811.21 (Chapter 38). HS 2022 moved retail detergents from 3402.20 to 3402.50 and renumbered surfactants as 3402.31–3402.49, so check codes carried over from older paperwork."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Chapter 34 goods are not on the Commerce Control List, so they are EAR99 and most destinations need no licence. The exception is Russia and Belarus: lubricating preparations (3403.11, 3403.19, 3403.91, 3403.99) are on BIS's industry-sector list and need a licence for any value (15 CFR 746.8(a)(5), Supplement No. 4 to Part 746). Soap, detergents, waxes, polishes and candles are not on it."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Shipments to Canada, the largest buyer, need no EEI filing unless they need a licence or are moving through Canada to a third country (15 CFR 30.36). A licensed shipment of lubricants to Russia or Belarus needs an EEI filing at any value."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-russia-lubricants",
+      "agency": "Commerce, Bureau of Industry and Security (BIS)",
+      "title": "Lubricating preparations to Russia or Belarus: HS 3403.11, 3403.19, 3403.91 and 3403.99 are on the industry-sector sanctions list, so even EAR99 lubricants need a BIS licence for export, reexport or transfer to or within Russia or Belarus; applications are reviewed under a policy of denial, with limited case-by-case exceptions (15 CFR 746.8(b)(3)).",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (Russia and Belarus sanctions)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to 15 CFR Part 746",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ]
+    },
+    {
+      "id": "epa-tsca-12b",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "TSCA section 12(b): notify EPA through CDX of the export of a chemical substance or mixture subject to certain TSCA actions (section 4 or 5(b) data requirements, section 5 orders or rules, section 6 rules, section 7 actions), within seven days of forming the intent to export or on the export date, whichever is earlier; components under 1% (0.1% for carcinogens) are exempt. Surfactants, lubricant base stocks and wax ingredients can be caught when a component is under a TSCA order or rule.",
+      "citations": [
+        {
+          "label": "40 CFR 707.65 (submission to the agency)",
+          "url": "https://www.ecfr.gov/current/title-40/section-707.65"
+        },
+        {
+          "label": "40 CFR Part 707, Subpart D (export notification)",
+          "url": "https://www.ecfr.gov/current/title-40/part-707/subpart-D"
+        },
+        {
+          "label": "EPA: TSCA requirements for exporting chemicals",
+          "url": "https://www.epa.gov/tsca-import-export-requirements/tsca-requirements-exporting-chemicals"
+        }
+      ]
+    },
+    {
+      "id": "dot-hazmat",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Some Chapter 34 goods ship as hazardous materials: strongly alkaline or acidic industrial cleaners and degreasers are often Class 8 corrosives, solvent-based polishes and cleaners can be Class 3 flammable liquids, and polishes, lubricant sprays and cleaners in aerosol cans are UN1950. The shipper must classify, pack, mark, label and document them and train its staff; small retail packs can ship as limited quantities. Ocean and air shipments also follow the IMDG Code and IATA rules.",
+      "citations": [
+        {
+          "label": "49 CFR 172.101 (Hazardous Materials Table)",
+          "url": "https://www.ecfr.gov/current/title-49/section-172.101"
+        },
+        {
+          "label": "49 CFR 173.306 (aerosols)",
+          "url": "https://www.ecfr.gov/current/title-49/section-173.306"
+        }
+      ]
+    },
+    {
+      "id": "fda-soap-cosmetic",
+      "agency": "FDA (cosmetics export certification)",
+      "title": "Soap and skin cleansers: FDA treats a product as \"soap\" (outside its cosmetics rules) only when most of it is alkali salts of fatty acids and it is sold only as soap; liquid hand soaps, body washes and syndet bars are cosmetics, and antibacterial soaps are drugs. FDA does not require a certificate to export, but when a buyer's regulator asks for one, FDA issues its cosmetics export certificate through eCATS for products used solely as cosmetics.",
+      "citations": [
+        {
+          "label": "21 CFR 701.20 (detergent substances other than soap)",
+          "url": "https://www.ecfr.gov/current/title-21/section-701.20"
+        },
+        {
+          "label": "FDA: online applications for cosmetics export certificates",
+          "url": "https://www.fda.gov/cosmetics/cosmetics-exporters/online-applications-export-certificates-cosmetics"
+        }
+      ]
+    },
+    {
+      "id": "fda-dental-devices",
+      "agency": "FDA (CDRH)",
+      "title": "Dental waxes and impression materials are medical devices in the U.S.: intraoral dental wax is Class I and impression material Class II. FDA does not require a certificate to export a device that is legally marketed in the U.S., but buyers' regulators often ask for a Certificate to Foreign Government (CFG), requested from CDRH through CECATS.",
+      "citations": [
+        {
+          "label": "21 CFR 872.6890 (intraoral dental wax)",
+          "url": "https://www.ecfr.gov/current/title-21/section-872.6890"
+        },
+        {
+          "label": "21 CFR 872.3660 (impression material)",
+          "url": "https://www.ecfr.gov/current/title-21/section-872.3660"
+        },
+        {
+          "label": "FDA: types of export certificates for devices",
+          "url": "https://www.fda.gov/medical-devices/exporting-medical-devices/types-export-certificates"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "3401",
+      "label": "Soap & skin-washing preparations",
+      "ruleIds": ["fda-soap-cosmetic"],
+      "note": "True soap is outside FDA's cosmetic rules; liquid hand soaps and body washes are cosmetics, and antibacterial soaps are drugs."
+    },
+    {
+      "heading": "3402",
+      "label": "Surfactants, detergents & cleaners",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": "Industrial cleaners and degreasers are often corrosive and ship as dangerous goods; surfactants sold to other manufacturers are TSCA chemical substances."
+    },
+    {
+      "heading": "3403",
+      "label": "Lubricating preparations",
+      "ruleIds": ["bis-russia-lubricants", "epa-tsca-12b", "dot-hazmat"],
+      "note": "Every 3403 lubricant needs a BIS licence for Russia and Belarus. Lubricant sprays in aerosol cans ship as UN1950."
+    },
+    {
+      "heading": "3404",
+      "label": "Artificial & prepared waxes",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3405",
+      "label": "Polishes & scouring preparations",
+      "ruleIds": ["dot-hazmat"],
+      "note": "Solvent-based polishes and aerosol polishes ship as dangerous goods."
+    },
+    {
+      "heading": "3406",
+      "label": "Candles",
+      "ruleIds": [],
+      "note": "No agency rule beyond the five steps."
+    },
+    {
+      "heading": "3407",
+      "label": "Modeling pastes & dental waxes",
+      "ruleIds": ["fda-dental-devices"],
+      "note": "Children's modelling pastes need nothing beyond the five steps; dental waxes and impression materials are FDA-regulated devices."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Have the Chinese buyer apply for an exclusion from China's 2018–2019 counter-tariffs",
+      "saves": "China's counter-tariff on U.S. goods: 25% on lubricating preparations, non-ionic surfactants and bar soap, 5–20% on the rest of the chapter, leaving the normal rate plus the 10% extra.",
+      "appliesTo": "Chapter 34 goods of U.S. origin imported into China; every heading has lines on China's counter-tariff lists. The product exclusion for lubricants and non-ionic surfactants (3403.19, 3403.99, 3402.42) ended on February 28, 2025, so importers now apply case by case.",
+      "document": "The Chinese importer applies through the State Council Tariff Commission's market-based exclusion process; the U.S. exporter supplies the contract and product details.",
+      "caveat": "Exclusions are valid only until December 31, 2026 unless China extends them, and they do not remove the 10% extra duty on all U.S. goods.",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020",
+          "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+        },
+        {
+          "label": "Tariff Commission Announcement No. 6 of 2024",
+          "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202407/t20240722_3939966.htm"
+        },
+        {
+          "label": "White House fact sheet, Nov 1, 2025",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

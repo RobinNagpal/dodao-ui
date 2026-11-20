@@ -1,0 +1,519 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 32,
+    "padded": "32",
+    "slug": "32-dyes-pigments-and-paints",
+    "title": "Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/32-dyes-pigments-and-paints",
+    "h1": "HTS Chapter 32: Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Paint, Pigment & Ink Exports and Foreign Tariffs (HTS Ch. 32) | KoalaGains",
+      "shortDescription": "U.S. exports of paints, titanium dioxide, dyes, caulk and printing ink were $7.78B in 2025, down 4.1%. Who buys them and which countries charge tariffs.",
+      "keywords": ["us paint exports", "paint exports", "titanium dioxide export", "us printing ink exports", "hs 32 exports by country", "tariffs on us paint"]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$7.78B** of paints, pigments, dyes, caulks and inks (HS Chapter 32) in 2025, down **4.1%** on 2024 and 10% below the 2022 peak ($8.64B). Paints and varnishes are the largest part: solvent-based (3208, **$1.64B**), water-based such as latex house paint (3209, $1.09B) and other paints (3210) together make **$2.80B**, 36% of the total. Titanium dioxide and other pigments (3206) follow at $1.48B, down 12.1% as TiO2 pigment (3206.11) fell 18.4% to $873M, then caulks, sealants and fillers (3214, $1.12B), synthetic dyes and organic pigments (3204, $879M) and printing inks (3215, $751M). **Canada ($2.34B) and Mexico ($1.66B) buy 51%** of it; the EU as a whole takes $898M.\n\nTariffs are zero for most of this trade: Canada, Mexico and South Korea charge nothing on qualifying U.S. goods, and the EU cut all of Chapter 32 to zero on July 1, 2026. **China** is the exception: its MFN rate, its 2019 counter-tariffs and a 10% extra duty on all U.S. goods take U.S. solvent paint to 42.5% unless the buyer holds an exclusion, and exports there fell 21.6%. Brazil (up to 14%), India (7.5%–10%) and Japan, Taiwan and the UK (up to 6.5%) charge MFN rates. What usually decides access instead is chemical and product rules — REACH and the paints VOC directive in the EU, VOC limits in Canada, labelling in Mexico — plus U.S. rules such as TSCA section 12(b) export notices and hazmat shipping rules for flammable paint and ink.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$7.78B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-4.1%"
+    },
+    {
+      "label": "Largest product group (3208)",
+      "value": "21%",
+      "note": "Solvent-based paints & varnishes"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "51%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top buyers charging 0%",
+      "value": "6 of 12",
+      "note": "Canada, Mexico, South Korea, Belgium, Germany, Netherlands (EU)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. Chapter 32 exports fell 4.1% to $7.78B in 2025; paints and varnishes (3208–3210, $2.80B) held almost flat, while titanium dioxide pigment (3206.11) dropped 18.4% to $873M.",
+    "Canada and Mexico buy 51% and charge nothing on goods that qualify for USMCA, and the EU, the third-largest market at $898M, has charged nothing on any U.S. Chapter 32 good since July 1, 2026.",
+    "China is the only large buyer that raised tariffs — a 10% extra duty on top of 2019 counter-tariffs — and exports there fell 21.6% to $289M; watch December 31, 2026 (its exclusions end) and January 10, 2027 (its 24-point suspension ends).",
+    "January–August 2026 exports were up 1.2% on the same months of 2025, led by Canada (+3.9%) and strong gains in Brazil (+31.8%) and India (+32.8%)."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 6762596723,
+      "partnerAUsd": 2045001654,
+      "partnerBUsd": 1386893775,
+      "restUsd": 3330701294
+    },
+    {
+      "year": 2021,
+      "totalUsd": 7975311581,
+      "partnerAUsd": 2267824418,
+      "partnerBUsd": 1622608768,
+      "restUsd": 4084878395
+    },
+    {
+      "year": 2022,
+      "totalUsd": 8643290744,
+      "partnerAUsd": 2541877791,
+      "partnerBUsd": 1961406686,
+      "restUsd": 4140006267
+    },
+    {
+      "year": 2023,
+      "totalUsd": 7977327864,
+      "partnerAUsd": 2417614916,
+      "partnerBUsd": 1904707470,
+      "restUsd": 3655005478
+    },
+    {
+      "year": 2024,
+      "totalUsd": 8114217861,
+      "partnerAUsd": 2346724554,
+      "partnerBUsd": 1753643231,
+      "restUsd": 4013850076
+    },
+    {
+      "year": 2025,
+      "totalUsd": 7782057276,
+      "partnerAUsd": 2342968288,
+      "partnerBUsd": 1655896217,
+      "restUsd": 3783192771
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 32 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 5428462835,
+    "priorExportsUsd": 5364533014,
+    "changePct": 1.2,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 1688321470,
+        "priorExportsUsd": 1625382526,
+        "changePct": 3.9
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 1137667630,
+        "priorExportsUsd": 1132318597,
+        "changePct": 0.5
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 218916715,
+        "priorExportsUsd": 239811436,
+        "changePct": -8.7
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 183280462,
+        "priorExportsUsd": 206417568,
+        "changePct": -11.2
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 178626899,
+        "priorExportsUsd": 232374504,
+        "changePct": -23.1
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 162137686,
+        "priorExportsUsd": 122990653,
+        "changePct": 31.8
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 161841986,
+        "priorExportsUsd": 121866357,
+        "changePct": 32.8
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 130431464,
+        "priorExportsUsd": 119115257,
+        "changePct": 9.5
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2342968288,
+      "priorExportsUsd": 2346724554,
+      "sharePct": 30.1,
+      "changePct": -0.2,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 1655896217,
+      "priorExportsUsd": 1753643231,
+      "sharePct": 21.3,
+      "changePct": -5.6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 355352467,
+      "priorExportsUsd": 403002777,
+      "sharePct": 4.6,
+      "changePct": -11.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 294922948,
+      "priorExportsUsd": 354395579,
+      "sharePct": 3.8,
+      "changePct": -16.8,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 288558713,
+      "priorExportsUsd": 368084985,
+      "sharePct": 3.7,
+      "changePct": -21.6,
+      "tariffNow": "MFN + 10% extra + 2019 counter-tariffs unless excluded",
+      "status": "raised"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 175818627,
+      "priorExportsUsd": 191569028,
+      "sharePct": 2.3,
+      "changePct": -8.2,
+      "tariffNow": "MFN 2%–14% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 175240295,
+      "priorExportsUsd": 205279191,
+      "sharePct": 2.3,
+      "changePct": -14.6,
+      "tariffNow": "MFN 0%–4.4% (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 172841883,
+      "priorExportsUsd": 165427725,
+      "sharePct": 2.2,
+      "changePct": 4.5,
+      "tariffNow": "MFN 7.5%–10% (US–India framework not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 169924787,
+      "priorExportsUsd": 176693373,
+      "sharePct": 2.2,
+      "changePct": -3.8,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 125158848,
+      "priorExportsUsd": 115971592,
+      "sharePct": 1.6,
+      "changePct": 7.9,
+      "tariffNow": "Free (EU–US framework)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 120823056,
+      "priorExportsUsd": 96451113,
+      "sharePct": 1.6,
+      "changePct": 25.3,
+      "tariffNow": "MFN 0%–6.5% (US–Taiwan agreement not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 119237618,
+      "priorExportsUsd": 125570064,
+      "sharePct": 1.5,
+      "changePct": -5,
+      "tariffNow": "MFN 0%–6% (no U.S. FTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1785313529,
+  "othersPriorExportsUsd": 1811404649,
+  "byHeading": [
+    {
+      "heading": "3201",
+      "label": "Tanning extracts & tannins",
+      "exportsUsd": 10209467,
+      "priorExportsUsd": 43835069,
+      "changePct": -76.7,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "3202",
+      "label": "Synthetic tanning agents",
+      "exportsUsd": 12385733,
+      "priorExportsUsd": 12026511,
+      "changePct": 3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3203",
+      "label": "Natural colorants (plant & animal)",
+      "exportsUsd": 178204059,
+      "priorExportsUsd": 151203327,
+      "changePct": 17.9,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "3204",
+      "label": "Synthetic organic dyes & pigments",
+      "exportsUsd": 879205554,
+      "priorExportsUsd": 923437757,
+      "changePct": -4.8,
+      "sharePct": 11.3
+    },
+    {
+      "heading": "3205",
+      "label": "Color lakes",
+      "exportsUsd": 35752387,
+      "priorExportsUsd": 36152381,
+      "changePct": -1.1,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "3206",
+      "label": "Titanium dioxide & other pigments",
+      "exportsUsd": 1480841161,
+      "priorExportsUsd": 1683794883,
+      "changePct": -12.1,
+      "sharePct": 19
+    },
+    {
+      "heading": "3207",
+      "label": "Ceramic colors, glazes & glass frit",
+      "exportsUsd": 227660670,
+      "priorExportsUsd": 228307125,
+      "changePct": -0.3,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "3208",
+      "label": "Solvent-based paints & varnishes",
+      "exportsUsd": 1643130152,
+      "priorExportsUsd": 1670963189,
+      "changePct": -1.7,
+      "sharePct": 21.1
+    },
+    {
+      "heading": "3209",
+      "label": "Water-based paints & varnishes",
+      "exportsUsd": 1090921747,
+      "priorExportsUsd": 1093044493,
+      "changePct": -0.2,
+      "sharePct": 14
+    },
+    {
+      "heading": "3210",
+      "label": "Other paints, distempers & leather finishes",
+      "exportsUsd": 70302763,
+      "priorExportsUsd": 68596166,
+      "changePct": 2.5,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "3211",
+      "label": "Paint driers",
+      "exportsUsd": 14529304,
+      "priorExportsUsd": 9630035,
+      "changePct": 50.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "3212",
+      "label": "Pigment dispersions, stamping foils & retail dyes",
+      "exportsUsd": 210550406,
+      "priorExportsUsd": 215292228,
+      "changePct": -2.2,
+      "sharePct": 2.7
+    },
+    {
+      "heading": "3213",
+      "label": "Artists' & students' colors",
+      "exportsUsd": 55242945,
+      "priorExportsUsd": 61583966,
+      "changePct": -10.3,
+      "sharePct": 0.7
+    },
+    {
+      "heading": "3214",
+      "label": "Caulk, putty, mastics & fillers",
+      "exportsUsd": 1121999360,
+      "priorExportsUsd": 1131356762,
+      "changePct": -0.8,
+      "sharePct": 14.4
+    },
+    {
+      "heading": "3215",
+      "label": "Printing, writing & drawing inks",
+      "exportsUsd": 751121568,
+      "priorExportsUsd": 784993969,
+      "changePct": -4.3,
+      "sharePct": 9.7
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3214.10",
+      "heading": "3214",
+      "description": "Mastics; painters' fillings",
+      "exportsUsd": 931564759,
+      "priorExportsUsd": 934998217,
+      "changePct": -0.4,
+      "sharePct": 12
+    },
+    {
+      "hs6": "3208.90",
+      "heading": "3208",
+      "description": "Paints and varnishes; based on polymers n.e.c. in heading no. 3208, dispersed or dissolved in a non-aqueous medium",
+      "exportsUsd": 876864402,
+      "priorExportsUsd": 877184257,
+      "changePct": 0,
+      "sharePct": 11.3
+    },
+    {
+      "hs6": "3206.11",
+      "heading": "3206",
+      "description": "Colouring matter; pigments and preparations based on titanium dioxide, containing 80% or more by weight of titanium dioxide calculated on the dry matter",
+      "exportsUsd": 873307780,
+      "priorExportsUsd": 1070250921,
+      "changePct": -18.4,
+      "sharePct": 11.2
+    },
+    {
+      "hs6": "3209.10",
+      "heading": "3209",
+      "description": "Paints and varnishes; based on acrylic or vinyl polymers, dispersed or dissolved in an aqueous medium",
+      "exportsUsd": 759743659,
+      "priorExportsUsd": 771258341,
+      "changePct": -1.5,
+      "sharePct": 9.8
+    },
+    {
+      "hs6": "3206.49",
+      "heading": "3206",
+      "description": "Colouring matter; other preparations n.e.c. in item no. 3206.4",
+      "exportsUsd": 487276981,
+      "priorExportsUsd": 484516375,
+      "changePct": 0.6,
+      "sharePct": 6.3
+    },
+    {
+      "hs6": "3208.20",
+      "heading": "3208",
+      "description": "Paints and varnishes; based on acrylic or vinyl polymers, dispersed or dissolved in a non-aqueous medium",
+      "exportsUsd": 449259050,
+      "priorExportsUsd": 464836460,
+      "changePct": -3.4,
+      "sharePct": 5.8
+    },
+    {
+      "hs6": "3215.19",
+      "heading": "3215",
+      "description": "Ink; for printing, other than black, whether or not concentrated or solid",
+      "exportsUsd": 404702448,
+      "priorExportsUsd": 445670850,
+      "changePct": -9.2,
+      "sharePct": 5.2
+    },
+    {
+      "hs6": "3209.90",
+      "heading": "3209",
+      "description": "Paints and varnishes; (based on polymers other than acrylic or vinyl), dispersed or dissolved in an aqueous medium",
+      "exportsUsd": 331178088,
+      "priorExportsUsd": 321786152,
+      "changePct": 2.9,
+      "sharePct": 4.3
+    },
+    {
+      "hs6": "3208.10",
+      "heading": "3208",
+      "description": "Paints and varnishes; based on polyesters, dispersed or dissolved in a non-aqueous medium",
+      "exportsUsd": 317006700,
+      "priorExportsUsd": 328942472,
+      "changePct": -3.6,
+      "sharePct": 4.1
+    },
+    {
+      "hs6": "3204.90",
+      "heading": "3204",
+      "description": "Dyes; synthetic organic products n.e.c. in heading no. 3204 (e.g. of a kind used as luminophores), whether or not chemically defined",
+      "exportsUsd": 283516104,
+      "priorExportsUsd": 297765906,
+      "changePct": -4.8,
+      "sharePct": 3.6
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 32, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 77% of 2025 U.S. Chapter 32 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

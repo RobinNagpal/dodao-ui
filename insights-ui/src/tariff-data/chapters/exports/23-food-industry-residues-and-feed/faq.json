@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 23,
+    "padded": "23",
+    "slug": "23-food-industry-residues-and-feed",
+    "title": "Food Industry Residues and Prepared Animal Feed"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/23-food-industry-residues-and-feed/faq",
+    "h1": "HTS Chapter 23: Food Industry Residues and Prepared Animal Feed — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 23 Export FAQ: Tariffs, Codes & Certificates for U.S. Soybean Meal, DDGS & Pet Food",
+      "shortDescription": "Short answers to common questions about exporting U.S. soybean meal, DDGS, pet food and animal feed: who buys them, what tariffs apply abroad, and which codes and certificates you need.",
+      "keywords": ["us soybean meal exports", "export pet food to china", "pet food tariffs canada", "hs code for ddgs", "exporting pet food to the eu"]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Common questions about exporting U.S. soybean meal, DDGS, pet food and other Chapter 23 feed products, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "Canada, Mexico, Colombia and Korea buy most U.S. feed and pet food duty-free under U.S. trade agreements; China is the only top buyer charging more than in January 2025.",
+    "China’s anti-dumping and countervailing duties, not its tariff, are why the U.S. sells almost no DDGS there; they run to January 2028 unless extended.",
+    "No Chapter 23 good needs a U.S. export licence, but pet food and animal-origin feed usually need an APHIS-endorsed certificate, and many buyers want an FDA certificate too."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for \"soybean meal export\", \"soybean meal tariff\", \"ddgs export\", \"china ddgs\", \"china soybean meal\", \"pet food export\", \"pet food tariff\", \"export pet food to\", \"hs code for ddgs\" and \"us soybean meal exports\", checked 2026-11-18.",
+  "faqs": [
+    {
+      "id": "us-soybean-meal-exports",
+      "question": "How much soybean meal does the U.S. export?",
+      "searchedAs": ["us soybean meal exports", "us soybean meal export data", "soybean meal exporters usa"],
+      "answer": "The U.S. exported $4.86 billion of soybean meal (HS 2304) in 2025, 36% of all Chapter 23 exports and 4.6% less than in 2024. The largest buyers were Colombia ($830 million), Mexico ($814 million), the Philippines ($419 million) and Canada ($374 million).",
+      "link": "exports"
+    },
+    {
+      "id": "us-ddgs-exports",
+      "question": "How much DDGS does the U.S. export, and who buys it?",
+      "searchedAs": ["us ddgs exports", "ddgs exports", "ddgs export data"],
+      "answer": "U.S. exports of distillers’ dried grains and other brewing and distilling residues (HS 2303.30) were $2.77 billion in 2025, down 13.5%. For the wider heading 2303, which also covers corn gluten feed and meal, the largest buyers were Mexico ($544 million), Indonesia ($319 million), Viet Nam ($282 million), Colombia ($254 million) and the EU ($228 million).",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-ddgs",
+      "question": "Why does the U.S. sell almost no DDGS to China?",
+      "searchedAs": ["china ddgs", "chinese ddgs"],
+      "answer": "China has charged anti-dumping duties of 42.2–53.7% and countervailing duties of 11.2–12.0% on U.S. DDGS since 2017, and in January 2023 extended them for five years from January 12, 2023. Those come on top of its 5% normal rate and its 10% extra tariff on all U.S. goods. U.S. exports of heading 2303 to China were only $7 million in 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-soybean-meal-feed",
+      "question": "Did China put retaliatory tariffs on U.S. soybean meal or animal feed?",
+      "searchedAs": ["china soybean meal import", "does china import soybean meal"],
+      "answer": "China’s March 2025 extra tariffs of 10–15% on U.S. farm goods did not list any Chapter 23 product, and they were lifted on November 10, 2025. What does apply is China’s 10% extra tariff on all U.S. goods, on top of its 5% normal rate on soybean meal. The U.S. sold only about $2 million of soybean meal to China in 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "export-pet-food-china",
+      "question": "Can I export pet food to China, and what tariff applies?",
+      "searchedAs": ["export pet food to china", "pet food export by country"],
+      "answer": "Yes. China bought $409 million of U.S. pet food and prepared feed in 2025, but the producing plant must be registered with China’s customs administration (GACC), and pet food also needs a registration certificate from China’s agriculture ministry. Dog and cat food pays 15% plus the 10% extra tariff on U.S. goods, and some lines are still on China’s 2018–19 counter-tariff lists unless the importer has an exclusion, valid to December 31, 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-pet-food-tariff",
+      "question": "Does Canada charge tariffs on U.S. pet food?",
+      "searchedAs": ["pet food tariffs canada", "pet food tariffs"],
+      "answer": "No, not on pet food that qualifies under CUSMA. Canada is the largest buyer of U.S. pet food and prepared feed ($1.51 billion in 2025). Its March 2025 counter-tariffs touched only dairy-based feed above Canada’s access quota, and that was removed on September 1, 2025. Shipments with animal-origin ingredients need a USDA-issued zoosanitary export certificate.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-pet-food-tariff",
+      "question": "What does the EU charge on U.S. pet food?",
+      "searchedAs": ["exporting pet food to the eu", "cat food tariff", "dog food tariff"],
+      "answer": "Dog and cat food with no starch or milk products pays 9.6% (CN 2309 10 90); lines with starch or milk products pay €102–948 per tonne. Since July 1, 2026 a 40,000-tonne duty-free quota (order number 09.9007) covers five U.S. lines, including 2309 10 90. The U.S. plant must also be on the EU’s list of approved establishments.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "schedule-b-codes",
+      "question": "What is the Schedule B or HS code for soybean meal, DDGS and pet food?",
+      "searchedAs": ["soybean meal tariff code", "hs code for ddgs", "hs code for corn ddgs", "pet food tariff code", "tariff code for dog food"],
+      "answer": "Soybean meal is Schedule B 2304.00.0000, DDGS are 2303.30.0000 (brewing or distilling dregs and waste) and dog and cat food for retail sale is 2309.10.0000. Corn gluten feed and meal are 2303.10.0010 and 2303.10.0020, and prepared livestock and poultry feeds are under 2309.90.10xx. The first six digits are the HS code buyers’ customs use.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-certificates",
+      "question": "What do I need to export pet food or animal feed from the U.S.?",
+      "searchedAs": ["export dog food", "pet food export", "animal feed export"],
+      "answer": "No export licence: feed, oilseed meal and pet food are EAR99. Most buyers want an APHIS-endorsed health certificate for pet food and animal-origin feed, often from a plant APHIS has inspected for that country, and many ask for an FDA certificate of free sale issued through CVM’s eCATS portal. Plant-based feed such as soybean meal and DDGS may need a phytosanitary certificate, and shipments over $2,500 per Schedule B number are filed in AES.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "china-dates",
+      "question": "When could China’s tariffs on U.S. feed and pet food change?",
+      "searchedAs": ["china soybean meal", "china ddgs"],
+      "answer": "Three dates matter. China’s exclusions from its 2018–19 counter-tariffs end on December 31, 2026; its suspension of 24 points of extra tariff, which keeps the rate at 10%, ends on January 10, 2027; and its anti-dumping and countervailing duties on U.S. DDGS reach the end of their five-year term on January 11, 2028.",
+      "link": "exports/tariff-updates"
+    }
+  ]
+}

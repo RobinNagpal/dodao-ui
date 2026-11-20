@@ -1,0 +1,652 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 28,
+    "padded": "28",
+    "slug": "28-inorganic-and-metal-compounds",
+    "title": "Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/28-inorganic-and-metal-compounds/rules",
+    "h1": "HTS Chapter 28: Inorganic Chemicals; Organic or Inorganic Compounds of Precious Metals, of Rare-Earth Metals, of Radioactive Elements or of Isotopes — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Inorganic Chemical Export Rules: Schedule B, Licences, DEA & NRC (HTS 28) | KoalaGains",
+      "shortDescription": "What U.S. exporters of soda ash, caustic soda, cyanide, iodine, uranium and other Chapter 28 chemicals need: Schedule B codes, BIS precursor licences, DEA Form 486, NRC licences.",
+      "keywords": [
+        "export license for chemicals",
+        "hs code soda ash",
+        "hs code caustic soda liquid",
+        "ECCN 1C350 sodium cyanide",
+        "DEA Form 486 iodine export",
+        "uranium export license NRC",
+        "mercury export ban act"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. exporter of Chapter 28 chemicals takes the same five steps as every exporter, then the agency rules that fit the product. For the big commodity lines (soda ash, caustic soda, carbon black, phosphoric acid, silicon) nothing more is needed beyond hazmat shipping rules and, for some codes, a licence for Russia or Belarus. The exceptions are sharp: **BIS** licences chemical-weapons precursors such as sodium cyanide, hydrogen fluoride and phosphorus chlorides for countries such as Brazil, China and Viet Nam; **DEA** needs a Form 486 declaration 15 days before every export of iodine, phosphorus or hypophosphites; the **NRC** licenses uranium and other nuclear material; and **EPA** bans the export of elemental mercury and five mercury compounds.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "The largest lines are soda ash 2836.20 ($1.47B), liquid caustic soda 2815.12 ($1.41B; solid caustic soda is 2815.11), silicon of 99.99% purity or more 2804.61 ($949M), natural uranium and its compounds 2844.10 ($836M) and other precious-metal compounds 2843.90 ($707M). Rare-earth compounds are 2846.10 (cerium) and 2846.90 (others); rare-earth ore concentrates belong in heading 2530 (Chapter 25) and rare-earth metals in 2805.30."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Several Chapter 28 chemicals are precursors for chemical weapons or illicit drugs (cyanides, fluorides, phosphorus chlorides, iodine, hydriodic acid), so screen the end user named in the order, not only the distributor that pays."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most Chapter 28 goods, including soda ash, caustic soda, carbon black, phosphoric acid and rare-earth compounds, are not on the Commerce Control List. The exceptions: chemical-weapons precursors such as hydrogen fluoride, sodium and potassium cyanide, sodium sulfide, fluorides and phosphorus chlorides (ECCN 1C350), the Schedule 3 chemicals phosgene, cyanogen chloride and hydrogen cyanide (1C355), and nuclear-related isotopes such as boron-10, helium-3 and lithium-6 (1C225, 1C232, 1C233). Uranium, thorium and other nuclear material need an NRC licence instead (10 CFR Part 110)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Many Chapter 28 HS codes are on BIS's Russia and Belarus industry-sector list (Supplement No. 4 to 15 CFR Part 746), including silicon (2804.61), ammonia (2814.10), liquid caustic soda (2815.12), aluminum oxide and hydroxide (2818.20, 2818.30), sodium bicarbonate (2836.30), gold compounds (2843.30) and hydrogen peroxide (2847.00), so even EAR99 goods under those codes need a licence for Russia or Belarus. Soda ash (2836.20) and natural uranium (2844.10) are not on it."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Shipments to Canada, the second-largest buyer, are exempt from EEI unless they need a licence or are only passing through Canada to a third country (15 CFR 30.36). A DEA Form 486 for a listed chemical is filed with DEA separately from the EEI."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-cb-precursors",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Chemical-weapons precursors (ECCN 1C350): hydrogen fluoride (2811.11), sodium and potassium cyanide (2837), sodium sulfide (2830.10), sodium and potassium fluoride, ammonium, sodium and potassium bifluoride and sodium hexafluorosilicate (2826), phosphorus pentasulfide (2813), arsenic trichloride, phosphorus trichloride, oxychloride and pentachloride, sulfur monochloride and dichloride and thionyl chloride (2812), and mixtures with 30% or more of one of them, need a licence for every country marked in CB Column 2 of the Commerce Country Chart. That includes Brazil, China and Viet Nam, but not Canada, the EU states, India, Japan, Mexico, South Korea or the UK. Samples of up to one 55-gallon container or 200 kg of a chemical per consignee a year can ship without a licence (not to Country Group E:1), with an annual report to BIS by February 28",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), ECCN 1C350",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR 742.2 (proliferation of chemical and biological weapons)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.2"
+        },
+        {
+          "label": "Commerce Country Chart (15 CFR 738 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-738/appendix-Supplement%20No.%201%20to%20Part%20738"
+        }
+      ]
+    },
+    {
+      "id": "bis-cwc",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Chemical Weapons Convention chemicals: arsenic trichloride (Schedule 2) needs a licence for States not Party to the Convention; Schedule 3 chemicals in this chapter, namely phosgene (carbonyl dichloride), cyanogen chloride and hydrogen cyanide (ECCN 1C355.b) and the phosphorus and sulfur chlorides and thionyl chloride (1C350.c), need an End-Use Certificate issued by the importing government, with a copy sent to BIS within 7 days of export, or else a licence, when shipped to a State not Party. Exports to States Parties need neither for CW reasons, but the CB licence for 1C350 chemicals still applies",
+      "citations": [
+        {
+          "label": "15 CFR 742.18 (Chemical Weapons Convention)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.18"
+        },
+        {
+          "label": "15 CFR 745.2 (End-Use Certificates)",
+          "url": "https://www.ecfr.gov/current/title-15/section-745.2"
+        },
+        {
+          "label": "BIS: Chemical Weapons Convention",
+          "url": "https://www.bis.gov/licensing/chemical-weapons-convention"
+        }
+      ]
+    },
+    {
+      "id": "nrc-nuclear-material",
+      "agency": "Nuclear Regulatory Commission (NRC)",
+      "title": "Nuclear material: exports of source material (natural and depleted uranium, thorium), special nuclear material (enriched uranium, plutonium), byproduct material and deuterium or heavy water for nuclear end use are licensed by the NRC, not BIS. NRC general licences cover small amounts, for example uranium or thorium in shipments of 10 kg or less, up to 1,000 kg a year per country, to countries not listed in 10 CFR 110.28 or 110.29; anything larger needs a specific licence applied for on NRC Form 7",
+      "citations": [
+        {
+          "label": "10 CFR 110.9 (nuclear material under NRC export licensing authority)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.9"
+        },
+        {
+          "label": "10 CFR 110.22 (general licence for source material)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.22"
+        },
+        {
+          "label": "10 CFR 110.31 (application for a specific licence)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.31"
+        }
+      ]
+    },
+    {
+      "id": "bis-nuclear-isotopes",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Nuclear-related isotopes and materials on the Commerce Control List: boron enriched in boron-10 (ECCN 1C225), helium-3 (1C232), lithium enriched in lithium-6 (1C233), radionuclides for alpha-n neutron sources (1C236) and hafnium compounds with more than 60% hafnium (1C231) are controlled for nuclear nonproliferation and need a licence for countries marked in NP Column 1",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 1",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR 742.3 (nuclear nonproliferation)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.3"
+        }
+      ]
+    },
+    {
+      "id": "dea-list-i",
+      "agency": "Drug Enforcement Administration (DEA)",
+      "title": "DEA List I chemicals in this chapter, namely iodine, red and white (yellow) phosphorus, hypophosphorous acid and its salts (such as sodium and calcium hypophosphite) and hydriodic acid: file a DEA Form 486 export declaration at least 15 calendar days before release at the port. Iodine, phosphorus and hypophosphites have no threshold, so every export is covered; hydriodic acid is covered from 1.7 kg (1 litre) a month per buyer. Exporters with an established business relationship reported to DEA can file 3 business days ahead",
+      "citations": [
+        {
+          "label": "21 CFR 1310.04 (thresholds)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1310.04"
+        },
+        {
+          "label": "21 CFR 1313.21 (notification prior to export)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1313.21"
+        }
+      ]
+    },
+    {
+      "id": "dea-list-ii",
+      "agency": "Drug Enforcement Administration (DEA)",
+      "title": "DEA List II chemicals: hydrochloric acid and sulfuric acid need a Form 486 declaration 15 days ahead when 50 gallons or more (27 kg of anhydrous hydrogen chloride) go to the designated countries in 21 CFR 1310.08(b); potassium and sodium permanganate need one from 500 kg for any destination",
+      "citations": [
+        {
+          "label": "21 CFR 1310.04 (thresholds)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1310.04"
+        },
+        {
+          "label": "21 CFR 1313.21 (notification prior to export)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1313.21"
+        }
+      ]
+    },
+    {
+      "id": "epa-mercury-export-ban",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Mercury export ban: exporting elemental mercury (2805.40) has been prohibited since January 1, 2013, and exporting mercury(I) chloride (calomel), mercury(II) oxide, mercury(II) sulfate, mercury(II) nitrate and cinnabar or mercury sulfide (2852) since January 1, 2020, with only the narrow exceptions set out in the statute",
+      "citations": [
+        {
+          "label": "TSCA section 12(c), 15 U.S.C. 2611(c)",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title15/html/USCODE-2024-title15-chap53-subchapI-sec2611.htm"
+        },
+        {
+          "label": "EPA: questions and answers on the Mercury Export Ban Act",
+          "url": "https://www.epa.gov/mercury/questions-and-answers-mercury-export-ban-act-meba-2008"
+        }
+      ]
+    },
+    {
+      "id": "epa-tsca-12b",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "TSCA section 12(b): notify EPA of the export of a chemical subject to certain TSCA actions (section 4 or 5(b) data requirements, section 5 orders or rules, section 6 rules, section 7 actions), within seven days of forming the intent to export or on the export date, whichever is earlier",
+      "citations": [
+        {
+          "label": "40 CFR Part 707, Subpart D (export notification)",
+          "url": "https://www.ecfr.gov/current/title-40/part-707/subpart-D"
+        },
+        {
+          "label": "EPA: TSCA requirements for exporting chemicals",
+          "url": "https://www.epa.gov/tsca-import-export-requirements/tsca-requirements-exporting-chemicals"
+        }
+      ]
+    },
+    {
+      "id": "dot-hazmat",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Corrosive, toxic, oxidizing, flammable and radioactive chemicals (acids, caustic soda, cyanides, hydrogen peroxide, chlorates, phosphides, alkali metals, compressed gases, uranium compounds) ship as dangerous goods: classification, packaging, marking and documentation under the Hazardous Materials Regulations, which also underpin the ocean (IMDG) and air (IATA) rules",
+      "citations": [
+        {
+          "label": "49 CFR Part 172 (hazardous materials table, communications)",
+          "url": "https://www.ecfr.gov/current/title-49/part-172"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "2801",
+      "label": "Chlorine, iodine, fluorine and bromine",
+      "ruleIds": ["dea-list-i", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2802",
+      "label": "Sublimed, precipitated and colloidal sulfur",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2803",
+      "label": "Carbon black and other carbon",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2804",
+      "label": "Hydrogen, helium, argon, nitrogen, oxygen, silicon and other nonmetals",
+      "ruleIds": ["dea-list-i", "dot-hazmat", "epa-tsca-12b"],
+      "note": "Red and white phosphorus (2804.70) are DEA List I chemicals; high-purity silicon (2804.61) and helium (2804.29) have no agency rule beyond the five steps, but silicon is on the Russia and Belarus HS list (Supplement No. 4 to 15 CFR Part 746)."
+    },
+    {
+      "heading": "2805",
+      "label": "Sodium, calcium, lithium and rare-earth metals; mercury",
+      "ruleIds": ["epa-mercury-export-ban", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2806",
+      "label": "Hydrochloric acid and chlorosulfuric acid",
+      "ruleIds": ["dea-list-ii", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2807",
+      "label": "Sulfuric acid and oleum",
+      "ruleIds": ["dea-list-ii", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2808",
+      "label": "Nitric acid and sulfonitric acids",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2809",
+      "label": "Phosphoric acid and phosphorus pentoxide",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2810",
+      "label": "Boric acid and oxides of boron",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2811",
+      "label": "Hydrofluoric acid, silicon dioxide and other inorganic acids",
+      "ruleIds": ["bis-cb-precursors", "bis-cwc", "dea-list-i", "dot-hazmat", "epa-tsca-12b"],
+      "note": "Hydrogen fluoride (2811.11) is a 1C350 precursor, hydrogen cyanide (2811.12) a CWC Schedule 3 chemical, and hydriodic acid and hypophosphorous acid (2811.19) DEA List I chemicals."
+    },
+    {
+      "heading": "2812",
+      "label": "Chlorides and oxychlorides of phosphorus and sulfur",
+      "ruleIds": ["bis-cb-precursors", "bis-cwc", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2813",
+      "label": "Carbon disulfide and other nonmetal sulfides",
+      "ruleIds": ["bis-cb-precursors", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2814",
+      "label": "Ammonia (anhydrous and aqueous)",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2815",
+      "label": "Caustic soda and caustic potash",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": "Caustic soda needs no export licence or permit, but liquid caustic soda (2815.12) is on the Russia and Belarus HS list (Supplement No. 4 to 15 CFR Part 746) and ships as a corrosive under the hazmat rules."
+    },
+    {
+      "heading": "2816",
+      "label": "Magnesium hydroxide and peroxide; strontium and barium oxides",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2817",
+      "label": "Zinc oxide and zinc peroxide",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2818",
+      "label": "Aluminum oxide (alumina), corundum and aluminum hydroxide",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2820",
+      "label": "Manganese oxides",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2821",
+      "label": "Iron oxides and hydroxides; earth colors",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2822",
+      "label": "Cobalt oxides and hydroxides",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2823",
+      "label": "Titanium oxides (titanium dioxide)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2824",
+      "label": "Lead oxides (litharge, red lead)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2825",
+      "label": "Lithium hydroxide, hydrazine and other metal oxides and hydroxides",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2826",
+      "label": "Fluorides, fluorosilicates and cryolite",
+      "ruleIds": ["bis-cb-precursors", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2827",
+      "label": "Chlorides, oxychlorides, bromides and iodides",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2828",
+      "label": "Calcium hypochlorite and other hypochlorites",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2829",
+      "label": "Sodium chlorate, perchlorates and bromates",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2830",
+      "label": "Sulfides and polysulfides",
+      "ruleIds": ["bis-cb-precursors", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2831",
+      "label": "Dithionites (hydrosulfites) and sulfoxylates",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2832",
+      "label": "Sulfites and thiosulfates",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2833",
+      "label": "Sulfates, alums and persulfates",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2834",
+      "label": "Nitrites and nitrates",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2835",
+      "label": "Phosphates, polyphosphates and hypophosphites",
+      "ruleIds": ["dea-list-i", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2836",
+      "label": "Carbonates, including lithium carbonate",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": "Soda ash (2836.20) has no export licence, permit or DEA requirement: it is not on the Commerce Control List or the Russia and Belarus HS list. Sodium bicarbonate (2836.30) is on that list."
+    },
+    {
+      "heading": "2837",
+      "label": "Cyanides and complex cyanides",
+      "ruleIds": ["bis-cb-precursors", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2839",
+      "label": "Silicates, including sodium silicate",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2840",
+      "label": "Borates and perborates (refined borax)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2841",
+      "label": "Potassium permanganate, chromates, molybdates and other metal-acid salts",
+      "ruleIds": ["dea-list-ii", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2842",
+      "label": "Other inorganic salts, including double and complex salts",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2843",
+      "label": "Precious-metal compounds and colloidal precious metals",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": "Precious-metal compounds have no agency rule beyond the five steps, but gold compounds (2843.30) are on the Russia and Belarus HS list (Supplement No. 4 to 15 CFR Part 746)."
+    },
+    {
+      "heading": "2844",
+      "label": "Uranium, thorium, plutonium and radioactive isotopes",
+      "ruleIds": ["nrc-nuclear-material", "bis-nuclear-isotopes", "dot-hazmat", "epa-tsca-12b"],
+      "note": "Uranium, thorium, plutonium and byproduct material need an NRC export licence (general or specific); radioactive shipments also follow the hazmat rules for Class 7 material."
+    },
+    {
+      "heading": "2845",
+      "label": "Stable isotopes, including heavy water",
+      "ruleIds": ["nrc-nuclear-material", "bis-nuclear-isotopes", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2846",
+      "label": "Rare-earth compounds (cerium, lanthanum, yttrium and others)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": "Rare-earth compounds have no U.S. export licence or agency rule beyond the five steps. Rare-earth ore concentrates are heading 2530 (Chapter 25) and rare-earth metals 2805.30, so check the code before filing."
+    },
+    {
+      "heading": "2847",
+      "label": "Hydrogen peroxide",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": "Hydrogen peroxide ships as an oxidizer under the hazmat rules and is on the Russia and Belarus HS list (Supplement No. 4 to 15 CFR Part 746)."
+    },
+    {
+      "heading": "2849",
+      "label": "Carbides (silicon carbide, calcium carbide, tungsten carbide)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2850",
+      "label": "Hydrides, nitrides, azides, silicides and borides",
+      "ruleIds": ["dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2852",
+      "label": "Mercury compounds",
+      "ruleIds": ["epa-mercury-export-ban", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "2853",
+      "label": "Phosphides, cyanogen chloride and other inorganic compounds",
+      "ruleIds": ["bis-cwc", "dot-hazmat", "epa-tsca-12b"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Have your Chinese buyer apply for an exclusion from China's counter-tariffs",
+      "saves": "China's 2018–2019 counter-tariffs on the goods covered: 7.5% on soda ash, 12.5% on liquid caustic soda and up to 27.5% on natural uranium, hydrogen peroxide and some rare-earth compounds. The 10% extra duty on all U.S. goods still applies.",
+      "appliesTo": "U.S. goods on China's 2018–2019 counter-tariff lists, which include most Chapter 28 lines.",
+      "document": "The Chinese importer applies through the Tariff Commission's market-based exclusion process (Announcement No. 2 of 2020); the U.S. exporter supplies the contract and product details.",
+      "caveat": "Only the Chinese importer can apply. Under the November 2025 U.S.–China deal, exclusions are valid until December 31, 2026, and no extension has been announced.",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020",
+          "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+        },
+        {
+          "label": "White House fact sheet, Nov 1, 2025",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

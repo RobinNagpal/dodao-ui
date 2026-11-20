@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 26,
+    "padded": "26",
+    "slug": "26-ores-slag-and-ash",
+    "title": "Ores, Slag and Ash"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/26-ores-slag-and-ash/rules",
+    "h1": "HTS Chapter 26: Ores, Slag and Ash — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Ore Export Rules: Schedule B, NRC Uranium Licence, EPA (HTS Ch. 26) | KoalaGains",
+      "shortDescription": "Schedule B numbers for copper, zinc, lead and moly concentrate and iron ore, the NRC licence for uranium ore, EPA consent for hazardous slag, and EEI.",
+      "keywords": [
+        "nrc export license",
+        "nrc general export license",
+        "epa export hazardous waste",
+        "hazardous waste export permit",
+        "copper concentrate export ban",
+        "export uranium"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. exporter of ores, concentrates, slag or ash takes the same five steps as every exporter, and for most Chapter 26 goods that is all: they are **EAR99**, need no export licence for most destinations, and **no U.S. export ban or quota applies to copper, zinc, lead or molybdenum concentrate or iron ore**. Four things are specific to this chapter. **Uranium and thorium ores** (2612) with 0.05% or more uranium or thorium are source material, so exporting them needs a Nuclear Regulatory Commission licence (10 CFR Part 110). **Hazardous slag, ash and residues** need EPA's consent before export (40 CFR Part 262, Subpart H); iron and steel slag, primary smelter slag and coal ash are excluded. **Russia and Belarus:** 36 of the chapter's 37 six-digit codes need a Commerce licence. **Copper concentrate:** Proclamation 10962 (July 30, 2025) told Commerce to set a domestic-sales requirement for copper input materials, but no rule had been published by November 19, 2026.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Concentrates are reported by metal content. Copper concentrate is 2603.00.0010 (copper content, kg), 2603.00.0015 (precious-metal content, grams) and 2603.00.0035 (other metal content); zinc concentrate is 2608.00.0030, 0035 and 0055 and lead concentrate 2607.00.0020, 0025 and 0045 the same way. Iron ore is 2601.11.0030 (concentrates), 2601.11.0060 (coarse), 2601.11.0090 (fines) and 2601.12.0030 (pellets), in metric tons. Molybdenum concentrate is 2613.10.0000 roasted and 2613.90.0000 unroasted, in kg of molybdenum content."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Concentrates are often sold through traders and blended or toll-smelted abroad, so screen the smelter or refinery that will take the material, not only the trader on the contract."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Ores, concentrates, slag and ash are generally EAR99 and need no BIS licence for most destinations. Uranium and thorium ores are licensed by the NRC, not BIS (see below). No export ban or quota applies to copper concentrate: Proclamation 10962's domestic-sales requirement for copper input materials had no published rule as of November 19, 2026, and BIS's August 2026 sales order on recoverable critical minerals lists only black mass and tungsten scrap, not Chapter 26 goods."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: 36 of the 37 six-digit Chapter 26 codes, every one except uranium ores (2612.10), are listed in Supplement No. 4 to 15 CFR Part 746, so they need a Commerce licence. For uranium and thorium ores the NRC lists Cuba, Iran, Iraq, North Korea, Syria and Sudan as embargoed destinations (10 CFR 110.28)."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Bulk concentrate and iron ore leave by vessel: file the EEI and give the carrier the ITN at least 24 hours before loading. Shipments to Canada are exempt from EEI unless a licence is needed. A hazardous-waste export needs EEI for every shipment, with EPA's licence code and consent number (40 CFR 262.83(a)(6))."
+    }
+  ],
+  "rules": [
+    {
+      "id": "nrc-source-material",
+      "agency": "Nuclear Regulatory Commission (NRC)",
+      "title": "Uranium and thorium ores (2612) with 0.05% or more uranium or thorium by weight are source material: export needs an NRC specific licence, applied for on NRC Form 7 with a fee, unless a general licence covers it. General licences cover ore below 0.05%, and shipments of up to 10 kg (at most 1,000 kg a year to one country) to destinations not on the embargoed or restricted lists",
+      "citations": [
+        {
+          "label": "10 CFR 110.2 (definition of source material)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.2"
+        },
+        {
+          "label": "10 CFR 110.22 (general licence for source material)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.22"
+        },
+        {
+          "label": "10 CFR 110.28 and 110.29 (embargoed and restricted destinations)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.28"
+        },
+        {
+          "label": "10 CFR 110.31 (specific licence, NRC Form 7)",
+          "url": "https://www.ecfr.gov/current/title-10/section-110.31"
+        }
+      ]
+    },
+    {
+      "id": "epa-hazwaste-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Slag, ash and residues that are RCRA hazardous waste (for example electric-arc-furnace dust, K061, or lead-, arsenic- or mercury-bearing residues) may be exported only after the exporter notifies EPA through WIETS at least 60 days before the first shipment, receives EPA's Acknowledgment of Consent reflecting the importing country's consent, has a contract with the foreign facility and sends a movement document with each shipment",
+      "citations": [
+        {
+          "label": "40 CFR 262.83 (exports of hazardous waste)",
+          "url": "https://www.ecfr.gov/current/title-40/section-262.83"
+        },
+        {
+          "label": "40 CFR Part 262, Subpart H (transboundary movements)",
+          "url": "https://www.ecfr.gov/current/title-40/part-262/subpart-H"
+        },
+        {
+          "label": "40 CFR 261.32 (K061 and other listed wastes)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.32"
+        },
+        {
+          "label": "EPA: international agreements on transboundary shipments",
+          "url": "https://www.epa.gov/hwgenerators/international-agreements-transboundary-shipments-waste"
+        }
+      ]
+    },
+    {
+      "id": "epa-excluded-slag-ash",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Iron blast furnace slag, basic oxygen and open hearth furnace slag, slag from primary copper, lead and zinc processing, and coal fly ash and bottom ash are excluded from hazardous waste, so no EPA export notice or consent is needed. The importing country may still treat them as waste",
+      "citations": [
+        {
+          "label": "40 CFR 261.4(b)(4) and (b)(7) (fossil fuel combustion and mineral processing wastes)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.4"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for 36 of the 37 six-digit Chapter 26 codes, every one except uranium ores (2612.10), because they are in Supplement No. 4 to Part 746 (15 CFR 746.8(a)(5))",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to Part 746 (industry sector list)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ]
+    },
+    {
+      "id": "dpa-copper-input",
+      "agency": "Bureau of Industry and Security (BIS), Defense Production Act",
+      "title": "Copper ores and concentrates: Proclamation 10962 (July 30, 2025) directs Commerce to put in place the domestic-sales requirement for copper input materials that it recommended, starting at 25% in 2027. No order or rule had been published in the Federal Register by November 19, 2026, so copper concentrate exports are not restricted today",
+      "citations": [
+        {
+          "label": "Proclamation 10962 (90 FR 37727), paragraph 7 and clause (8)",
+          "url": "https://www.federalregister.gov/documents/2025/08/05/2025-14893/adjusting-imports-of-copper-into-the-united-states"
+        },
+        {
+          "label": "BIS information collection on DPA official actions (91 FR 5887)",
+          "url": "https://www.federalregister.gov/documents/2026/02/10/2026-02578/agency-information-collection-activities-submission-to-the-office-of-management-and-budget-omb-for-review-and-approval-comment"
+        }
+      ]
+    },
+    {
+      "id": "bis-dpa-recoverable",
+      "agency": "Bureau of Industry and Security (BIS), Defense Production Act",
+      "title": "Recoverable critical minerals: Presidential Determination No. 2026-19 covers waste and scrap containing critical minerals, but BIS's allocation order (August 27, 2026 to August 27, 2027), which makes sellers allocate 100% of monthly sales to U.S. persons, lists only black mass (8549.13, 8549.14, 8549.19) and tungsten waste and scrap (8101.97). No Chapter 26 ore, slag or residue is on it",
+      "citations": [
+        {
+          "label": "BIS temporary final rule (91 FR 50701), Supplement Table 1",
+          "url": "https://www.federalregister.gov/documents/2026/08/06/2026-16078/dpas-directive-allocation-order-and-additional-requirements-for-recoverable-critical-minerals-and-materials"
+        },
+        {
+          "label": "Presidential Determination No. 2026-19 (91 FR 50465)",
+          "url": "https://www.federalregister.gov/documents/2026/08/04/2026-15859/presidential-determination-pursuant-to-section-101-of-the-defense-production-act-of-1950-as-amended"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "2601",
+      "label": "Iron ore & concentrates",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2602",
+      "label": "Manganese ore",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2603",
+      "label": "Copper ore & concentrates",
+      "ruleIds": ["bis-russia-belarus", "dpa-copper-input"],
+      "note": null
+    },
+    {
+      "heading": "2604",
+      "label": "Nickel ore",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2605",
+      "label": "Cobalt ore",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2606",
+      "label": "Bauxite (aluminum ore)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2607",
+      "label": "Lead ore & concentrates",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2608",
+      "label": "Zinc ore & concentrates",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2609",
+      "label": "Tin ore",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2610",
+      "label": "Chromium ore (chromite)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2611",
+      "label": "Tungsten ore & concentrates",
+      "ruleIds": ["bis-russia-belarus", "bis-dpa-recoverable"],
+      "note": "Tungsten ores and concentrates are outside BIS's August 2026 sales order, which covers tungsten waste and scrap (8101.97) only."
+    },
+    {
+      "heading": "2612",
+      "label": "Uranium & thorium ore",
+      "ruleIds": ["nrc-source-material", "bis-russia-belarus"],
+      "note": "Thorium ores (2612.20) are also on BIS's Russia and Belarus list; uranium ores (2612.10) are not, because the NRC licenses them. The U.S. exported almost no uranium or thorium ores in 2025."
+    },
+    {
+      "heading": "2613",
+      "label": "Molybdenum ore & concentrates",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2614",
+      "label": "Titanium ore (ilmenite, rutile)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2615",
+      "label": "Niobium, tantalum, vanadium & zirconium ores",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2616",
+      "label": "Silver, gold & other precious-metal ores",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2617",
+      "label": "Other ores (antimony, beryllium)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "2618",
+      "label": "Granulated slag (slag sand)",
+      "ruleIds": ["bis-russia-belarus", "epa-excluded-slag-ash"],
+      "note": null
+    },
+    {
+      "heading": "2619",
+      "label": "Iron & steel slag, dross & scale",
+      "ruleIds": ["bis-russia-belarus", "epa-excluded-slag-ash"],
+      "note": null
+    },
+    {
+      "heading": "2620",
+      "label": "Metal-bearing slag, ash & residues",
+      "ruleIds": ["bis-russia-belarus", "epa-hazwaste-export", "epa-excluded-slag-ash", "bis-dpa-recoverable"],
+      "note": "Whether a residue needs EPA consent depends on whether it is RCRA hazardous waste; zinc-bearing electric-arc-furnace dust (K061) shipped for zinc recovery does."
+    },
+    {
+      "heading": "2621",
+      "label": "Other slag & ash (incinerator ash, kelp)",
+      "ruleIds": ["bis-russia-belarus", "epa-hazwaste-export", "epa-excluded-slag-ash"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Ask the Chinese buyer to apply for a tariff exclusion",
+      "saves": "China's 2018–2019 counter-tariff on the goods covered: 25% on U.S. copper, zinc and nickel concentrate and iron ore pellets, 10% on lead and molybdenum concentrate. The 10% extra duty still applies.",
+      "appliesTo": "U.S. goods on China's counter-tariff lists bought by a Chinese company under the Tariff Commission's market-based exclusion process. Exclusions are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
+      "document": "An application by the Chinese importer to China's State Council Tariff Commission. Once approved, the exclusion covers only that importer's purchases from the U.S., up to the approved amount.",
+      "caveat": "Only the Chinese buyer can apply. No extension past December 31, 2026 has been announced (see Tariff updates).",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020 (exclusion process)",
+          "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal, Nov 1, 2025",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

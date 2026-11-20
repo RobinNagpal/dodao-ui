@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 72,
+    "padded": "72",
+    "slug": "72-iron-and-steel",
+    "title": "Iron and Steel"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/72-iron-and-steel",
+    "h1": "HTS Chapter 72: Iron and Steel — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Steel & Scrap Exports and Foreign Tariffs (HTS Ch. 72) | KoalaGains",
+      "shortDescription": "U.S. iron and steel exports were $16.77B in 2025, down 14.4%, a third of it ferrous scrap. Where they go, what Mexico, Canada, Türkiye and Asia charge, and which tariffs changed since January 2025.",
+      "keywords": [
+        "us steel exports",
+        "us steel exports by country",
+        "us steel exports 2025",
+        "us scrap metal exports",
+        "us steel exports to canada",
+        "HS 72 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "The U.S. exported **$16.77B** of iron and steel in 2025, down 14.4% from 2024 and 20% below the 2022 peak of $20.89B. A third of it (**33%**, $5.45B) was ferrous scrap (7204), shipped in bulk to electric-arc-furnace mills in Türkiye, Thailand, India, Bangladesh, Pakistan, Taiwan and Viet Nam. Most of the rest was flat-rolled steel — hot-rolled, galvanized and alloy sheet — for Mexico and Canada, which together took **58%**. Exports have picked up in 2026: $12.72B from January to August, up 11.6%.\n\nScrap enters every large scrap market duty-free, so there the buyer's import licence, inspection and radiation rules decide access. Finished steel is where tariffs bite. **Canada** has surtaxed U.S. steel since March 2025, at 50% since September 8, 2026, even when it qualifies for CUSMA. **Mexico** still takes qualifying steel free, but its general rate rose to 35% in 2026, so the USMCA rule of origin matters more. The **EU** caps steel imports with quotas and a 50% duty above them, and **India** adds a safeguard duty on flat steel.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$16.77B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-14.4%"
+    },
+    {
+      "label": "Largest product group (7204)",
+      "value": "33%",
+      "note": "Ferrous waste & scrap"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "58%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top buyers that raised tariffs",
+      "value": "4 of 12",
+      "note": "Canada, India, Italy (EU), China"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. iron and steel exports fell to $16.77B in 2025 (−14.4%) but were up 11.6% in January–August 2026; ferrous scrap (7204, $5.45B) is the largest product and goes mostly to Türkiye and Asia.",
+    "Scrap pays 0% in Türkiye, Thailand, India, Bangladesh and Taiwan; check each buyer's scrap-import licence, inspection and radiation rules before contracting.",
+    "Canada, the second-largest buyer ($3.92B), has charged a 50% surtax on U.S. steel of 7206–7229 since September 8, 2026, with no CUSMA exemption; stainless flat steel and electrical steel can have it remitted.",
+    "Mexico ($5.87B) still takes qualifying U.S. steel free under USMCA, but its general rate jumped to 35% on January 1, 2026, so steel that fails the rule of origin costs far more."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 12272225426,
+      "partnerAUsd": 3476960410,
+      "partnerBUsd": 3080728810,
+      "restUsd": 5714536206
+    },
+    {
+      "year": 2021,
+      "totalUsd": 18557155244,
+      "partnerAUsd": 5794991317,
+      "partnerBUsd": 4898198151,
+      "restUsd": 7863965776
+    },
+    {
+      "year": 2022,
+      "totalUsd": 20891806653,
+      "partnerAUsd": 6777338255,
+      "partnerBUsd": 5902900982,
+      "restUsd": 8211567416
+    },
+    {
+      "year": 2023,
+      "totalUsd": 20463485249,
+      "partnerAUsd": 6819989046,
+      "partnerBUsd": 5619425769,
+      "restUsd": 8024070434
+    },
+    {
+      "year": 2024,
+      "totalUsd": 19590245015,
+      "partnerAUsd": 7055292581,
+      "partnerBUsd": 4779084818,
+      "restUsd": 7755867616
+    },
+    {
+      "year": 2025,
+      "totalUsd": 16765723624,
+      "partnerAUsd": 5867110015,
+      "partnerBUsd": 3922643795,
+      "restUsd": 6975969814
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 72 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 12721469969,
+    "priorExportsUsd": 11404150543,
+    "changePct": 11.6,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 4932960229,
+        "priorExportsUsd": 4027289590,
+        "changePct": 22.5
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2627020820,
+        "priorExportsUsd": 2671685358,
+        "changePct": -1.7
+      },
+      {
+        "countryCode": 764,
+        "country": "Thailand",
+        "exportsUsd": 999383823,
+        "priorExportsUsd": 488278755,
+        "changePct": 104.7
+      },
+      {
+        "countryCode": 792,
+        "country": "Türkiye",
+        "exportsUsd": 914364360,
+        "priorExportsUsd": 890037528,
+        "changePct": 2.7
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 524405594,
+        "priorExportsUsd": 547356582,
+        "changePct": -4.2
+      },
+      {
+        "countryCode": 586,
+        "country": "Pakistan",
+        "exportsUsd": 303970339,
+        "priorExportsUsd": 206060862,
+        "changePct": 47.5
+      },
+      {
+        "countryCode": 490,
+        "country": "Taiwan",
+        "exportsUsd": 242850999,
+        "priorExportsUsd": 262165922,
+        "changePct": -7.4
+      },
+      {
+        "countryCode": 704,
+        "country": "Viet Nam",
+        "exportsUsd": 222807057,
+        "priorExportsUsd": 221175063,
+        "changePct": 0.7
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 5867110015,
+      "priorExportsUsd": 7055292581,
+      "sharePct": 35,
+      "changePct": -16.8,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3922643795,
+      "priorExportsUsd": 4779084818,
+      "sharePct": 23.4,
+      "changePct": -17.9,
+      "tariffNow": "Free (CUSMA) + 50% surtax on steel (7206–7229)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 792,
+      "country": "Türkiye",
+      "exportsUsd": 1362083726,
+      "priorExportsUsd": 1763653852,
+      "sharePct": 8.1,
+      "changePct": -22.8,
+      "tariffNow": "Free on scrap; MFN on finished steel (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 833405448,
+      "priorExportsUsd": 438619536,
+      "sharePct": 5,
+      "changePct": 90,
+      "tariffNow": "Free on scrap; 5% MFN on most flat steel",
+      "status": "pending"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 807414606,
+      "priorExportsUsd": 862269202,
+      "sharePct": 4.8,
+      "changePct": -6.4,
+      "tariffNow": "Free on scrap; 7.5% + 11.5% safeguard on flat steel",
+      "status": "raised"
+    },
+    {
+      "countryCode": 50,
+      "country": "Bangladesh",
+      "exportsUsd": 433915279,
+      "priorExportsUsd": 658293277,
+      "sharePct": 2.6,
+      "changePct": -34.1,
+      "tariffNow": "Free on scrap; 10% to over 50% on finished steel",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 366761990,
+      "priorExportsUsd": 467992360,
+      "sharePct": 2.2,
+      "changePct": -21.6,
+      "tariffNow": "Free (0% on all Chapter 72)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 586,
+      "country": "Pakistan",
+      "exportsUsd": 358170952,
+      "priorExportsUsd": 405682138,
+      "sharePct": 2.1,
+      "changePct": -11.7,
+      "tariffNow": "0% customs duty on melting scrap (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 325032412,
+      "priorExportsUsd": 211443495,
+      "sharePct": 1.9,
+      "changePct": 53.7,
+      "tariffNow": "Free on scrap (0% MFN; no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 241337616,
+      "priorExportsUsd": 259328826,
+      "sharePct": 1.4,
+      "changePct": -6.9,
+      "tariffNow": "0% duty; 50% above the EU steel quota",
+      "status": "raised"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 238557032,
+      "priorExportsUsd": 318531327,
+      "sharePct": 1.4,
+      "changePct": -25.1,
+      "tariffNow": "MFN + 10% extra; counter-tariffs on many lines",
+      "status": "raised"
+    },
+    {
+      "countryCode": 604,
+      "country": "Peru",
+      "exportsUsd": 172500539,
+      "priorExportsUsd": 246998982,
+      "sharePct": 1,
+      "changePct": -30.2,
+      "tariffNow": "Free (U.S.–Peru TPA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1836790214,
+  "othersPriorExportsUsd": 2123054621,
+  "byHeading": [
+    {
+      "heading": "7201",
+      "label": "Pig iron & spiegeleisen",
+      "exportsUsd": 5245761,
+      "priorExportsUsd": 2506132,
+      "changePct": 109.3,
+      "sharePct": 0
+    },
+    {
+      "heading": "7202",
+      "label": "Ferroalloys",
+      "exportsUsd": 162524564,
+      "priorExportsUsd": 192343351,
+      "changePct": -15.5,
+      "sharePct": 1
+    },
+    {
+      "heading": "7203",
+      "label": "Direct-reduced iron (DRI, HBI)",
+      "exportsUsd": 326318009,
+      "priorExportsUsd": 386196593,
+      "changePct": -15.5,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "7204",
+      "label": "Ferrous waste & scrap",
+      "exportsUsd": 5445233088,
+      "priorExportsUsd": 6464872026,
+      "changePct": -15.8,
+      "sharePct": 32.5
+    },
+    {
+      "heading": "7205",
+      "label": "Iron & steel granules and powders",
+      "exportsUsd": 157552662,
+      "priorExportsUsd": 186542276,
+      "changePct": -15.5,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "7206",
+      "label": "Iron & nonalloy steel ingots",
+      "exportsUsd": 66359148,
+      "priorExportsUsd": 44236523,
+      "changePct": 50,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "7207",
+      "label": "Semifinished steel (slabs, billets)",
+      "exportsUsd": 38960412,
+      "priorExportsUsd": 71237117,
+      "changePct": -45.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7208",
+      "label": "Hot-rolled flat steel (600 mm+)",
+      "exportsUsd": 1510348078,
+      "priorExportsUsd": 1889736247,
+      "changePct": -20.1,
+      "sharePct": 9
+    },
+    {
+      "heading": "7209",
+      "label": "Cold-rolled flat steel (600 mm+)",
+      "exportsUsd": 563660225,
+      "priorExportsUsd": 690884834,
+      "changePct": -18.4,
+      "sharePct": 3.4
+    },
+    {
+      "heading": "7210",
+      "label": "Coated flat steel (600 mm+)",
+      "exportsUsd": 1367922506,
+      "priorExportsUsd": 1757692288,
+      "changePct": -22.2,
+      "sharePct": 8.2
+    },
+    {
+      "heading": "7211",
+      "label": "Narrow flat steel (under 600 mm)",
+      "exportsUsd": 356532108,
+      "priorExportsUsd": 420569337,
+      "changePct": -15.2,
+      "sharePct": 2.1
+    },
+    {
+      "heading": "7212",
+      "label": "Narrow coated flat steel",
+      "exportsUsd": 273481981,
+      "priorExportsUsd": 322770469,
+      "changePct": -15.3,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "7213",
+      "label": "Wire rod (hot-rolled, in coils)",
+      "exportsUsd": 80716214,
+      "priorExportsUsd": 106009900,
+      "changePct": -23.9,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "7214",
+      "label": "Hot-rolled bars & rebar",
+      "exportsUsd": 268281590,
+      "priorExportsUsd": 357460452,
+      "changePct": -24.9,
+      "sharePct": 1.6
+    },
+    {
+      "heading": "7215",
+      "label": "Cold-finished bars",
+      "exportsUsd": 106725873,
+      "priorExportsUsd": 131319189,
+      "changePct": -18.7,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "7216",
+      "label": "Angles, shapes & sections",
+      "exportsUsd": 365724227,
+      "priorExportsUsd": 490919961,
+      "changePct": -25.5,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "7217",
+      "label": "Nonalloy steel wire",
+      "exportsUsd": 139721922,
+      "priorExportsUsd": 148170738,
+      "changePct": -5.7,
+      "sharePct": 0.8
+    },
+    {
+      "heading": "7218",
+      "label": "Stainless semifinished",
+      "exportsUsd": 73439465,
+      "priorExportsUsd": 90657358,
+      "changePct": -19,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "7219",
+      "label": "Stainless flat (600 mm+)",
+      "exportsUsd": 985682087,
+      "priorExportsUsd": 1087606147,
+      "changePct": -9.4,
+      "sharePct": 5.9
+    },
+    {
+      "heading": "7220",
+      "label": "Stainless strip (under 600 mm)",
+      "exportsUsd": 468416453,
+      "priorExportsUsd": 535826752,
+      "changePct": -12.6,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "7221",
+      "label": "Stainless wire rod",
+      "exportsUsd": 13025004,
+      "priorExportsUsd": 15746533,
+      "changePct": -17.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7222",
+      "label": "Stainless bars & shapes",
+      "exportsUsd": 521271061,
+      "priorExportsUsd": 606304009,
+      "changePct": -14,
+      "sharePct": 3.1
+    },
+    {
+      "heading": "7223",
+      "label": "Stainless wire",
+      "exportsUsd": 181325787,
+      "priorExportsUsd": 203197921,
+      "changePct": -10.8,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "7224",
+      "label": "Alloy steel semifinished",
+      "exportsUsd": 155880089,
+      "priorExportsUsd": 145535981,
+      "changePct": 7.1,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "7225",
+      "label": "Alloy flat steel (600 mm+)",
+      "exportsUsd": 1957564365,
+      "priorExportsUsd": 2001557178,
+      "changePct": -2.2,
+      "sharePct": 11.7
+    },
+    {
+      "heading": "7226",
+      "label": "Alloy flat steel (under 600 mm)",
+      "exportsUsd": 366032443,
+      "priorExportsUsd": 395189108,
+      "changePct": -7.4,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "7227",
+      "label": "Alloy wire rod",
+      "exportsUsd": 39912900,
+      "priorExportsUsd": 32947703,
+      "changePct": 21.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7228",
+      "label": "Alloy bars, shapes & drill rods",
+      "exportsUsd": 687369442,
+      "priorExportsUsd": 718071726,
+      "changePct": -4.3,
+      "sharePct": 4.1
+    },
+    {
+      "heading": "7229",
+      "label": "Alloy steel wire",
+      "exportsUsd": 80496160,
+      "priorExportsUsd": 94137166,
+      "changePct": -14.5,
+      "sharePct": 0.5
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7204.49",
+      "heading": "7204",
+      "description": "Ferrous waste and scrap; n.e.c. in heading no. 7204",
+      "exportsUsd": 4437613962,
+      "priorExportsUsd": 5346861677,
+      "changePct": -17,
+      "sharePct": 26.5
+    },
+    {
+      "hs6": "7210.49",
+      "heading": "7210",
+      "description": "Iron or non-alloy steel; flat-rolled, width 600mm or more, (not corrugated), plated or coated with zinc (not electrolytically)",
+      "exportsUsd": 1049477370,
+      "priorExportsUsd": 1248279184,
+      "changePct": -15.9,
+      "sharePct": 6.3
+    },
+    {
+      "hs6": "7225.92",
+      "heading": "7225",
+      "description": "Steel, alloy; flat-rolled, width 600mm or more, n.e.c. in heading no. 7225, plated or coated with zinc (other than electrolytically)",
+      "exportsUsd": 624850468,
+      "priorExportsUsd": 618801028,
+      "changePct": 1,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "7208.51",
+      "heading": "7208",
+      "description": "Iron or non-alloy steel; (not in coils), flat-rolled, of a width 600mm or more, hot-rolled, without patterns in relief, of a thickness exceeding 10mm",
+      "exportsUsd": 436463864,
+      "priorExportsUsd": 551027851,
+      "changePct": -20.8,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "7220.20",
+      "heading": "7220",
+      "description": "Steel, stainless; flat-rolled, width less than 600mm, cold-rolled",
+      "exportsUsd": 379691130,
+      "priorExportsUsd": 444517790,
+      "changePct": -14.6,
+      "sharePct": 2.3
+    },
+    {
+      "hs6": "7204.29",
+      "heading": "7204",
+      "description": "Ferrous waste and scrap; of alloy steel (excluding stainless)",
+      "exportsUsd": 366757523,
+      "priorExportsUsd": 374853193,
+      "changePct": -2.2,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "7225.99",
+      "heading": "7225",
+      "description": "Steel, alloy; flat-rolled, width 600mm or more, n.e.c. in heading no. 7225, (other than plated or coated with zinc)",
+      "exportsUsd": 363946173,
+      "priorExportsUsd": 320700111,
+      "changePct": 13.5,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "7204.21",
+      "heading": "7204",
+      "description": "Ferrous waste and scrap; of stainless steel",
+      "exportsUsd": 341221463,
+      "priorExportsUsd": 432343999,
+      "changePct": -21.1,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7208.27",
+      "heading": "7208",
+      "description": "Iron or non-alloy steel; in coils, without patterns in relief, flat-rolled, of a width 600mm or more, hot-rolled, pickled, of a thickness of less than 3mm",
+      "exportsUsd": 332486935,
+      "priorExportsUsd": 390010444,
+      "changePct": -14.7,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7203.90",
+      "heading": "7203",
+      "description": "Ferrous products; spongy ferrous products and iron having a minimum purity by weight of 99.94%, in lumps, pellets or similar forms",
+      "exportsUsd": 326027735,
+      "priorExportsUsd": 358429052,
+      "changePct": -9,
+      "sharePct": 1.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 72, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 89% of 2025 U.S. Chapter 72 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

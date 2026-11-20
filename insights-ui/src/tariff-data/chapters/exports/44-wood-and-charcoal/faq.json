@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 44,
+    "padded": "44",
+    "slug": "44-wood-and-charcoal",
+    "title": "Wood and articles of wood; wood charcoal"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/44-wood-and-charcoal/faq",
+    "h1": "HTS Chapter 44: Wood and articles of wood; wood charcoal — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Wood Export FAQ: China Log Ban, Lumber Tariffs, HS Codes",
+      "shortDescription": "Did China ban U.S. logs? Does Canada tariff U.S. lumber? What is the HS code for wood pellets? Short answers on exporting U.S. lumber, logs and pellets.",
+      "keywords": [
+        "china us log ban",
+        "does canada have a tariff on us lumber",
+        "china tariffs on us lumber",
+        "us lumber exports",
+        "wood pellet exports from us",
+        "phytosanitary certificate for wood",
+        "hs code for wood logs"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Common questions about exporting U.S. lumber, logs, wood pellets and other wood products, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $8.79 billion of wood in 2025, led by lumber ($2.53 billion), wood pellets ($1.93 billion) and logs ($1.42 billion); Canada, the UK and Mexico buy the most.",
+    "Canada (25% on softwood lumber, 50% on plywood since September 8, 2026) and China (10% on all U.S. goods) are the only buyers with an extra duty on U.S. wood; China reopened to U.S. logs on November 10, 2025.",
+    "To ship you need a Schedule B number, usually a USDA phytosanitary certificate for logs and lumber, ISPM 15-marked pallets and an AES filing; only unprocessed western red cedar needs an export licence."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"china us log ban\", \"china tariffs on us lumber\", \"does canada have a tariff on us lumber\", \"us lumber exports\", \"us wood pellet exports\", \"eudr wood\", \"hs code lumber\", \"phytosanitary certificate for wood\", \"ispm 15\" and \"export timber\".",
+  "faqs": [
+    {
+      "id": "china-log-ban",
+      "question": "Did China ban U.S. logs, and is the ban over?",
+      "answer": "Yes. China’s customs agency suspended all imports of U.S. logs from March 4, 2025, saying it had found bark beetles and longhorn beetles in U.S. shipments (GACC Announcement No. 29 of 2025). It lifted the suspension from November 10, 2025 (Announcement No. 216), after the U.S.–China deal. U.S. logs now enter again but pay China’s extra 10% tariff.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china us log ban", "china lifts us log ban", "us log exports to china"]
+    },
+    {
+      "id": "china-lumber-tariff",
+      "question": "What tariff does China charge on U.S. lumber and logs?",
+      "answer": "China’s normal rate on logs and lumber is 0%, so U.S. lumber and logs pay 10%: China’s extra tariff on all U.S. goods since May 14, 2025. China’s 2018–19 counter-tariffs answering U.S. Section 301 add more on the lines they list unless the buyer holds an exclusion. A $1 million shipment of oak lumber pays about $100,000.",
+      "link": "exports/markets",
+      "searchedAs": ["china tariffs on us lumber", "china lumber tariffs", "china wood tariff", "tariff on us lumber china"]
+    },
+    {
+      "id": "canada-lumber-tariff",
+      "question": "Does Canada have a tariff on U.S. lumber?",
+      "answer": "On softwood lumber, yes. Since September 8, 2026 Canada charges 25% on U.S.-origin pine, fir, spruce, S-P-F and other softwood lumber (4407.11–4407.19) and 50% on U.S. plywood, LVL and charcoal, even when the goods qualify for CUSMA. U.S. hardwood lumber, logs, pellets, OSB and joinery still enter duty-free.",
+      "link": "exports/markets",
+      "searchedAs": [
+        "does canada have a tariff on us lumber",
+        "does canada tariff us lumber",
+        "canada tariff on us lumber",
+        "does canada have tariffs on us softwood lumber",
+        "canada retaliatory tariffs lumber"
+      ]
+    },
+    {
+      "id": "how-much",
+      "question": "How much lumber and wood does the U.S. export?",
+      "answer": "The U.S. exported $8.79 billion of Chapter 44 wood products in 2025, down 8.1% from 2024. Lumber was $2.53 billion (oak alone $873 million), wood pellets $1.93 billion and logs $1.42 billion. In January–August 2026 exports were up 5.3% on the same months of 2025.",
+      "link": "exports",
+      "searchedAs": ["us lumber exports", "us wood exports", "us timber exports", "does the us export lumber", "us hardwood exports"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. wood?",
+      "answer": "Canada takes 23.5% of U.S. Chapter 44 exports, followed by the United Kingdom (19.2%, almost all wood pellets), Mexico (10.4%), China (9.2%), Viet Nam (8.5%) and Japan (7.5%). Viet Nam’s purchases more than doubled in 2025 while China’s halved.",
+      "link": "exports",
+      "searchedAs": ["us lumber exports by country", "us lumber exports to canada", "us lumber exports to china", "us log exports"]
+    },
+    {
+      "id": "pellets",
+      "question": "How big are U.S. wood pellet exports, and who buys them?",
+      "answer": "Wood pellets (4401.31) were the largest U.S. wood export line in 2025 at $1.93 billion. The UK bought $1.45 billion of U.S. fuel wood and pellets (heading 4401), almost all pellets, followed by EU buyers such as Denmark, the Netherlands and France ($311 million together) and Japan ($302 million). The UK, EU and Japan charge no duty on them.",
+      "link": "exports",
+      "searchedAs": ["wood pellet exports from us", "us wood pellet exports", "wood pellet exports", "wood pellets export to europe"]
+    },
+    {
+      "id": "eudr",
+      "question": "When does the EU Deforestation Regulation apply to U.S. wood?",
+      "answer": "From December 30, 2026 for large and medium companies and June 30, 2027 for micro and small ones. EU importers of wood and wood products must then file a due-diligence statement showing the wood is deforestation-free, legally harvested and traceable to where it was cut. EU tariffs on U.S. wood have been 0% since July 1, 2026.",
+      "link": "exports/markets",
+      "searchedAs": ["eudr wood", "eudr wood products", "eudr wood pellets", "eudr delay 2026"]
+    },
+    {
+      "id": "hs-codes",
+      "question": "What are the HS or Schedule B codes for lumber, logs and wood pellets?",
+      "answer": "Wood pellets are 4401.31. Sawn lumber is heading 4407: pine 4407.11, fir and spruce 4407.12, S-P-F 4407.13, oak 4407.91 and other hardwoods 4407.92–4407.99. Logs are heading 4403, with oak logs at 4403.91. The 10-digit Schedule B number you file starts with these six digits.",
+      "link": "exports/rules",
+      "searchedAs": ["hs code lumber", "hs code wood pellet", "hs code for wood logs", "hs code for timber", "wood pellet hs code export"]
+    },
+    {
+      "id": "phyto",
+      "question": "Do I need a phytosanitary certificate to export lumber or logs?",
+      "answer": "The U.S. does not require one, but most buyers do for logs and many do for lumber. APHIS or an authorized state inspector issues it (PPQ Form 577) through the PCIT system, and APHIS’s PExD database lists each country’s conditions. For China, U.S. logs with bark must also be fumigated in the U.S.",
+      "link": "exports/rules",
+      "searchedAs": ["phytosanitary certificate for wood", "phytosanitary certificate for wood products", "phyto certificate for wood"]
+    },
+    {
+      "id": "ispm15",
+      "question": "What is ISPM 15 and how do I get the stamp for export pallets?",
+      "answer": "ISPM 15 is the international rule for wood packaging: pallets, crates and dunnage must be heat-treated to at least 56 °C at the core for 30 minutes or fumigated, and carry the ISPM 15 mark. In the U.S. only producers enrolled with an inspection agency accredited by the American Lumber Standard Committee, under its agreement with APHIS, can apply the mark.",
+      "link": "exports/rules",
+      "searchedAs": ["ispm 15", "ispm 15 stamp", "ispm 15 certificate", "ispm 15 requirements usa", "phytosanitary certificate for wooden pallets"]
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license or permit for logs or lumber?",
+      "answer": "Usually not: most wood is EAR99. Unprocessed western red cedar logs and lumber with wane need a BIS licence to every destination, including Canada, unless License Exception WRC applies. Separately, unprocessed timber cut on federal land west of the 100th meridian cannot be exported at all.",
+      "link": "exports/rules",
+      "searchedAs": ["timber export permit", "export timber", "does the us export timber"]
+    },
+    {
+      "id": "china-2027",
+      "question": "Could China raise its tariff on U.S. wood in 2027?",
+      "answer": "Two dates could. China’s tariff exclusions end on December 31, 2026, which would bring back its 2018–19 counter-tariffs on listed lines, and its suspension of 24 points of its extra tariff ends on January 10, 2027. If that suspension lapses, U.S. oak lumber and logs would pay 34% instead of 10%.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china wood tariff", "what are the current us china tariffs"]
+    }
+  ]
+}

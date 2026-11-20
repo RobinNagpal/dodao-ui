@@ -1,0 +1,870 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 33,
+    "padded": "33",
+    "slug": "33-essential-oils-and-cosmetics",
+    "title": "Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/33-essential-oils-and-cosmetics/markets",
+    "h1": "HTS Chapter 33: Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Where U.S. Cosmetics & Perfume Are Sold & the Tariff Each Country Charges (HTS Ch. 33) | KoalaGains",
+      "shortDescription": "The 8 largest markets for U.S. cosmetics, perfume, toiletries and essential oils, what each buys, the tariff it charges by product group and the cosmetics notification or registration needed to sell there.",
+      "keywords": [
+        "US cosmetics export markets",
+        "tariff on US cosmetics by country",
+        "Canada surtax US perfume",
+        "China tariff US cosmetics",
+        "EU CPNP notification US cosmetics",
+        "NMPA cosmetics registration"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Who buys U.S. essential oils, fragrances, cosmetics and toiletries, **what** they buy and **what they charge** on it. The matrix shows each market's tariff on U.S.-origin goods for the seven Chapter 33 product groups, next to the value the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. Below it, a short profile of each market names the regulator whose notification or registration a product needs before it can be sold. For cosmetics that step, more than the tariff, is usually what takes time; Canada and China are the two markets where the tariff itself went up.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "3301",
+      "label": "Essential oils, resinoids & extracted oleoresins",
+      "shortLabel": "Essential oils"
+    },
+    {
+      "heading": "3302",
+      "label": "Fragrance & flavor mixtures (incl. beverage flavor bases)",
+      "shortLabel": "Fragrance & flavor mixes"
+    },
+    {
+      "heading": "3303",
+      "label": "Perfumes & toilet waters",
+      "shortLabel": "Perfumes"
+    },
+    {
+      "heading": "3304",
+      "label": "Makeup, skin care, sunscreen & nail preparations",
+      "shortLabel": "Makeup & skin care"
+    },
+    {
+      "heading": "3305",
+      "label": "Hair preparations (shampoo, perms, hair spray)",
+      "shortLabel": "Hair care"
+    },
+    {
+      "heading": "3306",
+      "label": "Oral & dental hygiene (toothpaste, floss, mouthwash)",
+      "shortLabel": "Oral care"
+    },
+    {
+      "heading": "3307",
+      "label": "Shaving, deodorants, bath, room fragrance & other toiletries",
+      "shortLabel": "Deodorant, shaving & other"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (0% on qualifying U.S. goods), plus Canada's United States Surtax Order (2026): 50% on U.S. perfume, lip, eye and nail make-up and other hair preparations",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3768058684,
+      "priorExportsUsd": 3813046322,
+      "sharePct": 25,
+      "changePct": -1.2,
+      "status": "raised",
+      "cells": {
+        "3301": {
+          "exportsUsd": 54943668,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, 3301.29: MFN Free, United States Tariff Free"
+        },
+        "3302": {
+          "exportsUsd": 864322438,
+          "rate": "Free (CUSMA)",
+          "normalRate": "5% on 3302.90 (MFN)",
+          "basis": "CBSA Customs Tariff 2026: 3302.10 MFN Free, 3302.90 MFN 5%; United States Tariff Free"
+        },
+        "3303": {
+          "exportsUsd": 313435284,
+          "rate": "Free + 50% surtax",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3303.00: United States Tariff Free; 50% surtax from Sept 8, 2026 (SOR/2026-186, Schedule 3)"
+        },
+        "3304": {
+          "exportsUsd": 1287498309,
+          "rate": "Free; 50% surtax on lip, eye & nail make-up",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3304.99: United States Tariff Free; 3304.10, 3304.20 and 3304.30 carry the 50% surtax from Sept 8, 2026 (SOR/2026-186)"
+        },
+        "3305": {
+          "exportsUsd": 595482176,
+          "rate": "Free; 50% surtax on 3305.90",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3305.10: United States Tariff Free; other hair preparations (3305.90) carry the 50% surtax from Sept 8, 2026 (SOR/2026-186)"
+        },
+        "3306": {
+          "exportsUsd": 224528451,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3306.10: MFN 6.5%, United States Tariff Free"
+        },
+        "3307": {
+          "exportsUsd": 427848358,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "CBSA Customs Tariff 2026, 3307.20: MFN 6.5%, United States Tariff Free"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the biggest buyer and the one where the tariff got worse: CUSMA keeps most of the chapter duty-free, but perfume, lip, eye and nail make-up and other hair preparations have paid a 50% surtax since September 8, 2026, CUSMA or not. Skin care, shampoo, toothpaste, deodorant and flavor bases are not on the list.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Fragrance & flavor mixtures (incl. beverage flavor bases) (3302)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on perfume, lip/eye/nail make-up",
+        "regulator": {
+          "name": "Health Canada (Cosmetic Regulations)",
+          "url": "https://www.canada.ca/en/health-canada/services/consumer-product-safety/cosmetics/notification-cosmetics/guide.html",
+          "requirement": "The manufacturer or importer files a Cosmetic Notification Form within 10 days after first selling a cosmetic in Canada, and ingredients must respect the Cosmetic Ingredient Hotlist; sunscreens, anti-dandruff shampoos and fluoride toothpastes are drugs or natural health products and need a DIN or NPN before sale."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I 'ex 33': all of Chapter 33 except 3302 10) from July 1, 2026 to December 31, 2029, replacing the EU common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 2696267910,
+      "priorExportsUsd": 2504522354,
+      "sharePct": 17.9,
+      "changePct": 7.7,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 608462250,
+          "priorExportsUsd": 538735220,
+          "changePct": 12.9
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 587156651,
+          "priorExportsUsd": 522762224,
+          "changePct": 12.3
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 437820583,
+          "priorExportsUsd": 411265265,
+          "changePct": 6.5
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 217792261,
+          "priorExportsUsd": 230031110,
+          "changePct": -5.3
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 192001410,
+          "priorExportsUsd": 160397939,
+          "changePct": 19.7
+        }
+      ],
+      "cells": {
+        "3301": {
+          "exportsUsd": 202532158,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–7% (MFN)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 33'), from July 1, 2026; CN 2025 MFN 0–2.9% on 3301 29, 7% on citrus oils not deterpenated"
+        },
+        "3302": {
+          "exportsUsd": 517388522,
+          "rate": "Free; 3302.10 up to 17.3%",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 33') covers 3302 90 (MFN 0%) but excludes 3302 10 food and drink flavor bases (MFN 0–17.3%; 3302 10 29 has a 1,400 t zero-duty quota)"
+        },
+        "3303": {
+          "exportsUsd": 395126601,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2025 MFN 0% on 3303 00; also in Regulation (EU) 2026/1455, Annex I ('ex 33')"
+        },
+        "3304": {
+          "exportsUsd": 1128843109,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2025 MFN 0% on 3304 99; also in Regulation (EU) 2026/1455, Annex I ('ex 33')"
+        },
+        "3305": {
+          "exportsUsd": 264766178,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 2025 MFN 0% on 3305 10 and 3305 90; also in Regulation (EU) 2026/1455, Annex I ('ex 33')"
+        },
+        "3306": {
+          "exportsUsd": 92309999,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "0–4% (MFN)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 33'); CN 2025 MFN 0% on 3306 10, 4% on dental floss 3306 20"
+        },
+        "3307": {
+          "exportsUsd": 95301343,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% (MFN)",
+          "basis": "Regulation (EU) 2026/1455, Annex I ('ex 33'), from July 1, 2026; CN 2025 MFN 6.5% on 3307 20 and 3307 90"
+        }
+      },
+      "profile": {
+        "headline": "Since July 1, 2026 the EU charges nothing on almost all U.S. Chapter 33 goods, removing its 6.5% duty on deodorants, shaving and bath products and up to 7% on citrus oils; food and drink flavor bases (3302.10) are the exception. France, the Netherlands and Germany take most of the trade.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Fragrance & flavor mixtures (incl. beverage flavor bases) (3302)",
+        "tariffNow": "Free (EU–US framework) except 3302.10 flavor bases",
+        "regulator": {
+          "name": "European Commission and national authorities (Cosmetics Regulation (EC) No 1223/2009)",
+          "url": "https://single-market-economy.ec.europa.eu/sectors/cosmetics/cosmetic-product-notification-portal_en",
+          "requirement": "An EU-based Responsible Person must hold a cosmetic product safety report and product information file and notify each product on the Cosmetic Products Notification Portal (CPNP) before it is placed on the market; cosmetics tested on animals in breach of the EU ban cannot be sold."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin; Mexico's MFN rates on cosmetics rose to 25–36% from January 1, 2026",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 1303204643,
+      "priorExportsUsd": 1284753164,
+      "sharePct": 8.7,
+      "changePct": 1.4,
+      "status": "unchanged",
+      "cells": {
+        "3301": {
+          "exportsUsd": 55731928,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico's tariff schedule (TIGIE), MFN 0% on 3301.29 (WITS 2023); certificate of origin required"
+        },
+        "3302": {
+          "exportsUsd": 463324180,
+          "rate": "Free (USMCA)",
+          "normalRate": "5–15% (MFN)",
+          "basis": "USMCA; MFN 0–15% on 3302.10 and 5% on 3302.90 (WITS 2023); certificate of origin required"
+        },
+        "3303": {
+          "exportsUsd": 191576018,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% (MFN since Jan 2026)",
+          "basis": "USMCA; MFN on 3303.00 raised to 25% from January 1, 2026 (DOF decree of December 29, 2025)"
+        },
+        "3304": {
+          "exportsUsd": 298179873,
+          "rate": "Free (USMCA)",
+          "normalRate": "25–36% (MFN since Jan 2026)",
+          "basis": "USMCA; MFN 25% on 3304.99 and 36% on lip make-up from January 1, 2026 (DOF decree of December 29, 2025)"
+        },
+        "3305": {
+          "exportsUsd": 88416110,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% (MFN since Jan 2026)",
+          "basis": "USMCA; MFN 25% on 3305.10 and 3305.90 from January 1, 2026 (DOF decree of December 29, 2025)"
+        },
+        "3306": {
+          "exportsUsd": 51084972,
+          "rate": "Free (USMCA)",
+          "normalRate": "30% (MFN since Jan 2026)",
+          "basis": "USMCA; MFN 30% on 3306.10 from January 1, 2026 (DOF decree of December 29, 2025)"
+        },
+        "3307": {
+          "exportsUsd": 154891562,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–25% (MFN)",
+          "basis": "USMCA; MFN about 10% on 3307.20 (WITS 2023) and 25% on 3307.90 from January 1, 2026 (DOF decree of December 29, 2025)"
+        }
+      },
+      "profile": {
+        "headline": "U.S. goods that qualify under USMCA enter Mexico duty-free. That matters more since January 1, 2026, when Mexico raised its normal rates on perfume, make-up, shampoo and toothpaste to 25–36% for countries without a trade agreement, so goods that don't qualify pay heavily.",
+        "mainProducts": "Fragrance & flavor mixtures (incl. beverage flavor bases) (3302) · Makeup, skin care, sunscreen & nail preparations (3304)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS",
+          "url": "https://www.gob.mx/cofepris/acciones-y-programas/productos-cosmeticos",
+          "requirement": "Cosmetics must carry Spanish labelling that meets NOM-141-SSA1/SCFI-2012, and the importer or distributor files a notice of operation (aviso de funcionamiento) with COFEPRIS."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (MFN); no U.S. free-trade agreement. The 2025 U.S.–UK Economic Prosperity Deal did not change Chapter 33 rates",
+      "usTradeAgreement": null,
+      "exportsUsd": 844578610,
+      "priorExportsUsd": 916320812,
+      "sharePct": 5.6,
+      "changePct": -7.8,
+      "status": "unchanged",
+      "cells": {
+        "3301": {
+          "exportsUsd": 49655453,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3301.29: 0%; no U.S. preference"
+        },
+        "3302": {
+          "exportsUsd": 35625038,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3302.10 and 3302.90: 0%"
+        },
+        "3303": {
+          "exportsUsd": 138881243,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3303.00: 0%"
+        },
+        "3304": {
+          "exportsUsd": 440933783,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3304.99: 0%"
+        },
+        "3305": {
+          "exportsUsd": 142261025,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3305.10 and 3305.90: 0%"
+        },
+        "3306": {
+          "exportsUsd": 7119879,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3306.10: 0%"
+        },
+        "3307": {
+          "exportsUsd": 30102189,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff 2026, 3307.20 and 3307.90: 6%; the 2025 U.S.–UK deal did not change it"
+        }
+      },
+      "profile": {
+        "headline": "The UK charges nothing on most U.S. Chapter 33 goods and 6% on deodorants, shaving, bath and room-fragrance products (3307); nothing has changed since 2025.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Hair preparations (shampoo, perms, hair spray) (3305)",
+        "tariffNow": "Free; 6% on 3307 toiletries",
+        "regulator": {
+          "name": "Office for Product Safety and Standards (UK Cosmetics Regulation)",
+          "url": "https://www.gov.uk/guidance/submit-a-cosmetic-product-notification",
+          "requirement": "A UK-based Responsible Person must notify each product on the Submit Cosmetic Product Notification (SCPN) service before it is placed on the market in Great Britain; Northern Ireland follows the EU rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff schedule, plus the 10% extra duty on all U.S. goods (since May 2025) and its 2019 counter-tariffs on U.S. goods (answering U.S. Section 301), which apply unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 690087213,
+      "priorExportsUsd": 913374968,
+      "sharePct": 4.6,
+      "changePct": -24.4,
+      "status": "raised",
+      "cells": {
+        "3301": {
+          "exportsUsd": 71390213,
+          "rate": "10–20% + 10% + 5–27.5%",
+          "normalRate": "10–20% (MFN)",
+          "basis": "China 2026 tariff: MFN 20% on most essential oils, 10% temporary rate on orange and peppermint oil (2026 plan); + 10% on all U.S. goods; + 2019 counter-tariff, mostly 7.5%, up to 27.5% (Announcements No. 3 and No. 4 of 2019)"
+        },
+        "3302": {
+          "exportsUsd": 78796558,
+          "rate": "10–15% + 10% + 5–25%",
+          "normalRate": "10–15% (MFN)",
+          "basis": "MFN 15% on 3302.10 and 10% on 3302.90 (WITS 2023); + 10%; + 2019 counter-tariff of 25% or 5% on 3302.10 lines and 20% on 3302.90"
+        },
+        "3303": {
+          "exportsUsd": 13591335,
+          "rate": "3% + 10% + 25%",
+          "normalRate": "3% (MFN)",
+          "basis": "MFN 3% on 3303.00 since July 2018 (Announcement No. 4 of 2018); + 10%; + 25% 2019 counter-tariff (Announcement No. 3 of 2019) unless excluded"
+        },
+        "3304": {
+          "exportsUsd": 424760425,
+          "rate": "1% + 10% + 27.5%",
+          "normalRate": "1% (MFN)",
+          "basis": "MFN 1% on skin care 3304.99 (5% on lip, eye, nail and powder make-up); + 10%; + 2019 counter-tariff of 27.5% on 3304.99 (25% on the other 3304 lines) unless excluded"
+        },
+        "3305": {
+          "exportsUsd": 24879761,
+          "rate": "3% + 10% + 25%",
+          "normalRate": "3% (MFN)",
+          "basis": "MFN 3% on 3305.10 and 3305.90; + 10%; + 25% 2019 counter-tariff (Announcement No. 3 of 2019) unless excluded"
+        },
+        "3306": {
+          "exportsUsd": 21780023,
+          "rate": "3% + 10% + 25%",
+          "normalRate": "3% (MFN)",
+          "basis": "MFN 3% on 3306.10; + 10%; + 2019 counter-tariffs of 20% (June 2019) and 5% (Sept 2019, halved in Feb 2020) unless excluded"
+        },
+        "3307": {
+          "exportsUsd": 54888898,
+          "rate": "3% + 10% + 25%",
+          "normalRate": "3% (MFN)",
+          "basis": "MFN 3% on 3307.20 and 3307.90; + 10%; + 2019 counter-tariffs of 20% and 5% unless excluded"
+        }
+      },
+      "profile": {
+        "headline": "China is the most expensive large market: U.S. perfume, make-up, shampoo, toothpaste and deodorant pay about 38% (normal rate, 2019 counter-tariff and the 10% extra) unless the importer holds an exclusion. U.S. sales there fell 24% in 2025.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Fragrance & flavor mixtures (incl. beverage flavor bases) (3302)",
+        "tariffNow": "MFN + 10% extra + 2019 counter-tariffs (20–27.5%)",
+        "regulator": {
+          "name": "National Medical Products Administration (NMPA)",
+          "url": "https://english.nmpa.gov.cn/2022-06/30/c_785637.htm",
+          "requirement": "Imported general cosmetics must be filed, and special cosmetics (hair dyes, perms, whitening, sunscreen, anti-hair-loss and new-efficacy products) registered, with NMPA before import, through a China-based domestic responsible person."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "AUSFTA preferential tariff: 0% for qualifying U.S. goods in place of Australia's 5% normal rate on most cosmetics and toiletries",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 631490294,
+      "priorExportsUsd": 750251499,
+      "sharePct": 4.2,
+      "changePct": -15.8,
+      "status": "unchanged",
+      "cells": {
+        "3301": {
+          "exportsUsd": 9502163,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; MFN 0% on 3301.29 (WITS 2023)"
+        },
+        "3302": {
+          "exportsUsd": 21674803,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% (MFN)",
+          "basis": "AUSFTA; MFN 0–5% on 3302.10 and 5% on 3302.90 (WITS 2023)"
+        },
+        "3303": {
+          "exportsUsd": 122542139,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% (MFN)",
+          "basis": "AUSFTA; MFN 5% on 3303.00 (WITS 2023)"
+        },
+        "3304": {
+          "exportsUsd": 336082669,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% (MFN)",
+          "basis": "AUSFTA; MFN 5% on 3304.99 (WITS 2023)"
+        },
+        "3305": {
+          "exportsUsd": 84791716,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% (MFN)",
+          "basis": "AUSFTA; MFN 5% on 3305.10 and 3305.90 (WITS 2023)"
+        },
+        "3306": {
+          "exportsUsd": 22482591,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% (MFN)",
+          "basis": "AUSFTA; MFN 5% on 3306.10 (WITS 2023)"
+        },
+        "3307": {
+          "exportsUsd": 34414213,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% (MFN)",
+          "basis": "AUSFTA; MFN 5% on 3307.20 and 3307.90 (WITS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "AUSFTA makes qualifying U.S. goods duty-free in place of Australia's 5% normal rate on most cosmetics and toiletries; nothing has changed since 2025.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Perfumes & toilet waters (3303)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Australian Industrial Chemicals Introduction Scheme (AICIS); TGA for sunscreens",
+          "url": "https://www.industrialchemicals.gov.au/business/getting-started-registration-importing-and-manufacturing/what-registration-and-who-must-register",
+          "requirement": "A business that imports cosmetics must register with AICIS before importing, and the chemicals in them must be authorised for introduction; primary sunscreens (SPF 4 or more) are therapeutic goods that must be on the TGA register (ARTG)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "Gulf Cooperation Council common external tariff (5%); no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 384579825,
+      "priorExportsUsd": 392676716,
+      "sharePct": 2.6,
+      "changePct": -2.1,
+      "status": "unchanged",
+      "cells": {
+        "3301": {
+          "exportsUsd": 1756932,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3301.29 (WITS 2023); no U.S. trade agreement"
+        },
+        "3302": {
+          "exportsUsd": 17785459,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3302.90 (WITS 2023); no U.S. trade agreement"
+        },
+        "3303": {
+          "exportsUsd": 87547860,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3303.00 (WITS 2023); no U.S. trade agreement"
+        },
+        "3304": {
+          "exportsUsd": 203513581,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3304.99 (WITS 2023); no U.S. trade agreement"
+        },
+        "3305": {
+          "exportsUsd": 34190952,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3305.10 (WITS 2023); no U.S. trade agreement"
+        },
+        "3306": {
+          "exportsUsd": 4643741,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3306.10 (WITS 2023); no U.S. trade agreement"
+        },
+        "3307": {
+          "exportsUsd": 35141300,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Gulf (GCC) common external tariff, MFN 5% on 3307.20 (WITS 2023); no U.S. trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "The UAE applies the Gulf common tariff of 5% to U.S. cosmetics and perfume; there is no U.S. trade agreement and nothing has changed since 2025.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Perfumes & toilet waters (3303)",
+        "tariffNow": "5% (Gulf common tariff)",
+        "regulator": {
+          "name": "Dubai Municipality (Montaji product registration)",
+          "url": "https://dmpmedia.dm.gov.ae/uploads/2026/01/DM-HSD-GU116-CPCP2_Technical-Guidelines-for-Cosmetic-Personal-Care-Products_V2.1.pdf",
+          "requirement": "Each cosmetic and personal-care product must be registered on Dubai Municipality's Montaji system by a UAE-licensed company before import or sale; registration lasts five years and needs a free sale certificate from the country of origin."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 702,
+      "name": "Singapore",
+      "rule": "Singapore's MFN tariff (0% on Chapter 33); the U.S.–Singapore FTA binds 0% for qualifying U.S. goods",
+      "usTradeAgreement": "U.S.–Singapore FTA",
+      "exportsUsd": 383412516,
+      "priorExportsUsd": 417238864,
+      "sharePct": 2.5,
+      "changePct": -8.1,
+      "status": "unchanged",
+      "cells": {
+        "3301": {
+          "exportsUsd": 51397114,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3301.29 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3302": {
+          "exportsUsd": 36741369,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3302.90 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3303": {
+          "exportsUsd": 38202878,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3303.00 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3304": {
+          "exportsUsd": 231995361,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3304.99 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3305": {
+          "exportsUsd": 16377373,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3305.10 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3306": {
+          "exportsUsd": 1824260,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3306.10 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        },
+        "3307": {
+          "exportsUsd": 6874161,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "MFN 0% on 3307.20 (WITS 2023); U.S.–Singapore FTA keeps U.S. goods at 0%"
+        }
+      },
+      "profile": {
+        "headline": "Singapore charges no duty on Chapter 33 goods from anywhere, and the U.S.–Singapore FTA keeps U.S. goods at zero; skin care is most of what the U.S. ships there.",
+        "mainProducts": "Makeup, skin care, sunscreen & nail preparations (3304) · Essential oils, resinoids & extracted oleoresins (3301)",
+        "tariffNow": "Free (U.S.–Singapore FTA)",
+        "regulator": {
+          "name": "Health Sciences Authority (HSA)",
+          "url": "https://www.hsa.gov.sg/cosmetic-products/",
+          "requirement": "The company placing a cosmetic on the market in Singapore must notify HSA before supplying it and meet the ASEAN Cosmetic Directive requirements."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Singapore import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/singapore-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "3304",
+      "exportsUsd": 1287498309,
+      "rate": "Free; 50% surtax on lip, eye & nail make-up"
+    },
+    {
+      "market": "European Union",
+      "heading": "3304",
+      "exportsUsd": 1128843109,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "3302",
+      "exportsUsd": 864322438,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3305",
+      "exportsUsd": 595482176,
+      "rate": "Free; 50% surtax on 3305.90"
+    },
+    {
+      "market": "European Union",
+      "heading": "3302",
+      "exportsUsd": 517388522,
+      "rate": "Free; 3302.10 up to 17.3%"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3302",
+      "exportsUsd": 463324180,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "3304",
+      "exportsUsd": 440933783,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "3307",
+      "exportsUsd": 427848358,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are for 2026, one representative six-digit subheading per product group (shown under each cell): Canada from the CBSA Customs Tariff 2026, the EU from the Combined Nomenclature and Regulation (EU) 2026/1455, Mexico from its schedule as amended by the December 29, 2025 decree, and the UK from the UK Global Tariff. China, Australia, the UAE and Singapore are WITS/TRAINS MFN applied rates for 2023, the latest year available, with China's 2026 temporary rates where published. National 8–10-digit lines can differ.",
+    "The EU is one market: its 27 members share one tariff, and its export figures include every member. Regulation (EU) 2026/1455 zeroes out Chapter 33 from July 1, 2026 to December 31, 2029, except food and drink flavor bases (3302 10); the normal-rate column shows the rate the EU charged before then.",
+    "Canada, Mexico (USMCA), Australia (AUSFTA) and Singapore apply 0% to qualifying U.S.-origin goods; the normal-rate column shows the MFN rate for goods that do not qualify. Canada's 50% surtax (SOR/2026-186) applies to the listed U.S. goods whether or not they qualify for CUSMA.",
+    "China's cells add three layers: its MFN rate, the 2019 counter-tariffs on U.S. goods (the June 2019 rate plus any September 2019 rate, halved in February 2020) and the 10% extra duty on all U.S. goods. An importer holding a market-based exclusion (valid until December 31, 2026) pays only the MFN rate plus 10%. A further 24 points of the extra duty are suspended until January 10, 2027.",
+    "Rates are import duties only; VAT, GST and excise are left out. Regulatory requirements are summarised for orientation; check the regulator's current rules for the specific product."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 33, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-cbsa-ch33",
+      "publisher": "CBSA",
+      "citation": "Customs Tariff 2026, ch. 33",
+      "document": "Tariff schedule",
+      "title": "Canadian Customs Tariff, Chapter 33: essential oils and resinoids; perfumery, cosmetic or toilet preparations (MFN and United States Tariff columns)",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch33-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026): Schedule 3, goods subject to a 50% surtax from September 8, 2026, including 3303.00, 3304.10–3304.30 and 3305.90",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Adjustment of customs duties on goods originating in the United States (Annex I: ex 33, except 3302 10), applicable from July 1, 2026",
+      "signed": null,
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-cn-2025",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2024/2522",
+      "document": "Combined Nomenclature",
+      "title": "Combined Nomenclature and EU conventional (MFN) duties, Chapter 33",
+      "signed": null,
+      "published": "2024-10-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2024/2522/oj"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decree amending the General Import and Export Tax Law (LIGIE) tariff schedule: higher MFN rates on goods from countries without a trade agreement, from January 1, 2026",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "HM Government",
+      "citation": "UK Trade Tariff, chapter 33",
+      "document": "Tariff schedule",
+      "title": "UK Global Tariff, Chapter 33 (0% on most lines; 6% on heading 3307)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://www.trade-tariff.service.gov.uk/chapters/33"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates (2023)",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading, Chapter 33 (China, Australia, United Arab Emirates, Singapore, South Korea, Japan)",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/330499"
+    },
+    {
+      "id": "cn-mfn-2018",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2018",
+      "document": "Announcement",
+      "title": "MFN tariff cuts on consumer goods from July 1, 2018 (perfume to 3%, make-up to 5%, skin care to 1%, hair, oral-care and other toiletries to 3%)",
+      "signed": null,
+      "published": "2018-05-31",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201805/t20180531_2914284.htm"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "Announcement",
+      "title": "2026 Tariff Adjustment Plan (temporary import rates from January 1, 2026, including orange, peppermint and other essential oils)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 1",
+      "document": "Announcement annex",
+      "title": "Raising the additional tariffs on part of the U.S. goods on the $60B list from June 1, 2019 (Annex 1: 25% lines, including perfume 3303, make-up and skin care 3304 and hair preparations 3305)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://m.mof.gov.cn/zcfb/201905/P020190513719203602248.pdf"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "Trade and Industry Department (Hong Kong SAR), reproducing the PRC State Council Tariff Commission",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Trade circular",
+      "title": "Additional tariffs on about $75B of U.S. goods from September 1, 2019 (10% on 3306 and 3307 lines, 5% on most essential oils and skin care 3304.99)",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://www.tid.gov.hk/en/tradecircular/files/2019/ci2019643a.pdf"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Announcement",
+      "title": "Halving the September 2019 additional tariffs on U.S. goods (10% to 5%, 5% to 2.5%) from February 14, 2020",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% from May 14, 2025, 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-nov2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24% stays suspended for two more months from November 10, 2026; 10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 71% of 2025 U.S. Chapter 33 exports. A customs union (the EU) is one market: its members share one tariff."
+}

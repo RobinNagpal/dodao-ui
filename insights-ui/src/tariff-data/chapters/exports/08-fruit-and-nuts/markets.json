@@ -1,0 +1,1383 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 8,
+    "padded": "08",
+    "slug": "8-fruit-and-nuts",
+    "title": "Edible Fruit and Nuts; Peel of Citrus Fruit or Melons"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/8-fruit-and-nuts/markets",
+    "h1": "HTS Chapter 08: Edible Fruit and Nuts — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 08 Export Markets: Foreign Tariffs on U.S. Fruit & Nuts",
+      "shortDescription": "What Canada, the EU, India, Mexico, Viet Nam, Korea, Japan, the UAE and China charge on U.S. almonds, pistachios, walnuts and fresh fruit in 2026, and the approval each one needs.",
+      "keywords": [
+        "almond tariffs",
+        "tariffs on almonds in india",
+        "eu tariff us almonds",
+        "china tariff us almonds",
+        "pistachio tariffs",
+        "walnut tariffs",
+        "fruit export tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "What each large market charges on U.S. fruit and nuts in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. China is added at the end, although it is no longer a top buyer, because it is the one market charging U.S. goods an extra duty. For most of the trade tariffs are low: Canada and Mexico charge nothing under USMCA, South Korea almost nothing under KORUS, the EU nothing on nuts within its U.S. quota, and Japan nothing on most nuts, oranges and cherries. India (on almonds and apples) and China cost real money. For fresh fruit, the buyer’s plant-health rules usually decide whether a fruit can be sold at all.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "0801",
+      "label": "Coconuts, Brazil nuts & cashews",
+      "shortLabel": "Coconuts & cashews"
+    },
+    {
+      "heading": "0802",
+      "label": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…)",
+      "shortLabel": "Other nuts"
+    },
+    {
+      "heading": "0803",
+      "label": "Bananas & plantains",
+      "shortLabel": "Bananas"
+    },
+    {
+      "heading": "0804",
+      "label": "Dates, figs, pineapples, avocados, guavas & mangoes",
+      "shortLabel": "Avocados, mangoes, pineapples"
+    },
+    {
+      "heading": "0805",
+      "label": "Citrus fruit",
+      "shortLabel": "Citrus"
+    },
+    {
+      "heading": "0806",
+      "label": "Grapes & raisins",
+      "shortLabel": "Grapes"
+    },
+    {
+      "heading": "0807",
+      "label": "Melons, watermelons & papayas",
+      "shortLabel": "Melons & papayas"
+    },
+    {
+      "heading": "0808",
+      "label": "Apples, pears & quinces",
+      "shortLabel": "Apples & pears"
+    },
+    {
+      "heading": "0809",
+      "label": "Apricots, cherries, peaches, plums",
+      "shortLabel": "Stone fruit"
+    },
+    {
+      "heading": "0810",
+      "label": "Other fresh fruit (berries, kiwifruit, tropical fruit)",
+      "shortLabel": "Berries & other fruit"
+    },
+    {
+      "heading": "0811",
+      "label": "Frozen fruit & nuts",
+      "shortLabel": "Frozen fruit"
+    },
+    {
+      "heading": "0812",
+      "label": "Fruit provisionally preserved",
+      "shortLabel": "Preserved fruit"
+    },
+    {
+      "heading": "0813",
+      "label": "Dried fruit (prunes, apricots…) & mixtures",
+      "shortLabel": "Dried fruit"
+    },
+    {
+      "heading": "0814",
+      "label": "Citrus & melon peel",
+      "shortLabel": "Peel"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 4275894554,
+      "priorExportsUsd": 4199211953,
+      "sharePct": 23.7,
+      "changePct": 1.8,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "0801": {
+          "exportsUsd": 24338419,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0802": {
+          "exportsUsd": 494099256,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0803": {
+          "exportsUsd": 558360295,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0804": {
+          "exportsUsd": 336775107,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0805": {
+          "exportsUsd": 266590823,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0806": {
+          "exportsUsd": 382534565,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0807": {
+          "exportsUsd": 264020393,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0808": {
+          "exportsUsd": 205565674,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0809": {
+          "exportsUsd": 221569470,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0810": {
+          "exportsUsd": 1312124553,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0811": {
+          "exportsUsd": 147765765,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0812": {
+          "exportsUsd": 2191230,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0813": {
+          "exportsUsd": 58456830,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        },
+        "0814": {
+          "exportsUsd": 1502174,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. fruit and nuts enter duty-free."
+        }
+      },
+      "profile": {
+        "headline": "Canada is by far the largest buyer, mostly of fresh fruit (berries, bananas, grapes, avocados and citrus), all duty-free under CUSMA. Its March–September 2025 counter-tariff did hit U.S. citrus, peaches, watermelons, pecans and frozen berries, but it ended on September 1, 2025, and its September 2026 counter-tariffs skip fruit and nuts.",
+        "mainProducts": "Other fresh fruit (berries, kiwifruit, tropical fruit) (0810) · Bananas & plantains (0803)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "The importer needs a Safe Food for Canadians licence. CFIA's Automated Import Reference System (AIRS) sets the plant-health conditions for each fruit and U.S. origin; some need a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU Common Customs Tariff with the 2026 preferences for U.S. goods (Regulation (EU) 2026/1455)",
+      "usTradeAgreement": null,
+      "exportsUsd": 3593496837,
+      "priorExportsUsd": 2786251211,
+      "sharePct": 19.9,
+      "changePct": 29,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 853160042,
+          "priorExportsUsd": 722832741,
+          "changePct": 18
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 772466018,
+          "priorExportsUsd": 606328563,
+          "changePct": 27.4
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 596504762,
+          "priorExportsUsd": 481277440,
+          "changePct": 23.9
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 551804494,
+          "priorExportsUsd": 372022106,
+          "changePct": 48.3
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 272478613,
+          "priorExportsUsd": 158892297,
+          "changePct": 71.5
+        }
+      ],
+      "cells": {
+        "0801": {
+          "exportsUsd": 1508822,
+          "rate": "Free (EU normal rate on most lines)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026: cashews, Brazil nuts and coconuts are duty-free for all origins."
+        },
+        "0802": {
+          "exportsUsd": 3514759079,
+          "rate": "Free within the 500,000 t U.S. tree-nut quota",
+          "normalRate": "EU normal rate above the quota (e.g. 5.6% in-shell almonds, 3.5% shelled almonds; lower within the older 86,223 t almond quota)",
+          "basis": "Regulation (EU) 2026/1455, Annex III (from July 1, 2026): 0% within a 500,000-tonne yearly tariff quota for U.S. nuts of CN 0802 and prepared nuts of 2008.19, first come, first served."
+        },
+        "0803": {
+          "exportsUsd": 0,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        },
+        "0804": {
+          "exportsUsd": 4670356,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        },
+        "0805": {
+          "exportsUsd": 5447422,
+          "rate": "% duty removed on listed fruit; any per-kg duty remains",
+          "normalRate": "EU Common Customs Tariff, 2026 (seasonal ad valorem duty, plus entry-price duties on some fruit)",
+          "basis": "Regulation (EU) 2026/1455, Annex II (from July 1, 2026): the ad valorem part of the Common Customs Tariff does not apply to listed U.S. fresh fruit; any specific duty under the EU entry-price system can still apply. Check TARIC for the exact CN line."
+        },
+        "0806": {
+          "exportsUsd": 24360423,
+          "rate": "Raisins 0%; fresh grapes % duty removed",
+          "normalRate": "EU Common Customs Tariff, 2026 (fresh grapes seasonal 8–17.6% plus entry-price duties)",
+          "basis": "Regulation (EU) 2026/1455 (from July 1, 2026): sultanas (0806 20 30) and other dried grapes (0806 20 90) at 0%; for listed fresh grapes the ad valorem duty does not apply, but any entry-price duty can."
+        },
+        "0807": {
+          "exportsUsd": 25383,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        },
+        "0808": {
+          "exportsUsd": 197569,
+          "rate": "% duty removed on listed fruit; any per-kg duty remains",
+          "normalRate": "EU Common Customs Tariff, 2026 (seasonal ad valorem duty, plus entry-price duties on some fruit)",
+          "basis": "Regulation (EU) 2026/1455, Annex II (from July 1, 2026): the ad valorem part of the Common Customs Tariff does not apply to listed U.S. fresh fruit; any specific duty under the EU entry-price system can still apply. Check TARIC for the exact CN line."
+        },
+        "0809": {
+          "exportsUsd": 1153595,
+          "rate": "% duty removed on listed fruit; any per-kg duty remains",
+          "normalRate": "EU Common Customs Tariff, 2026 (seasonal ad valorem duty, plus entry-price duties on some fruit)",
+          "basis": "Regulation (EU) 2026/1455, Annex II (from July 1, 2026): the ad valorem part of the Common Customs Tariff does not apply to listed U.S. fresh fruit; any specific duty under the EU entry-price system can still apply. Check TARIC for the exact CN line."
+        },
+        "0810": {
+          "exportsUsd": 1598200,
+          "rate": "% duty removed on listed fruit; any per-kg duty remains",
+          "normalRate": "EU Common Customs Tariff, 2026 (seasonal ad valorem duty, plus entry-price duties on some fruit)",
+          "basis": "Regulation (EU) 2026/1455, Annex II (from July 1, 2026): the ad valorem part of the Common Customs Tariff does not apply to listed U.S. fresh fruit; any specific duty under the EU entry-price system can still apply. Check TARIC for the exact CN line."
+        },
+        "0811": {
+          "exportsUsd": 14501150,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        },
+        "0812": {
+          "exportsUsd": 284580,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        },
+        "0813": {
+          "exportsUsd": 24990258,
+          "rate": "0% (U.S. preference)",
+          "normalRate": "EU Common Customs Tariff, 2026",
+          "basis": "Regulation (EU) 2026/1455 (from July 1, 2026): dried apricots (0813 10 00), prunes (0813 20 00) and other dried fruit (0813 40 95) at 0%. Check TARIC for mixtures (0813 50)."
+        },
+        "0814": {
+          "exportsUsd": 0,
+          "rate": "EU normal rate (check TARIC)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff, 2026. Whether the CN line is in the 2026/1455 annexes was not individually checked; check TARIC with origin US."
+        }
+      },
+      "profile": {
+        "headline": "The EU buys U.S. tree nuts, mainly almonds, through Germany, Spain, the Netherlands and Italy. Since July 1, 2026 U.S. tree nuts enter duty-free within a 500,000-tonne yearly quota and several dried fruits are duty-free; to claim the preference the importer must prove U.S. origin (document code U190).",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Dried fruit (prunes, apricots…) & mixtures (0813)",
+        "tariffNow": "Nuts free within U.S. quota; fresh-fruit % duty removed (July 2026)",
+        "regulator": {
+          "name": "European Commission (DG SANTE) and member-state border control posts",
+          "url": "https://food.ec.europa.eu/plants/plant-health-and-biosecurity_en",
+          "requirement": "Fresh fruit needs a USDA phytosanitary certificate under EU plant-health rules. Nuts need none, but must meet EU aflatoxin limits at the border, so shippers send USDA-run PEC (almonds) or PEAR (pistachios) test results."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's customs tariff (no U.S. trade agreement); interim framework agreed Feb. 2026",
+      "usTradeAgreement": null,
+      "exportsUsd": 1495898416,
+      "priorExportsUsd": 1160838251,
+      "sharePct": 8.3,
+      "changePct": 28.9,
+      "status": "pending",
+      "cells": {
+        "0801": {
+          "exportsUsd": 184302,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0802": {
+          "exportsUsd": 1446036091,
+          "rate": "₹35/kg in-shell almonds, ₹100/kg shelled; walnuts in shell 100%",
+          "normalRate": null,
+          "basis": "India basic customs duty after Notification No. 53/2023 (Customs), in force Sept. 6, 2023, which removed India’s 2019 retaliatory duties on U.S. almonds and walnuts (USDA GAIN IN2023-0066). Pistachios and other nuts: check the CBIC schedule."
+        },
+        "0803": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0804": {
+          "exportsUsd": 109102,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0805": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0806": {
+          "exportsUsd": 19363,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0807": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0808": {
+          "exportsUsd": 43436500,
+          "rate": "50% on apples (minimum import price ₹50/kg)",
+          "normalRate": null,
+          "basis": "India basic customs duty on fresh apples (0808.10) after Notification No. 53/2023 (Customs); since May 2023 DGFT allows apple imports only at a CIF value above ₹50/kg. Pears: check the CBIC schedule."
+        },
+        "0809": {
+          "exportsUsd": 3544528,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0810": {
+          "exportsUsd": 817556,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0811": {
+          "exportsUsd": 429374,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0812": {
+          "exportsUsd": 0,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0813": {
+          "exportsUsd": 1305963,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        },
+        "0814": {
+          "exportsUsd": 15637,
+          "rate": "India's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff 2026; no U.S. trade agreement. Fresh fruit generally pays 30% or more; check the CBIC schedule for the line."
+        }
+      },
+      "profile": {
+        "headline": "India is the second-largest buyer, and almost all of it is almonds, which pay a per-kilo duty rather than a percentage. India dropped its 2019 retaliatory duties on U.S. almonds, walnuts and apples in September 2023; the February 2026 framework promises cuts on tree nuts and fruit, but no schedule is published.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Apples, pears & quinces (0808)",
+        "tariffNow": "₹35–100/kg on almonds; 50% on apples",
+        "regulator": {
+          "name": "Directorate of Plant Protection, Quarantine & Storage (PPQS) and FSSAI",
+          "url": "https://ppqs.gov.in/",
+          "requirement": "An import permit under India's Plant Quarantine (Regulation of Import into India) Order, 2003 and a USDA phytosanitary certificate; FSSAI clears food at the port."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 1397835537,
+      "priorExportsUsd": 1371519551,
+      "sharePct": 7.8,
+      "changePct": 1.9,
+      "status": "unchanged",
+      "cells": {
+        "0801": {
+          "exportsUsd": 2569947,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0802": {
+          "exportsUsd": 264332208,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0803": {
+          "exportsUsd": 169122,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0804": {
+          "exportsUsd": 53246041,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0805": {
+          "exportsUsd": 110676940,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0806": {
+          "exportsUsd": 203873583,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0807": {
+          "exportsUsd": 13814966,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0808": {
+          "exportsUsd": 470465942,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0809": {
+          "exportsUsd": 87554367,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0810": {
+          "exportsUsd": 119608452,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0811": {
+          "exportsUsd": 30290739,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0812": {
+          "exportsUsd": 3008968,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0813": {
+          "exportsUsd": 38207062,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        },
+        "0814": {
+          "exportsUsd": 17200,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule; Mexico's TIGIE, 2026: qualifying U.S. fruit and nuts enter duty-free. Mexico's normal tariff applies only to goods that do not qualify."
+        }
+      },
+      "profile": {
+        "headline": "Mexico buys apples, pecans and other nuts, grapes and citrus, all duty-free under USMCA. Its higher general tariffs from January 2026 apply to countries without a trade agreement, not to U.S. goods that qualify.",
+        "mainProducts": "Apples, pears & quinces (0808) · Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Agri-Food Health, Safety and Quality Service)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "SENASICA sets phytosanitary import requirements for each fruit and origin; most fresh fruit needs a USDA phytosanitary certificate and an inspection at the border."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam's customs tariff (no U.S. trade agreement), with the MFN cuts of March 31, 2025",
+      "usTradeAgreement": null,
+      "exportsUsd": 833381497,
+      "priorExportsUsd": 525599623,
+      "sharePct": 4.6,
+      "changePct": 58.6,
+      "status": "lowered",
+      "cells": {
+        "0801": {
+          "exportsUsd": 1594689,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0802": {
+          "exportsUsd": 731322451,
+          "rate": "5% on shelled almonds and in-shell pistachios",
+          "normalRate": null,
+          "basis": "Decree 73/2025/ND-CP (in force Mar 31, 2025) cut shelled almonds (0802.12.90) from 10% to 5% and in-shell pistachios (0802.51) from 15% to 5% (USDA GAIN VM2025-0014). Other nuts: Decree 26/2023 schedule."
+        },
+        "0803": {
+          "exportsUsd": 0,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0804": {
+          "exportsUsd": 64578,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0805": {
+          "exportsUsd": 1403195,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0806": {
+          "exportsUsd": 23640058,
+          "rate": "Raisins 5%; fresh grapes 8%",
+          "normalRate": null,
+          "basis": "Decree 73/2025/ND-CP cut raisins (0806.20) from 12% to 5%; fresh grapes (0806.10) stay at 8% (Decree 26/2023 schedule)."
+        },
+        "0807": {
+          "exportsUsd": 0,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0808": {
+          "exportsUsd": 52947954,
+          "rate": "5% on apples",
+          "normalRate": null,
+          "basis": "Decree 73/2025/ND-CP cut fresh apples (0808.10) from 8% to 5%. Pears: Decree 26/2023 schedule."
+        },
+        "0809": {
+          "exportsUsd": 19912597,
+          "rate": "5% on cherries",
+          "normalRate": null,
+          "basis": "Decree 73/2025/ND-CP cut sweet cherries from 10% to 5%. Other stone fruit: Decree 26/2023 schedule."
+        },
+        "0810": {
+          "exportsUsd": 1597657,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0811": {
+          "exportsUsd": 408424,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0812": {
+          "exportsUsd": 0,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0813": {
+          "exportsUsd": 489894,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        },
+        "0814": {
+          "exportsUsd": 0,
+          "rate": "Viet Nam's normal tariff (not individually verified)",
+          "normalRate": null,
+          "basis": "Viet Nam's preferential (MFN) import tariff, Decree 26/2023/ND-CP as amended; no U.S. trade agreement. Check the decree schedule for the line."
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam is the fastest-growing buyer, up 59% in 2025, mostly of in-shell pistachios and almonds. Its March 2025 decree cut tariffs on shelled almonds, in-shell pistachios, apples, cherries and raisins to 5%, and the October 2025 U.S.–Viet Nam framework promises preferential access for substantially all U.S. farm goods, with no rates published yet.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Apples, pears & quinces (0808)",
+        "tariffNow": "5% on almonds, pistachios, apples, cherries",
+        "regulator": {
+          "name": "Plant Protection Department, Ministry of Agriculture and Environment",
+          "url": "https://www.ppd.gov.vn/",
+          "requirement": "A plant-quarantine import permit and a USDA phytosanitary certificate; fresh fruit can be shipped only once Viet Nam has opened it to U.S. supply after a pest risk analysis."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS tariff elimination (Korea's schedule)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 741376854,
+      "priorExportsUsd": 700709293,
+      "sharePct": 4.1,
+      "changePct": 5.8,
+      "status": "unchanged",
+      "cells": {
+        "0801": {
+          "exportsUsd": 48506,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0802": {
+          "exportsUsd": 322903176,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea’s schedule: almonds and pistachios duty-free from 2012, walnuts phased to zero."
+        },
+        "0803": {
+          "exportsUsd": 110400,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0804": {
+          "exportsUsd": 1049617,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0805": {
+          "exportsUsd": 227884176,
+          "rate": "Free Mar–Aug; Sep–Feb free within 3,782 t quota, 50% above",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea’s schedule: oranges free March–August; September–February a duty-free U.S. quota (3,782 t in 2026, growing 3% a year) and 50% above it. Other citrus: confirm the line."
+        },
+        "0806": {
+          "exportsUsd": 18394386,
+          "rate": "About 5% May 1–Oct 15 (free from 2028); free rest of year",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea’s schedule: in-season table grapes (May 1–October 15) phase from 45% to zero over 17 years from 2012; out-of-season grapes and raisins are duty-free."
+        },
+        "0807": {
+          "exportsUsd": 11083443,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0808": {
+          "exportsUsd": 130516,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0809": {
+          "exportsUsd": 88756683,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea’s schedule: fresh cherries duty-free since 2012."
+        },
+        "0810": {
+          "exportsUsd": 15155365,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0811": {
+          "exportsUsd": 45706518,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0812": {
+          "exportsUsd": 0,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0813": {
+          "exportsUsd": 10154068,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        },
+        "0814": {
+          "exportsUsd": 0,
+          "rate": "Free on most lines (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Annex 2-B, Korea's schedule: staged tariff elimination from March 15, 2012; most fruit and nut lines are now duty-free. Confirm the national line."
+        }
+      },
+      "profile": {
+        "headline": "Korea buys almonds, oranges and cherries. Nearly everything is duty-free under KORUS; the exceptions are oranges shipped September–February above the duty-free quota (50%) and table grapes in May–October, whose tariff ends in 2028.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Citrus fruit (0805)",
+        "tariffNow": "Free on most goods (KORUS); oranges quota-limited Sep–Feb",
+        "regulator": {
+          "name": "Animal and Plant Quarantine Agency (APQA) and Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://www.qia.go.kr/eng/",
+          "requirement": "Plant-quarantine inspection by APQA under an approved import protocol for each fresh fruit, a USDA phytosanitary certificate, and an MFDS food-safety import inspection."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "U.S.–Japan Trade Agreement tariff schedule (Japan’s tariff otherwise)",
+      "usTradeAgreement": null,
+      "exportsUsd": 735353401,
+      "priorExportsUsd": 627602979,
+      "sharePct": 4.1,
+      "changePct": 17.2,
+      "status": "lowered",
+      "cells": {
+        "0801": {
+          "exportsUsd": 140422,
+          "rate": "Free on cashews and Brazil nuts; coconuts 3%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): cashews free (WTO rate); Brazil nuts and coconuts 3% (WTO rate), no U.S. preference."
+        },
+        "0802": {
+          "exportsUsd": 409282542,
+          "rate": "Free (in-shell walnuts 10%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): almonds, shelled walnuts, hazelnuts (shelled), macadamias (shelled) and pistachios free; in-shell walnuts 10% (no U.S. preference); pecans and other nuts 12% or free depending on the line."
+        },
+        "0803": {
+          "exportsUsd": 0,
+          "rate": "20–25% seasonal (no U.S. cut)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): fresh bananas 20% or 25% by season (WTO rate); no U.S. preference."
+        },
+        "0804": {
+          "exportsUsd": 3325457,
+          "rate": "Avocados 3%; pineapples 7.2–17%; dates, figs, mangoes free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): avocados 3% and pineapples 7.2–17% (WTO rates); figs and mangoes free under the U.S. agreement; dates free."
+        },
+        "0805": {
+          "exportsUsd": 125172570,
+          "rate": "Oranges and lemons free; grapefruit 10%; mandarins 17%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): oranges free under the U.S. agreement since April 2025; lemons free; grapefruit 10% and mandarins 17% (WTO rates, no U.S. preference)."
+        },
+        "0806": {
+          "exportsUsd": 71242313,
+          "rate": "Fresh grapes 7.8–17% (seasonal); raisins 1.2%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): fresh grapes 17% (March–October) or 7.8% (November–February) and raisins 1.2% (WTO rates); no U.S. preference."
+        },
+        "0807": {
+          "exportsUsd": 3109689,
+          "rate": "Melons 6%; papayas free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): melons and watermelons 6% (WTO rate); papayas free under the U.S. agreement."
+        },
+        "0808": {
+          "exportsUsd": 143059,
+          "rate": "Apples 2.5% (free from April 2028); pears 4.8%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): fresh apples 2.5% for April 2026–March 2027 under the U.S. agreement (from 17%), free from April 2028; pears 4.8% (WTO rate)."
+        },
+        "0809": {
+          "exportsUsd": 39861254,
+          "rate": "Cherries and peaches free; plums and apricots 6%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): sweet cherries and peaches free under the U.S. agreement; sour cherries 8.5%, apricots and plums 6% (WTO rates)."
+        },
+        "0810": {
+          "exportsUsd": 34877989,
+          "rate": "Strawberries 6%; berries and kiwifruit free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): raspberries, blackberries, cranberries, blueberries and kiwifruit free under the U.S. agreement; strawberries 6% (WTO rate)."
+        },
+        "0811": {
+          "exportsUsd": 16053047,
+          "rate": "Frozen strawberries and berries free; some lines 6–24%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): frozen strawberries and frozen berries free under the U.S. agreement; other frozen fruit 6–23.8% (WTO rates) unless the line is marked free for the U.S."
+        },
+        "0812": {
+          "exportsUsd": 0,
+          "rate": "Not individually verified — see Japan’s schedule",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column). A small group; check the national line."
+        },
+        "0813": {
+          "exportsUsd": 31300530,
+          "rate": "Prunes and dried apples free; dried apricots 9%",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): prunes, dried apples and most other dried fruit free under the U.S. agreement; dried apricots 9% (WTO rate)."
+        },
+        "0814": {
+          "exportsUsd": 844529,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule, April 1, 2026 (JP–US Trade Agreement column): citrus peel free under the U.S. agreement."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys almonds, walnuts, oranges, grapes and cherries. Most nuts, oranges, lemons and cherries are duty-free under the U.S.–Japan Trade Agreement; fresh grapes (7.8–17%) and grapefruit (10%) got no cut, and the apple tariff ends in April 2028.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Citrus fruit (0805)",
+        "tariffNow": "Free on most nuts, oranges, cherries; grapes 7.8–17%",
+        "regulator": {
+          "name": "MAFF Plant Protection Station and MHLW quarantine stations",
+          "url": "https://www.maff.go.jp/pps/j/introduction/english.html",
+          "requirement": "Plant-quarantine inspection on arrival with a USDA phytosanitary certificate; some fruit enter only under an approved treatment or production protocol. The importer files a food import notification with MHLW."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC common external tariff (5% on most goods; fresh fruit exempt)",
+      "usTradeAgreement": null,
+      "exportsUsd": 682209848,
+      "priorExportsUsd": 594373309,
+      "sharePct": 3.8,
+      "changePct": 14.8,
+      "status": "unchanged",
+      "cells": {
+        "0801": {
+          "exportsUsd": 94384,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        },
+        "0802": {
+          "exportsUsd": 641981391,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        },
+        "0803": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0804": {
+          "exportsUsd": 3048044,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0805": {
+          "exportsUsd": 105452,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0806": {
+          "exportsUsd": 1358004,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0807": {
+          "exportsUsd": 62174,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0808": {
+          "exportsUsd": 13879007,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0809": {
+          "exportsUsd": 1495379,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0810": {
+          "exportsUsd": 19597306,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "GCC common external tariff: fresh fruit is exempt (0%). Not re-verified against the UAE schedule for each line."
+        },
+        "0811": {
+          "exportsUsd": 229769,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        },
+        "0812": {
+          "exportsUsd": 39864,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        },
+        "0813": {
+          "exportsUsd": 319074,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        },
+        "0814": {
+          "exportsUsd": 0,
+          "rate": "5% (GCC tariff)",
+          "normalRate": null,
+          "basis": "GCC common external tariff, 5% on most goods, including nuts and dried or frozen fruit. Not re-verified against the UAE schedule for each line."
+        }
+      },
+      "profile": {
+        "headline": "The UAE buys almost only nuts, through Dubai’s regional trading hub. It charges the GCC common tariff of 5% on nuts and nothing on fresh fruit, and has taken no tariff action on U.S. goods since 2025.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Other fresh fruit (berries, kiwifruit, tropical fruit) (0810)",
+        "tariffNow": "Free on fresh fruit; 5% on nuts",
+        "regulator": {
+          "name": "Ministry of Climate Change and Environment (MOCCAE)",
+          "url": "https://www.moccae.gov.ae/",
+          "requirement": "An import permit and a USDA phytosanitary certificate for fresh fruit and raw nuts; food is also registered and inspected by the emirate’s food-control authority."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's normal tariff plus its 2018 counter-tariff on U.S. fruit and nuts and its 2025 extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 162084067,
+      "priorExportsUsd": 950477662,
+      "sharePct": 0.9,
+      "changePct": -82.9,
+      "status": "raised",
+      "cells": {
+        "0801": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0802": {
+          "exportsUsd": 109229891,
+          "rate": "Normal rate (5–25%) + 15% (2018) + 10%; e.g. raw almonds about 35%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate 10% almonds, 25% in-shell / 20% shelled walnuts, 5% pistachios, 7% pecans), plus the 15% it has charged on U.S. fruit and nuts since April 2, 2018 (answering the U.S. Section 232 tariffs; WTO DS558), plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025)."
+        },
+        "0803": {
+          "exportsUsd": 84084,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0804": {
+          "exportsUsd": 34660,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0805": {
+          "exportsUsd": 10559361,
+          "rate": "Normal rate (about 10–13%) + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate about 10% on apples and cherries, 11–13% on citrus and grapes), plus the 15% 2018 counter-tariff on U.S. fruit, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0806": {
+          "exportsUsd": 5145334,
+          "rate": "Normal rate (about 10–13%) + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate about 10% on apples and cherries, 11–13% on citrus and grapes), plus the 15% 2018 counter-tariff on U.S. fruit, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0807": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0808": {
+          "exportsUsd": 11256660,
+          "rate": "Normal rate (about 10–13%) + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate about 10% on apples and cherries, 11–13% on citrus and grapes), plus the 15% 2018 counter-tariff on U.S. fruit, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0809": {
+          "exportsUsd": 18103703,
+          "rate": "Normal rate (about 10–13%) + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate about 10% on apples and cherries, 11–13% on citrus and grapes), plus the 15% 2018 counter-tariff on U.S. fruit, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0810": {
+          "exportsUsd": 75249,
+          "rate": "Normal rate (about 10–13%) + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 (normal rate about 10% on apples and cherries, 11–13% on citrus and grapes), plus the 15% 2018 counter-tariff on U.S. fruit, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025). Verify the national line."
+        },
+        "0811": {
+          "exportsUsd": 989696,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0812": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        },
+        "0813": {
+          "exportsUsd": 6494718,
+          "rate": "Normal rate + 15% (2018) + 10%",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026, plus the 15% 2018 counter-tariff on U.S. dried fruit such as prunes and dried apricots, plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025)."
+        },
+        "0814": {
+          "exportsUsd": 110711,
+          "rate": "Normal rate + 10% (2018 duties on some lines; not individually verified)",
+          "normalRate": "Adds China's 2018–19 counter-tariffs (25% or more) when the buyer holds no exclusion",
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcements No. 7 and No. 10 of 2025); a small group, check the national line and whether it carries the 2018 counter-tariffs."
+        }
+      },
+      "profile": {
+        "headline": "China bought $950 million of Chapter 08 goods in 2024 and only $162 million in 2025. Raw almonds now pay about 35% and in-shell walnuts about 50%, while Australian almonds enter duty-free under Australia’s free-trade agreement with China and have taken most of the market.",
+        "mainProducts": "Other nuts (almonds, hazelnuts, walnuts, pistachios, pecans…) (0802) · Apricots, cherries, peaches, plums (0809)",
+        "tariffNow": "Normal rate + 15% (2018) + 10% on all U.S. goods",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "Plants making nuts or dried fruit must be registered with GACC under Decree No. 280; fresh fruit is admitted only under an APHIS–GACC protocol, from registered orchards and packing houses."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "0802",
+      "exportsUsd": 3514759079,
+      "rate": "Free within the 500,000 t U.S. tree-nut quota"
+    },
+    {
+      "market": "India",
+      "heading": "0802",
+      "exportsUsd": 1446036091,
+      "rate": "₹35/kg in-shell almonds, ₹100/kg shelled; walnuts in shell 100%"
+    },
+    {
+      "market": "Canada",
+      "heading": "0810",
+      "exportsUsd": 1312124553,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Viet Nam",
+      "heading": "0802",
+      "exportsUsd": 731322451,
+      "rate": "5% on shelled almonds and in-shell pistachios"
+    },
+    {
+      "market": "United Arab Emirates",
+      "heading": "0802",
+      "exportsUsd": 641981391,
+      "rate": "5% (GCC tariff)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0803",
+      "exportsUsd": 558360295,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0802",
+      "exportsUsd": 494099256,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "0808",
+      "exportsUsd": 470465942,
+      "rate": "Free (USMCA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are each market's 2026 schedule: Canada's and Mexico's USMCA schedules, Korea's KORUS schedule, Japan's Tariff Schedule of April 1, 2026, the EU Common Customs Tariff with Regulation (EU) 2026/1455, Viet Nam's Decree 26/2023 as amended by Decree 73/2025, India's customs tariff, and the GCC common tariff for the UAE.",
+    "Each cell names the products that carry most of the trade in that group (for nuts: almonds, pistachios, walnuts); other lines in the same heading can pay a different rate. Cells marked \"not individually verified\" are small groups where the rate was not checked line by line.",
+    "Trade-agreement rates apply only to goods that meet the agreement’s rules of origin; the EU’s 2026 U.S. preferences need proof of U.S. origin. Quota rates apply only while the quota lasts.",
+    "China's cells add its 15% 2018 counter-tariff and its extra 10% on all U.S. goods to its normal rate. Its 2018–19 counter-tariffs answering U.S. Section 301 (25% or more on fruit and nuts) are waived only for buyers holding an exclusion, valid until December 31, 2026; they are not included in the cells.",
+    "National 8–10-digit tariff lines can set a different rate than the six-digit subheading. Check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 08, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-a2m-2026",
+      "publisher": "European Commission (Access2Markets)",
+      "citation": "Access2Markets, Aug 2026",
+      "document": "News item",
+      "title": "New EU tariff duties on imports of goods from the United States applicable from 1 July 2026",
+      "signed": null,
+      "published": "2026-08-11",
+      "url": "https://trade.ec.europa.eu/access-to-markets/en/news/new-eu-tariff-duties-imports-goods-united-states-applicable-1-july-2026"
+    },
+    {
+      "id": "usmca-text",
+      "publisher": "USTR",
+      "citation": "USMCA text",
+      "document": "Agreement between the United States of America, the United Mexican States, and Canada",
+      "title": "USMCA, Chapter 2 and Annex 2-B tariff schedules",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement/agreement-between"
+    },
+    {
+      "id": "korus-text",
+      "publisher": "USTR",
+      "citation": "KORUS FTA final text",
+      "document": "U.S.–Korea Free Trade Agreement, Annex 2-B (Korea tariff schedule)",
+      "title": "KORUS FTA final text",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/korus-fta/final-text"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, Apr 1, 2026, Chapter 8",
+      "document": "Japan's Tariff Schedule (Statistical Code for Import), Chapter 8",
+      "title": "Chapter 8: Edible fruit and nuts; peel of citrus fruit or melons (WTO and JP-US Trade Agreement columns)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_08.htm"
+    },
+    {
+      "id": "in-notif-53-2023",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2023-0066",
+      "document": "GAIN report summarizing India Customs Notification No. 53/2023",
+      "title": "India Cuts Retaliatory Tariffs on US Almonds, Apples, Walnuts, Chickpeas, Lentils",
+      "signed": null,
+      "published": "2023-09-12",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Success+Story+-+India+Cuts+Retaliatory+Tariffs+on+US+Almonds-Apples-Walnuts-Chickpeas-Lentils_New+Delhi_India_IN2023-0066"
+    },
+    {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "United States-India Joint Statement, Feb. 6, 2026",
+      "document": "United States-India Joint Statement",
+      "title": "United States-India Joint Statement on a framework for an Interim Agreement on reciprocal and mutually beneficial trade",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    },
+    {
+      "id": "vn-decree-73",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN VM2025-0014",
+      "document": "GAIN report summarizing Viet Nam Decree 73/2025/ND-CP (Mar 31, 2025)",
+      "title": "Vietnam Eliminates and Reduces MFN Import Tariff Rates on Select Agricultural Products",
+      "signed": "2025-03-31",
+      "published": "2025-04-03",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Vietnam+Eliminates+and+Reduces+MFN+Import+Tariff+Rates+on+Select+Agricultural+Products_Hanoi_Vietnam_VM2025-0014"
+    },
+    {
+      "id": "vn-framework-2025",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Oct 26, 2025",
+      "document": "Joint Statement",
+      "title": "Joint Statement on a United States–Viet Nam Framework for an Agreement on Reciprocal, Fair, and Balanced Trade",
+      "signed": null,
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/briefings-statements/2025/10/joint-statement-on-united-states-vietnam-framework-for-an-agreement-on-reciprocal-fair-and-balanced-trade/"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-24-suspend",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 10 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued for one year from November 10, 2025; 10% kept)",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
+    },
+    {
+      "id": "wto-ds558",
+      "publisher": "World Trade Organization",
+      "citation": "WTO DS558",
+      "document": "Dispute DS558 (panel report circulated Aug 16, 2023; under appeal)",
+      "title": "China — Additional Duties on Certain Products from the United States",
+      "signed": null,
+      "published": "2023-08-16",
+      "url": "https://www.wto.org/english/tratop_e/dispu_e/cases_e/ds558_e.htm"
+    },
+    {
+      "id": "cn-2018-list1",
+      "publisher": "State Council Tariff Commission (PRC), reproduced by Hong Kong Trade and Industry Department",
+      "citation": "Tariff Commission Announcement No. 5 of 2018",
+      "document": "Announcement and Annex 1 (545 items, 25% from July 6, 2018)",
+      "title": "国务院关税税则委员会关于对原产于美国500亿美元进口商品加征关税的公告",
+      "signed": null,
+      "published": "2018-06-16",
+      "url": "https://www.tid.gov.hk/en/our_work/trade_relations/americas/us/files/ci2018583a.pdf"
+    },
+    {
+      "id": "wh-china-deal-2025",
+      "publisher": "The White House",
+      "citation": "Fact Sheet, Nov 1, 2025",
+      "document": "Fact sheet",
+      "title": "Fact Sheet: President Donald J. Trump Strikes Deal on Economic and Trade Relations with China",
+      "signed": null,
+      "published": "2025-11-01",
+      "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+    },
+    {
+      "id": "cn-almond-2026",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2026-0096",
+      "document": "GAIN report",
+      "title": "China: Almond Market Update 2026",
+      "signed": null,
+      "published": "2026-07-29",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Almond+Market+Update+2026_Shanghai+ATO_China+-+People%27s+Republic+of_CH2026-0096.pdf"
+    },
+    {
+      "id": "ca-2025-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Mar 2025",
+      "document": "Notice",
+      "title": "List of products from the United States subject to 25 per cent tariffs effective March 4, 2025",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://www.canada.ca/en/department-finance/news/2025/03/list-of-products-from-the-united-states-subject-to-25-per-cent-tariffs-effective-march-4-2025.html"
+    },
+    {
+      "id": "ca-2026-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Aug 2026",
+      "document": "Notice",
+      "title": "List of products from the United States subject to counter-tariffs effective September 8, 2026",
+      "signed": null,
+      "published": "2026-08-26",
+      "url": "https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html"
+    }
+  ],
+  "coverageNote": "The 8 largest markets take 76% of 2025 U.S. Chapter 08 exports; China (0.9%) is added because it is the one market charging U.S. goods an extra duty. A customs union (the EU) is one market: its members share one tariff."
+}

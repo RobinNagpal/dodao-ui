@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 4,
+    "padded": "04",
+    "slug": "4-dairy-eggs-honey",
+    "title": "Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/4-dairy-eggs-honey/faq",
+    "h1": "HTS Chapter 04: Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Dairy Export FAQ: Tariffs, Top Buyers, HS Codes, Certificates",
+      "shortDescription": "Short answers on exporting U.S. dairy: does Canada have a 250% tariff, its 2026 counter-tariffs, China's whey rate, top buyers, HS codes and USDA certificates.",
+      "keywords": [
+        "does canada have a 250 tariff on us dairy",
+        "canada tariff on us dairy",
+        "us dairy exports to canada",
+        "us dairy exports by country",
+        "usmca dairy quota",
+        "hs code for cheese",
+        "usda dairy export certificate",
+        "eu tariffs on us cheese"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Common questions about exporting U.S. dairy, eggs and honey, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $7.87 billion of dairy, eggs and honey in 2025; Mexico took a third, and cheese, milk powder and whey made up 77%.",
+    "Canada charges nothing within its CUSMA quotas but 201.5–313.5% above them, plus 25% on cheese and 50% on milk powder, whey and honey since September 8, 2026; China adds 35–40 points to its normal rate.",
+    "To export you need a Schedule B number, an AMS dairy sanitary certificate, an FDA-listed plant for China, the EU, Chile, India and the UK, and an AES filing; no export licence."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"us dairy exports\", \"canada tariff on us dairy\", \"does canada tariff us dairy\", \"canada tariffs on us cheese\", \"canada counter tariffs list\", \"dairy tariffs\", \"usmca dairy\", \"eu tariff on us cheese\", \"hs code for cheese\", \"hs code for milk powder\", \"hs code whey\", \"dairy export certificate\" and \"export license dairy\".",
+  "faqs": [
+    {
+      "id": "canada-250",
+      "question": "Does Canada have a 250% tariff on U.S. dairy?",
+      "answer": "Only above its quotas. U.S. dairy enters Canada duty-free within the CUSMA tariff-rate quotas; above them Canada charges 201.5% to 313.5%, including 245.5% on cheese and 298.5% on butter. Since September 8, 2026 Canada also adds a 25% surtax on U.S. cheese and 50% on milk powder, whey and honey, inside or outside the quotas.",
+      "link": "exports/markets",
+      "searchedAs": ["does canada have a 250 tariff on us dairy", "canada tariff on us dairy", "does canada tariff us milk", "canada dairy tariff rate quota"]
+    },
+    {
+      "id": "canada-counter-tariffs",
+      "question": "Did Canada put counter-tariffs on U.S. cheese and dairy?",
+      "answer": "Yes. Canada's counter-tariffs in force since September 8, 2026, answering the U.S. Section 338 tariffs, charge 25% on all U.S. cheese and 50% on U.S. milk powder, whey (whey protein concentrate included) and honey. Fluid milk, cream, yogurt, butter and eggs are not on the list. Canada's March 2025 counter-tariffs also covered over-quota dairy and egg lines, whey and honey, but were removed on September 1, 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": [
+        "canada tariffs on us cheese",
+        "canadian tariffs on american cheese",
+        "canada counter tariffs list",
+        "canada 50 tariff list",
+        "canada honey tariff"
+      ]
+    },
+    {
+      "id": "exports-canada",
+      "question": "How much dairy does the U.S. export to Canada?",
+      "answer": "The U.S. exported $895 million of Chapter 04 goods (dairy, eggs and honey) to Canada in 2025, up 26.1% from $710 million in 2024. Eggs ($300 million) and butter ($228 million) led, ahead of cheese ($155 million) and whey ($99 million). From January to August 2026 sales were 21.8% lower than a year earlier.",
+      "link": "exports",
+      "searchedAs": ["us dairy exports to canada", "us dairy exports to canada by year", "us dairy exports to canada 2024", "dairy exports to canada"]
+    },
+    {
+      "id": "how-much",
+      "question": "How much dairy does the U.S. export?",
+      "answer": "The U.S. exported $7.87 billion of Chapter 04 goods in 2025, up 16.4% from 2024. Cheese was 38% ($3.00 billion), milk powder 27% ($2.11 billion) and whey 12% ($929 million); eggs added $744 million, butter $596 million and honey $25 million. Exports were up 9.5% in January–August 2026.",
+      "link": "exports",
+      "searchedAs": ["us dairy exports", "us dairy exports 2025", "us cheese exports", "dairy exports 2025"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. dairy?",
+      "answer": "Mexico took 32.6% of U.S. Chapter 04 exports in 2025 ($2.57 billion), followed by Canada (11.4%), South Korea (5.8%), Japan (4.6%) and the Philippines (4.4%). Mexico buys mostly skim milk powder and cheese; Korea, Japan and Australia mostly cheese; China mostly whey.",
+      "link": "exports",
+      "searchedAs": ["us dairy exports by country", "us cheese exports by country", "dairy exports by country"]
+    },
+    {
+      "id": "mexico",
+      "question": "Does Mexico charge a tariff on U.S. dairy?",
+      "answer": "No. U.S. dairy that qualifies under USMCA enters Mexico duty-free, against normal rates of up to 45% on milk powder and cheese for goods that don't qualify. Mexico bought $2.57 billion in 2025, mostly skim milk powder ($1.08 billion) and cheese ($966 million), and has put no counter-tariff on U.S. goods. Each shipment needs a SENASICA zoosanitary import certificate.",
+      "link": "exports/markets",
+      "searchedAs": ["us dairy exports to mexico"]
+    },
+    {
+      "id": "china",
+      "question": "What tariff does China charge on U.S. dairy?",
+      "answer": "China adds 35–40 points to its normal rate: its 2018–19 counter-tariffs (25–30%) and an extra 10% on all U.S. goods. Whey pays 37% (12% for a buyer holding an exclusion), milk powder 45% (skim milk powder 20% with an exclusion), cheese 45.5% and honey 55%. Its separate 10% on U.S. dairy was lifted on November 10, 2025.",
+      "link": "exports/markets",
+      "searchedAs": ["dairy tariffs china", "china dairy tariffs", "us dairy exports to china"]
+    },
+    {
+      "id": "eu-cheese",
+      "question": "Does the EU charge tariffs on U.S. cheese?",
+      "answer": "Since July 1, 2026 the EU lets 10,000 t a year of U.S. cheese in at 0% (cheddar, fresh, grated, processed and blue cheese and cheese for processing), plus 10,000 t of milk, cream, yogurt and other dairy. Above those quotas the EU's normal duties apply, and milk powder, whey and natural butter get no quota.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["eu tariffs on us cheese", "eu dairy tariffs", "us dairy exports to eu"]
+    },
+    {
+      "id": "usmca-quota",
+      "question": "How do the USMCA dairy quotas work, and what was the dispute?",
+      "answer": "USMCA gave the U.S. dairy, butter and egg quotas in Canada; within them U.S. goods pay nothing, but the allocations go to Canadian importers. The U.S. won a 2021 USMCA panel against the share Canada set aside for its processors and lost the second case, on Canada's revised method, in November 2023. Canadian processors that use U.S. dairy can also claim back the 2026 surtax until June 30, 2027.",
+      "link": "exports/rules",
+      "searchedAs": ["usmca dairy quota", "usmca dairy dispute", "usmca dairy tariffs", "usmca dairy canada"]
+    },
+    {
+      "id": "hs-codes",
+      "question": "What is the HS code (Schedule B number) for cheese, milk powder and whey?",
+      "answer": "Cheese is heading 0406: 0406.90 for cheddar and other cheese, 0406.10 fresh cheese, 0406.20 grated or powdered, 0406.30 processed. Skim milk powder is 0402.10 and whole milk powder 0402.21; whey is 0404.10. Whey protein concentrates and isolates with more than 80% whey protein are 3502.20, outside Chapter 04.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for cheese",
+        "hs code for milk powder",
+        "hs code for skimmed milk powder",
+        "hs code whey powder",
+        "hs code whey protein concentrate"
+      ]
+    },
+    {
+      "id": "certificate",
+      "question": "How do I get a USDA dairy export certificate?",
+      "answer": "USDA's Agricultural Marketing Service (Dairy Grading Branch) issues dairy sanitary export certificates through its ATLAS system, for products from plants on FDA's Interstate Milk Shippers list, the EU's approved list or AMS's approved-plant list. Allow at least 5 business days; an original certificate costs $104. China, the EU, Chile, India and the UK also require the plant on an FDA export list.",
+      "link": "exports/rules",
+      "searchedAs": ["usda dairy export certificate", "dairy export certificate", "dairy sanitary export certificate"]
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license for dairy products?",
+      "answer": "Usually not. Dairy products, eggs and honey are EAR99, so a Commerce licence is needed only for a restricted destination or end user. You do need a Schedule B number, an AES filing for shipments over $2,500 per Schedule B number, and the buyer's sanitary certificate.",
+      "link": "exports/rules",
+      "searchedAs": ["dairy export license"]
+    }
+  ]
+}

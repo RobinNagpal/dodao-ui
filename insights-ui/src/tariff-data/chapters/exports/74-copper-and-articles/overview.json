@@ -1,0 +1,535 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 74,
+    "padded": "74",
+    "slug": "74-copper-and-articles",
+    "title": "Copper and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/74-copper-and-articles",
+    "h1": "HTS Chapter 74: Copper and Articles Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Copper & Copper Scrap Exports by Country, 2025 (HTS Ch. 74) | KoalaGains",
+      "shortDescription": "U.S. copper exports were $12.61B in 2025, 48% of it copper scrap. Who buys U.S. scrap, cathode and wire, and where China and Canada charge more.",
+      "keywords": [
+        "us copper exports",
+        "us copper scrap exports",
+        "us copper exports by country",
+        "copper scrap exports to china",
+        "us copper exports 2025",
+        "who buys us copper scrap",
+        "HS 74 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$12.61B** of copper and copper products in 2025, up 3.2% from 2024 and almost double 2020's $6.45B. Nearly half (**48%**, $6.01B) was copper scrap (7404): bare bright, No. 1 and No. 2 copper and brass scrap. Next came refined copper (7403, $1.96B, mostly cathode) and copper wire, mostly wire rod (7408, $1.44B). Mexico and Canada took **51%**. The big shift was China: it bought $781M, down 73% from $2.94B, as U.S. scrap went to Japan, Korea, Thailand, India and Belgium instead. Exports are up **30.3%** in 2026 so far: $10.70B from January to August.\n\nTariffs bite in two places. **China** charges **35%** on U.S. copper scrap and cathode unless the Chinese importer holds an exclusion: a 0% normal rate, plus its 25% counter-tariff from 2018–2019, plus the 10% extra duty on all U.S. goods. **Canada** has charged a **50% surtax** on U.S. refined copper wire since September 8, 2026. Elsewhere, scrap enters duty-free in every large market: Mexico, Canada, the EU, Japan, Korea, Thailand and, since February 2025, India; cathode does too everywhere except India (5%). The EU has charged 0% on every U.S. copper product since July 1, 2026. In these markets the buyer's scrap-import rules decide access, not the tariff: China's recycled-copper standards, India's radiation certificates, the EU's waste-shipment documents.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$12.61B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+3.2%"
+    },
+    {
+      "label": "Largest product group (7404)",
+      "value": "48%",
+      "note": "Copper waste & scrap"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "51%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top 12 buyers that raised tariffs",
+      "value": "2 of 12",
+      "note": "Canada (copper wire), China (all goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. copper exports were $12.61B in 2025 (+3.2%) and $10.70B in January–August 2026 (+30.3%). Copper scrap (7404, $6.01B) is half of the total and now goes mainly to Japan, Korea, Thailand, India and the EU, not China.",
+    "China charges 35% on U.S. copper scrap and cathode unless the importer holds an exclusion. The exclusions end December 31, 2026, and the suspension of 24 points of China's extra duty ends January 10, 2027.",
+    "Canada has charged a 50% surtax on U.S. refined copper wire (7408.11, 7408.19) since September 8, 2026, even on wire that qualifies for CUSMA. Canadian manufacturers that use the wire can claim the surtax back.",
+    "Mexico, the largest buyer ($3.96B, mostly cathode and wire rod), charges 0% on qualifying copper under USMCA. Its January 2026 tariff increases left Chapter 74 alone."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 6452753635,
+      "partnerAUsd": 2165257586,
+      "partnerBUsd": 1087285860,
+      "restUsd": 3200210189
+    },
+    {
+      "year": 2021,
+      "totalUsd": 10380039331,
+      "partnerAUsd": 3486279199,
+      "partnerBUsd": 1977042061,
+      "restUsd": 4916718071
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10050035310,
+      "partnerAUsd": 2636388880,
+      "partnerBUsd": 1904155066,
+      "restUsd": 5509491364
+    },
+    {
+      "year": 2023,
+      "totalUsd": 10949330222,
+      "partnerAUsd": 3690910079,
+      "partnerBUsd": 1807504568,
+      "restUsd": 5450915575
+    },
+    {
+      "year": 2024,
+      "totalUsd": 12220473021,
+      "partnerAUsd": 3896375794,
+      "partnerBUsd": 2202006281,
+      "restUsd": 6122090946
+    },
+    {
+      "year": 2025,
+      "totalUsd": 12613260532,
+      "partnerAUsd": 3962455074,
+      "partnerBUsd": 2435362175,
+      "restUsd": 6215443283
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 74 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 10700642866,
+    "priorExportsUsd": 8211210757,
+    "changePct": 30.3,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 2824239339,
+        "priorExportsUsd": 2745348164,
+        "changePct": 2.9
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2216211674,
+        "priorExportsUsd": 1757845949,
+        "changePct": 26.1
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 810060345,
+        "priorExportsUsd": 324695922,
+        "changePct": 149.5
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 806229482,
+        "priorExportsUsd": 425496195,
+        "changePct": 89.5
+      },
+      {
+        "countryCode": 764,
+        "country": "Thailand",
+        "exportsUsd": 772249901,
+        "priorExportsUsd": 363249515,
+        "changePct": 112.6
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 630314497,
+        "priorExportsUsd": 353275684,
+        "changePct": 78.4
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 505697164,
+        "priorExportsUsd": 663068817,
+        "changePct": -23.7
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 377222093,
+        "priorExportsUsd": 323304374,
+        "changePct": 16.7
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 3962455074,
+      "priorExportsUsd": 3896375794,
+      "sharePct": 31.4,
+      "changePct": 1.7,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2435362175,
+      "priorExportsUsd": 2202006281,
+      "sharePct": 19.3,
+      "changePct": 10.6,
+      "tariffNow": "Free (CUSMA) + 50% surtax on refined copper wire",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 843281929,
+      "priorExportsUsd": 204091719,
+      "sharePct": 6.7,
+      "changePct": 313.2,
+      "tariffNow": "Free on scrap and cathode; 3% on most semis",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 780917192,
+      "priorExportsUsd": 2938470223,
+      "sharePct": 6.2,
+      "changePct": -73.4,
+      "tariffNow": "35% on scrap and cathode (0% + 25% + 10%) unless excluded",
+      "status": "raised"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 662796400,
+      "priorExportsUsd": 244596139,
+      "sharePct": 5.3,
+      "changePct": 171,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 764,
+      "country": "Thailand",
+      "exportsUsd": 627483820,
+      "priorExportsUsd": 298494669,
+      "sharePct": 5,
+      "changePct": 110.2,
+      "tariffNow": "Free on scrap and cathode; 3% on wire, sheet and tube",
+      "status": "pending"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 605695875,
+      "priorExportsUsd": 231751454,
+      "sharePct": 4.8,
+      "changePct": 161.4,
+      "tariffNow": "Free on copper and brass scrap; 5–10% on other lines",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 600103003,
+      "priorExportsUsd": 294435644,
+      "sharePct": 4.8,
+      "changePct": 103.8,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 343796503,
+      "priorExportsUsd": 276562636,
+      "sharePct": 2.7,
+      "changePct": 24.3,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 231508695,
+      "priorExportsUsd": 114652806,
+      "sharePct": 1.8,
+      "changePct": 101.9,
+      "tariffNow": "Free on scrap and cathode; up to 5% on other lines",
+      "status": "pending"
+    },
+    {
+      "countryCode": 300,
+      "country": "Greece",
+      "exportsUsd": 167019569,
+      "priorExportsUsd": 30857675,
+      "sharePct": 1.3,
+      "changePct": 441.3,
+      "tariffNow": "Free (EU–U.S. framework since July 1, 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 164409990,
+      "priorExportsUsd": 543876004,
+      "sharePct": 1.3,
+      "changePct": -69.8,
+      "tariffNow": "Free on scrap and cathode",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1188430307,
+  "othersPriorExportsUsd": 944301977,
+  "byHeading": [
+    {
+      "heading": "7401",
+      "label": "Copper mattes & cement copper",
+      "exportsUsd": 1994858,
+      "priorExportsUsd": 1699227,
+      "changePct": 17.4,
+      "sharePct": 0
+    },
+    {
+      "heading": "7402",
+      "label": "Unrefined copper & anodes",
+      "exportsUsd": 444848170,
+      "priorExportsUsd": 456017851,
+      "changePct": -2.4,
+      "sharePct": 3.5
+    },
+    {
+      "heading": "7403",
+      "label": "Refined copper & alloys, unwrought (cathode)",
+      "exportsUsd": 1964640123,
+      "priorExportsUsd": 1864406940,
+      "changePct": 5.4,
+      "sharePct": 15.6
+    },
+    {
+      "heading": "7404",
+      "label": "Copper waste & scrap",
+      "exportsUsd": 6005468120,
+      "priorExportsUsd": 5380562874,
+      "changePct": 11.6,
+      "sharePct": 47.6
+    },
+    {
+      "heading": "7405",
+      "label": "Master alloys of copper",
+      "exportsUsd": 10932424,
+      "priorExportsUsd": 12570871,
+      "changePct": -13,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "7406",
+      "label": "Copper powders & flakes",
+      "exportsUsd": 55380402,
+      "priorExportsUsd": 188544124,
+      "changePct": -70.6,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "7407",
+      "label": "Copper bars, rods & profiles",
+      "exportsUsd": 433246120,
+      "priorExportsUsd": 420491323,
+      "changePct": 3,
+      "sharePct": 3.4
+    },
+    {
+      "heading": "7408",
+      "label": "Copper wire",
+      "exportsUsd": 1441659479,
+      "priorExportsUsd": 1608668001,
+      "changePct": -10.4,
+      "sharePct": 11.4
+    },
+    {
+      "heading": "7409",
+      "label": "Copper plates, sheets & strip",
+      "exportsUsd": 512314350,
+      "priorExportsUsd": 505654622,
+      "changePct": 1.3,
+      "sharePct": 4.1
+    },
+    {
+      "heading": "7410",
+      "label": "Copper foil & copper-clad laminates",
+      "exportsUsd": 177827832,
+      "priorExportsUsd": 271731458,
+      "changePct": -34.6,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "7411",
+      "label": "Copper tubes & pipes",
+      "exportsUsd": 391306538,
+      "priorExportsUsd": 316937728,
+      "changePct": 23.5,
+      "sharePct": 3.1
+    },
+    {
+      "heading": "7412",
+      "label": "Copper tube & pipe fittings",
+      "exportsUsd": 322769536,
+      "priorExportsUsd": 337443764,
+      "changePct": -4.3,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "7413",
+      "label": "Stranded wire, cables & plaited bands",
+      "exportsUsd": 414898137,
+      "priorExportsUsd": 410209440,
+      "changePct": 1.1,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "7415",
+      "label": "Copper nails, screws, bolts & washers",
+      "exportsUsd": 111142119,
+      "priorExportsUsd": 125586974,
+      "changePct": -11.5,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "7418",
+      "label": "Household & sanitary ware of copper",
+      "exportsUsd": 20323679,
+      "priorExportsUsd": 16160163,
+      "changePct": 25.8,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "7419",
+      "label": "Other articles of copper",
+      "exportsUsd": 304508645,
+      "priorExportsUsd": 303787661,
+      "changePct": 0.2,
+      "sharePct": 2.4
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "7404.00",
+      "heading": "7404",
+      "description": "Copper; waste and scrap",
+      "exportsUsd": 6005468120,
+      "priorExportsUsd": 5380562874,
+      "changePct": 11.6,
+      "sharePct": 47.6
+    },
+    {
+      "hs6": "7403.11",
+      "heading": "7403",
+      "description": "Copper; refined, unwrought, cathodes and sections of cathodes",
+      "exportsUsd": 1713894888,
+      "priorExportsUsd": 1586129375,
+      "changePct": 8.1,
+      "sharePct": 13.6
+    },
+    {
+      "hs6": "7408.11",
+      "heading": "7408",
+      "description": "Copper; wire, of refined copper, of which the maximum cross-sectional dimension exceeds 6mm",
+      "exportsUsd": 1175969191,
+      "priorExportsUsd": 1369434274,
+      "changePct": -14.1,
+      "sharePct": 9.3
+    },
+    {
+      "hs6": "7402.00",
+      "heading": "7402",
+      "description": "Copper; unrefined, copper anodes for electrolytic refining",
+      "exportsUsd": 444848170,
+      "priorExportsUsd": 456017851,
+      "changePct": -2.4,
+      "sharePct": 3.5
+    },
+    {
+      "hs6": "7413.00",
+      "heading": "7413",
+      "description": "Copper; stranded wire, cables, plaited bands and the like, not electrically insulated",
+      "exportsUsd": 414898137,
+      "priorExportsUsd": 410209440,
+      "changePct": 1.1,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "7411.10",
+      "heading": "7411",
+      "description": "Copper; tubes and pipes, of refined copper",
+      "exportsUsd": 345970358,
+      "priorExportsUsd": 264084025,
+      "changePct": 31,
+      "sharePct": 2.7
+    },
+    {
+      "hs6": "7419.80",
+      "heading": "7419",
+      "description": "Copper; articles thereof n.e.c. in chapter 74",
+      "exportsUsd": 259117735,
+      "priorExportsUsd": 256941127,
+      "changePct": 0.8,
+      "sharePct": 2.1
+    },
+    {
+      "hs6": "7412.20",
+      "heading": "7412",
+      "description": "Copper; tube or pipe fittings (e.g. couplings, elbows, sleeves) of copper alloys",
+      "exportsUsd": 250995967,
+      "priorExportsUsd": 275681088,
+      "changePct": -9,
+      "sharePct": 2
+    },
+    {
+      "hs6": "7407.29",
+      "heading": "7407",
+      "description": "Copper; bars, rods and profiles, of copper alloys (other than copper-zinc base alloys)",
+      "exportsUsd": 171023951,
+      "priorExportsUsd": 169179440,
+      "changePct": 1.1,
+      "sharePct": 1.4
+    },
+    {
+      "hs6": "7407.10",
+      "heading": "7407",
+      "description": "Copper; bars, rods and profiles, of refined copper",
+      "exportsUsd": 169374120,
+      "priorExportsUsd": 160244429,
+      "changePct": 5.7,
+      "sharePct": 1.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 74, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 91% of 2025 U.S. Chapter 74 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

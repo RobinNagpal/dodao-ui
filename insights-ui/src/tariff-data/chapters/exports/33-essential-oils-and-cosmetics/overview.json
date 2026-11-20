@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 33,
+    "padded": "33",
+    "slug": "33-essential-oils-and-cosmetics",
+    "title": "Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/33-essential-oils-and-cosmetics",
+    "h1": "HTS Chapter 33: Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Cosmetics, Perfume & Essential Oil Exports and Foreign Tariffs (HTS Ch. 33) | KoalaGains",
+      "shortDescription": "U.S. exports of cosmetics, perfumes, toiletries and essential oils were $15.05B in 2025. Who buys them, what sells, and which buyers raised tariffs: Canada (50% on perfume and make-up) and China.",
+      "keywords": [
+        "US cosmetics exports",
+        "tariffs on US cosmetics",
+        "Canada tariff on US cosmetics",
+        "China tariff on US cosmetics",
+        "US perfume exports",
+        "HS 33 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "The U.S. exported **$15.05B** of essential oils, fragrances, cosmetics and toiletries in 2025, 2% less than in 2024. Make-up and skin care (3304) were **39%** of it, fragrance and flavor mixtures (3302), mostly flavor bases sold to food and drink makers, were 19.5%, and perfumes (3303) 14%. Canada alone took **25%** and Mexico 8.7%. In January–August 2026 exports were $10.09B, flat on the same months of 2025.\n\nMost large buyers charge little or nothing: Mexico, Australia, Singapore and Korea are duty-free under U.S. trade agreements, and the EU has charged 0% on almost the whole chapter since July 1, 2026. Two buyers charge more than in January 2025. **Canada** has added a **50% surtax** on U.S. perfume, lip, eye and nail make-up and some hair products since September 8, 2026, even when the goods qualify for CUSMA. **China** adds 10% on all U.S. goods on top of its 2019 counter-tariffs of 20–27.5% on most of the chapter. Beyond tariffs, what decides access is the buyer country's cosmetics notification or registration (EU CPNP, China NMPA, Health Canada), covered on the Markets page.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$15.05B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-2%"
+    },
+    {
+      "label": "Largest product group (3304)",
+      "value": "39%",
+      "note": "Makeup, skin care, sunscreen & nail preparations"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "34%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top 12 buyers that raised tariffs",
+      "value": "2",
+      "note": "Canada, China"
+    }
+  ],
+  "keyTakeaways": [
+    "Canada, the largest buyer at $3.77B, has charged a 50% surtax on U.S. perfume (3303), lip, eye and nail make-up (3304.10–3304.30) and other hair preparations (3305.90) since September 8, 2026; CUSMA origin does not exempt them. Skin care, shampoo, toothpaste, deodorant and flavor bases stay duty-free.",
+    "In China, U.S. perfume, make-up, shampoo, toothpaste and deodorant pay about 38% (3% normal rate + 25% 2019 counter-tariff + 10% extra) unless the importer holds an exclusion; U.S. sales there fell 24% in 2025.",
+    "The EU cut its tariff on almost all U.S. Chapter 33 goods to zero from July 1, 2026, removing 6.5% on deodorants, shaving and bath products and up to 7% on citrus oils; only food and drink flavor bases (3302.10) keep EU duties.",
+    "Two China dates matter: its exclusions from the 2019 counter-tariffs end on December 31, 2026, and its extra tariff could rise from 10% to 34% on January 10, 2027."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 12355330765,
+      "partnerAUsd": 2857253928,
+      "partnerBUsd": 856868867,
+      "restUsd": 8641207970
+    },
+    {
+      "year": 2021,
+      "totalUsd": 13562176546,
+      "partnerAUsd": 3154352553,
+      "partnerBUsd": 965406974,
+      "restUsd": 9442417019
+    },
+    {
+      "year": 2022,
+      "totalUsd": 14249645078,
+      "partnerAUsd": 3471620221,
+      "partnerBUsd": 969663215,
+      "restUsd": 9808361642
+    },
+    {
+      "year": 2023,
+      "totalUsd": 14951439032,
+      "partnerAUsd": 3734362510,
+      "partnerBUsd": 1179862525,
+      "restUsd": 10037213997
+    },
+    {
+      "year": 2024,
+      "totalUsd": 15355579938,
+      "partnerAUsd": 3813046322,
+      "partnerBUsd": 1284753164,
+      "restUsd": 10257780452
+    },
+    {
+      "year": 2025,
+      "totalUsd": 15045699360,
+      "partnerAUsd": 3768058684,
+      "partnerBUsd": 1303204643,
+      "restUsd": 9974436033
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 33 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 10090829384,
+    "priorExportsUsd": 10117543350,
+    "changePct": -0.3,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2537153303,
+        "priorExportsUsd": 2490818229,
+        "changePct": 1.9
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 987491551,
+        "priorExportsUsd": 874236078,
+        "changePct": 13
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 490592592,
+        "priorExportsUsd": 568385436,
+        "changePct": -13.7
+      },
+      {
+        "countryCode": 36,
+        "country": "Australia",
+        "exportsUsd": 424345172,
+        "priorExportsUsd": 424749826,
+        "changePct": -0.1
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 407714852,
+        "priorExportsUsd": 508982721,
+        "changePct": -19.9
+      },
+      {
+        "countryCode": 251,
+        "country": "France",
+        "exportsUsd": 355987098,
+        "priorExportsUsd": 389654668,
+        "changePct": -8.6
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 335087668,
+        "priorExportsUsd": 432612355,
+        "changePct": -22.5
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 267263226,
+        "priorExportsUsd": 296004726,
+        "changePct": -9.7
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3768058684,
+      "priorExportsUsd": 3813046322,
+      "sharePct": 25,
+      "changePct": -1.2,
+      "tariffNow": "Free (CUSMA) + 50% surtax on perfume, lip/eye/nail make-up",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 1303204643,
+      "priorExportsUsd": 1284753164,
+      "sharePct": 8.7,
+      "changePct": 1.4,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 844578610,
+      "priorExportsUsd": 916320812,
+      "sharePct": 5.6,
+      "changePct": -7.8,
+      "tariffNow": "Free; 6% on 3307 toiletries",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 690087213,
+      "priorExportsUsd": 913374968,
+      "sharePct": 4.6,
+      "changePct": -24.4,
+      "tariffNow": "MFN + 10% extra + 2019 counter-tariffs (20–27.5%)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 631490294,
+      "priorExportsUsd": 750251499,
+      "sharePct": 4.2,
+      "changePct": -15.8,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 608462250,
+      "priorExportsUsd": 538735220,
+      "sharePct": 4,
+      "changePct": 12.9,
+      "tariffNow": "Free (EU–US framework) except 3302.10 flavor bases",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 587156651,
+      "priorExportsUsd": 522762224,
+      "sharePct": 3.9,
+      "changePct": 12.3,
+      "tariffNow": "Free (EU–US framework) except 3302.10 flavor bases",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 437820583,
+      "priorExportsUsd": 411265265,
+      "sharePct": 2.9,
+      "changePct": 6.5,
+      "tariffNow": "Free (EU–US framework) except 3302.10 flavor bases",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 384579825,
+      "priorExportsUsd": 392676716,
+      "sharePct": 2.6,
+      "changePct": -2.1,
+      "tariffNow": "5% (Gulf common tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 702,
+      "country": "Singapore",
+      "exportsUsd": 383412516,
+      "priorExportsUsd": 417238864,
+      "sharePct": 2.5,
+      "changePct": -8.1,
+      "tariffNow": "Free (U.S.–Singapore FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 326512015,
+      "priorExportsUsd": 288805724,
+      "sharePct": 2.2,
+      "changePct": 13.1,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 315179127,
+      "priorExportsUsd": 401364033,
+      "sharePct": 2.1,
+      "changePct": -21.5,
+      "tariffNow": "Free; 2.2–4% on some oils and 3307",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 4765156949,
+  "othersPriorExportsUsd": 4704985127,
+  "byHeading": [
+    {
+      "heading": "3301",
+      "label": "Essential oils, resinoids & extracted oleoresins",
+      "exportsUsd": 787030963,
+      "priorExportsUsd": 751828298,
+      "changePct": 4.7,
+      "sharePct": 5.2
+    },
+    {
+      "heading": "3302",
+      "label": "Fragrance & flavor mixtures (incl. beverage flavor bases)",
+      "exportsUsd": 2933171778,
+      "priorExportsUsd": 2819324130,
+      "changePct": 4,
+      "sharePct": 19.5
+    },
+    {
+      "heading": "3303",
+      "label": "Perfumes & toilet waters",
+      "exportsUsd": 2117517178,
+      "priorExportsUsd": 2074686921,
+      "changePct": 2.1,
+      "sharePct": 14.1
+    },
+    {
+      "heading": "3304",
+      "label": "Makeup, skin care, sunscreen & nail preparations",
+      "exportsUsd": 5862289771,
+      "priorExportsUsd": 6193018765,
+      "changePct": -5.3,
+      "sharePct": 39
+    },
+    {
+      "heading": "3305",
+      "label": "Hair preparations (shampoo, perms, hair spray)",
+      "exportsUsd": 1575778582,
+      "priorExportsUsd": 1679029807,
+      "changePct": -6.1,
+      "sharePct": 10.5
+    },
+    {
+      "heading": "3306",
+      "label": "Oral & dental hygiene (toothpaste, floss, mouthwash)",
+      "exportsUsd": 572147159,
+      "priorExportsUsd": 581124572,
+      "changePct": -1.5,
+      "sharePct": 3.8
+    },
+    {
+      "heading": "3307",
+      "label": "Shaving, deodorants, bath, room fragrance & other toiletries",
+      "exportsUsd": 1197763929,
+      "priorExportsUsd": 1256567445,
+      "changePct": -4.7,
+      "sharePct": 8
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "3304.99",
+      "heading": "3304",
+      "description": "Cosmetic and toilet preparations; n.e.c. in heading no. 3304, for the care of the skin (excluding medicaments, including sunscreen or sun tan preparations)",
+      "exportsUsd": 4388437054,
+      "priorExportsUsd": 4714493127,
+      "changePct": -6.9,
+      "sharePct": 29.2
+    },
+    {
+      "hs6": "3303.00",
+      "heading": "3303",
+      "description": "Perfumes and toilet waters",
+      "exportsUsd": 2117517178,
+      "priorExportsUsd": 2074686921,
+      "changePct": 2.1,
+      "sharePct": 14.1
+    },
+    {
+      "hs6": "3302.10",
+      "heading": "3302",
+      "description": "Odoriferous substances and mixtures; of a kind used in the food or drink industries",
+      "exportsUsd": 1982937948,
+      "priorExportsUsd": 1902535040,
+      "changePct": 4.2,
+      "sharePct": 13.2
+    },
+    {
+      "hs6": "3305.90",
+      "heading": "3305",
+      "description": "Hair preparations; n.e.c. in heading no. 3305",
+      "exportsUsd": 990546335,
+      "priorExportsUsd": 1041915936,
+      "changePct": -4.9,
+      "sharePct": 6.6
+    },
+    {
+      "hs6": "3302.90",
+      "heading": "3302",
+      "description": "Odoriferous substances and mixtures; used as raw materials in industries other than the food or drink industries",
+      "exportsUsd": 950233830,
+      "priorExportsUsd": 916789090,
+      "changePct": 3.6,
+      "sharePct": 6.3
+    },
+    {
+      "hs6": "3304.10",
+      "heading": "3304",
+      "description": "Cosmetic and toilet preparations; lip make-up",
+      "exportsUsd": 573294988,
+      "priorExportsUsd": 504575431,
+      "changePct": 13.6,
+      "sharePct": 3.8
+    },
+    {
+      "hs6": "3305.10",
+      "heading": "3305",
+      "description": "Hair preparations; shampoos",
+      "exportsUsd": 491200223,
+      "priorExportsUsd": 540773962,
+      "changePct": -9.2,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "3307.90",
+      "heading": "3307",
+      "description": "Perfumes and deodorizers; perfuming or deodorizing preparations n.e.c. in heading no. 3307",
+      "exportsUsd": 469722293,
+      "priorExportsUsd": 496856616,
+      "changePct": -5.5,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "3304.20",
+      "heading": "3304",
+      "description": "Cosmetic and toilet preparations; eye make-up",
+      "exportsUsd": 395953344,
+      "priorExportsUsd": 422681792,
+      "changePct": -6.3,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "3304.91",
+      "heading": "3304",
+      "description": "Cosmetic and toilet preparations; powders, whether or not compressed (excluding lip, eye, manicure or pedicure preparations)",
+      "exportsUsd": 342083710,
+      "priorExportsUsd": 362007370,
+      "changePct": -5.5,
+      "sharePct": 2.3
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 33, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 68% of 2025 U.S. Chapter 33 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

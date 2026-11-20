@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 48,
+    "padded": "48",
+    "slug": "48-paper-and-paperboard",
+    "title": "Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/48-paper-and-paperboard",
+    "h1": "HTS Chapter 48: Paper and Paperboard; Articles of Paper Pulp, of Paper or of Paperboard — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Paper & Kraft Linerboard Exports by Country (HTS Ch. 48) | KoalaGains",
+      "shortDescription": "U.S. paper and paperboard exports were $14.31B in 2025, down 7.4%; Canada and Mexico buy 67%. Kraftliner, boxes and coated board, and what buyers charge.",
+      "keywords": [
+        "us paper exports",
+        "kraft paper export",
+        "kraft linerboard exports",
+        "us containerboard exports",
+        "paper exports by country",
+        "HS 48 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$14.31B** of paper, paperboard and paper products in 2025, down 7.4% on 2024 and 16% below the 2022 peak ($16.98B). Unbleached kraft linerboard (kraftliner, 4804.11) is the largest single line at **$2.21B**, and kraft paper and board as a group (4804) take **22%** ($3.14B). Boxes, cartons and bags (4819, $2.22B, led by corrugated boxes at $1.31B), plastic-coated and self-adhesive paper (4811, $1.96B), clay-coated paper and board (4810, $1.59B) and fluting and testliner (4805, $1.32B) follow. **Canada ($5.56B) and Mexico ($4.00B) buy 67%** between them; China bought $352M, down 37.6%.\n\nMost of this trade pays no tariff: Mexico, Costa Rica and Guatemala charge nothing on paper that qualifies for their trade agreements, and the EU, the UK, Japan and Canada charge 0% on paper even without one. Two buyers charge more. **Canada** has charged a counter-surtax since September 8, 2026 on 17 paper tariff items, even when they qualify for CUSMA: **50%** on corrugated boxes, paper bags, tissue parent rolls, several coated papers and boards, envelopes, notebooks and paper cups and trays, and **25%** on toilet paper, facial tissue and towels. **China** adds a 10% extra duty to its 2–7.5% rates, its 2018–2019 counter-tariffs apply on top unless the buyer holds an exclusion, and U.S. unbleached sack kraft pays a 14.9% anti-dumping duty. Paper needs no product approval in these markets; the bigger compliance change is the EU deforestation rules, which reach paper from December 30, 2026.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$14.31B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-7.4%"
+    },
+    {
+      "label": "Largest product group (4804)",
+      "value": "22%",
+      "note": "Uncoated kraft paper & paperboard (kraftliner, sack kraft)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "67%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Buyers that raised tariffs",
+      "value": "2",
+      "note": "Canada (surtax on 17 paper lines), China (10% extra)"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. Chapter 48 exports fell 7.4% to $14.31B in 2025 and another 6.8% in January–August 2026 ($9.20B); kraftliner (4804.11, $2.21B) and corrugated boxes (4819.10, $1.31B) are the two largest lines.",
+    "Canada, the largest buyer ($5.56B), charges a 50% surtax on U.S. corrugated boxes, bags, tissue parent rolls and several coated boards and 25% on toilet paper, tissues and towels since September 8, 2026; kraftliner, fluting, folding cartons and uncoated printing paper are not on its list, and buyers that use the goods in manufacturing or to package food or drink can claim the surtax back.",
+    "Mexico ($4.00B) charges nothing on paper that meets the USMCA rule of origin, which paper made in a U.S. mill from pulp meets wherever the pulp came from; since January 1, 2026 non-qualifying boxes, coated board and uncoated printing paper pay 25–35%.",
+    "China charges 15–17.5% on most U.S. paper before its older counter-tariffs, and exports there fell 37.6% to $352M; watch December 31, 2026 (exclusions end), January 10, 2027 (24-point suspension ends) and April 9, 2027 (sack kraft anti-dumping duty expires unless reviewed)."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 13790898966,
+      "partnerAUsd": 4753195722,
+      "partnerBUsd": 3553100772,
+      "restUsd": 5484602472
+    },
+    {
+      "year": 2021,
+      "totalUsd": 15339370243,
+      "partnerAUsd": 5269887494,
+      "partnerBUsd": 4404388221,
+      "restUsd": 5665094528
+    },
+    {
+      "year": 2022,
+      "totalUsd": 16984547171,
+      "partnerAUsd": 6091351512,
+      "partnerBUsd": 4533520601,
+      "restUsd": 6359675058
+    },
+    {
+      "year": 2023,
+      "totalUsd": 14967434283,
+      "partnerAUsd": 5805819664,
+      "partnerBUsd": 4265088924,
+      "restUsd": 4896525695
+    },
+    {
+      "year": 2024,
+      "totalUsd": 15447312909,
+      "partnerAUsd": 5928065315,
+      "partnerBUsd": 4269836908,
+      "restUsd": 5249410686
+    },
+    {
+      "year": 2025,
+      "totalUsd": 14308798231,
+      "partnerAUsd": 5563330474,
+      "partnerBUsd": 4003251562,
+      "restUsd": 4742216195
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 48 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 9199631344,
+    "priorExportsUsd": 9872631614,
+    "changePct": -6.8,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 3745084868,
+        "priorExportsUsd": 3781728801,
+        "changePct": -1
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 2680097247,
+        "priorExportsUsd": 2750656864,
+        "changePct": -2.6
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 221373896,
+        "priorExportsUsd": 234226586,
+        "changePct": -5.5
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 182953100,
+        "priorExportsUsd": 220403382,
+        "changePct": -17
+      },
+      {
+        "countryCode": 188,
+        "country": "Costa Rica",
+        "exportsUsd": 159161183,
+        "priorExportsUsd": 207869489,
+        "changePct": -23.4
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 154209378,
+        "priorExportsUsd": 154690790,
+        "changePct": -0.3
+      },
+      {
+        "countryCode": 320,
+        "country": "Guatemala",
+        "exportsUsd": 153063655,
+        "priorExportsUsd": 166713474,
+        "changePct": -8.2
+      },
+      {
+        "countryCode": 214,
+        "country": "Dominican Rep.",
+        "exportsUsd": 141054394,
+        "priorExportsUsd": 137648586,
+        "changePct": 2.5
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 5563330474,
+      "priorExportsUsd": 5928065315,
+      "sharePct": 38.9,
+      "changePct": -6.2,
+      "tariffNow": "Free (CUSMA) + 25% or 50% surtax on 17 paper lines",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 4003251562,
+      "priorExportsUsd": 4269836908,
+      "sharePct": 28,
+      "changePct": -6.2,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 351876119,
+      "priorExportsUsd": 563993317,
+      "sharePct": 2.5,
+      "changePct": -37.6,
+      "tariffNow": "MFN 2–7.5% + 10% extra on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 314601939,
+      "priorExportsUsd": 347548217,
+      "sharePct": 2.2,
+      "changePct": -9.5,
+      "tariffNow": "Free (MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "exportsUsd": 286392518,
+      "priorExportsUsd": 268219389,
+      "sharePct": 2,
+      "changePct": 6.8,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 320,
+      "country": "Guatemala",
+      "exportsUsd": 247769834,
+      "priorExportsUsd": 259023165,
+      "sharePct": 1.7,
+      "changePct": -4.3,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 227344954,
+      "priorExportsUsd": 228801628,
+      "sharePct": 1.6,
+      "changePct": -0.6,
+      "tariffNow": "Free (UK Global Tariff 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 206591768,
+      "priorExportsUsd": 200759507,
+      "sharePct": 1.4,
+      "changePct": 2.9,
+      "tariffNow": "Free (EU MFN 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "exportsUsd": 201235499,
+      "priorExportsUsd": 207752899,
+      "sharePct": 1.4,
+      "changePct": -3.1,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 195081844,
+      "priorExportsUsd": 181985285,
+      "sharePct": 1.4,
+      "changePct": 7.2,
+      "tariffNow": "MFN 10% (U.S.–India framework not yet in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 218,
+      "country": "Ecuador",
+      "exportsUsd": 186291733,
+      "priorExportsUsd": 210700974,
+      "sharePct": 1.3,
+      "changePct": -11.6,
+      "tariffNow": "MFN 0% on kraftliner, up to 30% on other paper (no U.S. FTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 184033505,
+      "priorExportsUsd": 230494142,
+      "sharePct": 1.3,
+      "changePct": -20.2,
+      "tariffNow": "Free (KORUS; MFN 0%)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 2340996482,
+  "othersPriorExportsUsd": 2550132163,
+  "byHeading": [
+    {
+      "heading": "4801",
+      "label": "Newsprint",
+      "exportsUsd": 47397998,
+      "priorExportsUsd": 66300785,
+      "changePct": -28.5,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "4802",
+      "label": "Uncoated printing, writing & copy paper",
+      "exportsUsd": 397100484,
+      "priorExportsUsd": 470861089,
+      "changePct": -15.7,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "4803",
+      "label": "Tissue & towel stock (parent rolls)",
+      "exportsUsd": 252474036,
+      "priorExportsUsd": 305073833,
+      "changePct": -17.2,
+      "sharePct": 1.8
+    },
+    {
+      "heading": "4804",
+      "label": "Uncoated kraft paper & paperboard (kraftliner, sack kraft)",
+      "exportsUsd": 3139779693,
+      "priorExportsUsd": 3379623074,
+      "changePct": -7.1,
+      "sharePct": 21.9
+    },
+    {
+      "heading": "4805",
+      "label": "Other uncoated paper & paperboard (fluting, testliner, recycled board)",
+      "exportsUsd": 1322160892,
+      "priorExportsUsd": 1382013273,
+      "changePct": -4.3,
+      "sharePct": 9.2
+    },
+    {
+      "heading": "4806",
+      "label": "Vegetable parchment, greaseproof, tracing paper & glassine",
+      "exportsUsd": 66077598,
+      "priorExportsUsd": 56988262,
+      "changePct": 15.9,
+      "sharePct": 0.5
+    },
+    {
+      "heading": "4807",
+      "label": "Composite (laminated) paper & paperboard",
+      "exportsUsd": 58988560,
+      "priorExportsUsd": 58226202,
+      "changePct": 1.3,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "4808",
+      "label": "Corrugated, creped & embossed paper",
+      "exportsUsd": 526488829,
+      "priorExportsUsd": 536287669,
+      "changePct": -1.8,
+      "sharePct": 3.7
+    },
+    {
+      "heading": "4809",
+      "label": "Carbon & self-copy paper (large rolls or sheets)",
+      "exportsUsd": 20819235,
+      "priorExportsUsd": 27022204,
+      "changePct": -23,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4810",
+      "label": "Coated paper & paperboard (clay-coated)",
+      "exportsUsd": 1589480298,
+      "priorExportsUsd": 1743823000,
+      "changePct": -8.9,
+      "sharePct": 11.1
+    },
+    {
+      "heading": "4811",
+      "label": "Paper coated with plastics, wax or adhesive; thermal & gift wrap",
+      "exportsUsd": 1963511411,
+      "priorExportsUsd": 2132345036,
+      "changePct": -7.9,
+      "sharePct": 13.7
+    },
+    {
+      "heading": "4812",
+      "label": "Filter blocks, slabs & plates of paper pulp",
+      "exportsUsd": 2477941,
+      "priorExportsUsd": 2800870,
+      "changePct": -11.5,
+      "sharePct": 0
+    },
+    {
+      "heading": "4813",
+      "label": "Cigarette paper",
+      "exportsUsd": 34317806,
+      "priorExportsUsd": 25339975,
+      "changePct": 35.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4814",
+      "label": "Wallpaper & wallcoverings",
+      "exportsUsd": 49890704,
+      "priorExportsUsd": 48947383,
+      "changePct": 1.9,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "4816",
+      "label": "Carbon & self-copy paper (cut, boxed)",
+      "exportsUsd": 33816692,
+      "priorExportsUsd": 45501648,
+      "changePct": -25.7,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4817",
+      "label": "Envelopes & correspondence cards",
+      "exportsUsd": 40689068,
+      "priorExportsUsd": 50194267,
+      "changePct": -18.9,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "4818",
+      "label": "Toilet paper, tissues, towels & napkins",
+      "exportsUsd": 790713011,
+      "priorExportsUsd": 932124564,
+      "changePct": -15.2,
+      "sharePct": 5.5
+    },
+    {
+      "heading": "4819",
+      "label": "Boxes, cartons, bags & paper packaging",
+      "exportsUsd": 2219127228,
+      "priorExportsUsd": 2300965655,
+      "changePct": -3.6,
+      "sharePct": 15.5
+    },
+    {
+      "heading": "4820",
+      "label": "Notebooks, diaries, binders & business forms",
+      "exportsUsd": 135387497,
+      "priorExportsUsd": 148401104,
+      "changePct": -8.8,
+      "sharePct": 0.9
+    },
+    {
+      "heading": "4821",
+      "label": "Paper labels",
+      "exportsUsd": 574037397,
+      "priorExportsUsd": 588135391,
+      "changePct": -2.4,
+      "sharePct": 4
+    },
+    {
+      "heading": "4822",
+      "label": "Bobbins, spools & cores",
+      "exportsUsd": 24819497,
+      "priorExportsUsd": 23847841,
+      "changePct": 4.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4823",
+      "label": "Paper cups, plates, molded pulp & other paper articles",
+      "exportsUsd": 1019242356,
+      "priorExportsUsd": 1122489784,
+      "changePct": -9.2,
+      "sharePct": 7.1
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "4804.11",
+      "heading": "4804",
+      "description": "Kraft paper and paperboard; kraftliner, uncoated, unbleached, in rolls or sheets, other than that of heading no. 4802 or 4803",
+      "exportsUsd": 2209014663,
+      "priorExportsUsd": 2339348335,
+      "changePct": -5.6,
+      "sharePct": 15.4
+    },
+    {
+      "hs6": "4819.10",
+      "heading": "4819",
+      "description": "Paper and paperboard; cartons, boxes and cases, of corrugated paper or paperboard",
+      "exportsUsd": 1311149997,
+      "priorExportsUsd": 1383886590,
+      "changePct": -5.3,
+      "sharePct": 9.2
+    },
+    {
+      "hs6": "4811.51",
+      "heading": "4811",
+      "description": "Paper and paperboard; coated, impregnated or covered with plastics (excluding adhesives), bleached, weighing more than 150g/m2, other than goods of heading no. 4803, 4809, or 4810",
+      "exportsUsd": 563730073,
+      "priorExportsUsd": 647793583,
+      "changePct": -13,
+      "sharePct": 3.9
+    },
+    {
+      "hs6": "4823.90",
+      "heading": "4823",
+      "description": "Paper pulp, paper, paperboard, cellulose wadding or webs of cellulose fibres; articles n.e.c. in heading no. 4823",
+      "exportsUsd": 530682297,
+      "priorExportsUsd": 591541641,
+      "changePct": -10.3,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "4819.20",
+      "heading": "4819",
+      "description": "Paper and paperboard; folding cartons, boxes and cases, of non-corrugated paper or paperboard",
+      "exportsUsd": 496778928,
+      "priorExportsUsd": 511605966,
+      "changePct": -2.9,
+      "sharePct": 3.5
+    },
+    {
+      "hs6": "4811.41",
+      "heading": "4811",
+      "description": "Paper and paperboard; self-adhesive, in rolls or sheets, other than goods of heading no. 4803, 4809, or 4810",
+      "exportsUsd": 466327944,
+      "priorExportsUsd": 491268530,
+      "changePct": -5.1,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "4808.10",
+      "heading": "4808",
+      "description": "Paper and paperboard; corrugated, whether or not perforated, in rolls or sheets, other than paper of heading 4803",
+      "exportsUsd": 463033617,
+      "priorExportsUsd": 482599870,
+      "changePct": -4.1,
+      "sharePct": 3.2
+    },
+    {
+      "hs6": "4818.20",
+      "heading": "4818",
+      "description": "Paper articles; handkerchiefs, cleansing or facial tissues and towels",
+      "exportsUsd": 422834744,
+      "priorExportsUsd": 499801290,
+      "changePct": -15.4,
+      "sharePct": 3
+    },
+    {
+      "hs6": "4821.10",
+      "heading": "4821",
+      "description": "Paper and paperboard; labels or all kinds, printed",
+      "exportsUsd": 377400365,
+      "priorExportsUsd": 363979612,
+      "changePct": 3.7,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "4810.39",
+      "heading": "4810",
+      "description": "Kraft paper and paperboard; coated with kaolin or other inorganic substances only, for non-graphic purposes, n.e.c. in item no. 4810.31 and 4810.32, in rolls or sheets",
+      "exportsUsd": 370649911,
+      "priorExportsUsd": 455979185,
+      "changePct": -18.7,
+      "sharePct": 2.6
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 48, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 84% of 2025 U.S. Chapter 48 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 4,
+    "padded": "04",
+    "slug": "4-dairy-eggs-honey",
+    "title": "Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/4-dairy-eggs-honey",
+    "h1": "HTS Chapter 04: Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Dairy Exports by Country: Cheese, Milk Powder, Whey & Tariffs",
+      "shortDescription": "The U.S. exported $7.87 billion of dairy, eggs and honey in 2025, a third of it to Mexico. Who buys U.S. cheese, milk powder and whey, and what each charges.",
+      "keywords": [
+        "us dairy exports",
+        "us dairy exports by country",
+        "us dairy exports 2025",
+        "us cheese exports",
+        "us dairy exports to mexico",
+        "us dairy exports to canada",
+        "us egg exports",
+        "us honey exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "The U.S. exported **$7.87 billion** of dairy products, eggs and honey (HS Chapter 04) in 2025, up **16.4%** from 2024. **Cheese** is the largest group at **$3.00 billion (38%)**, followed by **milk powder** ($2.11 billion, $1.92 billion of it skim milk powder), **whey** ($929 million), **eggs** ($744 million, including $471 million of hatching eggs) and **butter** ($596 million, up 153%). **Mexico** buys a third of it ($2.57 billion), mostly milk powder and cheese; Canada, South Korea, Japan and the Philippines follow. Exports are up **9.5%** in January–August 2026.\n\nTariffs are low in most big markets. Mexico, Australia and Colombia take U.S. dairy duty-free under trade agreements, South Korea's tariff on U.S. cheese reached **0%** in January 2026, and the Philippines charges 0–7%. Two buyers charge extra. **Canada** lets most U.S. dairy in free only within its CUSMA quotas (about 200–300% above them) and, since **September 8, 2026**, adds a **25%** counter-tariff on U.S. cheese and **50%** on milk powder, whey and honey. **China** adds its 2018–19 counter-tariffs and an extra 10% to its normal rate, so whey pays **37%** (12% with an exclusion) and cheese **45.5%**. Japan still charges 13% on U.S. hard cheese, falling to zero by 2033. Plant listings and sanitary certificates often decide who can ship at all.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$7.87B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+16.4%"
+    },
+    {
+      "label": "Largest product group (0406)",
+      "value": "38%",
+      "note": "Cheese and curd"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "44%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top 12 buyers charging an extra duty on U.S. dairy",
+      "value": "2 of 12",
+      "note": "Canada (since Sept. 2026) and China"
+    }
+  ],
+  "keyTakeaways": [
+    "Cheese, milk powder and whey are 77% of the chapter; eggs ($744 million) and butter ($596 million) grew fastest in 2025.",
+    "Mexico is a third of the business and duty-free under USMCA; Australia, Colombia and the Dominican Republic are also free, and Korea's tariff on U.S. cheese reached 0% in 2026.",
+    "Canada and China are the costly buyers: Canada's September 2026 counter-tariffs add 25% on cheese and 50% on milk powder, whey and honey on top of its quota system, and China charges 37% on whey, or 12% with an exclusion valid to December 31, 2026.",
+    "Before shipping, line up the USDA AMS dairy sanitary certificate and, for China, the EU, Chile, India and the UK, the plant's place on an FDA export list; dairy needs no Commerce export licence."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 5428232667,
+      "partnerAUsd": 1492039864,
+      "partnerBUsd": 316370253,
+      "restUsd": 3619822550
+    },
+    {
+      "year": 2021,
+      "totalUsd": 6528800828,
+      "partnerAUsd": 1870914376,
+      "partnerBUsd": 407765997,
+      "restUsd": 4250120455
+    },
+    {
+      "year": 2022,
+      "totalUsd": 7910014589,
+      "partnerAUsd": 2485299585,
+      "partnerBUsd": 582738269,
+      "restUsd": 4841976735
+    },
+    {
+      "year": 2023,
+      "totalUsd": 6661220197,
+      "partnerAUsd": 2377183683,
+      "partnerBUsd": 620107014,
+      "restUsd": 3663929500
+    },
+    {
+      "year": 2024,
+      "totalUsd": 6762705792,
+      "partnerAUsd": 2460707253,
+      "partnerBUsd": 709854379,
+      "restUsd": 3592144160
+    },
+    {
+      "year": 2025,
+      "totalUsd": 7869380058,
+      "partnerAUsd": 2566751215,
+      "partnerBUsd": 894808301,
+      "restUsd": 4407820542
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 04 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 5728110777,
+    "priorExportsUsd": 5229773034,
+    "changePct": 9.5,
+    "topBuyers": [
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 2037614945,
+        "priorExportsUsd": 1700909170,
+        "changePct": 19.8
+      },
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 503347526,
+        "priorExportsUsd": 643935855,
+        "changePct": -21.8
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 381533850,
+        "priorExportsUsd": 299761911,
+        "changePct": 27.3
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 296821601,
+        "priorExportsUsd": 254754019,
+        "changePct": 16.5
+      },
+      {
+        "countryCode": 608,
+        "country": "Philippines",
+        "exportsUsd": 232745676,
+        "priorExportsUsd": 239445244,
+        "changePct": -2.8
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 187969964,
+        "priorExportsUsd": 173447129,
+        "changePct": 8.4
+      },
+      {
+        "countryCode": 36,
+        "country": "Australia",
+        "exportsUsd": 168943252,
+        "priorExportsUsd": 145701454,
+        "changePct": 16
+      },
+      {
+        "countryCode": 360,
+        "country": "Indonesia",
+        "exportsUsd": 157831131,
+        "priorExportsUsd": 119150485,
+        "changePct": 32.5
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 2566751215,
+      "priorExportsUsd": 2460707253,
+      "sharePct": 32.6,
+      "changePct": 4.3,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 894808301,
+      "priorExportsUsd": 709854379,
+      "sharePct": 11.4,
+      "changePct": 26.1,
+      "tariffNow": "Free in CUSMA quotas; +25% on cheese, +50% on milk powder, whey, honey",
+      "status": "raised"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 452748739,
+      "priorExportsUsd": 329717757,
+      "sharePct": 5.8,
+      "changePct": 37.3,
+      "tariffNow": "Cheese free since Jan. 2026 (KORUS); milk powder in a quota",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 360851661,
+      "priorExportsUsd": 270710162,
+      "sharePct": 4.6,
+      "changePct": 33.3,
+      "tariffNow": "Cheese 13%, falling to 0 by 2033 (U.S.–Japan agreement)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 343711067,
+      "priorExportsUsd": 343036858,
+      "sharePct": 4.4,
+      "changePct": 0.2,
+      "tariffNow": "Normal rate: 0–1% on milk powder, 3–7% on cheese",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 264079223,
+      "priorExportsUsd": 298647309,
+      "sharePct": 3.4,
+      "changePct": -11.6,
+      "tariffNow": "Normal rate + 35–40 points (whey 37%, cheese 45.5%)",
+      "status": "raised"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 259330333,
+      "priorExportsUsd": 133338575,
+      "sharePct": 3.3,
+      "changePct": 94.5,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 360,
+      "country": "Indonesia",
+      "exportsUsd": 179853920,
+      "priorExportsUsd": 214756911,
+      "sharePct": 2.3,
+      "changePct": -16.3,
+      "tariffNow": "5% normal rate (U.S. agreement signed, not in force)",
+      "status": "pending"
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "exportsUsd": 165359186,
+      "priorExportsUsd": 106676212,
+      "sharePct": 2.1,
+      "changePct": 55,
+      "tariffNow": "Free (U.S.–Colombia TPA; dairy quotas ended 2026)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "exportsUsd": 150541546,
+      "priorExportsUsd": 123146049,
+      "sharePct": 1.9,
+      "changePct": 22.2,
+      "tariffNow": "Free (CAFTA-DR; last dairy tariffs ended Jan. 2025)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "exportsUsd": 132620911,
+      "priorExportsUsd": 87895483,
+      "sharePct": 1.7,
+      "changePct": 50.9,
+      "tariffNow": "5–6% on cheese and butter (GCC tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 131285007,
+      "priorExportsUsd": 105285501,
+      "sharePct": 1.7,
+      "changePct": 24.7,
+      "tariffNow": "Free on milk powder, whey and cheese (normal rate)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1967438949,
+  "othersPriorExportsUsd": 1578933343,
+  "byHeading": [
+    {
+      "heading": "0401",
+      "label": "Fluid milk and cream",
+      "exportsUsd": 170806124,
+      "priorExportsUsd": 155300083,
+      "changePct": 10,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "0402",
+      "label": "Milk powder and condensed milk (skim and whole milk powder)",
+      "exportsUsd": 2111653145,
+      "priorExportsUsd": 2175376997,
+      "changePct": -2.9,
+      "sharePct": 26.8
+    },
+    {
+      "heading": "0403",
+      "label": "Yogurt, buttermilk and fermented milk",
+      "exportsUsd": 205329015,
+      "priorExportsUsd": 158080433,
+      "changePct": 29.9,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "0404",
+      "label": "Whey and other milk-constituent products",
+      "exportsUsd": 929135120,
+      "priorExportsUsd": 844052544,
+      "changePct": 10.1,
+      "sharePct": 11.8
+    },
+    {
+      "heading": "0405",
+      "label": "Butter, butteroil and dairy spreads",
+      "exportsUsd": 596383318,
+      "priorExportsUsd": 235550309,
+      "changePct": 153.2,
+      "sharePct": 7.6
+    },
+    {
+      "heading": "0406",
+      "label": "Cheese and curd",
+      "exportsUsd": 2998376165,
+      "priorExportsUsd": 2471989177,
+      "changePct": 21.3,
+      "sharePct": 38.1
+    },
+    {
+      "heading": "0407",
+      "label": "Eggs in shell (hatching and table eggs)",
+      "exportsUsd": 743609574,
+      "priorExportsUsd": 598853224,
+      "changePct": 24.2,
+      "sharePct": 9.4
+    },
+    {
+      "heading": "0408",
+      "label": "Egg products (dried, liquid, frozen) and yolks",
+      "exportsUsd": 86421235,
+      "priorExportsUsd": 95768651,
+      "changePct": -9.8,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "0409",
+      "label": "Natural honey",
+      "exportsUsd": 24991673,
+      "priorExportsUsd": 26340083,
+      "changePct": -5.1,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "0410",
+      "label": "Insects and other edible animal products",
+      "exportsUsd": 2674689,
+      "priorExportsUsd": 1394291,
+      "changePct": 91.8,
+      "sharePct": 0
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "0402.10",
+      "heading": "0402",
+      "description": "Dairy produce; milk and cream, concentrated or containing added sugar or other sweetening matter, in powder, granules or other solid forms, of a fat content not exceeding 1.5% (by weight)",
+      "exportsUsd": 1923719946,
+      "priorExportsUsd": 2043900861,
+      "changePct": -5.9,
+      "sharePct": 24.4
+    },
+    {
+      "hs6": "0406.90",
+      "heading": "0406",
+      "description": "Dairy produce; cheese (not grated, powdered or processed), n.e.c. in heading no. 0406",
+      "exportsUsd": 1298874804,
+      "priorExportsUsd": 1011187018,
+      "changePct": 28.5,
+      "sharePct": 16.5
+    },
+    {
+      "hs6": "0406.20",
+      "heading": "0406",
+      "description": "Dairy produce; cheese of all kinds, grated or powdered",
+      "exportsUsd": 791850097,
+      "priorExportsUsd": 735438347,
+      "changePct": 7.7,
+      "sharePct": 10.1
+    },
+    {
+      "hs6": "0406.10",
+      "heading": "0406",
+      "description": "Dairy produce; fresh cheese (including whey cheese), not fermented, and curd",
+      "exportsUsd": 759225428,
+      "priorExportsUsd": 586446612,
+      "changePct": 29.5,
+      "sharePct": 9.6
+    },
+    {
+      "hs6": "0404.10",
+      "heading": "0404",
+      "description": "Dairy produce; whey, whether or not concentrated or containing added sugar or other sweetening matter",
+      "exportsUsd": 662058840,
+      "priorExportsUsd": 609694137,
+      "changePct": 8.6,
+      "sharePct": 8.4
+    },
+    {
+      "hs6": "0405.10",
+      "heading": "0405",
+      "description": "Dairy produce; derived from milk, butter",
+      "exportsUsd": 510061812,
+      "priorExportsUsd": 206139934,
+      "changePct": 147.4,
+      "sharePct": 6.5
+    },
+    {
+      "hs6": "0407.11",
+      "heading": "0407",
+      "description": "Birds' eggs, in shell; fresh, fertilised eggs for incubation, of fowls of the species Gallus domesticus (domestic hens)",
+      "exportsUsd": 470528753,
+      "priorExportsUsd": 390348506,
+      "changePct": 20.5,
+      "sharePct": 6
+    },
+    {
+      "hs6": "0404.90",
+      "heading": "0404",
+      "description": "Dairy produce; natural milk constituents (excluding whey), whether or not containing added sugar or other sweetening matter, n.e.c. in chapter 04",
+      "exportsUsd": 267076280,
+      "priorExportsUsd": 234358407,
+      "changePct": 14,
+      "sharePct": 3.4
+    },
+    {
+      "hs6": "0407.21",
+      "heading": "0407",
+      "description": "Birds' eggs, in shell; fresh, not for incubation, of fowls of the species Gallus domesticus (domestic hens)",
+      "exportsUsd": 236045451,
+      "priorExportsUsd": 180645850,
+      "changePct": 30.7,
+      "sharePct": 3
+    },
+    {
+      "hs6": "0406.30",
+      "heading": "0406",
+      "description": "Dairy produce; cheese, processed (not grated or powdered)",
+      "exportsUsd": 146215124,
+      "priorExportsUsd": 136382509,
+      "changePct": 7.2,
+      "sharePct": 1.9
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 04, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "co-exporter-guide-2026",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CO2026-0016",
+      "document": "GAIN report",
+      "title": "Colombia: Exporter Guide Annual 2026 (\"Dairy TRQ has phased out, and U.S. dairy exports are now free of duty\")",
+      "signed": null,
+      "published": "2026-07-01",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Exporter+Guide+Annual_Bogota_Colombia_CO2026-0016.pdf"
+    },
+    {
+      "id": "nte-2025",
+      "publisher": "USTR",
+      "citation": "2025 National Trade Estimate Report",
+      "document": "Report",
+      "title": "2025 National Trade Estimate Report on Foreign Trade Barriers (Canada supply management, Dominican Republic, India and Indonesia dairy)",
+      "signed": null,
+      "published": "2025-03-31",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Reports/2025NTE.pdf"
+    },
+    {
+      "id": "sa-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Saudi Arabia MFN 2023",
+      "document": "Tariff database",
+      "title": "Saudi Arabia MFN applied tariff rates, Chapter 04 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/SAU/partner/WLD/product/04"
+    },
+    {
+      "id": "my-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Malaysia MFN 2023",
+      "document": "Tariff database",
+      "title": "Malaysia MFN applied tariff rates, Chapter 04 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/MYS/partner/WLD/product/04"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 75% of 2025 U.S. Chapter 04 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 21,
+    "padded": "21",
+    "slug": "21-misc-edible-preparations",
+    "title": "Miscellaneous Edible Preparations"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/21-misc-edible-preparations/faq",
+    "h1": "HTS Chapter 21: Miscellaneous Edible Preparations — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Supplement & Food Export FAQ: Tariffs, HS Codes (HTS Ch. 21) | KoalaGains",
+      "shortDescription": "Are U.S. supplements tariffed in Canada? What do China, the EU, Korea and Mexico charge on U.S. food? HS codes for supplements and sauces; FDA certificates.",
+      "keywords": [
+        "are there tariffs on supplements from us to canada",
+        "does canada have tariffs on us food",
+        "does china have tariffs on us goods",
+        "hs code for protein powder",
+        "hs code for hot sauce",
+        "certificate to foreign government fda"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Common questions about exporting U.S. dietary supplements, protein powders, sauces, soups, coffee extracts and other Chapter 21 food preparations, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $11.72 billion of Chapter 21 goods in 2025; supplements, protein powders, drink mixes and other food preparations (2106) were $7.54 billion, and Canada and Mexico buy 46%.",
+    "Canada, Mexico, South Korea, Australia and Hong Kong charge nothing on qualifying U.S. goods; the EU charges about a quarter of its normal rate inside a 250,000-tonne U.S. quota, and China about 32% on food preparations.",
+    "No export licence is needed except for embargoed destinations; FDA issues the certificates buyers ask for, free for dietary supplements."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"tariffs on supplements from us to canada\", \"canada tariffs on us food\", \"canada retaliatory tariffs list\", \"does china have tariffs on us goods\", \"eu tariffs on us goods\", \"does south korea have tariffs on us goods\", \"hs code for dietary supplements\", \"hs code for protein powder\", \"hs code for hot sauce\", \"export license for food\" and \"fda export certificate\".",
+  "faqs": [
+    {
+      "id": "how-much",
+      "question": "How much food preparations, supplements and sauces does the U.S. export?",
+      "answer": "The U.S. exported $11.72 billion of Chapter 21 goods in 2025, up 3.6% from 2024. Supplements, protein powders, drink mixes and other food preparations (heading 2106) were $7.54 billion, sauces and seasonings $2.37 billion, soups and broths $945 million, coffee and tea extracts $444 million and ice cream $255 million. January to August 2026 exports were 5.7% above the same months of 2025.",
+      "link": "exports",
+      "searchedAs": ["us food exports", "us food exports 2025", "us food exports 2024"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. supplements, sauces and food preparations?",
+      "answer": "Canada takes 28% of U.S. Chapter 21 exports ($3.27 billion) and Mexico 18% ($2.11 billion), followed by South Korea (5%), China (4%) and Hong Kong (3%). Canada is the largest market for U.S. supplements, mixes and sauces, and Mexico for soups and broths.",
+      "link": "exports",
+      "searchedAs": ["us food exports by country", "us food exports to canada", "us food exports to china"]
+    },
+    {
+      "id": "canada-supplements",
+      "question": "Are there tariffs on supplements from the U.S. to Canada?",
+      "answer": "Not on goods that qualify under CUSMA: Canada charges nothing on U.S. supplements, protein powders, drink mixes and other food preparations, against a normal rate of 10.5% on most of them. Canada’s 2025 counter-tariff skipped them, and its September 2026 counter-tariffs skip Chapter 21 entirely. Dairy-based preparations above Canada’s access quotas pay 212–274.5%, and many supplements need a Health Canada product licence before sale.",
+      "link": "exports/markets",
+      "searchedAs": [
+        "tariffs on supplements from us to canada",
+        "are there tariffs on supplements from us to canada",
+        "canadian tariffs on us supplements",
+        "protein powder tariffs canada"
+      ]
+    },
+    {
+      "id": "canada-food",
+      "question": "Does Canada have tariffs on U.S. food products like ketchup, sauces and soup?",
+      "answer": "Not any more. From March 4 to August 31, 2025 Canada charged 25% on 16 Chapter 21 tariff items, including U.S. soy sauce, ketchup, mustard, mayonnaise and salad dressing, soups and broths, and some sugar syrups and dairy- or egg-based preparations. It removed them from September 1, 2025, and the counter-tariffs it imposed on September 8, 2026 skip Chapter 21.",
+      "link": "exports/tariff-updates",
+      "searchedAs": [
+        "canada tariffs on us food products",
+        "does canada have tariffs on us food",
+        "canadian tariffs on us food",
+        "canada retaliatory tariffs list"
+      ]
+    },
+    {
+      "id": "china",
+      "question": "Does China have tariffs on U.S. food products and supplements?",
+      "answer": "Yes. U.S. food preparations and supplements (2106.90.90) pay China’s 12% normal rate, a 10% counter-tariff from 2018–19 and an extra 10% on all U.S. goods, about 32% in total, or 22% for importers holding an exclusion. Sauces, soups and ice cream carry a 25% counter-tariff, so about 47%.",
+      "link": "exports/markets",
+      "searchedAs": [
+        "does china have tariffs on us goods",
+        "china tariffs on us agricultural products",
+        "how much does china tariff us goods",
+        "does china have tariffs on us products"
+      ]
+    },
+    {
+      "id": "china-dates",
+      "question": "When do China’s tariff exclusions and its tariff suspension end?",
+      "answer": "China’s exclusions from its 2018–19 counter-tariffs are valid until December 31, 2026, and 24 points of its extra tariff on all U.S. goods are suspended until January 10, 2027. If the suspension lapses, U.S. food preparations would pay 56%, and sauces, soups and ice cream 71%. China’s separate 10% farm counter-tariff on U.S. ketchup and ice cream ended on November 10, 2025.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china retaliatory tariffs us agriculture", "what are the current us china tariffs"]
+    },
+    {
+      "id": "eu",
+      "question": "Does the EU have tariffs on U.S. food preparations?",
+      "answer": "Yes, but lower since July 1, 2026: a 250,000-tonne quota lets U.S. Chapter 21 goods in at about a quarter of the normal duty, for example 3.2% instead of 12.8% on most food preparations and 1.9% instead of 7.7% on sauces. The EU’s 2025 plan to put 25–30% on almost every Chapter 21 good is suspended and never applied.",
+      "link": "exports/markets",
+      "searchedAs": ["eu tariffs on us goods", "does the eu have tariffs on us goods", "eu tariffs on us goods list"]
+    },
+    {
+      "id": "korea-japan",
+      "question": "Do South Korea and Japan tariff U.S. food preparations?",
+      "answer": "South Korea charges nothing: every Chapter 21 line is duty-free under KORUS since January 1, 2026 at the latest. Japan lets most U.S. supplements, protein concentrates, drink bases, soy sauce, sauces and soups in free under the 2020 U.S.–Japan Trade Agreement, but ketchup (21.3%), mayonnaise (12.8%), mixed seasonings (10.5%) and ice cream (21–29.8%) still pay the normal rate.",
+      "link": "exports/markets",
+      "searchedAs": [
+        "does south korea have tariffs on us goods",
+        "south korea tariffs on us products",
+        "does japan have tariffs on us goods",
+        "japan tariffs on us products"
+      ]
+    },
+    {
+      "id": "mexico",
+      "question": "Does Mexico have tariffs on U.S. food products?",
+      "answer": "Not on goods that qualify under USMCA: U.S. soups, sauces, supplements and other food preparations enter Mexico free, against normal rates of 10% to 45%. Mexico’s 2026 tariff increases on countries without a trade agreement do not include any Chapter 21 line, and Mexico has imposed no counter-tariff on U.S. goods.",
+      "link": "exports/markets",
+      "searchedAs": ["does mexico have tariffs on us goods", "mexico tariffs on us products", "current mexico tariffs on us goods"]
+    },
+    {
+      "id": "hs-supplements",
+      "question": "What is the HS code (Schedule B) for dietary supplements and protein powder?",
+      "answer": "Most dietary supplements, protein powders, drink mixes and non-dairy creamers fall in heading 2106: 2106.10 for protein concentrates and textured protein, 2106.90 for the rest. Vitamin or mineral pills put up as medicines can fall in Chapter 30, and whey or whey-protein concentrates in 0404 or 3502. The first six digits of the Schedule B number are the HS code.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for dietary supplements",
+        "schedule b number for dietary supplements",
+        "hs code for protein powder",
+        "protein powder hs code",
+        "hs code 2106.90",
+        "food supplement hs code"
+      ]
+    },
+    {
+      "id": "hs-sauces",
+      "question": "What is the HS code for hot sauce, ketchup, seasoning, soup and instant coffee?",
+      "answer": "Hot sauce, dressings and mixed seasonings are 2103.90, ketchup 2103.20, soy sauce 2103.10 and mustard 2103.30. Soups, broths and bouillon are 2104, ice cream 2105, yeast 2102, instant coffee 2101.11 and coffee mixes 2101.12; non-dairy coffee creamer is usually 2106.90.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for hot sauce",
+        "hs code for ketchup",
+        "hs code for seasoning",
+        "hs code for soup",
+        "hs code for instant coffee",
+        "hs code for coffee creamer"
+      ]
+    },
+    {
+      "id": "licence-certificates",
+      "question": "Do I need an export license or an FDA certificate to export food or supplements?",
+      "answer": "No export licence is needed for most destinations: food preparations and supplements are EAR99, and food for Cuba goes under License Exception AGR. FDA issues the certificates buyers ask for: a Certificate to a Foreign Government for conventional foods ($175 for the first) and a Certificate of Free Sale, with no fee, for dietary supplements. Ice cream and milk-based products for the EU, China and Chile also need USDA AMS dairy certification.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "export license for food products",
+        "fda food export certificate",
+        "certificate to foreign government fda",
+        "fda certificate of free sale",
+        "fda export certificate fees"
+      ]
+    }
+  ]
+}

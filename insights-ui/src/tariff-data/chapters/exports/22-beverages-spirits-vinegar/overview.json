@@ -1,0 +1,480 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 22,
+    "padded": "22",
+    "slug": "22-beverages-spirits-vinegar",
+    "title": "Beverages, Spirits and Vinegar"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/22-beverages-spirits-vinegar",
+    "h1": "HTS Chapter 22: Beverages, Spirits and Vinegar — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Bourbon, Ethanol, Wine & Beverage Exports (HTS Ch. 22) | KoalaGains",
+      "shortDescription": "The U.S. exported $10.80B of beverages in 2025: $4.91B of ethanol, $1.25B of whiskey incl. bourbon, $850M of wine. Who buys them and what each top buyer charges.",
+      "keywords": [
+        "us bourbon exports",
+        "us bourbon exports by country",
+        "us ethanol exports",
+        "us ethanol exports by country",
+        "us wine exports by country",
+        "us wine exports 2025",
+        "us beer exports",
+        "hts chapter 22 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$10.80 billion** of Chapter 22 goods in 2025, down **1%** from 2024. Ethanol is the biggest part: heading 2207 (fuel and industrial ethanol) was **$4.91 billion**, 46% of the chapter, up 11%. Spirits followed at $2.74 billion, led by whiskey including bourbon (**$1.25 billion**, down 18%), then soft drinks and energy drinks ($1.70 billion), wine ($850 million, down 32%) and beer ($305 million). Canada is the largest buyer (**28%**), mostly ethanol and soft drinks, followed by the Netherlands (13%) and the UK (7%). Exports from January to August 2026 were 13% above the same months of 2025.\n\nTariffs are low for most of this trade: Canada and Mexico charge nothing on qualifying U.S. goods under USMCA, the EU, the UK and Japan let bourbon and other whiskey in duty-free, and the UK takes U.S. ethanol duty-free within a 1.4 billion-liter quota. What hit U.S. alcohol hardest was not a tariff but Canada’s provincial liquor boards, most of which stopped buying U.S. beer, wine and spirits in March 2025. The costly markets are India (100% on bourbon, 150% on other spirits and wine) and China, which stacks 2018 counter-tariffs and an extra 10% on its normal rate.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$10.80B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-1%"
+    },
+    {
+      "label": "Largest product group (2207)",
+      "value": "46%",
+      "note": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "41%",
+      "note": "Canada, Netherlands"
+    },
+    {
+      "label": "Top 12 buyers with a national counter-tariff on these goods",
+      "value": "0 of 12",
+      "note": "Canada’s 25% surtax on U.S. wine, beer and spirits ended Sept 1, 2025; Saskatchewan’s 50% provincial levy remains"
+    }
+  ],
+  "keyTakeaways": [
+    "Ethanol, not bourbon, is the biggest U.S. Chapter 22 export: $4.91 billion in 2025, sold mostly to Canada, the Netherlands, India, the UK and Colombia.",
+    "Canada charges no tariff on U.S. drinks, but most provinces have kept U.S. beer, wine and spirits off government liquor-store shelves since March 2025, and Saskatchewan added a 50% levy on U.S. alcohol from September 8, 2026.",
+    "The EU and UK charge nothing on bourbon; the EU’s 2025 plan to put 30% on U.S. whiskey and wine is suspended with no end date, and the UK’s duty-free quota for U.S. ethanol renews on January 1, 2027.",
+    "India and China are where tariffs bite: bourbon pays 100% in India and about 40% in China without an exclusion, and China’s exclusions end on December 31, 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 7914524808,
+      "partnerAUsd": 2226413836,
+      "partnerBUsd": 398359794,
+      "restUsd": 5289751178
+    },
+    {
+      "year": 2021,
+      "totalUsd": 8618040600,
+      "partnerAUsd": 2749842265,
+      "partnerBUsd": 318184230,
+      "restUsd": 5550014105
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10139208091,
+      "partnerAUsd": 3259898636,
+      "partnerBUsd": 515966318,
+      "restUsd": 6363343137
+    },
+    {
+      "year": 2023,
+      "totalUsd": 9930612468,
+      "partnerAUsd": 3482127770,
+      "partnerBUsd": 800677595,
+      "restUsd": 5647807103
+    },
+    {
+      "year": 2024,
+      "totalUsd": 10900266072,
+      "partnerAUsd": 3190839518,
+      "partnerBUsd": 881675174,
+      "restUsd": 6827751380
+    },
+    {
+      "year": 2025,
+      "totalUsd": 10795403520,
+      "partnerAUsd": 3023899832,
+      "partnerBUsd": 1428161447,
+      "restUsd": 6343342241
+    }
+  ],
+  "byYearPartners": ["Canada", "Netherlands"],
+  "byYearCaption": "U.S. exports of Chapter 22 goods each year, split into the two largest 2025 buyers (Canada and Netherlands) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 8039943829,
+    "priorExportsUsd": 7092092064,
+    "changePct": 13.4,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2044018035,
+        "priorExportsUsd": 2006136429,
+        "changePct": 1.9
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 1258912205,
+        "priorExportsUsd": 809575772,
+        "changePct": 55.5
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 471799810,
+        "priorExportsUsd": 529639041,
+        "changePct": -10.9
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 392973821,
+        "priorExportsUsd": 373909298,
+        "changePct": 5.1
+      },
+      {
+        "countryCode": 372,
+        "country": "Ireland",
+        "exportsUsd": 337151685,
+        "priorExportsUsd": 139412312,
+        "changePct": 141.8
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 278284159,
+        "priorExportsUsd": 240156346,
+        "changePct": 15.9
+      },
+      {
+        "countryCode": 170,
+        "country": "Colombia",
+        "exportsUsd": 271787547,
+        "priorExportsUsd": 267336641,
+        "changePct": 1.7
+      },
+      {
+        "countryCode": 724,
+        "country": "Spain",
+        "exportsUsd": 205546082,
+        "priorExportsUsd": 99641158,
+        "changePct": 106.3
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3023899832,
+      "priorExportsUsd": 3190839518,
+      "sharePct": 28,
+      "changePct": -5.2,
+      "tariffNow": "Free (CUSMA); 50% Saskatchewan levy on U.S. alcohol",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 1428161447,
+      "priorExportsUsd": 881675174,
+      "sharePct": 13.2,
+      "changePct": 62,
+      "tariffNow": "Free on bourbon & most spirits and beer; ethanol €19.2/hl; wine €13.1–32/hl",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 743022987,
+      "priorExportsUsd": 880069471,
+      "sharePct": 6.9,
+      "changePct": -15.6,
+      "tariffNow": "Free on spirits & beer; ethanol 0% within the 1.4bn-liter U.S. quota",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 548751480,
+      "priorExportsUsd": 581409308,
+      "sharePct": 5.1,
+      "changePct": -5.6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 436267699,
+      "priorExportsUsd": 466618359,
+      "sharePct": 4,
+      "changePct": -6.5,
+      "tariffNow": "Bourbon 100%; other spirits & wine 150%; ethanol 5–150%",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 170,
+      "country": "Colombia",
+      "exportsUsd": 379590428,
+      "priorExportsUsd": 409557471,
+      "sharePct": 3.5,
+      "changePct": -7.3,
+      "tariffNow": "Free (TPA); CVD on U.S. fuel ethanol",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 340366411,
+      "priorExportsUsd": 324788008,
+      "sharePct": 3.2,
+      "changePct": 4.8,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 372,
+      "country": "Ireland",
+      "exportsUsd": 241760838,
+      "priorExportsUsd": 177216441,
+      "sharePct": 2.2,
+      "changePct": 36.4,
+      "tariffNow": "Free on bourbon & most spirits and beer; ethanol €19.2/hl; wine €13.1–32/hl",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 238436264,
+      "priorExportsUsd": 249324854,
+      "sharePct": 2.2,
+      "changePct": -4.4,
+      "tariffNow": "Free on wine, whiskey & beer; ethanol mostly 1.8% or free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 608,
+      "country": "Philippines",
+      "exportsUsd": 227432792,
+      "priorExportsUsd": 182212155,
+      "sharePct": 2.1,
+      "changePct": 24.8,
+      "tariffNow": "10% on ethanol and soft drinks; 15% on whiskey (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 227028415,
+      "priorExportsUsd": 160558968,
+      "sharePct": 2.1,
+      "changePct": 41.4,
+      "tariffNow": "18% on ethanol; about 17% on whiskey (MFN)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 215006497,
+      "priorExportsUsd": 204412303,
+      "sharePct": 2,
+      "changePct": 5.2,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 2745678430,
+  "othersPriorExportsUsd": 3191584042,
+  "byHeading": [
+    {
+      "heading": "2201",
+      "label": "Mineral and aerated water, ice and snow (unsweetened)",
+      "exportsUsd": 163450176,
+      "priorExportsUsd": 166635664,
+      "changePct": -1.9,
+      "sharePct": 1.5
+    },
+    {
+      "heading": "2202",
+      "label": "Soft drinks, flavored water, energy drinks and other non-alcoholic beverages (incl. non-alcoholic beer)",
+      "exportsUsd": 1701092696,
+      "priorExportsUsd": 1578705578,
+      "changePct": 7.8,
+      "sharePct": 15.8
+    },
+    {
+      "heading": "2203",
+      "label": "Beer made from malt",
+      "exportsUsd": 305039152,
+      "priorExportsUsd": 384428755,
+      "changePct": -20.7,
+      "sharePct": 2.8
+    },
+    {
+      "heading": "2204",
+      "label": "Wine of fresh grapes (still and sparkling) and grape must",
+      "exportsUsd": 850372329,
+      "priorExportsUsd": 1251773052,
+      "changePct": -32.1,
+      "sharePct": 7.9
+    },
+    {
+      "heading": "2205",
+      "label": "Vermouth and other flavored wine",
+      "exportsUsd": 20115776,
+      "priorExportsUsd": 17607166,
+      "changePct": 14.2,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2206",
+      "label": "Cider, perry, mead, sake and other fermented beverages",
+      "exportsUsd": 24526788,
+      "priorExportsUsd": 43541974,
+      "changePct": -43.7,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2207",
+      "label": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol",
+      "exportsUsd": 4908854557,
+      "priorExportsUsd": 4426927212,
+      "changePct": 10.9,
+      "sharePct": 45.5
+    },
+    {
+      "heading": "2208",
+      "label": "Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy)",
+      "exportsUsd": 2735232178,
+      "priorExportsUsd": 2938366682,
+      "changePct": -6.9,
+      "sharePct": 25.3
+    },
+    {
+      "heading": "2209",
+      "label": "Vinegar",
+      "exportsUsd": 86719868,
+      "priorExportsUsd": 92279989,
+      "changePct": -6,
+      "sharePct": 0.8
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2207.20",
+      "heading": "2207",
+      "description": "Ethyl alcohol and other spirits; denatured, of any strength",
+      "exportsUsd": 2522459227,
+      "priorExportsUsd": 2315134197,
+      "changePct": 9,
+      "sharePct": 23.4
+    },
+    {
+      "hs6": "2207.10",
+      "heading": "2207",
+      "description": "Undenatured ethyl alcohol; of an alcoholic strength by volume of 80% vol. or higher",
+      "exportsUsd": 2386395330,
+      "priorExportsUsd": 2111793015,
+      "changePct": 13,
+      "sharePct": 22.1
+    },
+    {
+      "hs6": "2208.30",
+      "heading": "2208",
+      "description": "Whiskies",
+      "exportsUsd": 1253853989,
+      "priorExportsUsd": 1534328295,
+      "changePct": -18.3,
+      "sharePct": 11.6
+    },
+    {
+      "hs6": "2202.99",
+      "heading": "2202",
+      "description": "Non-alcoholic beverages; other than non-alcoholic beer, n.e.c. in item no. 2202.10, not including fruit, nut or vegetable juices of heading no. 2009",
+      "exportsUsd": 1015056341,
+      "priorExportsUsd": 894178348,
+      "changePct": 13.5,
+      "sharePct": 9.4
+    },
+    {
+      "hs6": "2202.10",
+      "heading": "2202",
+      "description": "Waters; including mineral and aerated, containing added sugar or other sweetening matter or flavoured",
+      "exportsUsd": 675028606,
+      "priorExportsUsd": 675064219,
+      "changePct": 0,
+      "sharePct": 6.3
+    },
+    {
+      "hs6": "2204.21",
+      "heading": "2204",
+      "description": "Wine; still, in containers holding 2 litres or less",
+      "exportsUsd": 618325651,
+      "priorExportsUsd": 1003802196,
+      "changePct": -38.4,
+      "sharePct": 5.7
+    },
+    {
+      "hs6": "2208.70",
+      "heading": "2208",
+      "description": "Liqueurs and cordials",
+      "exportsUsd": 527805904,
+      "priorExportsUsd": 390026640,
+      "changePct": 35.3,
+      "sharePct": 4.9
+    },
+    {
+      "hs6": "2208.90",
+      "heading": "2208",
+      "description": "Spirits, liqueurs and other spirituous beverages; n.e.c. in heading no. 2208",
+      "exportsUsd": 320690920,
+      "priorExportsUsd": 282460346,
+      "changePct": 13.5,
+      "sharePct": 3
+    },
+    {
+      "hs6": "2203.00",
+      "heading": "2203",
+      "description": "Beer; made from malt",
+      "exportsUsd": 305039152,
+      "priorExportsUsd": 384428755,
+      "changePct": -20.7,
+      "sharePct": 2.8
+    },
+    {
+      "hs6": "2208.60",
+      "heading": "2208",
+      "description": "Vodka",
+      "exportsUsd": 293517623,
+      "priorExportsUsd": 305409988,
+      "changePct": -3.9,
+      "sharePct": 2.7
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 22, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 75% of 2025 U.S. Chapter 22 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

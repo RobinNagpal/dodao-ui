@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 97,
+    "padded": "97",
+    "slug": "97-works-of-art-and-antiques",
+    "title": "Works of art, collectors' pieces and antiques"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/97-works-of-art-and-antiques",
+    "h1": "HTS Chapter 97: Works of art, collectors' pieces and antiques — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Art & Antiques Exports by Country (HS 97) and Foreign Tariffs | KoalaGains",
+      "shortDescription": "The U.S. exported $10.21B of paintings, sculpture and antiques in 2025. Who buys American art (UK, Switzerland, France, Hong Kong) and what each charges.",
+      "keywords": [
+        "us art exports",
+        "us art exports by country",
+        "art market share by country",
+        "us antiques exports",
+        "paintings exports",
+        "hs chapter 97 exports",
+        "international art trade"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "The U.S. exported **$10.21 billion** of works of art, collectors’ pieces and antiques (HS Chapter 97) in 2025, down 1.0% from $10.32 billion in 2024. Paintings, drawings and pastels made entirely by hand (heading 9701) were **72.7%** ($7.42 billion), most of them works less than 100 years old (9701.91, $5.39 billion); original sculpture (9703) added 15.0% and antiques over 100 years (9706) 6.5%. The **United Kingdom** (23.2%) and **Switzerland** (16.2%) were the largest buyers, and the 27 EU countries together took 37.5%, led by France (12.7%). January–August 2026 exports were $7.10 billion, up 2.4%.\n\nTariffs rarely matter for art. All 12 of the largest buyers charge **0%** on U.S. paintings, prints, sculpture and antiques. The exceptions are **China** (a normal rate of 0–6%, plus 2019 counter-tariffs of 10–25% and the 10% extra on all U.S. goods) and the **UAE** (the 5% Gulf common tariff). What decides access instead are cultural-property and wildlife rules: the EU’s import licence and importer statement for older cultural goods (Regulation (EU) 2019/880, fully applied since June 28, 2025), Swiss customs declarations for cultural property, and ivory and CITES permits on both sides. On the U.S. side, art needs no export licence except to Russia, Belarus and embargoed countries.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$10.21B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-1%"
+    },
+    {
+      "label": "Largest product group (9701)",
+      "value": "73%",
+      "note": "Paintings, drawings, pastels, collages & mosaics (executed by hand)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "39%",
+      "note": "United Kingdom, Switzerland"
+    },
+    {
+      "label": "Top 12 buyers charging 0%",
+      "value": "12 of 12",
+      "note": "UK, Switzerland, seven EU countries, Hong Kong, South Korea, Japan"
+    }
+  ],
+  "keyTakeaways": [
+    "Hand-made paintings and drawings (9701) are 72.7% of U.S. Chapter 97 exports, original sculpture (9703) 15.0% and antiques (9706) 6.5%; the total was $10.21B in 2025.",
+    "The UK (23.2%) and Switzerland (16.2%) bought 39% in 2025, and EU countries together 37.5%; Hong Kong fell 41.9% in 2025 but was up 39.5% in January–August 2026.",
+    "Tariffs abroad are almost always zero: the UK, Switzerland, the EU, Hong Kong, South Korea, Japan, Mexico and Canada charge 0% on U.S. art. China is the costly exception, and Canada charged 25% on U.S. original paintings from March 4 to September 1, 2025.",
+    "Access turns on paperwork, not duty: the EU’s cultural-goods import licence and importer statement, Swiss cultural-property declarations, and ivory and CITES rules. U.S. art needs no export licence except to Russia, Belarus and embargoed countries."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 8195727542,
+      "partnerAUsd": 2193646299,
+      "partnerBUsd": 1111333014,
+      "restUsd": 4890748229
+    },
+    {
+      "year": 2021,
+      "totalUsd": 8688057601,
+      "partnerAUsd": 2191948499,
+      "partnerBUsd": 1162645088,
+      "restUsd": 5333464014
+    },
+    {
+      "year": 2022,
+      "totalUsd": 11022556469,
+      "partnerAUsd": 2512745721,
+      "partnerBUsd": 1822562275,
+      "restUsd": 6687248473
+    },
+    {
+      "year": 2023,
+      "totalUsd": 11126130645,
+      "partnerAUsd": 2860250782,
+      "partnerBUsd": 1832554964,
+      "restUsd": 6433324899
+    },
+    {
+      "year": 2024,
+      "totalUsd": 10318086173,
+      "partnerAUsd": 2302718272,
+      "partnerBUsd": 1574069713,
+      "restUsd": 6441298188
+    },
+    {
+      "year": 2025,
+      "totalUsd": 10212177058,
+      "partnerAUsd": 2364932809,
+      "partnerBUsd": 1652822699,
+      "restUsd": 6194421550
+    }
+  ],
+  "byYearPartners": ["United Kingdom", "Switzerland"],
+  "byYearCaption": "U.S. exports of Chapter 97 goods each year, split into the two largest 2025 buyers (United Kingdom and Switzerland) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 7100120188,
+    "priorExportsUsd": 6934808037,
+    "changePct": 2.4,
+    "topBuyers": [
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 1528135996,
+        "priorExportsUsd": 1453487265,
+        "changePct": 5.1
+      },
+      {
+        "countryCode": 757,
+        "country": "Switzerland",
+        "exportsUsd": 1098596515,
+        "priorExportsUsd": 1428488257,
+        "changePct": -23.1
+      },
+      {
+        "countryCode": 251,
+        "country": "France",
+        "exportsUsd": 964760976,
+        "priorExportsUsd": 742309702,
+        "changePct": 30
+      },
+      {
+        "countryCode": 344,
+        "country": "China, Hong Kong SAR",
+        "exportsUsd": 700183348,
+        "priorExportsUsd": 502080990,
+        "changePct": 39.5
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 401168613,
+        "priorExportsUsd": 478820705,
+        "changePct": -16.2
+      },
+      {
+        "countryCode": 380,
+        "country": "Italy",
+        "exportsUsd": 346989009,
+        "priorExportsUsd": 229036020,
+        "changePct": 51.5
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 214069508,
+        "priorExportsUsd": 207032965,
+        "changePct": 3.4
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 193499001,
+        "priorExportsUsd": 317236575,
+        "changePct": -39
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 2364932809,
+      "priorExportsUsd": 2302718272,
+      "sharePct": 23.2,
+      "changePct": 2.7,
+      "tariffNow": "Free (UK Global Tariff 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 757,
+      "country": "Switzerland",
+      "exportsUsd": 1652822699,
+      "priorExportsUsd": 1574069713,
+      "sharePct": 16.2,
+      "changePct": 5,
+      "tariffNow": "Free (Swiss tariff 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 1295981482,
+      "priorExportsUsd": 1432513070,
+      "sharePct": 12.7,
+      "changePct": -9.5,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 675066998,
+      "priorExportsUsd": 1162342536,
+      "sharePct": 6.6,
+      "changePct": -41.9,
+      "tariffNow": "Free (free port)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 608062876,
+      "priorExportsUsd": 567965109,
+      "sharePct": 6,
+      "changePct": 7.1,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 403829333,
+      "priorExportsUsd": 394771239,
+      "sharePct": 4,
+      "changePct": 2.3,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 401649324,
+      "priorExportsUsd": 297286696,
+      "sharePct": 3.9,
+      "changePct": 35.1,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 442,
+      "country": "Luxembourg",
+      "exportsUsd": 343799579,
+      "priorExportsUsd": 175333573,
+      "sharePct": 3.4,
+      "changePct": 96.1,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 287127248,
+      "priorExportsUsd": 329898383,
+      "sharePct": 2.8,
+      "changePct": -13,
+      "tariffNow": "Free (KORUS; Korea’s normal rate is also 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 247111336,
+      "priorExportsUsd": 255688133,
+      "sharePct": 2.4,
+      "changePct": -3.4,
+      "tariffNow": "Free (Japan’s normal rate 0%)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 213632351,
+      "priorExportsUsd": 226893911,
+      "sharePct": 2.1,
+      "changePct": -5.8,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 191980657,
+      "priorExportsUsd": 144961715,
+      "sharePct": 1.9,
+      "changePct": 32.4,
+      "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1526180366,
+  "othersPriorExportsUsd": 1453643823,
+  "byHeading": [
+    {
+      "heading": "9701",
+      "label": "Paintings, drawings, pastels, collages & mosaics (executed by hand)",
+      "exportsUsd": 7421002709,
+      "priorExportsUsd": 7587540625,
+      "changePct": -2.2,
+      "sharePct": 72.7
+    },
+    {
+      "heading": "9702",
+      "label": "Original engravings, prints & lithographs",
+      "exportsUsd": 292979045,
+      "priorExportsUsd": 316835653,
+      "changePct": -7.5,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "9703",
+      "label": "Original sculptures & statuary, in any material",
+      "exportsUsd": 1533863174,
+      "priorExportsUsd": 1539890302,
+      "changePct": -0.4,
+      "sharePct": 15
+    },
+    {
+      "heading": "9704",
+      "label": "Postage & revenue stamps, first-day covers, postal stationery",
+      "exportsUsd": 10302502,
+      "priorExportsUsd": 12358759,
+      "changePct": -16.6,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "9705",
+      "label": "Collections & collectors' pieces: archaeological, ethnographic, natural history, coins",
+      "exportsUsd": 294409585,
+      "priorExportsUsd": 261131742,
+      "changePct": 12.7,
+      "sharePct": 2.9
+    },
+    {
+      "heading": "9706",
+      "label": "Antiques over 100 years old",
+      "exportsUsd": 659620043,
+      "priorExportsUsd": 600329092,
+      "changePct": 9.9,
+      "sharePct": 6.5
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "9701.91",
+      "heading": "9701",
+      "description": "Paintings, drawings and pastels; executed entirely by hand, other than drawings of heading no. 4906, of an age not exceeding 100 years",
+      "exportsUsd": 5385528398,
+      "priorExportsUsd": 5783086854,
+      "changePct": -6.9,
+      "sharePct": 52.7
+    },
+    {
+      "hs6": "9701.21",
+      "heading": "9701",
+      "description": "Paintings, drawings and pastels; executed entirely by hand, other than drawings of heading no. 4906, of an age exceeding 100 years",
+      "exportsUsd": 1792263653,
+      "priorExportsUsd": 1583784123,
+      "changePct": 13.2,
+      "sharePct": 17.6
+    },
+    {
+      "hs6": "9703.90",
+      "heading": "9703",
+      "description": "Sculptures and statuary; original, in any material, of an age not exceeding 100 years",
+      "exportsUsd": 1400994978,
+      "priorExportsUsd": 1394761656,
+      "changePct": 0.4,
+      "sharePct": 13.7
+    },
+    {
+      "hs6": "9706.10",
+      "heading": "9706",
+      "description": "Antiques; of an age exceeding 250 years",
+      "exportsUsd": 345576766,
+      "priorExportsUsd": 249477687,
+      "changePct": 38.5,
+      "sharePct": 3.4
+    },
+    {
+      "hs6": "9706.90",
+      "heading": "9706",
+      "description": "Antiques; of an age exceeding 100 years but not exceeding 250 years",
+      "exportsUsd": 314043277,
+      "priorExportsUsd": 350851405,
+      "changePct": -10.5,
+      "sharePct": 3.1
+    },
+    {
+      "hs6": "9702.90",
+      "heading": "9702",
+      "description": "Engravings, prints and lithographs; original of an age not exceeding 100 years",
+      "exportsUsd": 265295022,
+      "priorExportsUsd": 279666252,
+      "changePct": -5.1,
+      "sharePct": 2.6
+    },
+    {
+      "hs6": "9701.99",
+      "heading": "9701",
+      "description": "Artwork; other than paintings, drawings, pastels mosaics, executed entirely by hand, other than drawings of heading no. 4906, of an age not exceeding 100 years",
+      "exportsUsd": 196414581,
+      "priorExportsUsd": 167599693,
+      "changePct": 17.2,
+      "sharePct": 1.9
+    },
+    {
+      "hs6": "9705.10",
+      "heading": "9705",
+      "description": "Collections and collectors' pieces; of archaeological, ethnographic or historical interest",
+      "exportsUsd": 141746243,
+      "priorExportsUsd": 126654158,
+      "changePct": 11.9,
+      "sharePct": 1.4
+    },
+    {
+      "hs6": "9703.10",
+      "heading": "9703",
+      "description": "Sculptures and statuary; original, in any material, of an age exceeding 100 years",
+      "exportsUsd": 132868196,
+      "priorExportsUsd": 145128646,
+      "changePct": -8.4,
+      "sharePct": 1.3
+    },
+    {
+      "hs6": "9705.31",
+      "heading": "9705",
+      "description": "Collections and collectors' pieces; of numismatic interest, of an age exceeding 100 years",
+      "exportsUsd": 48659553,
+      "priorExportsUsd": 49328104,
+      "changePct": -1.4,
+      "sharePct": 0.5
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 97, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 85% of 2025 U.S. Chapter 97 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

@@ -1,0 +1,576 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 44,
+    "padded": "44",
+    "slug": "44-wood-and-charcoal",
+    "title": "Wood and articles of wood; wood charcoal"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/44-wood-and-charcoal",
+    "h1": "HTS Chapter 44: Wood and articles of wood; wood charcoal — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Lumber, Log & Wood Pellet Exports: Top Buyers and Tariffs",
+      "shortDescription": "The U.S. exported $8.79B of wood in 2025: $1.93B of wood pellets, $2.53B of lumber, $1.42B of logs. Who buys it (Canada, UK, China) and what each charges.",
+      "keywords": [
+        "us lumber exports",
+        "us wood exports",
+        "us log exports",
+        "us wood pellet exports",
+        "us lumber exports by country",
+        "us timber exports",
+        "us hardwood exports",
+        "does the us export lumber"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$8.79 billion** of wood and wood products (HTS Chapter 44) in 2025, down **8.1%** from 2024. Three products carry most of it: sawn **lumber** (heading 4407, **$2.53 billion**, led by oak at $873 million and pine at $605 million), **wood pellets** (4401.31, **$1.93 billion**, the largest single line) and **logs** ($1.42 billion). Canada is the largest buyer (**23%**), then the United Kingdom (**19%**, almost all wood pellets), Mexico, China, Viet Nam and Japan.\n\nMost buyers charge little or nothing: logs and lumber enter the EU, the UK, Viet Nam and Japan duty-free (Japan charges 4.8% on S-P-F and pine lumber), the UK and EU take pellets free, and Mexico and Canada take qualifying U.S. wood free under USMCA. The exceptions are **Canada**, which since September 8, 2026 charges U.S. softwood lumber **25%** and plywood and charcoal **50%**, and **China**, which adds **10%** to every U.S. good and suspended U.S. log imports from March 4 to November 10, 2025; U.S. wood sales to China halved to **$806 million** in 2025 while Viet Nam’s doubled. For logs and lumber, what usually decides access is the buyer’s plant-health rules (the USDA phytosanitary certificate, fumigation of logs), and for the EU from December 30, 2026 its deforestation rules.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$8.79B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-8.1%"
+    },
+    {
+      "label": "Largest product group (4407)",
+      "value": "29%",
+      "note": "Sawn lumber: softwood, hardwood & tropical"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "43%",
+      "note": "Canada, United Kingdom"
+    },
+    {
+      "label": "Top 12 buyers with an extra duty on U.S. wood",
+      "value": "2 of 12",
+      "note": "Canada (softwood lumber, plywood, charcoal) and China (all goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "Pellets, lumber and logs are about two-thirds of U.S. Chapter 44 exports. The UK alone bought $1.45 billion of fuel wood and pellets (heading 4401) in 2025, almost all pellets.",
+    "Canada is the only buyer that targets U.S. wood: since September 8, 2026 its surtax charges 25% on softwood lumber (4407.11–4407.19) and 50% on plywood, LVL and charcoal, with no CUSMA exemption. Hardwood lumber, logs, pellets and joinery still enter free.",
+    "China reopened to U.S. logs on November 10, 2025 and its purchases are recovering (up 25% in January–August 2026), but it still adds 10% to all U.S. goods, and two dates could raise that: December 31, 2026 (tariff exclusions end) and January 10, 2027 (24-point suspension ends).",
+    "The EU dropped its duties on all U.S. Chapter 44 goods to 0% from July 1, 2026, which mostly helps panels and plywood (normally 7%); for U.S. pellets and lumber the date that matters is December 30, 2026, when the EU Deforestation Regulation starts to apply."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 7641331517,
+      "partnerAUsd": 1958178055,
+      "partnerBUsd": 927862376,
+      "restUsd": 4755291086
+    },
+    {
+      "year": 2021,
+      "totalUsd": 9730896141,
+      "partnerAUsd": 2547773354,
+      "partnerBUsd": 899822361,
+      "restUsd": 6283300426
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10439488062,
+      "partnerAUsd": 2717689332,
+      "partnerBUsd": 1134147534,
+      "restUsd": 6587651196
+    },
+    {
+      "year": 2023,
+      "totalUsd": 9505751550,
+      "partnerAUsd": 2465613871,
+      "partnerBUsd": 1252627533,
+      "restUsd": 5787510146
+    },
+    {
+      "year": 2024,
+      "totalUsd": 9560442663,
+      "partnerAUsd": 2358105964,
+      "partnerBUsd": 1629355950,
+      "restUsd": 5572980749
+    },
+    {
+      "year": 2025,
+      "totalUsd": 8790380667,
+      "partnerAUsd": 2063092727,
+      "partnerBUsd": 1686803933,
+      "restUsd": 5040484007
+    }
+  ],
+  "byYearPartners": ["Canada", "United Kingdom"],
+  "byYearCaption": "U.S. exports of Chapter 44 goods each year, split into the two largest 2025 buyers (Canada and United Kingdom) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 6242389641,
+    "priorExportsUsd": 5928712522,
+    "changePct": 5.3,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 1392002949,
+        "priorExportsUsd": 1371819678,
+        "changePct": 1.5
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 1197166897,
+        "priorExportsUsd": 1177572028,
+        "changePct": 1.7
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 697061485,
+        "priorExportsUsd": 559363883,
+        "changePct": 24.6
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 622305746,
+        "priorExportsUsd": 630024724,
+        "changePct": -1.2
+      },
+      {
+        "countryCode": 704,
+        "country": "Viet Nam",
+        "exportsUsd": 620990537,
+        "priorExportsUsd": 495653145,
+        "changePct": 25.3
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 389995368,
+        "priorExportsUsd": 425442290,
+        "changePct": -8.3
+      },
+      {
+        "countryCode": 251,
+        "country": "France",
+        "exportsUsd": 88570985,
+        "priorExportsUsd": 61264610,
+        "changePct": 44.6
+      },
+      {
+        "countryCode": 699,
+        "country": "India",
+        "exportsUsd": 81361516,
+        "priorExportsUsd": 59854102,
+        "changePct": 35.9
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2063092727,
+      "priorExportsUsd": 2358105964,
+      "sharePct": 23.5,
+      "changePct": -12.5,
+      "tariffNow": "Free (CUSMA), but 25% on softwood lumber and 50% on plywood and charcoal",
+      "status": "raised"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 1686803933,
+      "priorExportsUsd": 1629355950,
+      "sharePct": 19.2,
+      "changePct": 3.5,
+      "tariffNow": "Free on pellets, lumber and barrels (UK tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 913208754,
+      "priorExportsUsd": 978513394,
+      "sharePct": 10.4,
+      "changePct": -6.7,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 805872806,
+      "priorExportsUsd": 1621757126,
+      "sharePct": 9.2,
+      "changePct": -50.3,
+      "tariffNow": "Normal rate (0% on logs and lumber) + 10% on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 704,
+      "country": "Viet Nam",
+      "exportsUsd": 750456977,
+      "priorExportsUsd": 350692419,
+      "sharePct": 8.5,
+      "changePct": 114,
+      "tariffNow": "Free on logs and lumber (normal rate)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 659776726,
+      "priorExportsUsd": 687898813,
+      "sharePct": 7.5,
+      "changePct": -4.1,
+      "tariffNow": "Free on pellets, logs and hardwood; 4.8% on SPF and pine lumber",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 208,
+      "country": "Denmark",
+      "exportsUsd": 132959565,
+      "priorExportsUsd": 123291537,
+      "sharePct": 1.5,
+      "changePct": 7.8,
+      "tariffNow": "Free on all U.S. wood since July 1, 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "exportsUsd": 108270317,
+      "priorExportsUsd": 107272569,
+      "sharePct": 1.2,
+      "changePct": 0.9,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 699,
+      "country": "India",
+      "exportsUsd": 102263630,
+      "priorExportsUsd": 93648553,
+      "sharePct": 1.2,
+      "changePct": 9.2,
+      "tariffNow": "5% on logs, 10% on lumber",
+      "status": "pending"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 100372167,
+      "priorExportsUsd": 126629554,
+      "sharePct": 1.1,
+      "changePct": -20.7,
+      "tariffNow": "Free on all U.S. wood since July 1, 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 89993553,
+      "priorExportsUsd": 94740556,
+      "sharePct": 1,
+      "changePct": -5,
+      "tariffNow": "Free on all U.S. wood since July 1, 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 44,
+      "country": "Bahamas",
+      "exportsUsd": 89957784,
+      "priorExportsUsd": 83815602,
+      "sharePct": 1,
+      "changePct": 7.3,
+      "tariffNow": "Free on lumber and doors",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 1287351728,
+  "othersPriorExportsUsd": 1304720626,
+  "byHeading": [
+    {
+      "heading": "4401",
+      "label": "Fuel wood, wood chips, sawdust & wood pellets",
+      "exportsUsd": 2268762429,
+      "priorExportsUsd": 2169321131,
+      "changePct": 4.6,
+      "sharePct": 25.8
+    },
+    {
+      "heading": "4402",
+      "label": "Wood charcoal, incl. shell & bamboo charcoal",
+      "exportsUsd": 19462445,
+      "priorExportsUsd": 17805400,
+      "changePct": 9.3,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4403",
+      "label": "Logs and wood in the rough",
+      "exportsUsd": 1417484336,
+      "priorExportsUsd": 1729398043,
+      "changePct": -18,
+      "sharePct": 16.1
+    },
+    {
+      "heading": "4404",
+      "label": "Hoopwood, split poles, stakes & sticks",
+      "exportsUsd": 7192344,
+      "priorExportsUsd": 6707377,
+      "changePct": 7.2,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4405",
+      "label": "Wood wool (excelsior) & wood flour",
+      "exportsUsd": 5908993,
+      "priorExportsUsd": 6632761,
+      "changePct": -10.9,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4406",
+      "label": "Railway sleepers (cross-ties)",
+      "exportsUsd": 157017678,
+      "priorExportsUsd": 183657439,
+      "changePct": -14.5,
+      "sharePct": 1.8
+    },
+    {
+      "heading": "4407",
+      "label": "Sawn lumber: softwood, hardwood & tropical",
+      "exportsUsd": 2534116944,
+      "priorExportsUsd": 2712098584,
+      "changePct": -6.6,
+      "sharePct": 28.8
+    },
+    {
+      "heading": "4408",
+      "label": "Veneer sheets",
+      "exportsUsd": 350196362,
+      "priorExportsUsd": 325800513,
+      "changePct": 7.5,
+      "sharePct": 4
+    },
+    {
+      "heading": "4409",
+      "label": "Mouldings, flooring strips & continuously shaped wood",
+      "exportsUsd": 173767118,
+      "priorExportsUsd": 213752507,
+      "changePct": -18.7,
+      "sharePct": 2
+    },
+    {
+      "heading": "4410",
+      "label": "Particle board & OSB",
+      "exportsUsd": 226515757,
+      "priorExportsUsd": 243333500,
+      "changePct": -6.9,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "4411",
+      "label": "Fiberboard & MDF",
+      "exportsUsd": 191410523,
+      "priorExportsUsd": 196598842,
+      "changePct": -2.6,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "4412",
+      "label": "Plywood, LVL & veneered panels",
+      "exportsUsd": 280472934,
+      "priorExportsUsd": 271070679,
+      "changePct": 3.5,
+      "sharePct": 3.2
+    },
+    {
+      "heading": "4413",
+      "label": "Densified wood",
+      "exportsUsd": 10044644,
+      "priorExportsUsd": 10558404,
+      "changePct": -4.9,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4414",
+      "label": "Wooden picture & mirror frames",
+      "exportsUsd": 15061506,
+      "priorExportsUsd": 16524073,
+      "changePct": -8.9,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "4415",
+      "label": "Pallets, crates, boxes & cable drums",
+      "exportsUsd": 206012326,
+      "priorExportsUsd": 213796501,
+      "changePct": -3.6,
+      "sharePct": 2.3
+    },
+    {
+      "heading": "4416",
+      "label": "Barrels, casks & staves",
+      "exportsUsd": 295608773,
+      "priorExportsUsd": 442344052,
+      "changePct": -33.2,
+      "sharePct": 3.4
+    },
+    {
+      "heading": "4417",
+      "label": "Tools, tool handles & shoe lasts",
+      "exportsUsd": 9774441,
+      "priorExportsUsd": 10669096,
+      "changePct": -8.4,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "4418",
+      "label": "Builders' joinery: doors, windows, flooring, glulam",
+      "exportsUsd": 423187761,
+      "priorExportsUsd": 552772450,
+      "changePct": -23.4,
+      "sharePct": 4.8
+    },
+    {
+      "heading": "4419",
+      "label": "Wooden tableware & kitchenware",
+      "exportsUsd": 28049512,
+      "priorExportsUsd": 23834207,
+      "changePct": 17.7,
+      "sharePct": 0.3
+    },
+    {
+      "heading": "4420",
+      "label": "Wood marquetry, jewelry boxes & ornaments",
+      "exportsUsd": 33579161,
+      "priorExportsUsd": 31696798,
+      "changePct": 5.9,
+      "sharePct": 0.4
+    },
+    {
+      "heading": "4421",
+      "label": "Other articles of wood",
+      "exportsUsd": 136754680,
+      "priorExportsUsd": 182070306,
+      "changePct": -24.9,
+      "sharePct": 1.6
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "4401.31",
+      "heading": "4401",
+      "description": "Wood; for fuel, sawdust and wood waste and scrap, agglomerated in wood pellets",
+      "exportsUsd": 1934340483,
+      "priorExportsUsd": 1859220356,
+      "changePct": 4,
+      "sharePct": 22
+    },
+    {
+      "hs6": "4407.91",
+      "heading": "4407",
+      "description": "Wood; oak (Quercus spp.), sawn or chipped lengthwise, sliced or peeled, whether or not planed, sanded or finger-jointed, thicker than 6mm",
+      "exportsUsd": 872811754,
+      "priorExportsUsd": 870309376,
+      "changePct": 0.3,
+      "sharePct": 9.9
+    },
+    {
+      "hs6": "4407.11",
+      "heading": "4407",
+      "description": "Wood; coniferous species, of pine (Pinus spp.), sawn or chipped lengthwise, sliced or peeled, whether or not planed, sanded or finger-jointed, of a thickness exceeding 6mm",
+      "exportsUsd": 604824658,
+      "priorExportsUsd": 611685280,
+      "changePct": -1.1,
+      "sharePct": 6.9
+    },
+    {
+      "hs6": "4403.99",
+      "heading": "4403",
+      "description": "Wood; in the rough, whether or not stripped of bark or sapwood, or roughly squared, untreated, n.e.c. in heading no. 4403",
+      "exportsUsd": 514446353,
+      "priorExportsUsd": 585644897,
+      "changePct": -12.2,
+      "sharePct": 5.9
+    },
+    {
+      "hs6": "4407.99",
+      "heading": "4407",
+      "description": "Wood; sawn or chipped lengthwise, sliced or peeled, of a thickness exceeding 6mm, whether or not planed, sanded or finger-jointed, n.e.c. in heading no. 4407",
+      "exportsUsd": 368005639,
+      "priorExportsUsd": 419036825,
+      "changePct": -12.2,
+      "sharePct": 4.2
+    },
+    {
+      "hs6": "4408.90",
+      "heading": "4408",
+      "description": "Wood; n.e.c. in heading no. 4408, sheets for veneer or plywood, other wood sawn lengthwise, sliced or peeled, whether or not planed, sanded or end-jointed, not exceeding 6mm in thickness",
+      "exportsUsd": 321211273,
+      "priorExportsUsd": 293573661,
+      "changePct": 9.4,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "4416.00",
+      "heading": "4416",
+      "description": "Wood; casks, barrels, vats, tubs and other coopers' products and parts thereof, of wood, including staves",
+      "exportsUsd": 295608773,
+      "priorExportsUsd": 442344052,
+      "changePct": -33.2,
+      "sharePct": 3.4
+    },
+    {
+      "hs6": "4403.25",
+      "heading": "4403",
+      "description": "Wood; coniferous species n.e.c. in headings 4403.21 or 4403.23, in the rough, whether or not stripped of bark or sapwood, or roughly squared, untreated, of which the smallest cross-sectional dimension is 15 cm or more",
+      "exportsUsd": 290102780,
+      "priorExportsUsd": 419312896,
+      "changePct": -30.8,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "4403.91",
+      "heading": "4403",
+      "description": "Wood; oak, in the rough, whether or not stripped of bark or sapwood, or roughly squared, untreated",
+      "exportsUsd": 283295793,
+      "priorExportsUsd": 326589920,
+      "changePct": -13.3,
+      "sharePct": 3.2
+    },
+    {
+      "hs6": "4401.21",
+      "heading": "4401",
+      "description": "Wood; for fuel, in chips or particles, coniferous, whether or not agglomerated",
+      "exportsUsd": 280070223,
+      "priorExportsUsd": 267793552,
+      "changePct": 4.6,
+      "sharePct": 3.2
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 44, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 85% of 2025 U.S. Chapter 44 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

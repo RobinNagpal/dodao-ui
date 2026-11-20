@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 38,
+    "padded": "38",
+    "slug": "38-misc-chemical-products",
+    "title": "Miscellaneous Chemical Products"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/38-misc-chemical-products/faq",
+    "h1": "HTS Chapter 38: Miscellaneous Chemical Products — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Chemical Products Export FAQ (HTS Ch. 38) | KoalaGains",
+      "shortDescription": "Short answers on foreign tariffs on U.S. pesticides, reagents and other Chapter 38 chemicals, China's tariff pause, TSCA 12(b) notices, pesticide export rules, EEI filing and HS codes.",
+      "keywords": [
+        "china tariff on us goods",
+        "eu tariff on us goods",
+        "tsca 12b export notification",
+        "hs code 3822",
+        "do i need to file an eei for shipments to canada"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. reagents, pesticides, catalysts and other Chapter 38 chemical products, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada, Mexico, South Korea and Singapore charge nothing on qualifying U.S. Chapter 38 goods, and the EU has charged nothing since July 1, 2026 except on 3809.10 and 3824.60; China adds a 10% extra duty.",
+    "China's 24-point tariff suspension runs to January 10, 2027 and its exclusions from its 2019 counter-tariffs to December 31, 2026; a lapse would take its extra duty from 10% to 34%.",
+    "Before shipping, check EPA's pesticide export rules, TSCA 12(b) notices, RIN retirement for biodiesel and BIS licences for controlled mixtures; most Chapter 38 goods are otherwise EAR99."
+  ],
+  "questionSource": "Google search-suggestion queries for \"china tariff on us\", \"eu tariff on us\", \"does canada tariff us\", \"does china tariff us\", \"tsca 12b export notification\", \"hs code 3822\", \"hs code 3824\", \"do i need to file eei\", \"biodiesel export\" and \"us chemical exports\"; the other questions follow the Overview, Markets, Tariff updates and Export rules pages.",
+  "faqs": [
+    {
+      "id": "china-tariff",
+      "question": "Does China charge extra tariffs on U.S. chemical products?",
+      "searchedAs": ["china tariff on us goods", "china tariff on us products", "does china tariff us goods"],
+      "answer": "Yes. China charges its MFN rate plus a 10% extra duty on all U.S. goods, in force since May 14, 2025: U.S. diagnostic reagents pay 13% (3% MFN + 10%) and other chemical preparations 16.6%. U.S. Chapter 38 exports to China fell 21.3% to $2.59B in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "What tariff does the EU charge on U.S. chemical products?",
+      "searchedAs": ["eu tariff on us goods", "eu tariffs on us products"],
+      "answer": "None since July 1, 2026, except on finishing agents of 3809.10 and sorbitol of 3824.60. Regulation (EU) 2026/1455 lists Chapter 38 as 'ex 38' and zeroes EU duties of up to 6.5% on U.S.-origin chemical products until December 31, 2029; diagnostic reagents were already free, and the Commission can suspend the cut.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada tariff U.S. pesticides and chemical products?",
+      "searchedAs": ["does canada tariff us goods", "does canada tariff us products", "are there tariffs on us exports to canada"],
+      "answer": "No. Qualifying U.S. goods enter Canada free under CUSMA, and neither Canada's 2025 nor its 2026 counter-tariff list has a Chapter 38 item. Canada is the largest buyer ($5.59B in 2025), including $1.79B of pesticides, which need PMRA registration to be sold there.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-retaliation",
+      "question": "Did the EU retaliate against U.S. chemical products?",
+      "searchedAs": [],
+      "answer": "It listed them but never applied the duties. Implementing Regulation (EU) 2025/1564 put most Chapter 38 lines, including pesticides, fuel additives, catalysts and biodiesel, on its countermeasure list at 30%, but the measures were suspended before they started and, from August 7, 2026, with no end date. Diagnostic reagents were not on the list.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-pause-end",
+      "question": "When does China's tariff pause on U.S. goods end?",
+      "searchedAs": ["when does china us tariff pause end"],
+      "answer": "China's suspension of 24 points of its extra duty runs to January 10, 2027, after Tariff Commission Announcement 2026 No. 6 continued it for two months from November 10, 2026. If it lapses, the extra duty goes from 10% to 34%, taking U.S. diagnostic reagents from 13% to 37%. China's exclusions from its 2019 counter-tariffs end December 31, 2026 unless extended.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "hs-3822",
+      "question": "What is the HS or Schedule B code for diagnostic reagents?",
+      "searchedAs": ["hs code 3822", "hs code 3822.19", "hs code 38221900"],
+      "answer": "Diagnostic and laboratory reagents are heading 3822, and most U.S. exports ($10.48B in 2025) fall under 3822.19, other diagnostic or laboratory reagents. Since HS 2022, malaria, Zika and blood-grouping reagents have their own subheadings (3822.11–3822.13). The export filing needs the 10-digit Schedule B number from the Census search tool.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-382499",
+      "question": "What does HS 3824.99 cover, and how much does the U.S. export?",
+      "searchedAs": ["hs code 382499", "hs code 3824"],
+      "answer": "3824.99 covers chemical products and preparations not specified elsewhere in heading 3824. It was the second-largest U.S. Chapter 38 line in 2025 at $5.14B, 14.2% of the chapter, after diagnostic reagents (3822.19).",
+      "link": "exports"
+    },
+    {
+      "id": "tsca-12b",
+      "question": "What is TSCA 12(b) export notification?",
+      "searchedAs": ["tsca 12b export notification", "tsca 12 b export notification requirements", "tsca export requirements"],
+      "answer": "A notice to EPA, filed through CDX, when you export a chemical substance or mixture that is subject to certain TSCA actions, such as section 4 data requirements, section 5 orders or section 6 rules. It is due within seven days of forming the intent to export or on the export date, whichever is earlier; components under 1% (0.1% for carcinogens) are exempt, and pesticides follow FIFRA instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "pesticide-export",
+      "question": "What does EPA require to export pesticides?",
+      "searchedAs": [],
+      "answer": "Every export pesticide must carry export labeling in English and the destination's language. A pesticide not registered for use in the U.S. also needs a signed foreign purchaser acknowledgement statement, obtained before the shipment and submitted to EPA, either per shipment or for the first shipment to each buyer each year plus an annual summary by March 1.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-licence",
+      "question": "Do I need an export licence for chemical products?",
+      "searchedAs": [],
+      "answer": "Usually not: most Chapter 38 goods are EAR99. A licence is needed for mixtures and test kits with chemical-weapons chemicals or precursors (ECCN 1C350, 1C355, 1C395), special graphite (1C298, 1C107) and some semiconductor wafers (3C001, 3C005, 3C006), and for many Chapter 38 HS codes going to Russia or Belarus.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "eei-canada",
+      "question": "Do I need to file EEI for chemical shipments to Canada?",
+      "searchedAs": ["do i need to file an eei for shipments to canada", "eei filing requirements"],
+      "answer": "Usually not. Shipments to Canada are exempt from EEI filing unless they need a licence or are only passing through Canada to a third country. Elsewhere, EEI is required when one Schedule B number in a shipment is worth over $2,500, and at any value for licensed goods or hazardous-waste exports.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "biodiesel",
+      "question": "How much biodiesel does the U.S. export, and what rules apply?",
+      "searchedAs": ["us biodiesel exports", "biodiesel exports by country"],
+      "answer": "U.S. biodiesel exports (3826) fell 60.4% to $316M in 2025, and Canada bought $257M of them. An exporter of renewable fuel must retire RINs for the volume shipped, unless it bought the fuel straight from the producer and no RINs were generated.",
+      "link": "exports/rules"
+    }
+  ]
+}

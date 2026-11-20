@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 21,
+    "padded": "21",
+    "slug": "21-misc-edible-preparations",
+    "title": "Miscellaneous Edible Preparations"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/21-misc-edible-preparations",
+    "h1": "HTS Chapter 21: Miscellaneous Edible Preparations — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Food Preparation & Supplement Exports by Country (HTS Ch. 21) | KoalaGains",
+      "shortDescription": "The U.S. exported $11.72B of food preparations in 2025: $7.54B of supplements, protein powders and mixes, $2.37B of sauces. Top buyers and what each charges.",
+      "keywords": [
+        "us food exports by country",
+        "us food exports 2025",
+        "us food exports to canada",
+        "us food exports to china",
+        "us dietary supplement exports",
+        "us sauce and seasoning exports",
+        "hts chapter 21 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "The U.S. exported **$11.72 billion** of Chapter 21 food preparations in 2025, up **3.6%** from 2024. Heading 2106, which holds dietary supplements, protein powders and concentrates, drink mixes, flavored syrups and creamers, was **$7.54 billion**, 64% of the chapter. Sauces, dressings and seasonings followed at $2.37 billion (including $390 million of ketchup), then soups and broths ($945 million), coffee and tea extracts ($444 million), ice cream ($255 million) and yeasts ($161 million). Canada (**28%**) and Mexico (**18%**) buy almost half, followed by South Korea (5%) and China (4%). Exports from January to August 2026 were 5.7% above the same months of 2025.\n\nFor most of this trade the tariff is zero: Canada and Mexico under USMCA, South Korea under KORUS, Australia under AUSFTA, and Hong Kong charges no tariffs at all. Since July 1, 2026 the EU lets 250,000 tonnes a year of U.S. Chapter 21 goods in at about a quarter of its normal duty (3.2% instead of 12.8% on most food preparations). China is the costly market: its normal rate, its 2018–19 counter-tariffs and an extra 10% on all U.S. goods add up to about **32%** on food preparations and **47%** on sauces and soups. What usually decides access is the buyer’s food regulator: plant registration with China’s customs (GACC) and Korea’s MFDS, China’s health-food rules for supplements, and supplement-ingredient rules in Canada, the EU and Japan.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$11.72B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+3.6%"
+    },
+    {
+      "label": "Largest product group (2106)",
+      "value": "64%",
+      "note": "Food preparations n.e.s.i. (supplements, syrups, mixes)"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "46%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top 12 buyers with a counter-tariff on these goods",
+      "value": "1 of 12",
+      "note": "China’s extra 10% on all U.S. goods; Canada’s 25% on 16 Chapter 21 lines ended Sept 1, 2025"
+    }
+  ],
+  "keyTakeaways": [
+    "Supplements, protein powders, drink mixes and other food preparations (heading 2106) are almost two-thirds of U.S. Chapter 21 exports: $7.54 billion of $11.72 billion in 2025.",
+    "Canada put 25% on U.S. soy sauce, ketchup, mustard, mayonnaise, soups and some sugar- and dairy-based preparations from March 4 to August 31, 2025; since then it charges nothing on qualifying U.S. goods, and its September 2026 counter-tariffs skip Chapter 21.",
+    "China charges U.S. food preparations about 32% (12% normal rate + 10% counter-tariff + 10% extra), or 22% with an exclusion; exclusions end December 31, 2026 and the extra tariff could rise to 34% on January 10, 2027.",
+    "The EU’s 25–30% counter-list on almost every Chapter 21 good is suspended and never applied; instead, a 250,000-tonne U.S. quota has cut its duty to about a quarter since July 1, 2026."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 9290947886,
+      "partnerAUsd": 2562469890,
+      "partnerBUsd": 1125879381,
+      "restUsd": 5602598615
+    },
+    {
+      "year": 2021,
+      "totalUsd": 10440533117,
+      "partnerAUsd": 2639291485,
+      "partnerBUsd": 1416287024,
+      "restUsd": 6384954608
+    },
+    {
+      "year": 2022,
+      "totalUsd": 10459068530,
+      "partnerAUsd": 2889176683,
+      "partnerBUsd": 1570017089,
+      "restUsd": 5999874758
+    },
+    {
+      "year": 2023,
+      "totalUsd": 10272263265,
+      "partnerAUsd": 3111565743,
+      "partnerBUsd": 1677437008,
+      "restUsd": 5483260514
+    },
+    {
+      "year": 2024,
+      "totalUsd": 11309565574,
+      "partnerAUsd": 3204368100,
+      "partnerBUsd": 2014975895,
+      "restUsd": 6090221579
+    },
+    {
+      "year": 2025,
+      "totalUsd": 11717854249,
+      "partnerAUsd": 3273912207,
+      "partnerBUsd": 2113332072,
+      "restUsd": 6330609970
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 21 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 8211094684,
+    "priorExportsUsd": 7771572382,
+    "changePct": 5.7,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2231416795,
+        "priorExportsUsd": 2200885729,
+        "changePct": 1.4
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 1471035982,
+        "priorExportsUsd": 1388953722,
+        "changePct": 5.9
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 452924328,
+        "priorExportsUsd": 424968639,
+        "changePct": 6.6
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 438216161,
+        "priorExportsUsd": 272253741,
+        "changePct": 61
+      },
+      {
+        "countryCode": 344,
+        "country": "China, Hong Kong SAR",
+        "exportsUsd": 222158722,
+        "priorExportsUsd": 224875991,
+        "changePct": -1.2
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 193571639,
+        "priorExportsUsd": 203536363,
+        "changePct": -4.9
+      },
+      {
+        "countryCode": 682,
+        "country": "Saudi Arabia",
+        "exportsUsd": 179518679,
+        "priorExportsUsd": 108910867,
+        "changePct": 64.8
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 150314660,
+        "priorExportsUsd": 174604194,
+        "changePct": -13.9
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 3273912207,
+      "priorExportsUsd": 3204368100,
+      "sharePct": 27.9,
+      "changePct": 2.2,
+      "tariffNow": "Free (CUSMA); dairy lines over quota 212–277%",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 2113332072,
+      "priorExportsUsd": 2014975895,
+      "sharePct": 18,
+      "changePct": 4.9,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 638015795,
+      "priorExportsUsd": 617100680,
+      "sharePct": 5.4,
+      "changePct": 3.4,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 464570252,
+      "priorExportsUsd": 433420991,
+      "sharePct": 4,
+      "changePct": 7.2,
+      "tariffNow": "About 32% on food preps; 47% on sauces & soups",
+      "status": "raised"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 314602750,
+      "priorExportsUsd": 214263092,
+      "sharePct": 2.7,
+      "changePct": 46.8,
+      "tariffNow": "Free (free port)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 299541254,
+      "priorExportsUsd": 299738799,
+      "sharePct": 2.6,
+      "changePct": -0.1,
+      "tariffNow": "3.2% in U.S. quota on most (12.8% normal)",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 784,
+      "country": "United Arab Emirates",
+      "exportsUsd": 241598856,
+      "priorExportsUsd": 230791028,
+      "sharePct": 2.1,
+      "changePct": 4.7,
+      "tariffNow": "5% (Gulf common tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 240149271,
+      "priorExportsUsd": 257117166,
+      "sharePct": 2,
+      "changePct": -6.6,
+      "tariffNow": "Free on most (JP-US); ice cream 21–29.8%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 221817704,
+      "priorExportsUsd": 249907548,
+      "sharePct": 1.9,
+      "changePct": -11.2,
+      "tariffNow": "2–30%; U.S. deal would cut most to 0%",
+      "status": "pending"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 174429665,
+      "priorExportsUsd": 162545063,
+      "sharePct": 1.5,
+      "changePct": 7.3,
+      "tariffNow": "0–16% (UK Global Tariff)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 171827125,
+      "priorExportsUsd": 178754078,
+      "sharePct": 1.5,
+      "changePct": -3.9,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 682,
+      "country": "Saudi Arabia",
+      "exportsUsd": 160850615,
+      "priorExportsUsd": 139397535,
+      "sharePct": 1.4,
+      "changePct": 15.4,
+      "tariffNow": "5–15% (Gulf common tariff)",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 3403206683,
+  "othersPriorExportsUsd": 3307185599,
+  "byHeading": [
+    {
+      "heading": "2101",
+      "label": "Coffee, tea & maté extracts and preparations; chicory",
+      "exportsUsd": 443608787,
+      "priorExportsUsd": 405160896,
+      "changePct": 9.5,
+      "sharePct": 3.8
+    },
+    {
+      "heading": "2102",
+      "label": "Yeasts, dead single-cell micro-organisms & baking powder",
+      "exportsUsd": 161449643,
+      "priorExportsUsd": 145282726,
+      "changePct": 11.1,
+      "sharePct": 1.4
+    },
+    {
+      "heading": "2103",
+      "label": "Sauces, condiments, seasonings & mustard",
+      "exportsUsd": 2373734624,
+      "priorExportsUsd": 2337882398,
+      "changePct": 1.5,
+      "sharePct": 20.3
+    },
+    {
+      "heading": "2104",
+      "label": "Soups, broths & homogenized composite food (baby food)",
+      "exportsUsd": 945143174,
+      "priorExportsUsd": 926828115,
+      "changePct": 2,
+      "sharePct": 8.1
+    },
+    {
+      "heading": "2105",
+      "label": "Ice cream & other edible ice",
+      "exportsUsd": 254690064,
+      "priorExportsUsd": 243442439,
+      "changePct": 4.6,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "2106",
+      "label": "Food preparations n.e.s.i. (supplements, syrups, mixes)",
+      "exportsUsd": 7539227957,
+      "priorExportsUsd": 7250969000,
+      "changePct": 4,
+      "sharePct": 64.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2106.90",
+      "heading": "2106",
+      "description": "Food preparations; n.e.c. in item no. 2106.10",
+      "exportsUsd": 6733205636,
+      "priorExportsUsd": 6469815386,
+      "changePct": 4.1,
+      "sharePct": 57.5
+    },
+    {
+      "hs6": "2103.90",
+      "heading": "2103",
+      "description": "Sauces and preparations therefor; mixed condiments and mixed seasonings",
+      "exportsUsd": 1826344300,
+      "priorExportsUsd": 1737723001,
+      "changePct": 5.1,
+      "sharePct": 15.6
+    },
+    {
+      "hs6": "2104.10",
+      "heading": "2104",
+      "description": "Soups and broths and preparations therefor",
+      "exportsUsd": 933492818,
+      "priorExportsUsd": 913431048,
+      "changePct": 2.2,
+      "sharePct": 8
+    },
+    {
+      "hs6": "2106.10",
+      "heading": "2106",
+      "description": "Protein; concentrates and textured protein substances",
+      "exportsUsd": 806022321,
+      "priorExportsUsd": 781153614,
+      "changePct": 3.2,
+      "sharePct": 6.9
+    },
+    {
+      "hs6": "2103.20",
+      "heading": "2103",
+      "description": "Sauces; tomato ketchup and other tomato sauces",
+      "exportsUsd": 389524362,
+      "priorExportsUsd": 432803454,
+      "changePct": -10,
+      "sharePct": 3.3
+    },
+    {
+      "hs6": "2105.00",
+      "heading": "2105",
+      "description": "Ice cream and other edible ice; whether or not containing cocoa",
+      "exportsUsd": 254690064,
+      "priorExportsUsd": 243442439,
+      "changePct": 4.6,
+      "sharePct": 2.2
+    },
+    {
+      "hs6": "2101.20",
+      "heading": "2101",
+      "description": "Extracts, essences and concentrates; of tea or mate, and preparations with a basis of these extracts, essences or concentrates or with a basis of tea or mate",
+      "exportsUsd": 185803875,
+      "priorExportsUsd": 172089251,
+      "changePct": 8,
+      "sharePct": 1.6
+    },
+    {
+      "hs6": "2101.12",
+      "heading": "2101",
+      "description": "Preparations with a basis of extracts, essences or concentrates or with a basis of coffee",
+      "exportsUsd": 138821364,
+      "priorExportsUsd": 125747737,
+      "changePct": 10.4,
+      "sharePct": 1.2
+    },
+    {
+      "hs6": "2101.11",
+      "heading": "2101",
+      "description": "Extracts, essences and concentrates; of coffee, and preparations with a basis of these extracts, essences or concentrates or with a basis of coffee",
+      "exportsUsd": 118205632,
+      "priorExportsUsd": 106331615,
+      "changePct": 11.2,
+      "sharePct": 1
+    },
+    {
+      "hs6": "2102.20",
+      "heading": "2102",
+      "description": "Yeasts; inactive, other single-cell micro-organisms, dead",
+      "exportsUsd": 95262096,
+      "priorExportsUsd": 84260846,
+      "changePct": 13.1,
+      "sharePct": 0.8
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 21, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 71% of 2025 U.S. Chapter 21 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

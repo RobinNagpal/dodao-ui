@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 76,
+    "padded": "76",
+    "slug": "76-aluminum-and-articles",
+    "title": "Aluminum and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/76-aluminum-and-articles/faq",
+    "h1": "HTS Chapter 76: Aluminum and Articles Thereof — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Aluminum & Scrap Export FAQ: Canada Surtax, China Scrap Tariff, HS Codes (HTS Ch. 76) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. aluminum? What does China charge on U.S. aluminum scrap? What is the HS code for UBC scrap, and do you need an export licence? Short answers with the dates that matter.",
+      "keywords": [
+        "canada tariff on us aluminum",
+        "aluminum scrap tariffs",
+        "hs code aluminum scrap",
+        "aluminium scrap import duty in india",
+        "eu tariffs on us steel and aluminum",
+        "section 232 drawback"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Questions people search about exporting U.S. aluminum and aluminum scrap, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Scrap enters Thailand, Malaysia, Korea and Hong Kong duty-free but pays 35% in China; finished aluminum pays Canada's 50% surtax, while the EU charges 0% since July 1, 2026.",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions end, the EU tests whether to keep its 0%, and China's 24-point suspension expires unless extended.",
+    "Most aluminum and scrap needs no export licence, except for Russia and Belarus and for high-strength alloys under ECCN 1C202, and the Section 232 duty on imported aluminum cannot be drawn back."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"canada tariff on us aluminum\", \"canada retaliatory tariffs aluminum\", \"aluminum tariffs\", \"aluminum scrap tariff\", \"aluminum scrap china\", \"eu tariff on us aluminum\", \"mexico tariff on aluminum\", \"india aluminium scrap import duty\", \"us aluminum exports\", \"aluminum scrap export\", \"hs code aluminum scrap\", \"ubc scrap export\", \"malaysia scrap import\", \"thailand scrap import\" and \"section 232 drawback\", collected on November 19, 2026.",
+  "faqs": [
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have tariffs on U.S. aluminum?",
+      "searchedAs": [
+        "canada tariff on us aluminum",
+        "does canada have tariffs on us aluminum",
+        "current canadian tariffs on us aluminum",
+        "canadian tariff on us steel and aluminum",
+        "canada retaliatory tariffs aluminum",
+        "canada counter tariffs aluminum"
+      ],
+      "answer": "Yes. Canada has charged a surtax on U.S. aluminum since March 13, 2025: 25% at first and 50% since September 8, 2026 on 27 tariff items, including unwrought aluminum, extrusions, wire, sheet, foil, tubes, structures and most other articles; household articles (7615) stay at 25%. It applies even when the goods qualify for CUSMA. Scrap (7602), powders, tanks, cans and gas cylinders are not covered.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-remission",
+      "question": "Can Canada's aluminum surtax be remitted?",
+      "searchedAs": ["canada aluminum surtax", "canada counter tariffs steel and aluminum"],
+      "answer": "Often, yes. Canada's United States Surtax Remission Order (2025) waives it for U.S. aluminum imported before July 1, 2027 for use in Canadian manufacturing or processing, food and beverage packaging or agricultural production, and for aluminum used to make motor vehicles, parts or aircraft. About 27 listed aluminum products, such as 3104 can-body sheet and 1100 and 8011 foil, are remitted with no time limit. The Canadian importer claims it within two years.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "china-scrap",
+      "question": "What is China's tariff on U.S. aluminum scrap?",
+      "searchedAs": ["aluminum scrap tariffs", "aluminum scrap china", "china aluminium scrap imports", "does china tariff us goods"],
+      "answer": "35% for scrap that meets China's recycled-aluminum standards: a 0% provisional rate (MFN 1.5%), the 25% counter-tariff China has charged on U.S. aluminum scrap since April 2018, and the 10% extra duty on all U.S. goods. Scrap that fails the standards (at least 91% aluminum, at most 0.8% inclusions) is solid waste and cannot be imported. If China's 24-point suspension lapses on January 10, 2027, the total would rise to 59%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU have tariffs on U.S. aluminum?",
+      "searchedAs": ["eu tariffs on us steel and aluminum", "does the eu have tariffs on us goods"],
+      "answer": "Not since July 1, 2026: Regulation (EU) 2026/1455 cut the EU's 5–7.5% duties on U.S. aluminum to 0% for all of Chapter 76 (scrap was already free). The Commission can restore them if the U.S. still charges more than 15% on EU steel and aluminum derivatives on December 31, 2026. The EU's 2025 countermeasures, which listed nearly all U.S. aluminum at 25%, are suspended and were never applied.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "mexico-tariff",
+      "question": "Does Mexico have tariffs on U.S. aluminum?",
+      "searchedAs": ["mexico tariff on aluminum", "mexico tariff rates"],
+      "answer": "U.S. aluminum that meets the USMCA rule of origin enters Mexico free; sheet rolled in the U.S. from imported ingot qualifies. Goods that do not qualify face Mexico's general rates, raised to 25–35% on many extrusion, sheet, tube and article lines in 2026. Separately, U.S. hollow aluminum profiles (7604.21) have paid an anti-dumping duty of US$1.72/kg since September 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "india-scrap",
+      "question": "What is India's import duty on U.S. aluminum scrap?",
+      "searchedAs": [
+        "aluminium scrap import duty in india",
+        "india aluminium scrap customs duty",
+        "aluminium ubc scrap import duty in india",
+        "aluminium scrap export to india",
+        "did india put retaliatory tariffs on us"
+      ],
+      "answer": "India's basic customs duty on aluminum scrap is 2.5–5% (WITS 2023 schedule), with no extra duty on U.S. goods: India told the WTO in 2025 that it might retaliate for U.S. steel and aluminum tariffs but has applied nothing. U.S. scrap cleared at one of eight listed ports needs only a supplier certificate instead of a pre-shipment inspection certificate.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "malaysia-thailand",
+      "question": "Can I export aluminum scrap to Malaysia or Thailand?",
+      "searchedAs": ["malaysia scrap import restrictions", "thailand aluminum scrap imports", "aluminium scrap import from thailand"],
+      "answer": "Yes, and both charge 0% duty, but the rules are strict. Malaysia needs a SIRIM Certificate of Approval for every shipment, lets only licensed manufacturers import, and requires pre-shipment inspection and at least 94.75% target metal with no e-waste. Thailand still allows metal scrap imports but has unloaded and inspected every scrap container since October 2026, and a ban limiting imports to licensed factories has been proposed.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "how-much",
+      "question": "How much aluminum does the U.S. export?",
+      "searchedAs": ["us aluminum exports", "aluminum exports by country", "us aluminum scrap exports"],
+      "answer": "U.S. exports of aluminum and aluminum products (HS Chapter 76) were $13.67B in 2025, down 5.2% from 2024 and 6% below the 2022 peak of $14.51B. Mexico and Canada took 50%. From January to August 2026 exports were $11.47B, up 25% on the same months of 2025.",
+      "link": "exports"
+    },
+    {
+      "id": "scrap-buyers",
+      "question": "Who buys U.S. aluminum scrap?",
+      "searchedAs": ["us aluminum scrap exports", "aluminum scrap exporters usa", "ubc scrap exporters in usa"],
+      "answer": "Aluminum scrap (7602) was a third of U.S. Chapter 76 exports in 2025, $4.46B. The largest buyers were Thailand ($981M), India ($787M), Malaysia ($569M), Hong Kong ($540M) and South Korea ($438M), followed by Mexico, Canada and China. Thailand, Malaysia, Korea and Hong Kong charge 0% on it.",
+      "link": "exports"
+    },
+    {
+      "id": "hs-code",
+      "question": "What is the HS or Schedule B code for aluminum scrap (UBC)?",
+      "searchedAs": ["hs code aluminum scrap", "aluminium scrap tariff code", "hs code for aluminium scrap ubc", "aluminium ubc scrap hs code"],
+      "answer": "Aluminum scrap is heading 7602. The U.S. Schedule B numbers split it by type: 7602.00.0035 used beverage containers (UBC), 7602.00.0045 auto and truck wheels, 7602.00.0055 industrial-process scrap such as turnings and clippings, 7602.00.0065 other recyclable aluminum and 7602.00.0075 other. The first six digits (7602.00) are the HS code the buyer's country uses.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license for aluminum or aluminum scrap?",
+      "searchedAs": ["export aluminium scrap", "aluminum scrap export"],
+      "answer": "Usually not: scrap, ingot, sheet, foil and cans are EAR99. The exceptions are Russia and Belarus, where every Chapter 76 code needs a Commerce licence, high-strength alloy tubes and solid cylinders over 75 mm in diameter (ECCN 1C202), and some alloy and spherical powders (1C002, 1C111). Recycled scrap needs no EPA export notice, but an EEI filing is still due 24 hours before an ocean shipment is loaded.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "drawback",
+      "question": "Can I get Section 232 duty back (drawback) when I export aluminum?",
+      "searchedAs": ["section 232 drawback", "section 232 duty drawback", "section 232 manufacturing drawback"],
+      "answer": "Not on aluminum articles. Proclamation 11021 bars drawback of the Section 232 duty on imported aluminum articles (7601, 7604–7609 and certain castings and forgings), even when they or products made from them are exported; manufacturing drawback is allowed only for certain derivative articles of trade-agreement partners. Ordinary duties can still be claimed back, and scrap carries no Section 232 duty.",
+      "link": "exports/rules"
+    }
+  ]
+}

@@ -1,0 +1,529 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 7,
+    "padded": "07",
+    "slug": "7-vegetables-and-roots",
+    "title": "Edible Vegetables and Certain Roots and Tubers"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/7-vegetables-and-roots",
+    "h1": "HTS Chapter 07: Edible Vegetables and Certain Roots and Tubers — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Vegetable & Potato Exports: Who Buys Them & Foreign Tariffs",
+      "shortDescription": "The U.S. exported $4.97 billion of vegetables, potatoes and dry pulses in 2025; Canada bought 59%. See the top buyers, products and what each charges.",
+      "keywords": [
+        "us vegetable exports",
+        "us potato exports",
+        "does the us export potatoes",
+        "us pulses exports",
+        "us onion exports",
+        "what crops does the us export",
+        "hts chapter 07 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$4.97 billion** of Chapter 07 goods in 2025, down **15.5%** from a record $5.89 billion in 2024. Fresh vegetables are most of it: lettuce ($595 million), peppers, broccoli and cauliflower, onions, tomatoes and fresh potatoes ($327 million). Dried pulses (heading 0713: dry beans, lentils, dried peas and chickpeas) are the other big group at **$973 million**, down 30.6%. Canada buys **59%** of the total, mostly fresh vegetables, and Mexico 12%, led by dry beans and potatoes.\n\nFor most of the trade the tariff is zero: Canada and Mexico charge nothing on qualifying U.S. vegetables under USMCA, the Dominican Republic and Costa Rica nothing on U.S. beans under CAFTA-DR, the EU nothing on pulses and, since July 1, 2026, nothing on U.S. onions, fresh sweet potatoes and several other vegetables. The costly markets are China, where U.S. pulses pay about 42–48% once its 2018–19 counter-tariffs and its extra 10% on all U.S. goods are added, and India, which put a 30% duty on yellow peas from every country in November 2025; U.S. sales to India fell from $80.6 million in 2024 to **$6.7 million** in 2025. For fresh vegetables, the buyer’s plant-health rules usually decide access more than the tariff: the EU, for example, does not admit U.S. potatoes at all.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$4.97B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-15.5%"
+    },
+    {
+      "label": "Largest product group (0709)",
+      "value": "20%",
+      "note": "Other fresh vegetables"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "72%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Exports to buyers charging 0% (USMCA)",
+      "value": "72%",
+      "note": "Canada and Mexico"
+    }
+  ],
+  "keyTakeaways": [
+    "Canada and Mexico take 72% of U.S. vegetable exports and charge nothing under USMCA. Canada’s 2025 counter-tariff on U.S. tomatoes and fresh beans ended on September 1, 2025, and its 2026 counter-tariffs skip vegetables.",
+    "Pulses are the trade-policy story: exports of dry beans, lentils, dried peas and chickpeas fell 30.6% to $973 million in 2025. India charges 30% on yellow peas and China about 42–48% on U.S. pulses.",
+    "The EU is opening up: since July 1, 2026 U.S. onions, fresh sweet potatoes, asparagus, sweet peppers, fresh beans and some dried and frozen vegetables enter duty-free, on top of the EU’s 0% on pulses.",
+    "Dates to watch: China’s 24-point suspension ends January 10, 2027 (U.S. dried peas would go from 42.5% to 66.5%), and India’s free-import window for yellow peas ends March 31, 2027."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 4833303738,
+      "partnerAUsd": 2974213652,
+      "partnerBUsd": 421632606,
+      "restUsd": 1437457480
+    },
+    {
+      "year": 2021,
+      "totalUsd": 4912059424,
+      "partnerAUsd": 3102946668,
+      "partnerBUsd": 481376084,
+      "restUsd": 1327736672
+    },
+    {
+      "year": 2022,
+      "totalUsd": 5041198855,
+      "partnerAUsd": 3235089571,
+      "partnerBUsd": 481351062,
+      "restUsd": 1324758222
+    },
+    {
+      "year": 2023,
+      "totalUsd": 5335167685,
+      "partnerAUsd": 3225132565,
+      "partnerBUsd": 690277393,
+      "restUsd": 1419757727
+    },
+    {
+      "year": 2024,
+      "totalUsd": 5885920569,
+      "partnerAUsd": 3454493821,
+      "partnerBUsd": 863278217,
+      "restUsd": 1568148531
+    },
+    {
+      "year": 2025,
+      "totalUsd": 4972602029,
+      "partnerAUsd": 2951964715,
+      "partnerBUsd": 616691078,
+      "restUsd": 1403946236
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 07 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 3355825707,
+    "priorExportsUsd": 3354518547,
+    "changePct": 0,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2179188961,
+        "priorExportsUsd": 2028570323,
+        "changePct": 7.4
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 364623970,
+        "priorExportsUsd": 395752583,
+        "changePct": -7.9
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 110480888,
+        "priorExportsUsd": 114752789,
+        "changePct": -3.7
+      },
+      {
+        "countryCode": 214,
+        "country": "Dominican Rep.",
+        "exportsUsd": 72041875,
+        "priorExportsUsd": 76276901,
+        "changePct": -5.6
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 55661053,
+        "priorExportsUsd": 61430194,
+        "changePct": -9.4
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 50288735,
+        "priorExportsUsd": 54388808,
+        "changePct": -7.5
+      },
+      {
+        "countryCode": 724,
+        "country": "Spain",
+        "exportsUsd": 40195025,
+        "priorExportsUsd": 48366444,
+        "changePct": -16.9
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 31894684,
+        "priorExportsUsd": 23206225,
+        "changePct": 37.4
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2951964715,
+      "priorExportsUsd": 3454493821,
+      "sharePct": 59.4,
+      "changePct": -14.5,
+      "tariffNow": "Free (CUSMA)",
+      "status": "raisedThenRemoved"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 616691078,
+      "priorExportsUsd": 863278217,
+      "sharePct": 12.4,
+      "changePct": -28.6,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 188389905,
+      "priorExportsUsd": 162362161,
+      "sharePct": 3.8,
+      "changePct": 16,
+      "tariffNow": "Free on potatoes, onions, frozen vegetables, lentils; 3% on some fresh",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 214,
+      "country": "Dominican Rep.",
+      "exportsUsd": 110640589,
+      "priorExportsUsd": 122156059,
+      "sharePct": 2.2,
+      "changePct": -9.4,
+      "tariffNow": "Free (CAFTA-DR)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 79995706,
+      "priorExportsUsd": 89654490,
+      "sharePct": 1.6,
+      "changePct": -10.8,
+      "tariffNow": "Pulses free; sweet potatoes 2%; most fresh vegetables 6–12%",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 74863098,
+      "priorExportsUsd": 64102076,
+      "sharePct": 1.5,
+      "changePct": 16.8,
+      "tariffNow": "Pulses free; onions, sweet potatoes and other listed vegetables 0% since July 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 71635182,
+      "priorExportsUsd": 80524833,
+      "sharePct": 1.4,
+      "changePct": -11,
+      "tariffNow": "Pulses free; onions, sweet potatoes and other listed vegetables 0% since July 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 63859448,
+      "priorExportsUsd": 57816534,
+      "sharePct": 1.3,
+      "changePct": 10.5,
+      "tariffNow": "Normal tariff: potatoes 15%, lettuce 20%, onions 25%",
+      "status": "pending"
+    },
+    {
+      "countryCode": 188,
+      "country": "Costa Rica",
+      "exportsUsd": 50522354,
+      "priorExportsUsd": 46511522,
+      "sharePct": 1,
+      "changePct": 8.6,
+      "tariffNow": "Free (CAFTA-DR); potatoes and onions within a quota",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 380,
+      "country": "Italy",
+      "exportsUsd": 49889195,
+      "priorExportsUsd": 63773311,
+      "sharePct": 1,
+      "changePct": -21.8,
+      "tariffNow": "Pulses free; onions, sweet potatoes and other listed vegetables 0% since July 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 49602065,
+      "priorExportsUsd": 59429249,
+      "sharePct": 1,
+      "changePct": -16.5,
+      "tariffNow": "Normal rate + 2018–19 counter-tariffs + 10%; dried peas 42.5%",
+      "status": "raised"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 39970197,
+      "priorExportsUsd": 37899923,
+      "sharePct": 0.8,
+      "changePct": 5.5,
+      "tariffNow": "Free on most goods (KORUS); table potatoes quota-limited",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 624578497,
+  "othersPriorExportsUsd": 783918373,
+  "byHeading": [
+    {
+      "heading": "0701",
+      "label": "Potatoes",
+      "exportsUsd": 346050792,
+      "priorExportsUsd": 338892888,
+      "changePct": 2.1,
+      "sharePct": 7
+    },
+    {
+      "heading": "0702",
+      "label": "Tomatoes",
+      "exportsUsd": 274142643,
+      "priorExportsUsd": 428390645,
+      "changePct": -36,
+      "sharePct": 5.5
+    },
+    {
+      "heading": "0703",
+      "label": "Onions, garlic & leeks",
+      "exportsUsd": 319666984,
+      "priorExportsUsd": 427155516,
+      "changePct": -25.2,
+      "sharePct": 6.4
+    },
+    {
+      "heading": "0704",
+      "label": "Cabbage, broccoli & cauliflower",
+      "exportsUsd": 474780414,
+      "priorExportsUsd": 509158261,
+      "changePct": -6.8,
+      "sharePct": 9.5
+    },
+    {
+      "heading": "0705",
+      "label": "Lettuce & chicory",
+      "exportsUsd": 595080087,
+      "priorExportsUsd": 638322716,
+      "changePct": -6.8,
+      "sharePct": 12
+    },
+    {
+      "heading": "0706",
+      "label": "Carrots, beets & other roots",
+      "exportsUsd": 155686135,
+      "priorExportsUsd": 173420607,
+      "changePct": -10.2,
+      "sharePct": 3.1
+    },
+    {
+      "heading": "0707",
+      "label": "Cucumbers",
+      "exportsUsd": 53980993,
+      "priorExportsUsd": 53282511,
+      "changePct": 1.3,
+      "sharePct": 1.1
+    },
+    {
+      "heading": "0708",
+      "label": "Fresh peas & beans",
+      "exportsUsd": 128909943,
+      "priorExportsUsd": 131386099,
+      "changePct": -1.9,
+      "sharePct": 2.6
+    },
+    {
+      "heading": "0709",
+      "label": "Other fresh vegetables",
+      "exportsUsd": 998812380,
+      "priorExportsUsd": 1077646560,
+      "changePct": -7.3,
+      "sharePct": 20.1
+    },
+    {
+      "heading": "0710",
+      "label": "Frozen vegetables",
+      "exportsUsd": 235849781,
+      "priorExportsUsd": 253954449,
+      "changePct": -7.1,
+      "sharePct": 4.7
+    },
+    {
+      "heading": "0711",
+      "label": "Provisionally preserved vegetables",
+      "exportsUsd": 7809828,
+      "priorExportsUsd": 10037642,
+      "changePct": -22.2,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "0712",
+      "label": "Dried vegetables",
+      "exportsUsd": 214980239,
+      "priorExportsUsd": 239266071,
+      "changePct": -10.2,
+      "sharePct": 4.3
+    },
+    {
+      "heading": "0713",
+      "label": "Dried beans, peas & lentils",
+      "exportsUsd": 972632652,
+      "priorExportsUsd": 1400748287,
+      "changePct": -30.6,
+      "sharePct": 19.6
+    },
+    {
+      "heading": "0714",
+      "label": "Cassava, sweet potatoes & other roots",
+      "exportsUsd": 194219158,
+      "priorExportsUsd": 204258317,
+      "changePct": -4.9,
+      "sharePct": 3.9
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "0705.19",
+      "heading": "0705",
+      "description": "Vegetables; lettuce (lactuca sativa), (other than cabbage lettuce), fresh or chilled",
+      "exportsUsd": 476052669,
+      "priorExportsUsd": 503094333,
+      "changePct": -5.4,
+      "sharePct": 9.6
+    },
+    {
+      "hs6": "0709.60",
+      "heading": "0709",
+      "description": "Vegetables; fruits of the genus capsicum or of the genus pimenta, fresh or chilled",
+      "exportsUsd": 328881558,
+      "priorExportsUsd": 384528105,
+      "changePct": -14.5,
+      "sharePct": 6.6
+    },
+    {
+      "hs6": "0701.90",
+      "heading": "0701",
+      "description": "Vegetables; potatoes (other than seed), fresh or chilled",
+      "exportsUsd": 326582427,
+      "priorExportsUsd": 320442987,
+      "changePct": 1.9,
+      "sharePct": 6.6
+    },
+    {
+      "hs6": "0713.33",
+      "heading": "0713",
+      "description": "Vegetables, leguminous; kidney beans, including white pea beans (phaseolus vulgaris), shelled, whether or not skinned or split, dried",
+      "exportsUsd": 305864687,
+      "priorExportsUsd": 406899670,
+      "changePct": -24.8,
+      "sharePct": 6.2
+    },
+    {
+      "hs6": "0703.10",
+      "heading": "0703",
+      "description": "Vegetables, alliaceous; onions and shallots, fresh or chilled",
+      "exportsUsd": 292230155,
+      "priorExportsUsd": 396544150,
+      "changePct": -26.3,
+      "sharePct": 5.9
+    },
+    {
+      "hs6": "0702.00",
+      "heading": "0702",
+      "description": "Vegetables; tomatoes, fresh or chilled",
+      "exportsUsd": 274142643,
+      "priorExportsUsd": 428390645,
+      "changePct": -36,
+      "sharePct": 5.5
+    },
+    {
+      "hs6": "0713.39",
+      "heading": "0713",
+      "description": "Vegetables, leguminous; n.e.c. in item no. 0713.3, shelled, whether or not skinned or split, dried",
+      "exportsUsd": 250032148,
+      "priorExportsUsd": 338956616,
+      "changePct": -26.2,
+      "sharePct": 5
+    },
+    {
+      "hs6": "0704.10",
+      "heading": "0704",
+      "description": "Vegetables, brassica; cauliflowers and broccoli, fresh or chilled",
+      "exportsUsd": 242192098,
+      "priorExportsUsd": 265735325,
+      "changePct": -8.9,
+      "sharePct": 4.9
+    },
+    {
+      "hs6": "0704.90",
+      "heading": "0704",
+      "description": "Vegetables, brassica; edible, n.e.c. in heading no. 0704, fresh or chilled",
+      "exportsUsd": 202029873,
+      "priorExportsUsd": 206394360,
+      "changePct": -2.1,
+      "sharePct": 4.1
+    },
+    {
+      "hs6": "0709.99",
+      "heading": "0709",
+      "description": "Vegetables; edible, n.e.c. in chapter 07, fresh or chilled",
+      "exportsUsd": 196571927,
+      "priorExportsUsd": 213258956,
+      "changePct": -7.8,
+      "sharePct": 4
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 07, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "fas-kr-potatoes-2026",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN KS2026-0010",
+      "document": "GAIN report",
+      "title": "New Market Opportunities Open for US Potatoes in 2026 (Korea)",
+      "signed": null,
+      "published": "2026-06-01",
+      "url": "https://www.fas.usda.gov/data/gain/2026/06/south-korea-new-market-opportunities-open-us-potatoes-2026"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 87% of 2025 U.S. Chapter 07 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

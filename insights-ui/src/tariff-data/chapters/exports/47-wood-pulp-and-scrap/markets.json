@@ -1,0 +1,1150 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 47,
+    "padded": "47",
+    "slug": "47-wood-pulp-and-scrap",
+    "title": "Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/47-wood-pulp-and-scrap/markets",
+    "h1": "HTS Chapter 47: Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "What China, India, Mexico & the EU Charge on U.S. Pulp & OCC (HTS Ch. 47) | KoalaGains",
+      "shortDescription": "Rates on U.S. kraft, fluff and dissolving pulp and OCC in 10 markets: 0% in most, 5% in India, 10% extra in China, which bans waste paper, and Canada's 50% on dissolving pulp.",
+      "keywords": [
+        "china waste paper import ban",
+        "waste paper import duty india",
+        "wood pulp tariffs",
+        "fluff pulp china",
+        "eudr pulp",
+        "paper scrap import duty",
+        "HS 47 tariffs by country"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Most of the ten largest markets charge nothing on U.S. wood pulp and recovered paper: the EU, Japan, Thailand, Indonesia and Malaysia at their normal rate, Mexico and Canada under USMCA (and at 0% MFN anyway), and Viet Nam except for 1% on mechanical and dissolving pulp. **India** charges 5% on pulp and 2.5% on recovered paper. **China** adds 10% to its 0% rate on all U.S. goods, 5% more on wood pulp for buyers without an exclusion, and does not let recovered paper in at all. **Canada**'s only surcharge is 50% on dissolving pulp. For recovered paper, access is decided by the buyer's import rules (import licences, pre-shipment inspection, contamination limits), shown on each card; for pulp sold into the EU, by the deforestation rules from December 30, 2026.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "4701",
+      "label": "Mechanical wood pulp",
+      "shortLabel": "Mechanical"
+    },
+    {
+      "heading": "4702",
+      "label": "Dissolving pulp",
+      "shortLabel": "Dissolving"
+    },
+    {
+      "heading": "4703",
+      "label": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff",
+      "shortLabel": "Kraft pulp"
+    },
+    {
+      "heading": "4704",
+      "label": "Sulfite pulp",
+      "shortLabel": "Sulfite"
+    },
+    {
+      "heading": "4705",
+      "label": "Semichemical (mechanical-chemical) pulp",
+      "shortLabel": "Semichemical"
+    },
+    {
+      "heading": "4706",
+      "label": "Recycled-fiber, cotton linter & bamboo pulp",
+      "shortLabel": "Recycled & other"
+    },
+    {
+      "heading": "4707",
+      "label": "Recovered paper (waste & scrap)",
+      "shortLabel": "Recovered paper"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff: 0% on all of Chapter 47; Regulation (EU) 2026/1455 also lists the chapter for U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 1137924866,
+      "priorExportsUsd": 1202635627,
+      "sharePct": 14.2,
+      "changePct": -5.4,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 245074220,
+          "priorExportsUsd": 273925536,
+          "changePct": -10.5
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 202122277,
+          "priorExportsUsd": 213364974,
+          "changePct": -5.3
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 147658781,
+          "priorExportsUsd": 138892944,
+          "changePct": 6.3
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 129337105,
+          "priorExportsUsd": 143998053,
+          "changePct": -10.2
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 123478036,
+          "priorExportsUsd": 132688946,
+          "changePct": -6.9
+        }
+      ],
+      "cells": {
+        "4701": {
+          "exportsUsd": 1447599,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4701.00 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods; wood pulp falls under the EU Deforestation Regulation from December 30, 2026"
+        },
+        "4702": {
+          "exportsUsd": 139124561,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4702.00 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods; wood pulp falls under the EU Deforestation Regulation from December 30, 2026"
+        },
+        "4703": {
+          "exportsUsd": 863673770,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4703.21 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods; wood pulp falls under the EU Deforestation Regulation from December 30, 2026"
+        },
+        "4704": {
+          "exportsUsd": 3043860,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4704.29 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods; wood pulp falls under the EU Deforestation Regulation from December 30, 2026"
+        },
+        "4705": {
+          "exportsUsd": 36943,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4705.00 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods; wood pulp falls under the EU Deforestation Regulation from December 30, 2026"
+        },
+        "4706": {
+          "exportsUsd": 48924253,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4706.10 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods"
+        },
+        "4707": {
+          "exportsUsd": 81673880,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "EU Common Customs Tariff: 0% for HS 4707.10 and every Chapter 47 line (WITS 2023); Regulation (EU) 2026/1455, Annex I, also lists Chapter 47 for U.S. goods"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.14B, down 5.4%; Germany, Italy, Poland, the Netherlands and Spain buy most) takes mostly kraft pulp (4703, $864M) and dissolving pulp ($139M), duty-free. What changes is compliance: from December 30, 2026 EU importers must file deforestation due-diligence statements for wood pulp. The U.S. is rated low-risk, so simplified due diligence applies; recovered paper is outside the rules.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Dissolving pulp (4702)",
+        "tariffNow": "Free (EU MFN 0%)",
+        "regulator": {
+          "name": "European Commission (EU Deforestation Regulation 2023/1115; Waste Shipment Regulation 2024/1157)",
+          "url": "https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en",
+          "requirement": "From December 30, 2026 (June 30, 2027 for micro and small firms) the EU importer of wood pulp must file a due-diligence statement that the wood was legally harvested on land not deforested after December 31, 2020, with the geolocation of the harvest plots; recovered paper and pulp made from it are outside the scope. Recovered paper is green-listed waste: from the U.S. it travels with the Annex VII information document and a contract with the EU recycler, with no prior consent"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China MFN tariff (0% on all pulp and recovered paper) plus the 10% extra tariff on all U.S. goods; 2018–2019 counter-tariffs (5% on wood pulp) unless the buyer holds an exclusion; solid-waste import ban since January 1, 2021",
+      "usTradeAgreement": null,
+      "exportsUsd": 996013345,
+      "priorExportsUsd": 1262746201,
+      "sharePct": 12.5,
+      "changePct": -21.1,
+      "status": "raised",
+      "cells": {
+        "4701": {
+          "exportsUsd": 104529,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4701.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019)"
+        },
+        "4702": {
+          "exportsUsd": 211224646,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4702.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019)"
+        },
+        "4703": {
+          "exportsUsd": 773337880,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4703.21 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019); bleached softwood kraft (ex 4703.21) is on China's named exclusion lists"
+        },
+        "4704": {
+          "exportsUsd": 284334,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4704.29 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019)"
+        },
+        "4705": {
+          "exportsUsd": 263021,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4705.00 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% (Annex 4) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019)"
+        },
+        "4706": {
+          "exportsUsd": 6809075,
+          "rate": "0% + 10%",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4706.10 (WITS 2023); plus the 10% extra tariff on all U.S. goods (Tariff Commission Announcement No. 7 of 2025); China's 2018–2019 counter-tariffs add 5% on cotton linter pulp (Annex 4), 20% on recycled-fiber pulp 4706.20 (Annex 2) unless the buyer holds an exclusion (Tariff Commission Announcement No. 3 of 2019)"
+        },
+        "4707": {
+          "exportsUsd": 3989860,
+          "rate": "Import banned (0% + 10% + 25%)",
+          "normalRate": "0%",
+          "basis": "China MFN 0% for HS 4707.10 (WITS 2023), plus the 10% extra tariff on all U.S. goods and 25% under List 2 of Tariff Commission Announcement No. 7 of 2018; but all solid-waste imports, recovered paper included, are banned from January 1, 2021 (MEE/MOFCOM/NDRC/GACC Announcement No. 53 of 2020)"
+        }
+      },
+      "profile": {
+        "headline": "China ($996M, down 21.1% and less than half its 2020 level of $2.20B) buys only pulp now: kraft pulp, mostly fluff and other bleached softwood kraft ($773M), and dissolving pulp ($211M). U.S. pulp pays 10%, or 15% for buyers without an exclusion. U.S. recovered paper cannot enter: China has banned all solid-waste imports since January 1, 2021.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Dissolving pulp (4702)",
+        "tariffNow": "0% MFN + 10% extra; recovered paper banned",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment and General Administration of Customs (solid-waste import ban)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202011/t20201125_809835.html",
+          "requirement": "Wood pulp needs no product approval. Recovered paper cannot be imported in any form: Announcement No. 53 of 2020 bans imports of solid waste from January 1, 2021, and the licences for waste usable as raw material are no longer issued"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff (duty free for originating goods); Mexico's MFN rate on Chapter 47 is also 0%",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 983150460,
+      "priorExportsUsd": 1191762566,
+      "sharePct": 12.3,
+      "changePct": -17.5,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 586122,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4701.00 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4702": {
+          "exportsUsd": 7081805,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4702.00 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4703": {
+          "exportsUsd": 588727255,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4703.21 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4704": {
+          "exportsUsd": 232639,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4704.29 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4705": {
+          "exportsUsd": 7705198,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4705.00 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4706": {
+          "exportsUsd": 10986350,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4706.10 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        },
+        "4707": {
+          "exportsUsd": 367831091,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: duty free for originating goods; Mexico's MFN rate is also 0% for HS 4707.10 (WITS 2023), and the decree of December 29, 2025 raised no Chapter 47 line"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($983M, down 17.5%) buys kraft pulp (4703, $589M) and recovered paper (4707, $368M), the second-largest U.S. market for OCC, duty-free. Mexico's normal rate on pulp and recovered paper is 0% too, and its higher 2026 tariffs on goods from non-agreement countries skipped Chapter 47.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Recovered paper (waste & scrap) (4707)",
+        "tariffNow": "Free (USMCA; MFN 0%)",
+        "regulator": {
+          "name": "Mexican customs (ANAM), via the importer",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation",
+          "requirement": "Wood pulp needs no product approval; the Mexican importer must be listed in the Official Register of Importers (Padrón de Importadores) and can claim the USMCA rate with a certification of origin, though the MFN rate on Chapter 47 is 0% anyway"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (no U.S. free-trade agreement): 5% on wood pulp, 2.5% on recovered paper (WITS 2023); the U.S.–India interim framework has published no new rate",
+      "usTradeAgreement": null,
+      "exportsUsd": 689411342,
+      "priorExportsUsd": 707489844,
+      "sharePct": 8.6,
+      "changePct": -2.6,
+      "status": "pending",
+      "cells": {
+        "4701": {
+          "exportsUsd": 447844,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4701.00 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4702": {
+          "exportsUsd": 43394392,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4702.00 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4703": {
+          "exportsUsd": 275461220,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4703.21 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4704": {
+          "exportsUsd": 154070,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4704.29 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4705": {
+          "exportsUsd": 166269,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4705.00 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4706": {
+          "exportsUsd": 567805,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 5% for HS 4706.10 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        },
+        "4707": {
+          "exportsUsd": 369219742,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "India's basic customs duty: WITS/TRAINS applied MFN 2.5% for HS 4707.10 (2023). No U.S. free-trade agreement; the U.S.–India interim framework has published no new rate"
+        }
+      },
+      "profile": {
+        "headline": "India ($689M, down 2.6%) is the largest buyer of U.S. recovered paper (4707, $369M) and also buys kraft pulp (4703, $275M). It charges 2.5% on recovered paper and 5% on pulp; India has promised to cut tariffs on all U.S. industrial goods, but no rate or date is published.",
+        "mainProducts": "Recovered paper (waste & scrap) (4707) · Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703)",
+        "tariffNow": "5% on pulp, 2.5% on recovered paper (MFN)",
+        "regulator": {
+          "name": "Ministry of Environment, Forest and Climate Change (Hazardous and Other Wastes Rules, 2016), via DGFT import policy",
+          "url": "https://content.dgft.gov.in/Website/General+Notes+regarding+Import+Policy_AsOn11082025.pdf",
+          "requirement": "India's import policy subjects waste imports to the Hazardous and Other Wastes (Management and Transboundary Movement) Rules, 2016 and prohibits hazardous waste and anything contaminated with it, so recovered paper must be free of hazardous material (Basel entry B3020); the Indian importer handles the environment and customs formalities. Wood pulp needs no approval"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff: Free on all of Chapter 47",
+      "usTradeAgreement": null,
+      "exportsUsd": 467685226,
+      "priorExportsUsd": 441470592,
+      "sharePct": 5.9,
+      "changePct": 5.9,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 9374,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4701.00 and every other line"
+        },
+        "4702": {
+          "exportsUsd": 123045727,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4702.00 and every other line"
+        },
+        "4703": {
+          "exportsUsd": 327099874,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4703.21 and every other line"
+        },
+        "4704": {
+          "exportsUsd": 238129,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4704.29 and every other line"
+        },
+        "4705": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4705.00 and every other line"
+        },
+        "4706": {
+          "exportsUsd": 10866452,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4706.10 and every other line"
+        },
+        "4707": {
+          "exportsUsd": 6425670,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule (April 1, 2026), Chapter 47: Free for HS 4707.10 and every other line"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($468M, up 5.9%) buys kraft pulp (4703, $327M) and dissolving pulp (4702, $123M), duty-free; it bought only $6M of U.S. recovered paper. Nothing changed for U.S. pulp in Japan since January 2025.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Dissolving pulp (4702)",
+        "tariffNow": "Free (MFN 0%)",
+        "regulator": {
+          "name": "Japan Customs",
+          "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_47.htm",
+          "requirement": "Wood pulp needs no import approval; Japan Customs applies the Free rate of its tariff schedule to every Chapter 47 line"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (duty free; Canada's MFN rate on Chapter 47 is also free), plus Canada's 50% counter-surtax on U.S.-origin dissolving pulp (4702.00.00) since September 8, 2026; no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 467004436,
+      "priorExportsUsd": 566893811,
+      "sharePct": 5.8,
+      "changePct": -17.6,
+      "status": "raised",
+      "cells": {
+        "4701": {
+          "exportsUsd": 8832572,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4701.00; no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4702": {
+          "exportsUsd": 61939,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4702.00; United States Surtax Order (2026), SOR/2026-186: tariff item 4702.00.00 is in Schedule 3 (50%). The surtax applies to goods of U.S. origin under the CUSMA marking rules and has no CUSMA exemption"
+        },
+        "4703": {
+          "exportsUsd": 298245387,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4703.21; no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4704": {
+          "exportsUsd": 3676956,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4704.29; no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4705": {
+          "exportsUsd": 759413,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4705.00; no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4706": {
+          "exportsUsd": 20816287,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4706.10; no tariff item of the heading is on the United States Surtax Order (2026)"
+        },
+        "4707": {
+          "exportsUsd": 134611882,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026: MFN and United States Tariff Free for HS 4707.10; no tariff item of the heading is on the United States Surtax Order (2026)"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($467M, down 17.6%) buys kraft pulp (4703, $298M) and recovered paper (4707, $135M), duty-free. Its 50% surtax since September 8, 2026 reaches only dissolving pulp, of which the U.S. sold Canada $62,000 in 2025, and buyers that use it in manufacturing can claim it back.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Recovered paper (waste & scrap) (4707)",
+        "tariffNow": "Free (CUSMA); 50% surtax on dissolving pulp only",
+        "regulator": {
+          "name": "Canada Border Services Agency (CBSA)",
+          "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn26-23-eng.html",
+          "requirement": "Pulp and recovered paper need no import permit. CBSA collects the 50% surtax on U.S.-origin dissolving pulp at entry; the Canadian importer claims remission, for example for pulp used in manufacturing, within two years of import"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 764,
+      "name": "Thailand",
+      "rule": "Thailand's MFN tariff: 0% on every Chapter 47 line (no U.S. free-trade agreement in force)",
+      "usTradeAgreement": null,
+      "exportsUsd": 459457631,
+      "priorExportsUsd": 438650796,
+      "sharePct": 5.8,
+      "changePct": 4.7,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 104000,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4701.00 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4702": {
+          "exportsUsd": 46744643,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4702.00 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4703": {
+          "exportsUsd": 57761560,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4703.21 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4704": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4704.29 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4705": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4705.00 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4706": {
+          "exportsUsd": 1004433,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4706.10 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        },
+        "4707": {
+          "exportsUsd": 353842995,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Thailand's MFN rate 0% for HS 4707.10 (WITS 2023); no U.S. free-trade agreement in force, and the reciprocal trade agreement is not yet signed"
+        }
+      },
+      "profile": {
+        "headline": "Thailand ($459M, up 4.7%) is the third-largest market for U.S. recovered paper (4707, $354M) and also buys some kraft and dissolving pulp; all of it enters duty-free. Thailand agreed in October 2025 to remove tariffs on about 99% of U.S. goods, which changes nothing for Chapter 47.",
+        "mainProducts": "Recovered paper (waste & scrap) (4707) · Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703)",
+        "tariffNow": "Free (MFN 0%)",
+        "regulator": {
+          "name": "Ministry of Commerce (import prohibitions on waste)",
+          "url": "https://qr.wto.org/en/qrs/9087",
+          "requirement": "Recovered paper is not on the waste import bans Thailand has notified to the WTO, which cover municipal waste (since May 29, 2019), plastic waste and electronic waste. Bales mixed with household garbage risk being treated as banned municipal waste, so ship clean, sorted grades"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Thailand import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam's MFN tariff: 0% on recovered paper and kraft pulp, 1% on mechanical and dissolving pulp (no U.S. free-trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 401677303,
+      "priorExportsUsd": 306972143,
+      "sharePct": 5,
+      "changePct": 30.9,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 35982,
+          "rate": "1% (MFN)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 1% for HS 4701.00 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4702": {
+          "exportsUsd": 0,
+          "rate": "1% (MFN)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 1% for HS 4702.00 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4703": {
+          "exportsUsd": 84589978,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 0% for HS 4703.21 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4704": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 0% for HS 4704.29 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4705": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 0% for HS 4705.00 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4706": {
+          "exportsUsd": 2867387,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 0% for HS 4706.10 (WITS 2023); no U.S. free-trade agreement"
+        },
+        "4707": {
+          "exportsUsd": 314183956,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Viet Nam's MFN rate 0% for HS 4707.10 (WITS 2023); no U.S. free-trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam ($402M, up 30.9%) buys mainly recovered paper (4707, $314M) and kraft pulp (4703, $85M), duty-free. Every recovered-paper shipment must pass Viet Nam's scrap standard QCVN 33:2024/BTNMT, in force since June 30, 2025.",
+        "mainProducts": "Recovered paper (waste & scrap) (4707) · Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703)",
+        "tariffNow": "Free (MFN 0%); 1% on mechanical and dissolving pulp",
+        "regulator": {
+          "name": "Ministry of Natural Resources and Environment (now Agriculture and Environment): QCVN 33:2024/BTNMT on imported paper scrap",
+          "url": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-44-2024-tt-btnmt-43933.htm",
+          "requirement": "Only grades on the Prime Minister's list of scrap allowed for import (Decision 13/2023/QĐ-TTg) may enter, each grade baled and stowed separately, with at most 20% of other allowed grades, at most 2% non-paper impurities such as plastic, staples and glue, at most 20% moisture and no hazardous waste. A designated inspection body inspects each lot and issues the certificate customs needs for clearance"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 360,
+      "name": "Indonesia",
+      "rule": "Indonesia's MFN tariff: 0% on every Chapter 47 line (no U.S. free-trade agreement in force)",
+      "usTradeAgreement": null,
+      "exportsUsd": 400422868,
+      "priorExportsUsd": 400761642,
+      "sharePct": 5,
+      "changePct": -0.1,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 532050,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4701.00 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4702": {
+          "exportsUsd": 117063105,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4702.00 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4703": {
+          "exportsUsd": 201262575,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4703.21 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4704": {
+          "exportsUsd": 80073,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4704.29 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4705": {
+          "exportsUsd": 40500,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4705.00 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4706": {
+          "exportsUsd": 1004304,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4706.10 (WITS 2023); no U.S. free-trade agreement in force"
+        },
+        "4707": {
+          "exportsUsd": 80440261,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Indonesia's MFN rate 0% for HS 4707.10 (WITS 2023); no U.S. free-trade agreement in force"
+        }
+      },
+      "profile": {
+        "headline": "Indonesia ($400M, flat) buys mainly pulp: kraft pulp (4703, $201M) and dissolving pulp (4702, $117M), duty-free; recovered paper adds $80M. Recovered paper can only go to Indonesian mills holding an import approval, after inspection in the U.S. before loading.",
+        "mainProducts": "Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703) · Dissolving pulp (4702)",
+        "tariffNow": "Free (MFN 0%)",
+        "regulator": {
+          "name": "Ministry of Trade (Permendag 24/2025, amended by Permendag 23/2026)",
+          "url": "https://jdih.kemendag.go.id/peraturan/peraturan-menteri-perdagangan-republik-indonesia-nomor-24-tahun-2025-tentang-kebijakan-dan-pengaturan-impor-barang-dalam-keadaan-tidak-baru-dan-limbah-non-bahan-berbahaya-dan-beracun-1",
+          "requirement": "Recovered paper (4707) may be imported only by producer-importers (API-P) holding an import approval for paper waste, after verification by an appointed surveyor in the country of origin before shipment. The exporter must be a registered exporter, with its licence and company profile legalized by an Indonesian mission, and must declare that the paper is not from a landfill, not mixed with garbage, not contaminated with hazardous material and homogeneous. Wood pulp needs no approval"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Indonesia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/indonesia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 458,
+      "name": "Malaysia",
+      "rule": "Malaysia's MFN tariff: 0% on every Chapter 47 line; the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists them at 0%",
+      "usTradeAgreement": null,
+      "exportsUsd": 334933575,
+      "priorExportsUsd": 393425736,
+      "sharePct": 4.2,
+      "changePct": -14.9,
+      "status": "unchanged",
+      "cells": {
+        "4701": {
+          "exportsUsd": 70962,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4701.00 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4702": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4702.00 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4703": {
+          "exportsUsd": 41071420,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4703.21 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4704": {
+          "exportsUsd": 14049,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4704.29 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4705": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4705.00 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4706": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4706.10 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        },
+        "4707": {
+          "exportsUsd": 293777144,
+          "rate": "Free (MFN 0%)",
+          "normalRate": null,
+          "basis": "Malaysia's MFN rate 0% for HS 4707.10 (WITS 2023); the U.S.–Malaysia reciprocal trade agreement, not yet ratified, also lists every Chapter 47 line at 0% (category A)"
+        }
+      },
+      "profile": {
+        "headline": "Malaysia ($335M, down 14.9%) is almost entirely a recovered-paper market (4707, $294M), duty-free. Only sorted grades may enter: mixed and unsorted paper (4707.90) is banned, and every shipment needs an inspection and Certificate of Approval.",
+        "mainProducts": "Recovered paper (waste & scrap) (4707) · Kraft (sulfate) pulp: NBSK, eucalyptus, fluff (4703)",
+        "tariffNow": "Free (MFN 0%)",
+        "regulator": {
+          "name": "Ministry of Investment, Trade and Industry (MITI): Guidelines for Importation and Inspection of Waste Paper",
+          "url": "https://www.trade.gov/market-intelligence/malaysia-guidelines-wastepaper-and-scrap-metal",
+          "requirement": "Since January 10, 2022 every wastepaper import must be inspected and covered by a Certificate of Approval. Only OCC and kraft (4707.10), bleached grades (4707.20) and newsprint grades (4707.30) are allowed; unsorted waste paper (4707.90) is prohibited under the Customs (Prohibition of Imports) Order 2023"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Malaysia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/malaysia-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "4703",
+      "exportsUsd": 863673770,
+      "rate": "Free (MFN 0%)"
+    },
+    {
+      "market": "China",
+      "heading": "4703",
+      "exportsUsd": 773337880,
+      "rate": "0% + 10%"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4703",
+      "exportsUsd": 588727255,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "India",
+      "heading": "4707",
+      "exportsUsd": 369219742,
+      "rate": "2.5%"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4707",
+      "exportsUsd": 367831091,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Thailand",
+      "heading": "4707",
+      "exportsUsd": 353842995,
+      "rate": "Free (MFN 0%)"
+    },
+    {
+      "market": "Japan",
+      "heading": "4703",
+      "exportsUsd": 327099874,
+      "rate": "Free (MFN 0%)"
+    },
+    {
+      "market": "Viet Nam",
+      "heading": "4707",
+      "exportsUsd": 314183956,
+      "rate": "Free (MFN 0%)"
+    }
+  ],
+  "assumptions": [
+    "Each cell uses one representative six-digit subheading per heading, the one with the largest 2025 U.S. exports: 4703.21 bleached softwood kraft (which includes fluff pulp), 4707.10 OCC, 4702.00 dissolving pulp, 4706.10 cotton linter pulp, 4704.29, 4701.00 and 4705.00. MFN rates are World Bank/UNCTAD WITS (TRAINS) applied rates for 2023, the latest year WITS holds, checked against the 2026 schedules of Canada (CBSA) and Japan; national 8–10-digit lines and national exemptions can differ.",
+    "The EU, Japan, Canada, Mexico, Thailand, Indonesia and Malaysia charge 0% on every six-digit line of Chapter 47 (WITS 2023), so a trade agreement changes nothing there; Mexico and Canada are shown with the USMCA rate.",
+    "Canada's 4702 cell adds the 50% surtax of the United States Surtax Order (2026), SOR/2026-186, Schedule 3. Remission under the United States Surtax Remission Order (2025), such as for pulp used in Canadian manufacturing, is not netted out.",
+    "China's cells add the 10% extra duty on all U.S. goods to China's 0% MFN rate. China's 2018–2019 counter-tariffs (5% on wood pulp, 20% on recycled-fiber pulp, 25% on recovered paper) are named in each basis but not added, because buyers can hold exclusions valid until December 31, 2026. Recovered paper is shown as banned: China stopped all solid-waste imports on January 1, 2021.",
+    "India's cells show basic customs duty only. Trade agreements that are signed or announced but not in force (India, Thailand, Malaysia, Taiwan) are not applied; see Tariff updates.",
+    "VAT and other internal taxes, the cost of EU deforestation due diligence and buyers' inspection and licence fees for recovered paper are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 47, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS / UNCTAD TRAINS",
+      "citation": "WITS TRAINS, MFN applied rates (2023)",
+      "document": "Database",
+      "title": "MFN applied tariff rates by HS subheading, chapter 47 (EU, China, Mexico, India, Japan, Canada, Thailand, Viet Nam, Indonesia, Malaysia)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/IND/partner/WLD/product/470710"
+    },
+    {
+      "id": "ca-cbsa-ch47",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, ch. 47",
+      "document": "Tariff schedule",
+      "title": "Canadian Customs Tariff, Chapter 47: pulp and recovered paper (MFN and United States Tariff columns Free)",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch47-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026): Schedule 3 (50%) includes dissolving pulp, tariff item 4702.00.00",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-remission-order",
+      "publisher": "Department of Justice Canada (Justice Laws)",
+      "citation": "SOR/2025-122, consolidated to 2026-10-29",
+      "document": "Remission order",
+      "title": "United States Surtax Remission Order (2025)",
+      "signed": "2025-04-16",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "ca-cbsa-cn26-23",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Notice 26-23 (revised Oct 23, 2026)",
+      "document": "Customs notice",
+      "title": "Customs Notice 26-23: United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-10-23",
+      "url": "https://www.cbsa-asfc.gc.ca/publications/cn-ad/cn26-23-eng.html"
+    },
+    {
+      "id": "usmca-roo",
+      "publisher": "USTR",
+      "citation": "USMCA Chapter 4 and Annex 4-B",
+      "document": "Agreement text",
+      "title": "USMCA Chapter 4: Rules of Origin, with Annex 4-B product-specific rules (Chapter 47: a change to headings 47.01–47.07 from any other chapter)",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04-Rules-of-Origin.pdf"
+    },
+    {
+      "id": "cn-2018-list2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2018",
+      "document": "Announcement with List 2 (25%)",
+      "title": "国务院关税税则委员会关于对原产于美国约160亿美元进口商品加征关税的公告 (25% on List 2 from August 23, 2018; items 102–105: recovered paper 4707.10, 4707.20, 4707.30, 4707.90)",
+      "signed": null,
+      "published": "2018-08-08",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201808/t20180808_2983770.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement with four annexed product lists (25%, 20%, 10%, 5%)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告 (from June 1, 2019: wood pulp of 4701–4705 and cotton linter pulp 4706.10 at 5% in Annex 4; recycled-fiber pulp 4706.20 at 20% in Annex 2; 4706.92 at 25% in Annex 1)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-excl-13",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2023",
+      "document": "Announcement with the 13th extension list of exclusions",
+      "title": "国务院关税税则委员会关于对美加征关税商品第十三次排除延期清单的公告 (items 23–24: bleached softwood kraft pulp ex 4703.21 and recycled-fiber pulp 4706.20 kept free of the counter-tariffs from January 1 to July 31, 2024)",
+      "signed": null,
+      "published": "2023-12-22",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202312/t20231222_3923688.htm"
+    },
+    {
+      "id": "cn-mee-53-2020",
+      "publisher": "Ministry of Ecology and Environment (PRC)",
+      "citation": "MEE/MOFCOM/NDRC/GACC Announcement No. 53 of 2020",
+      "document": "Announcement",
+      "title": "关于全面禁止进口固体废物有关事项的公告 (all imports of solid waste banned from January 1, 2021)",
+      "signed": "2020-11-24",
+      "published": "2020-11-25",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202011/t20201125_809835.html"
+    },
+    {
+      "id": "eu-eudr-2025-2650",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2025/2650",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2025/2650 amending Regulation (EU) 2023/1115 (EU Deforestation Regulation): obligations apply from December 30, 2026, and from June 30, 2027 for micro and small operators",
+      "signed": "2025-12-19",
+      "published": "2025-12-23",
+      "url": "https://eur-lex.europa.eu/eli/reg/2025/2650/oj"
+    },
+    {
+      "id": "eu-eudr-2026-2102",
+      "publisher": "EUR-Lex",
+      "citation": "Delegated Regulation (EU) 2026/2102",
+      "document": "Delegated regulation",
+      "title": "Commission Delegated Regulation (EU) 2026/2102 amending Annex I to Regulation (EU) 2023/1115 (scope: wood pulp of Chapter 47, not recovered paper or products derived from it)",
+      "signed": "2026-07-13",
+      "published": "2026-09-17",
+      "url": "https://eur-lex.europa.eu/eli/reg_del/2026/2102/oj"
+    },
+    {
+      "id": "eu-eudr-benchmark",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1093",
+      "document": "Implementing regulation",
+      "title": "Commission Implementing Regulation (EU) 2025/1093: list of low-risk and high-risk countries under Regulation (EU) 2023/1115 (United States listed as low risk)",
+      "signed": "2025-05-22",
+      "published": "2025-05-23",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1093/oj"
+    },
+    {
+      "id": "eu-wsr",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2024/1157",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2024/1157 on shipments of waste (applies from May 21, 2026)",
+      "signed": "2024-04-11",
+      "published": "2024-04-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1157/oj"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, Apr 1, 2026, Chapter 47",
+      "document": "Tariff schedule",
+      "title": "Customs Tariff Schedules of Japan, Chapter 47: pulp and recovered paper (all lines Free)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_47.htm"
+    },
+    {
+      "id": "mx-ccg-import",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Mexico Country Commercial Guide: import requirements",
+      "document": "Country Commercial Guide",
+      "title": "Mexico: Import Requirements and Documentation",
+      "signed": null,
+      "published": "2026-02-09",
+      "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "my-art-annex",
+      "publisher": "The White House",
+      "citation": "U.S.–Malaysia ART, Annex I, Schedule 1",
+      "document": "Annexes and Appendix",
+      "title": "Agreement between the United States and Malaysia on Reciprocal Trade: Annex I, Schedule 1 (Tariff Schedule of Malaysia)",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2025/10/MALAYSIA-ANNEX_APPENDIX.pdf"
+    },
+    {
+      "id": "vn-qcvn33-2024",
+      "publisher": "Ministry of Natural Resources and Environment (Viet Nam), Official Gazette",
+      "citation": "Circular 44/2024/TT-BTNMT (QCVN 33:2024/BTNMT)",
+      "document": "Circular issuing national technical regulations on imported scrap",
+      "title": "Thông tư 44/2024/TT-BTNMT: QCVN 33:2024/BTNMT, national technical regulation on imported paper scrap used as raw material (grades listed in Decision 13/2023/QĐ-TTg; impurities up to 2%, moisture up to 20%; inspection certificate for customs clearance); in force six months after signing",
+      "signed": "2024-12-30",
+      "published": "2025-01-30",
+      "url": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-44-2024-tt-btnmt-43933.htm"
+    },
+    {
+      "id": "id-permendag-24-2025",
+      "publisher": "Ministry of Trade (Indonesia), JDIH",
+      "citation": "Minister of Trade Regulation No. 24 of 2025",
+      "document": "Ministerial regulation",
+      "title": "Permendag 24/2025 on import of used goods and non-hazardous waste: recovered paper (4707.10–4707.90) only for producer-importers (API-P) with an import approval (PI Limbah Non B3 – Kertas), surveyor verification in the country of origin before shipment, registered-exporter documents",
+      "signed": "2025-06-30",
+      "published": "2025-06-30",
+      "url": "https://jdih.kemendag.go.id/peraturan/peraturan-menteri-perdagangan-republik-indonesia-nomor-24-tahun-2025-tentang-kebijakan-dan-pengaturan-impor-barang-dalam-keadaan-tidak-baru-dan-limbah-non-bahan-berbahaya-dan-beracun-1"
+    },
+    {
+      "id": "id-permendag-23-2026",
+      "publisher": "Ministry of Trade (Indonesia), JDIH",
+      "citation": "Minister of Trade Regulation No. 23 of 2026",
+      "document": "Amending regulation",
+      "title": "Permendag 23/2026 amending Permendag 24/2025 (annex re-issued; recovered paper entries unchanged: PI and surveyor report required)",
+      "signed": "2026-09-09",
+      "published": "2026-09-09",
+      "url": "https://jdih.kemendag.go.id/peraturan/peraturan-menteri-perdagangan-republik-indonesia-nomor-23-tahun-2026-tentang-perubahan-atas-peraturan-menteri-perdagangan-nomor-24-tahun-2025-tentang-kebijakan-dan-pengaturan-impor-barang-dalam-keadaan-tidak-baru-dan-limbah-non-bahan-berbahaya-dan-beracun"
+    },
+    {
+      "id": "my-ita-wastepaper",
+      "publisher": "International Trade Administration (trade.gov)",
+      "citation": "Market Intelligence, Mar 14, 2022",
+      "document": "Market intelligence",
+      "title": "Malaysia Guidelines for Wastepaper and Scrap Metal: inspection and Certificate of Approval for all wastepaper imports from January 10, 2022; only 4707.10, 4707.20 and 4707.30 allowed, 4707.90 not allowed",
+      "signed": null,
+      "published": "2022-03-14",
+      "url": "https://www.trade.gov/market-intelligence/malaysia-guidelines-wastepaper-and-scrap-metal"
+    },
+    {
+      "id": "my-wto-qr-9194",
+      "publisher": "World Trade Organization (QR database)",
+      "citation": "G/MA/QR/N/MYS/4, QR #9194",
+      "document": "Notification of quantitative restrictions",
+      "title": "Malaysia: prohibition of import on unsorted waste paper, Customs (Prohibition of Imports) Order 2023 [P.U. (A) 117/2023], in force from September 30, 2023, administered by MITI",
+      "signed": null,
+      "published": "2026-07-17",
+      "url": "https://qr.wto.org/en/qrs/9194"
+    },
+    {
+      "id": "th-wto-qr-9087",
+      "publisher": "World Trade Organization (QR database)",
+      "citation": "G/MA/QR/N/THA/4, QR #9087",
+      "document": "Notification of quantitative restrictions",
+      "title": "Thailand: import prohibition on municipal waste, Notification of the Ministry of Commerce B.E. 2562 (2019), in force from May 29, 2019",
+      "signed": null,
+      "published": "2025-02-03",
+      "url": "https://qr.wto.org/en/qrs/9087"
+    },
+    {
+      "id": "in-dgft-gn-import",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "ITC (HS) 2022, Schedule 1, General Notes regarding Import Policy (as on Aug 11, 2025)",
+      "document": "General notes",
+      "title": "General Notes regarding Import Policy, note on hazardous wastes: imports subject to the Hazardous and Other Wastes (Management and Transboundary Movement) Rules, 2016; hazardous waste and substances contaminated with it prohibited",
+      "signed": null,
+      "published": "2025-08-11",
+      "url": "https://content.dgft.gov.in/Website/General+Notes+regarding+Import+Policy_AsOn11082025.pdf"
+    },
+    {
+      "id": "basel-annex-ix",
+      "publisher": "Secretariat of the Basel Convention (UNEP)",
+      "citation": "Basel Convention, Annex IX, entry B3020",
+      "document": "Convention text",
+      "title": "Basel Convention text: Annex IX (non-hazardous wastes), B3020 paper, paperboard and paper product wastes, provided they are not mixed with hazardous wastes",
+      "signed": null,
+      "published": "2019-11-01",
+      "url": "https://www.basel.int/TheConvention/Overview/TextoftheConvention/tabid/1275/Default.aspx"
+    }
+  ],
+  "coverageNote": "The 10 markets shown take 79% of 2025 U.S. Chapter 47 exports. A customs union (the EU) is one market: its members share one tariff."
+}

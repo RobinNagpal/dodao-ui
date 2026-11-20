@@ -1,0 +1,1510 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 32,
+    "padded": "32",
+    "slug": "32-dyes-pigments-and-paints",
+    "title": "Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/32-dyes-pigments-and-paints/markets",
+    "h1": "HTS Chapter 32: Tanning or Dyeing Extracts; Tannins and Their Derivatives; Dyes, Pigments and Other Coloring Matter; Paints and Varnishes; Putty and Other Mastics; Inks — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Paint, Pigments & Ink by Country (HTS Ch. 32) | KoalaGains",
+      "shortDescription": "What Canada, Mexico, the EU, China, Korea, Japan, Brazil, India, Taiwan and the UK charge on U.S. paint, titanium dioxide, dyes, caulk and printing ink.",
+      "keywords": [
+        "tariff on paint",
+        "tariffs on paint canada",
+        "titanium dioxide tariffs",
+        "printer ink tariffs",
+        "eu tariff on us goods",
+        "does mexico have tariffs on us goods",
+        "paint tariff code"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "U.S. paint, pigments, caulk and ink enter **duty-free in the three biggest markets**: Canada and Mexico charge nothing on goods that qualify for USMCA, and the **EU** has charged nothing on any U.S. Chapter 32 good since July 1, 2026 (it charged up to 6.5% before). South Korea is also free under KORUS. **China** is the expensive market: its MFN rate of 5%–10%, its 2019 counter-tariffs of 5%–25% plus 2.5%, and the 10% extra duty on all U.S. goods take U.S. solvent-based paint to 42.5% and titanium dioxide pigment to 29% unless the Chinese buyer holds an exclusion. Brazil charges up to 14%, India 7.5%–10%, and Japan, Taiwan and the UK 0%–6.5%. Beyond the tariff, what decides access for paints and inks is chemical and product rules: REACH, CLP and the VOC limits of Directive 2004/42/EC in the EU, Canada's VOC limits for architectural coatings, Mexico's paint-labelling standard, and chemical registration in Korea, China, Japan and Taiwan.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "3201",
+      "label": "Tanning extracts & tannins",
+      "shortLabel": "Tanning extracts"
+    },
+    {
+      "heading": "3202",
+      "label": "Synthetic tanning agents",
+      "shortLabel": "Tanning agents"
+    },
+    {
+      "heading": "3203",
+      "label": "Natural colorants (plant & animal)",
+      "shortLabel": "Natural colors"
+    },
+    {
+      "heading": "3204",
+      "label": "Synthetic organic dyes & pigments",
+      "shortLabel": "Synthetic dyes"
+    },
+    {
+      "heading": "3205",
+      "label": "Color lakes",
+      "shortLabel": "Lakes"
+    },
+    {
+      "heading": "3206",
+      "label": "Titanium dioxide & other pigments",
+      "shortLabel": "TiO2 & pigments"
+    },
+    {
+      "heading": "3207",
+      "label": "Ceramic colors, glazes & glass frit",
+      "shortLabel": "Glazes & frit"
+    },
+    {
+      "heading": "3208",
+      "label": "Solvent-based paints & varnishes",
+      "shortLabel": "Solvent paints"
+    },
+    {
+      "heading": "3209",
+      "label": "Water-based paints & varnishes",
+      "shortLabel": "Water paints"
+    },
+    {
+      "heading": "3210",
+      "label": "Other paints, distempers & leather finishes",
+      "shortLabel": "Other paints"
+    },
+    {
+      "heading": "3211",
+      "label": "Paint driers",
+      "shortLabel": "Driers"
+    },
+    {
+      "heading": "3212",
+      "label": "Pigment dispersions, stamping foils & retail dyes",
+      "shortLabel": "Dispersions & foils"
+    },
+    {
+      "heading": "3213",
+      "label": "Artists' & students' colors",
+      "shortLabel": "Artists' colors"
+    },
+    {
+      "heading": "3214",
+      "label": "Caulk, putty, mastics & fillers",
+      "shortLabel": "Caulk & putty"
+    },
+    {
+      "heading": "3215",
+      "label": "Printing, writing & drawing inks",
+      "shortLabel": "Inks"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin. Neither of Canada's counter-tariff lists (March 2025, September 2026) has a Chapter 32 item",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2342968288,
+      "priorExportsUsd": 2346724554,
+      "sharePct": 30.1,
+      "changePct": -0.2,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 1303700,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320110 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3202": {
+          "exportsUsd": 678500,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320210 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3203": {
+          "exportsUsd": 39117411,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320300 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3204": {
+          "exportsUsd": 103267260,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320490 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3205": {
+          "exportsUsd": 6055846,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320500 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3206": {
+          "exportsUsd": 272623671,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3% avg (0%–6.5%) MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3% (lines 0%–6.5%) for HS 320611 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3207": {
+          "exportsUsd": 35074275,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 320740 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3208": {
+          "exportsUsd": 590170139,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.25% avg (0%–6.5%) MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3.25% (lines 0%–6.5%) for HS 320890 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3209": {
+          "exportsUsd": 613275133,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 320910 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3210": {
+          "exportsUsd": 18086696,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 321000 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3211": {
+          "exportsUsd": 1797889,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 321100 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3212": {
+          "exportsUsd": 57713631,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 321290 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3213": {
+          "exportsUsd": 24269411,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 321390 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3214": {
+          "exportsUsd": 390677782,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.25% avg (0%–6.5%) MFN",
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 3.25% (lines 0%–6.5%) for HS 321410 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        },
+        "3215": {
+          "exportsUsd": 188856944,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 0% for HS 321519 (2023); certification of origin required. Neither of Canada's counter-tariff lists (2025, 2026) has a Chapter 32 item"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($2.34B, 30% of the chapter, down 0.2%) is the largest buyer, mostly of paints (3209, $613M; 3208, $590M) and caulks (3214, $391M). Qualifying goods enter free, and neither of Canada's counter-tariff lists has a Chapter 32 item; architectural paints must meet Canada's VOC limits.",
+        "mainProducts": "Water-based paints & varnishes (3209) · Solvent-based paints & varnishes (3208)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Environment and Climate Change Canada (VOC limits for architectural coatings) and Health Canada (surface coating materials)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2009-264/",
+          "requirement": "An architectural coating may not be manufactured, imported or sold in Canada if its VOC concentration exceeds the limit for its category in the Volatile Organic Compound (VOC) Concentration Limits for Architectural Coatings Regulations (SOR/2009-264); dilution instructions must be in English and French. Lead and mercury in surface coatings are limited by the Surface Coating Materials Regulations (SOR/2016-193)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 1655896217,
+      "priorExportsUsd": 1753643231,
+      "sharePct": 21.3,
+      "changePct": -5.6,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 333950,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320110 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3202": {
+          "exportsUsd": 805245,
+          "rate": "Free (USMCA)",
+          "normalRate": "7% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 7% for HS 320210 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3203": {
+          "exportsUsd": 12646810,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320300 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3204": {
+          "exportsUsd": 99434112,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320490 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3205": {
+          "exportsUsd": 7104763,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% avg (0%–5%) MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.5% (lines 0%–5%) for HS 320500 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3206": {
+          "exportsUsd": 359012327,
+          "rate": "Free (USMCA)",
+          "normalRate": "9% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 9% for HS 320611 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3207": {
+          "exportsUsd": 59075979,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320740 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3208": {
+          "exportsUsd": 406220050,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320890 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3209": {
+          "exportsUsd": 267536349,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 320910 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3210": {
+          "exportsUsd": 9592723,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 321000 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3211": {
+          "exportsUsd": 2543052,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 321100 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3212": {
+          "exportsUsd": 50264927,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 0% for HS 321290 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3213": {
+          "exportsUsd": 1662629,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 10% for HS 321390 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3214": {
+          "exportsUsd": 236785758,
+          "rate": "Free (USMCA)",
+          "normalRate": "4% avg (3%–5%) MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 4% (lines 3%–5%) for HS 321410 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        },
+        "3215": {
+          "exportsUsd": 142877543,
+          "rate": "Free (USMCA)",
+          "normalRate": "2.5% avg (0%–5%) MFN",
+          "basis": "USMCA Annex 2-B / Mexico's tariff schedule (TIGIE); WITS/TRAINS simple-average MFN 2.5% (lines 0%–5%) for HS 321519 (2023); certification of origin required. Mexico's December 2025 MFN increases have no Chapter 32 line"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($1.66B, down 5.6%) buys solvent-based paint (3208, $406M), titanium dioxide and other pigments (3206, $359M) and water-based paint (3209, $268M). Qualifying goods enter free instead of MFN rates of up to 10%, and Mexico's December 2025 tariff increases have no Chapter 32 line.",
+        "mainProducts": "Solvent-based paints & varnishes (3208) · Titanium dioxide & other pigments (3206)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Secretaría de Salud / COFEPRIS (NOM-003-SSA1-2006 paint and ink labelling)",
+          "url": "https://dof.gob.mx/normasOficiales/3456/SALUD/SALUD.htm",
+          "requirement": "Paints, inks, varnishes, lacquers and enamels sold in Mexico must carry the health and warning information required by NOM-003-SSA1-2006, in Spanish; the standard applies to the importer, so imported products need a Spanish label or counter-label"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU–U.S. framework zero tariff (Regulation (EU) 2026/1455, Annex I lists all of Chapter 32) from July 1, 2026 to December 31, 2029, replacing the EU common external tariff",
+      "usTradeAgreement": null,
+      "exportsUsd": 898467949,
+      "priorExportsUsd": 914209658,
+      "sharePct": 11.5,
+      "changePct": -1.7,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 294922948,
+          "priorExportsUsd": 354395579,
+          "changePct": -16.8
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 169924787,
+          "priorExportsUsd": 176693373,
+          "changePct": -3.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 125158848,
+          "priorExportsUsd": 115971592,
+          "changePct": 7.9
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 118844824,
+          "priorExportsUsd": 91194928,
+          "changePct": 30.3
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 43351879,
+          "priorExportsUsd": 40379407,
+          "changePct": 7.4
+        }
+      ],
+      "cells": {
+        "3201": {
+          "exportsUsd": 214433,
+          "rate": "Free (EU–US framework)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 0% for HS 320110 (2023) before that date"
+        },
+        "3202": {
+          "exportsUsd": 2186080,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5.3% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5.3% for HS 320210 (2023) before that date"
+        },
+        "3203": {
+          "exportsUsd": 62979351,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.25% avg (0%–2.5%) MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 1.25% (lines 0%–2.5%) for HS 320300 (2023) before that date"
+        },
+        "3204": {
+          "exportsUsd": 218248698,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 320490 (2023) before that date"
+        },
+        "3205": {
+          "exportsUsd": 4838159,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 320500 (2023) before that date"
+        },
+        "3206": {
+          "exportsUsd": 248894259,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6% for HS 320611 (2023) before that date"
+        },
+        "3207": {
+          "exportsUsd": 34761943,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "1.85% avg (0%–3.7%) MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 1.85% (lines 0%–3.7%) for HS 320740 (2023) before that date"
+        },
+        "3208": {
+          "exportsUsd": 98018193,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "3.9% avg (0%–6.5%) MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 3.9% (lines 0%–6.5%) for HS 320890 (2023) before that date"
+        },
+        "3209": {
+          "exportsUsd": 33505753,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 320910 (2023) before that date"
+        },
+        "3210": {
+          "exportsUsd": 5578858,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 321000 (2023) before that date"
+        },
+        "3211": {
+          "exportsUsd": 600398,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 321100 (2023) before that date"
+        },
+        "3212": {
+          "exportsUsd": 40409113,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 321290 (2023) before that date"
+        },
+        "3213": {
+          "exportsUsd": 4502867,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 321390 (2023) before that date"
+        },
+        "3214": {
+          "exportsUsd": 78550357,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 5% for HS 321410 (2023) before that date"
+        },
+        "3215": {
+          "exportsUsd": 65179487,
+          "rate": "Free (EU–US framework)",
+          "normalRate": "6.5% MFN (EU rate before July 2026)",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 32), from July 1, 2026 to December 31, 2029; WITS/TRAINS simple-average MFN 6.5% for HS 321519 (2023) before that date"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($898M, down 1.7%) buys mostly titanium dioxide and other pigments (3206, $249M) and synthetic dyes (3204, $218M), with Belgium the largest member. Since July 1, 2026 every Chapter 32 line enters free from the U.S., against up to 6.5% before; REACH registration and the paints VOC directive still decide what can be sold.",
+        "mainProducts": "Titanium dioxide & other pigments (3206) · Synthetic organic dyes & pigments (3204)",
+        "tariffNow": "Free (EU–US framework)",
+        "regulator": {
+          "name": "European Chemicals Agency and national authorities (REACH, CLP, paints VOC Directive 2004/42/EC)",
+          "url": "https://eur-lex.europa.eu/eli/dir/2004/42/oj",
+          "requirement": "Substances in a paint, pigment or ink imported at 1 tonne a year or more must be registered under REACH (Regulation (EC) 1907/2006) by the EU importer or an only representative, mixtures must be classified and labelled under CLP (Regulation (EC) 1272/2008), and decorative paints and vehicle refinishing products must meet the VOC limits and labelling of Directive 2004/42/EC"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the agreement's rules of origin",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 355352467,
+      "priorExportsUsd": 403002777,
+      "sharePct": 4.6,
+      "changePct": -11.8,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 44037,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320110 (2023); certification of origin required"
+        },
+        "3202": {
+          "exportsUsd": 370549,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320210 (2023); certification of origin required"
+        },
+        "3203": {
+          "exportsUsd": 6128915,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320300 (2023); certification of origin required"
+        },
+        "3204": {
+          "exportsUsd": 210027456,
+          "rate": "Free (KORUS)",
+          "normalRate": "6% avg (5%–6.5%) MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6% (lines 5%–6.5%) for HS 320490 (2023); certification of origin required"
+        },
+        "3205": {
+          "exportsUsd": 567240,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320500 (2023); certification of origin required"
+        },
+        "3206": {
+          "exportsUsd": 34847919,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320611 (2023); certification of origin required"
+        },
+        "3207": {
+          "exportsUsd": 11636592,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320740 (2023); certification of origin required"
+        },
+        "3208": {
+          "exportsUsd": 31580237,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320890 (2023); certification of origin required"
+        },
+        "3209": {
+          "exportsUsd": 11077440,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 320910 (2023); certification of origin required"
+        },
+        "3210": {
+          "exportsUsd": 693681,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 321000 (2023); certification of origin required"
+        },
+        "3211": {
+          "exportsUsd": 23591,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 321100 (2023); certification of origin required"
+        },
+        "3212": {
+          "exportsUsd": 2894874,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 321290 (2023); certification of origin required"
+        },
+        "3213": {
+          "exportsUsd": 794258,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 321390 (2023); certification of origin required"
+        },
+        "3214": {
+          "exportsUsd": 25944232,
+          "rate": "Free (KORUS)",
+          "normalRate": "6.5% MFN",
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 6.5% for HS 321410 (2023); certification of origin required"
+        },
+        "3215": {
+          "exportsUsd": 18721446,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS preferential tariff, Korea's schedule (industrial tariffs fully phased out); WITS/TRAINS simple-average MFN 0% for HS 321519 (2023); certification of origin required"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($355M, down 11.8%) buys mostly synthetic dyes and pigments (3204, $210M). Qualifying goods enter free under KORUS instead of Korea's 6.5% MFN rate; K-REACH registration of the substances is the gate.",
+        "mainProducts": "Synthetic organic dyes & pigments (3204) · Titanium dioxide & other pigments (3206)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Environment (K-REACH)",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-standards-trade",
+          "requirement": "New chemical substances, and existing substances imported at 1 tonne a year or more, must be registered under K-REACH, usually through a Korean importer or only representative"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff plus the 10% extra duty on all U.S. goods (since May 14, 2025), plus its 2019 counter-tariffs of 5%–25% and 2.5% from the September 2019 list on almost every Chapter 32 line, unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 288558713,
+      "priorExportsUsd": 368084985,
+      "sharePct": 3.7,
+      "changePct": -21.6,
+      "status": "raised",
+      "cells": {
+        "3201": {
+          "exportsUsd": 11895,
+          "rate": "40% (5% + 25% + 10%)",
+          "normalRate": "5% MFN",
+          "basis": "China MFN 5% for HS 320110 (WITS/TRAINS 2023); counter-tariff on quebracho extract (3201.1000): 25% counter-tariff (2019 Annex 1); not on the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3202": {
+          "exportsUsd": 705296,
+          "rate": "44% (6.5% + 25% + 2.5% + 10%)",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 320210 (WITS/TRAINS 2023); counter-tariff on synthetic organic tanning substances (3202.1000): 25% counter-tariff (2019 Annex 1) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3203": {
+          "exportsUsd": 2331982,
+          "rate": "19%–44%",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 320300 (WITS/TRAINS 2023); counter-tariff on four national lines: 25% (3203.0019), 5% (3203.0011) or none (3203.0020) under the 2019 annexes, plus 2.5% from the September 2019 list on each; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3204": {
+          "exportsUsd": 28257883,
+          "rate": "39% (6.5% + 20% + 2.5% + 10%)",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 320490 (WITS/TRAINS 2023); counter-tariff on other synthetic organic colouring products (3204.9010, 3204.9090): 20% counter-tariff (2019 Annex 2) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3205": {
+          "exportsUsd": 4441610,
+          "rate": "24% (6.5% + 5% + 2.5% + 10%)",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 320500 (WITS/TRAINS 2023); counter-tariff on color lakes (3205.0000): 5% counter-tariff (2019 Annex 4) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3206": {
+          "exportsUsd": 43550436,
+          "rate": "29%–39%",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 320611 (WITS/TRAINS 2023); counter-tariff on titanium dioxide pigment (3206.1110): 10% counter-tariff (2019 Annex 3); other TiO2 preparations of 80% or more (3206.1190): 20% (Annex 2); each plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3207": {
+          "exportsUsd": 21667774,
+          "rate": "25% (5% + 10% + 10%)",
+          "normalRate": "5% MFN",
+          "basis": "China MFN 5% for HS 320740 (WITS/TRAINS 2023); counter-tariff on glass frit (3207.4000): 10% counter-tariff (2019 Annex 3); not on the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3208": {
+          "exportsUsd": 93602284,
+          "rate": "42.5% (10% + 20% + 2.5% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China MFN 10% for HS 320890 (WITS/TRAINS 2023); counter-tariff on both national lines (3208.9010 polyurethane paints, 3208.9090 other): 20% counter-tariff (2019 Annex 2) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3209": {
+          "exportsUsd": 16393989,
+          "rate": "32.5% (10% + 10% + 2.5% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China MFN 10% for HS 320910 (WITS/TRAINS 2023); counter-tariff on acrylic or vinyl water-based paints (3209.1000): 10% counter-tariff (2019 Annex 3) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3210": {
+          "exportsUsd": 3102142,
+          "rate": "42.5% (10% + 20% + 2.5% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China MFN 10% for HS 321000 (WITS/TRAINS 2023); counter-tariff on other paints and varnishes (3210.0000): 20% counter-tariff (2019 Annex 2) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3211": {
+          "exportsUsd": 5151777,
+          "rate": "42.5% (10% + 20% + 2.5% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China MFN 10% for HS 321100 (WITS/TRAINS 2023); counter-tariff on prepared driers (3211.0000): 20% counter-tariff (2019 Annex 2) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3212": {
+          "exportsUsd": 12299808,
+          "rate": "32.5% (10% + 10% + 2.5% + 10%)",
+          "normalRate": "10% MFN",
+          "basis": "China MFN 10% for HS 321290 (WITS/TRAINS 2023); counter-tariff on pigment dispersions and retail dyes (3212.9000): 10% counter-tariff (2019 Annex 3) plus 2.5% from the September 2019 list; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3213": {
+          "exportsUsd": 1262167,
+          "rate": "21.5% (6.5% + 5% + 10%)",
+          "normalRate": "6.5% MFN",
+          "basis": "China MFN 6.5% for HS 321390 (WITS/TRAINS 2023); counter-tariff on other artists' colors (3213.9000): 5% counter-tariff (2019 Annex 4); the September 2019 List 2 that named it was never applied (Announcement No. 7 of 2019); plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3214": {
+          "exportsUsd": 34597635,
+          "rate": "about 31.5%–46.5%",
+          "normalRate": "9% avg (8%–10%) MFN",
+          "basis": "China MFN 9% avg (8%–10%) for HS 321410 (WITS/TRAINS 2023); counter-tariff on semiconductor encapsulants (3214.1010): 25% counter-tariff (2019 Annex 1); other mastics and caulks (3214.1090): 10% (Annex 3); each plus 2.5% from the September 2019 list, on MFN rates averaging 9%; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        },
+        "3215": {
+          "exportsUsd": 21182035,
+          "rate": "32.5%–39%",
+          "normalRate": "3.25% avg (0%–6.5%) MFN",
+          "basis": "China MFN 3.25% avg (0%–6.5%) for HS 321519 (WITS/TRAINS 2023); counter-tariff on non-black printing ink (3215.1900 in the 2019 lists): 20% counter-tariff (2019 Annex 2) plus 2.5% from the September 2019 list, on MFN rates of 0%–6.5%; plus the 10% extra duty on all U.S. goods. An importer holding an exclusion (valid to December 31, 2026) pays only the MFN rate plus 10%"
+        }
+      },
+      "profile": {
+        "headline": "China ($289M, down 21.6%) buys solvent-based paint (3208, $94M) and titanium dioxide and other pigments (3206, $44M). Without an exclusion, U.S. solvent paint pays 42.5% and TiO2 pigment 29%, stacking China's MFN rate, its 2019 counter-tariffs and the 10% extra on all U.S. goods; its Board of Trade list names one paint line for a possible cut, with none published.",
+        "mainProducts": "Solvent-based paints & varnishes (3208) · Titanium dioxide & other pigments (3206)",
+        "tariffNow": "MFN + 10% extra + 2019 counter-tariffs unless excluded",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment (new chemical substance registration, Order No. 12)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk06/202608/t20260804_1163416.html",
+          "requirement": "A chemical substance in a paint, pigment or ink that is not on China's inventory needs environmental-management registration before import; from August 15, 2026 MEE no longer accepts record-filing for new substances and uses a simplified registration instead"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Mercosur common external tariff as applied by Brazil; no U.S. free-trade agreement. Brazil has imposed no extra tariff on U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 175818627,
+      "priorExportsUsd": 191569028,
+      "sharePct": 2.3,
+      "changePct": -8.2,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 14400,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 320110 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3202": {
+          "exportsUsd": 93864,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 10% for HS 320210 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3203": {
+          "exportsUsd": 3393073,
+          "rate": "6.6% avg (2%–10%)",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 6.6% (lines 2%–10%) for HS 320300 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3204": {
+          "exportsUsd": 18983313,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 320490 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3205": {
+          "exportsUsd": 1080087,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 320500 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3206": {
+          "exportsUsd": 39119051,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 320611 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3207": {
+          "exportsUsd": 13348906,
+          "rate": "12%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 12% for HS 320740 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3208": {
+          "exportsUsd": 37932762,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 320890 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3209": {
+          "exportsUsd": 4842171,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 320910 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3210": {
+          "exportsUsd": 879646,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321000 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3211": {
+          "exportsUsd": 323529,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321100 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3212": {
+          "exportsUsd": 4722653,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321290 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3213": {
+          "exportsUsd": 41209,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321390 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3214": {
+          "exportsUsd": 33674106,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321410 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        },
+        "3215": {
+          "exportsUsd": 17369857,
+          "rate": "14%",
+          "normalRate": null,
+          "basis": "Mercosur common external tariff as applied by Brazil; WITS/TRAINS simple-average MFN 14% for HS 321519 (2023). No U.S. free-trade agreement; Brazil has imposed no extra tariff on U.S. goods"
+        }
+      },
+      "profile": {
+        "headline": "Brazil ($176M, down 8.2%) buys titanium dioxide and other pigments (3206, $39M), solvent-based paint (3208, $38M) and caulks. It charges the Mercosur tariff, 12%–14% on most of the sample, with no U.S. trade agreement and no extra duty on U.S. goods.",
+        "mainProducts": "Titanium dioxide & other pigments (3206) · Solvent-based paints & varnishes (3208)",
+        "tariffNow": "MFN 2%–14% (no U.S. FTA)",
+        "regulator": {
+          "name": "IBAMA, ANVISA and INMETRO (depending on the product)",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-standards-trade",
+          "requirement": "Industrial chemicals, colorants for food and cosmetics and consumer products are regulated by different Brazilian agencies; see the Country Commercial Guide for the current registration and certification requirements"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff schedule; no U.S. free-trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 175240295,
+      "priorExportsUsd": 205279191,
+      "sharePct": 2.3,
+      "changePct": -14.6,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 8589,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 320110 (2023)"
+        },
+        "3202": {
+          "exportsUsd": 71303,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 320210 (2023)"
+        },
+        "3203": {
+          "exportsUsd": 4649246,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 0% for HS 320300 (2023)"
+        },
+        "3204": {
+          "exportsUsd": 17657851,
+          "rate": "2.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.2% for HS 320490 (2023)"
+        },
+        "3205": {
+          "exportsUsd": 68380,
+          "rate": "4.4%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 4.4% for HS 320500 (2023)"
+        },
+        "3206": {
+          "exportsUsd": 24819577,
+          "rate": "3.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.2% for HS 320611 (2023)"
+        },
+        "3207": {
+          "exportsUsd": 4138472,
+          "rate": "2.5%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.5% for HS 320740 (2023)"
+        },
+        "3208": {
+          "exportsUsd": 44306441,
+          "rate": "3.2%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.2% for HS 320890 (2023)"
+        },
+        "3209": {
+          "exportsUsd": 6900202,
+          "rate": "4%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 4% for HS 320910 (2023)"
+        },
+        "3210": {
+          "exportsUsd": 1187083,
+          "rate": "2.75% avg (1.6%–3.9%)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 2.75% (lines 1.6%–3.9%) for HS 321000 (2023)"
+        },
+        "3211": {
+          "exportsUsd": 0,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 321100 (2023)"
+        },
+        "3212": {
+          "exportsUsd": 3214905,
+          "rate": "3.1% avg (2.1%–4.1%)",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.1% (lines 2.1%–4.1%) for HS 321290 (2023)"
+        },
+        "3213": {
+          "exportsUsd": 495971,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 321390 (2023)"
+        },
+        "3214": {
+          "exportsUsd": 33569051,
+          "rate": "3.3%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.3% for HS 321410 (2023)"
+        },
+        "3215": {
+          "exportsUsd": 34153224,
+          "rate": "3.9%",
+          "normalRate": null,
+          "basis": "Japan's customs tariff, MFN rate (no U.S. free-trade agreement); WITS/TRAINS simple-average MFN 3.9% for HS 321519 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($175M, down 14.6%) buys solvent-based paint (3208, $44M), printing inks (3215, $34M) and caulks (3214, $34M). MFN rates are low, 3.2%–3.9% on those groups, with no U.S. trade agreement; the Chemical Substances Control Law is the gate.",
+        "mainProducts": "Solvent-based paints & varnishes (3208) · Printing, writing & drawing inks (3215)",
+        "tariffNow": "MFN 0%–4.4% (no U.S. FTA)",
+        "regulator": {
+          "name": "METI, MHLW and MOE (Chemical Substances Control Law)",
+          "url": "https://www.meti.go.jp/policy/chemical_management/english/",
+          "requirement": "A new chemical substance must be notified and evaluated before manufacture or import under the Chemical Substances Control Law, and imported existing substances are reported by volume"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's MFN basic customs duty schedule; no U.S. free-trade agreement. The February 6, 2026 U.S.–India framework says India will eliminate or reduce tariffs on all U.S. industrial goods, but no implementing notification was found",
+      "usTradeAgreement": null,
+      "exportsUsd": 172841883,
+      "priorExportsUsd": 165427725,
+      "sharePct": 2.2,
+      "changePct": 4.5,
+      "status": "pending",
+      "cells": {
+        "3201": {
+          "exportsUsd": 7486,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320110 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3202": {
+          "exportsUsd": 284184,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320210 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3203": {
+          "exportsUsd": 1323856,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320300 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3204": {
+          "exportsUsd": 11505411,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320490 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3205": {
+          "exportsUsd": 1356488,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320500 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3206": {
+          "exportsUsd": 81515336,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 320611 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3207": {
+          "exportsUsd": 6390503,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 7.5% for HS 320740 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3208": {
+          "exportsUsd": 29103726,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 320890 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3209": {
+          "exportsUsd": 6060316,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 320910 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3210": {
+          "exportsUsd": 1021331,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321000 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3211": {
+          "exportsUsd": 2367272,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321100 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3212": {
+          "exportsUsd": 3322719,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321290 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3213": {
+          "exportsUsd": 88593,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321390 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3214": {
+          "exportsUsd": 17237574,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321410 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        },
+        "3215": {
+          "exportsUsd": 11257088,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India customs tariff, basic customs duty; WITS/TRAINS simple-average MFN 10% for HS 321519 (2023). Surcharges and IGST are not included. The February 2026 U.S.–India framework promises cuts on U.S. industrial goods but no Indian notification implementing it was found"
+        }
+      },
+      "profile": {
+        "headline": "India ($173M, up 4.5%) buys mostly titanium dioxide and other pigments (3206, $82M). It charges a basic duty of 7.5%–10% plus surcharges; the February 2026 framework promises cuts on U.S. industrial goods, with no effective date yet.",
+        "mainProducts": "Titanium dioxide & other pigments (3206) · Solvent-based paints & varnishes (3208)",
+        "tariffNow": "MFN 7.5%–10% (US–India framework not yet in force)",
+        "regulator": {
+          "name": "Bureau of Indian Standards (Quality Control Orders)",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation",
+          "requirement": "Several chemicals are subject to BIS Quality Control Orders that require BIS certification before import; the lists change, so confirm for the exact HS line"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's applied MFN tariff; the U.S.–Taiwan Agreement on Reciprocal Trade (signed February 12, 2026) puts every Chapter 32 line at 0% on entry into force, which has not happened yet",
+      "usTradeAgreement": null,
+      "exportsUsd": 120823056,
+      "priorExportsUsd": 96451113,
+      "sharePct": 1.6,
+      "changePct": 25.3,
+      "status": "pending",
+      "cells": {
+        "3201": {
+          "exportsUsd": 18500,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320110 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3202": {
+          "exportsUsd": 14280,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320210 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3203": {
+          "exportsUsd": 2799864,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320300 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3204": {
+          "exportsUsd": 28552243,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320490 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3205": {
+          "exportsUsd": 425345,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320500 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3206": {
+          "exportsUsd": 34374945,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320611 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3207": {
+          "exportsUsd": 5153752,
+          "rate": "3.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320740 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3208": {
+          "exportsUsd": 23183708,
+          "rate": "5%–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320890 (AIT-TECRO ART Schedule 1): paints and enamels 5%–6.5%, varnishes and solutions 5%; every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3209": {
+          "exportsUsd": 8580504,
+          "rate": "5%–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 320910 (AIT-TECRO ART Schedule 1): 6.5% on paints, 5% on varnishes; every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3210": {
+          "exportsUsd": 126739,
+          "rate": "2.5%–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321000 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3211": {
+          "exportsUsd": 412377,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321100 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3212": {
+          "exportsUsd": 1262573,
+          "rate": "5%–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321290 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3213": {
+          "exportsUsd": 633076,
+          "rate": "6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321390 (AIT-TECRO ART Schedule 1); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3214": {
+          "exportsUsd": 7458269,
+          "rate": "5%–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321410 (AIT-TECRO ART Schedule 1): 6.5% on mastics and painters' fillings (3214.1010), 5% on caulks, putty and sealing compounds (3214.1090); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        },
+        "3215": {
+          "exportsUsd": 7826881,
+          "rate": "Free–6.5%",
+          "normalRate": null,
+          "basis": "Taiwan applied MFN rate of January 30, 2026 for the national lines of HS 321519 (AIT-TECRO ART Schedule 1): 0% on solid ink for printers (3215.1910), 6.5% on other printing inks (3215.1990); every Chapter 32 line is in staging category EIF or A, so it goes to 0% when the agreement enters into force, which needs approval by Taiwan's legislature"
+        }
+      },
+      "profile": {
+        "headline": "Taiwan ($121M, up 25.3%) is the fastest-growing buyer in the table, mostly of TiO2 and other pigments (3206, $34M) and synthetic dyes (3204, $29M). It charges 2%–6.5% now; under the signed U.S.–Taiwan agreement every Chapter 32 line goes to 0% on entry into force, once Taiwan's legislature approves it.",
+        "mainProducts": "Titanium dioxide & other pigments (3206) · Synthetic organic dyes & pigments (3204)",
+        "tariffNow": "MFN 0%–6.5% (US–Taiwan agreement not yet in force)",
+        "regulator": {
+          "name": "Ministry of Environment (chemical substance registration)",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation",
+          "requirement": "Chemical substances in imported paints, pigments and inks must be registered with Taiwan's Ministry of Environment under the Toxic and Concerned Chemical Substances Control Act, usually by the Taiwanese importer"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (MFN); no U.S. free-trade agreement, and the U.S.–UK Economic Prosperity Deal did not cut Chapter 32 rates",
+      "usTradeAgreement": null,
+      "exportsUsd": 119237618,
+      "priorExportsUsd": 125570064,
+      "sharePct": 1.5,
+      "changePct": -5,
+      "status": "unchanged",
+      "cells": {
+        "3201": {
+          "exportsUsd": 59363,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 320110 (2023)"
+        },
+        "3202": {
+          "exportsUsd": 120784,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 320210 (2023)"
+        },
+        "3203": {
+          "exportsUsd": 1704728,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 320300 (2023)"
+        },
+        "3204": {
+          "exportsUsd": 12895238,
+          "rate": "4% avg (0%–6%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 4% (lines 0%–6%) for HS 320490 (2023)"
+        },
+        "3205": {
+          "exportsUsd": 2425630,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 320500 (2023)"
+        },
+        "3206": {
+          "exportsUsd": 3826694,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 6% for HS 320611 (2023)"
+        },
+        "3207": {
+          "exportsUsd": 6637873,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 320740 (2023)"
+        },
+        "3208": {
+          "exportsUsd": 19717266,
+          "rate": "5.25% avg (0%–6%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 5.25% (lines 0%–6%) for HS 320890 (2023)"
+        },
+        "3209": {
+          "exportsUsd": 4622742,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 6% for HS 320910 (2023)"
+        },
+        "3210": {
+          "exportsUsd": 1097946,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 321000 (2023)"
+        },
+        "3211": {
+          "exportsUsd": 75677,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 321100 (2023)"
+        },
+        "3212": {
+          "exportsUsd": 6905090,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 321290 (2023)"
+        },
+        "3213": {
+          "exportsUsd": 2470182,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 0% for HS 321390 (2023)"
+        },
+        "3214": {
+          "exportsUsd": 31829042,
+          "rate": "4%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 4% for HS 321410 (2023)"
+        },
+        "3215": {
+          "exportsUsd": 24849363,
+          "rate": "6%",
+          "normalRate": null,
+          "basis": "UK Global Tariff (no U.S. free-trade agreement; the Economic Prosperity Deal did not cut Chapter 32 rates); WITS/TRAINS simple-average MFN 6% for HS 321519 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($119M, down 5.0%) buys caulks (3214, $32M) and printing inks (3215, $25M). It charges the UK Global Tariff, 0%–6% in the sample; unlike the EU it has not cut rates on U.S. Chapter 32 goods, and UK REACH applies separately from EU REACH.",
+        "mainProducts": "Caulk, putty, mastics & fillers (3214) · Printing, writing & drawing inks (3215)",
+        "tariffNow": "MFN 0%–6% (no U.S. FTA)",
+        "regulator": {
+          "name": "Health and Safety Executive (UK REACH and GB CLP)",
+          "url": "https://www.hse.gov.uk/reach/",
+          "requirement": "Substances imported into Great Britain at 1 tonne a year or more must be registered under UK REACH by the GB importer or an only representative, and mixtures labelled under GB CLP; decorative and vehicle refinishing paints must meet the VOC limits of the Volatile Organic Compounds in Paints, Varnishes and Vehicle Refinishing Products Regulations 2012"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "3209",
+      "exportsUsd": 613275133,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3208",
+      "exportsUsd": 590170139,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3208",
+      "exportsUsd": 406220050,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3214",
+      "exportsUsd": 390677782,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3206",
+      "exportsUsd": 359012327,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "3206",
+      "exportsUsd": 272623671,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "3209",
+      "exportsUsd": 267536349,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "3206",
+      "exportsUsd": 248894259,
+      "rate": "Free (EU–US framework)"
+    }
+  ],
+  "assumptions": [
+    "MFN rates are the World Bank/UNCTAD WITS (TRAINS) simple-average applied rates for 2023 (the latest year WITS holds for these markets) for one representative six-digit subheading per heading — the subheading with the largest 2025 U.S. exports in that heading: 3206.11 for titanium dioxide pigments, 3208.90 and 3209.10 for paints, 3214.10 for caulks and mastics and 3215.19 for color printing inks. National 8–10-digit lines can differ, and where a subheading has several national lines the basis gives their range.",
+    "Taiwan's cells use the applied MFN rates of January 30, 2026 printed for each national line in the AIT-TECRO Agreement on Reciprocal Trade schedule, instead of WITS.",
+    "USMCA (Mexico, Canada) and KORUS (South Korea) give 0% to U.S. goods that meet the agreement's rules of origin; the normal-rate column shows each market's MFN rate for goods that do not qualify.",
+    "For the EU, Regulation (EU) 2026/1455 lists all of Chapter 32 in Annex I and sets 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029, on proof of non-preferential U.S. origin; the normal-rate column shows the rate the EU charged before then. The Commission can suspend the cut.",
+    "China's cells add, in order, China's MFN rate, the counter-tariff the line carries under Announcement No. 3 of 2019 (25%, 20%, 10% or 5%), 2.5% from the September 2019 list (Announcement No. 4 of 2019, halved from February 14, 2020; 5% on writing ink 3215.9010), and the 10% extra duty on all U.S. goods. An importer with an exclusion pays only the MFN rate plus 10%.",
+    "India's rates are the basic customs duty only; surcharges and IGST are not included. Brazil, Japan and the UK show MFN rates; none has a trade agreement that cuts these rates for U.S. goods."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 32, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS / UNCTAD TRAINS tariff data",
+      "document": "WITS API (TRAINS, MFN applied, reported)",
+      "title": "MFN applied tariff rates by reporter and HS six-digit subheading, 2023",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Continuing the suspension of 24 points of the additional tariff on imports originating in the United States for two months from November 10, 2026 (10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "cn-2019-3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement with four annexes (25/20/10/5%)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告 (from June 1, 2019; 61 Chapter 32 lines: 23 at 25%, 18 at 20%, 13 at 10%, 7 at 5%)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-no4",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 4 of 2019",
+      "document": "Tariff Commission Announcement No. 4 of 2019 (third batch, Lists 1 and 2)",
+      "title": "Additional tariffs on US$75 billion of U.S. goods from September 1 and December 15, 2019 (List 1 includes 57 Chapter 32 lines: writing ink 3215.9010 in Part 2 at 10%, the rest in Part 4 at 5%)",
+      "signed": null,
+      "published": "2019-08-23",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201908/t20190823_3372928.htm"
+    },
+    {
+      "id": "cn-2019-no7",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2019",
+      "document": "Announcement",
+      "title": "国务院关税税则委员会关于暂不实施对原产于美国的部分进口商品加征关税措施的公告 (List 2 of Announcement No. 4 of 2019, including stamping foils 3212.10 and artists' colors 3213, not applied from December 15, 2019)",
+      "signed": null,
+      "published": "2019-12-15",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201912/t20191215_3441954.htm"
+    },
+    {
+      "id": "cn-2020-no1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2020",
+      "document": "Tariff Commission Announcement No. 1 of 2020",
+      "title": "Rates of the September 2019 additional tariffs on U.S. goods halved from February 14, 2020 (10% to 5%, 5% to 2.5%)",
+      "signed": null,
+      "published": "2020-02-06",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200206_3466540.htm"
+    },
+    {
+      "id": "cn-mbe-2020",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Announcement",
+      "title": "Market-based exclusion process for goods subject to counter-tariffs on U.S. Section 301 measures (eligible list includes titanium dioxide 3206.1110 and 3206.1190; other lines can be added on request)",
+      "signed": "2020-02-17",
+      "published": "2020-02-18",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+    },
+    {
+      "id": "tw-art-schedule",
+      "publisher": "USTR",
+      "citation": "AIT-TECRO ART tariff schedules",
+      "document": "Agreement on Reciprocal Trade, Annex: Tariff Schedule of Taiwan",
+      "title": "Tariff schedules of the AIT-TECRO Agreement on Reciprocal Trade (Schedule 1: Taiwan, applied MFN rates of January 30, 2026 and staging categories)",
+      "signed": "2026-02-12",
+      "published": "2026-02-12",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/AIT-TECRO%20ART%20Tariff%20Schedules%20sanitized.pdf"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, December 29, 2025",
+      "document": "Decreto",
+      "title": "Decree amending the Tariff of the General Import and Export Tax Law (higher general rates on 1,463 lines from January 1, 2026; no Chapter 32 line)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    }
+  ],
+  "coverageNote": "The 10 markets shown take 81% of 2025 U.S. Chapter 32 exports. A customs union (the EU) is one market: its members share one tariff."
+}

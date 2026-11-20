@@ -1,0 +1,575 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 26,
+    "padded": "26",
+    "slug": "26-ores-slag-and-ash",
+    "title": "Ores, Slag and Ash"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/26-ores-slag-and-ash",
+    "h1": "HTS Chapter 26: Ores, Slag and Ash — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Copper Concentrate, Zinc & Iron Ore Exports, 2025 (HTS Ch. 26) | KoalaGains",
+      "shortDescription": "U.S. ore exports were $9.33B in 2025, 38% copper concentrate. Who buys U.S. copper, zinc, lead and moly concentrate and iron ore, and what China charges.",
+      "keywords": [
+        "us iron ore exports",
+        "us copper concentrate exports",
+        "does the us export iron ore",
+        "does the us export copper",
+        "zinc concentrate exports",
+        "us molybdenum exports",
+        "HS 26 exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "The U.S. exported **$9.33B** of ores, concentrates, slag and ash in 2025, up 10.9% from 2024. Copper ores and concentrates (2603) were the largest product at **$3.54B (38%)**, followed by zinc concentrate (2608, $1.47B), molybdenum concentrate (2613, $1.42B, more than half of it roasted moly oxide), gold and silver ores and concentrates (2616, $849M) and lead concentrate (2607, $846M). Iron ore, mostly taconite pellets, fell by half to $527M. Mexico ($2.42B, nearly all copper concentrate) and Canada ($2.40B: copper, zinc and lead concentrate and iron ore pellets) took **52%**. China bought $369M, down 71% from $1.29B in 2024, while exports to South Korea doubled to $1.01B. Exports are up **20.3%** in 2026 so far: $6.89B from January to August.\n\nTariffs matter in one market. **China** charges U.S. ores a 0% normal rate, plus the 10% extra duty on all U.S. goods since May 14, 2025, plus a 2018–2019 counter-tariff of up to 25% unless the Chinese importer holds an exclusion. So U.S. copper and zinc concentrate pay **35%**, lead and molybdenum concentrate 20% and iron ore fines 10%. Every other large buyer charges **0%** on U.S. ores and concentrates: Mexico and Canada under USMCA, Korea under KORUS, and the EU, Japan, the UK and Taiwan on every supplier. There, access turns on the buyer's rules for metal-bearing residues and waste and, for EU buyers of iron ore pellets, the EU carbon border mechanism (CBAM). On the U.S. side, uranium and thorium ores need an NRC export licence, and slag, ash and residues that are hazardous waste need EPA's consent before they leave.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$9.33B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "+10.9%"
+    },
+    {
+      "label": "Largest product group (2603)",
+      "value": "38%",
+      "note": "Copper ore & concentrates"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "52%",
+      "note": "Mexico, Canada"
+    },
+    {
+      "label": "Top 12 buyers charging 0%",
+      "value": "11 of 12",
+      "note": "All but China"
+    }
+  ],
+  "keyTakeaways": [
+    "U.S. exports of ores, slag and ash were $9.33B in 2025 (+10.9%) and $6.89B in January–August 2026 (+20.3%). Copper concentrate is 38% of the total, and almost two-thirds of it goes to Mexico.",
+    "China is the only large buyer that charges U.S. ores more than in January 2025: 35% on copper, zinc and nickel concentrate and iron ore pellets unless the importer holds an exclusion. The exclusions end December 31, 2026, and the suspension of 24 points of China's extra duty ends January 10, 2027.",
+    "Mexico, Canada, the EU, Korea, Japan, the UK and Taiwan charge 0% on every Chapter 26 ore. No buyer except China has put a counter-tariff on U.S. ores: Canada's 2025 and 2026 lists skipped them, and the EU's suspended list named copper ore only at 0%.",
+    "Most ores need no U.S. export licence. The exceptions are uranium and thorium ores (an NRC licence), hazardous slag and residues (EPA consent) and Russia and Belarus (a Commerce licence for every Chapter 26 code except uranium ores)."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 6526325369,
+      "partnerAUsd": 1462493896,
+      "partnerBUsd": 1925429016,
+      "restUsd": 3138402457
+    },
+    {
+      "year": 2021,
+      "totalUsd": 8494951765,
+      "partnerAUsd": 1814582919,
+      "partnerBUsd": 2502241565,
+      "restUsd": 4178127281
+    },
+    {
+      "year": 2022,
+      "totalUsd": 8565364752,
+      "partnerAUsd": 1888554363,
+      "partnerBUsd": 2587409402,
+      "restUsd": 4089400987
+    },
+    {
+      "year": 2023,
+      "totalUsd": 8103305448,
+      "partnerAUsd": 1630379204,
+      "partnerBUsd": 2522083446,
+      "restUsd": 3950842798
+    },
+    {
+      "year": 2024,
+      "totalUsd": 8408701565,
+      "partnerAUsd": 1833670228,
+      "partnerBUsd": 2298722199,
+      "restUsd": 4276309138
+    },
+    {
+      "year": 2025,
+      "totalUsd": 9326356674,
+      "partnerAUsd": 2417815181,
+      "partnerBUsd": 2403484588,
+      "restUsd": 4505056905
+    }
+  ],
+  "byYearPartners": ["Mexico", "Canada"],
+  "byYearCaption": "U.S. exports of Chapter 26 goods each year, split into the two largest 2025 buyers (Mexico and Canada) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 6885114163,
+    "priorExportsUsd": 5725471397,
+    "changePct": 20.3,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 2153780104,
+        "priorExportsUsd": 1379231320,
+        "changePct": 56.2
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 1496846028,
+        "priorExportsUsd": 1474334550,
+        "changePct": 1.5
+      },
+      {
+        "countryCode": 410,
+        "country": "Rep. of Korea",
+        "exportsUsd": 716980893,
+        "priorExportsUsd": 582504935,
+        "changePct": 23.1
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 671165178,
+        "priorExportsUsd": 533544872,
+        "changePct": 25.8
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 377300595,
+        "priorExportsUsd": 315569808,
+        "changePct": 19.6
+      },
+      {
+        "countryCode": 56,
+        "country": "Belgium",
+        "exportsUsd": 239325746,
+        "priorExportsUsd": 118597525,
+        "changePct": 101.8
+      },
+      {
+        "countryCode": 490,
+        "country": "Taiwan",
+        "exportsUsd": 197455631,
+        "priorExportsUsd": 113056698,
+        "changePct": 74.7
+      },
+      {
+        "countryCode": 276,
+        "country": "Germany",
+        "exportsUsd": 167362420,
+        "priorExportsUsd": 213850446,
+        "changePct": -21.7
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 2417815181,
+      "priorExportsUsd": 1833670228,
+      "sharePct": 25.9,
+      "changePct": 31.9,
+      "tariffNow": "Free (USMCA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2403484588,
+      "priorExportsUsd": 2298722199,
+      "sharePct": 25.8,
+      "changePct": 4.6,
+      "tariffNow": "Free (CUSMA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 1014129207,
+      "priorExportsUsd": 496328949,
+      "sharePct": 10.9,
+      "changePct": 104.3,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 711137520,
+      "priorExportsUsd": 591447733,
+      "sharePct": 7.6,
+      "changePct": 20.2,
+      "tariffNow": "Free (0% EU tariff on all suppliers)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 502972565,
+      "priorExportsUsd": 346436118,
+      "sharePct": 5.4,
+      "changePct": 45.2,
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 369296248,
+      "priorExportsUsd": 1292135185,
+      "sharePct": 4,
+      "changePct": -71.4,
+      "tariffNow": "35% on copper and zinc concentrate, 20% on lead and moly, unless excluded",
+      "status": "raised"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 306710083,
+      "priorExportsUsd": 350831234,
+      "sharePct": 3.3,
+      "changePct": -12.6,
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 268845760,
+      "priorExportsUsd": 127956959,
+      "sharePct": 2.9,
+      "changePct": 110.1,
+      "tariffNow": "Free (0% EU tariff on all suppliers)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 56,
+      "country": "Belgium",
+      "exportsUsd": 234400322,
+      "priorExportsUsd": 176209591,
+      "sharePct": 2.5,
+      "changePct": 33,
+      "tariffNow": "Free (0% EU tariff on all suppliers)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 724,
+      "country": "Spain",
+      "exportsUsd": 213517168,
+      "priorExportsUsd": 230547112,
+      "sharePct": 2.3,
+      "changePct": -7.4,
+      "tariffNow": "Free (0% EU tariff on all suppliers)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 490,
+      "country": "Taiwan",
+      "exportsUsd": 212342218,
+      "priorExportsUsd": 156749410,
+      "sharePct": 2.3,
+      "changePct": 35.5,
+      "tariffNow": "Free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 458,
+      "country": "Malaysia",
+      "exportsUsd": 158706170,
+      "priorExportsUsd": 18947099,
+      "sharePct": 1.7,
+      "changePct": 737.6,
+      "tariffNow": "Free",
+      "status": "unchanged"
+    }
+  ],
+  "othersExportsUsd": 512999644,
+  "othersPriorExportsUsd": 488719748,
+  "byHeading": [
+    {
+      "heading": "2601",
+      "label": "Iron ore & concentrates",
+      "exportsUsd": 527426680,
+      "priorExportsUsd": 1060307263,
+      "changePct": -50.3,
+      "sharePct": 5.7
+    },
+    {
+      "heading": "2602",
+      "label": "Manganese ore",
+      "exportsUsd": 2239095,
+      "priorExportsUsd": 1448337,
+      "changePct": 54.6,
+      "sharePct": 0
+    },
+    {
+      "heading": "2603",
+      "label": "Copper ore & concentrates",
+      "exportsUsd": 3536544956,
+      "priorExportsUsd": 2810621782,
+      "changePct": 25.8,
+      "sharePct": 37.9
+    },
+    {
+      "heading": "2604",
+      "label": "Nickel ore",
+      "exportsUsd": 180048386,
+      "priorExportsUsd": 138239179,
+      "changePct": 30.2,
+      "sharePct": 1.9
+    },
+    {
+      "heading": "2605",
+      "label": "Cobalt ore",
+      "exportsUsd": 210741,
+      "priorExportsUsd": 31752,
+      "changePct": 563.7,
+      "sharePct": 0
+    },
+    {
+      "heading": "2606",
+      "label": "Bauxite (aluminum ore)",
+      "exportsUsd": 17768429,
+      "priorExportsUsd": 8212527,
+      "changePct": 116.4,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2607",
+      "label": "Lead ore & concentrates",
+      "exportsUsd": 845515149,
+      "priorExportsUsd": 897297587,
+      "changePct": -5.8,
+      "sharePct": 9.1
+    },
+    {
+      "heading": "2608",
+      "label": "Zinc ore & concentrates",
+      "exportsUsd": 1473458294,
+      "priorExportsUsd": 1382628005,
+      "changePct": 6.6,
+      "sharePct": 15.8
+    },
+    {
+      "heading": "2609",
+      "label": "Tin ore",
+      "exportsUsd": 8295595,
+      "priorExportsUsd": 7733501,
+      "changePct": 7.3,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2610",
+      "label": "Chromium ore (chromite)",
+      "exportsUsd": 3868672,
+      "priorExportsUsd": 5169226,
+      "changePct": -25.2,
+      "sharePct": 0
+    },
+    {
+      "heading": "2611",
+      "label": "Tungsten ore & concentrates",
+      "exportsUsd": 10969932,
+      "priorExportsUsd": 5160867,
+      "changePct": 112.6,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2612",
+      "label": "Uranium & thorium ore",
+      "exportsUsd": 3197,
+      "priorExportsUsd": 0,
+      "changePct": null,
+      "sharePct": 0
+    },
+    {
+      "heading": "2613",
+      "label": "Molybdenum ore & concentrates",
+      "exportsUsd": 1419379623,
+      "priorExportsUsd": 1262738887,
+      "changePct": 12.4,
+      "sharePct": 15.2
+    },
+    {
+      "heading": "2614",
+      "label": "Titanium ore (ilmenite, rutile)",
+      "exportsUsd": 21633127,
+      "priorExportsUsd": 16767408,
+      "changePct": 29,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2615",
+      "label": "Niobium, tantalum, vanadium & zirconium ores",
+      "exportsUsd": 53032037,
+      "priorExportsUsd": 61338806,
+      "changePct": -13.5,
+      "sharePct": 0.6
+    },
+    {
+      "heading": "2616",
+      "label": "Silver, gold & other precious-metal ores",
+      "exportsUsd": 848951251,
+      "priorExportsUsd": 365582881,
+      "changePct": 132.2,
+      "sharePct": 9.1
+    },
+    {
+      "heading": "2617",
+      "label": "Other ores (antimony, beryllium)",
+      "exportsUsd": 5022259,
+      "priorExportsUsd": 101957319,
+      "changePct": -95.1,
+      "sharePct": 0.1
+    },
+    {
+      "heading": "2618",
+      "label": "Granulated slag (slag sand)",
+      "exportsUsd": 15468095,
+      "priorExportsUsd": 7656743,
+      "changePct": 102,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2619",
+      "label": "Iron & steel slag, dross & scale",
+      "exportsUsd": 20397620,
+      "priorExportsUsd": 9943051,
+      "changePct": 105.1,
+      "sharePct": 0.2
+    },
+    {
+      "heading": "2620",
+      "label": "Metal-bearing slag, ash & residues",
+      "exportsUsd": 307040033,
+      "priorExportsUsd": 242047292,
+      "changePct": 26.9,
+      "sharePct": 3.3
+    },
+    {
+      "heading": "2621",
+      "label": "Other slag & ash (incinerator ash, kelp)",
+      "exportsUsd": 29083503,
+      "priorExportsUsd": 23819152,
+      "changePct": 22.1,
+      "sharePct": 0.3
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "2603.00",
+      "heading": "2603",
+      "description": "Copper ores and concentrates",
+      "exportsUsd": 3536544956,
+      "priorExportsUsd": 2810621782,
+      "changePct": 25.8,
+      "sharePct": 37.9
+    },
+    {
+      "hs6": "2608.00",
+      "heading": "2608",
+      "description": "Zinc ores and concentrates",
+      "exportsUsd": 1473458294,
+      "priorExportsUsd": 1382628005,
+      "changePct": 6.6,
+      "sharePct": 15.8
+    },
+    {
+      "hs6": "2607.00",
+      "heading": "2607",
+      "description": "Lead ores and concentrates",
+      "exportsUsd": 845515149,
+      "priorExportsUsd": 897297587,
+      "changePct": -5.8,
+      "sharePct": 9.1
+    },
+    {
+      "hs6": "2613.10",
+      "heading": "2613",
+      "description": "Molybdenum ores and concentrates; roasted",
+      "exportsUsd": 745999988,
+      "priorExportsUsd": 721742763,
+      "changePct": 3.4,
+      "sharePct": 8
+    },
+    {
+      "hs6": "2613.90",
+      "heading": "2613",
+      "description": "Molybdenum ores and concentrates; other than roasted",
+      "exportsUsd": 673379635,
+      "priorExportsUsd": 540996124,
+      "changePct": 24.5,
+      "sharePct": 7.2
+    },
+    {
+      "hs6": "2601.12",
+      "heading": "2601",
+      "description": "Iron ores and concentrates; agglomerated (excluding roasted iron pyrites)",
+      "exportsUsd": 463393846,
+      "priorExportsUsd": 857425240,
+      "changePct": -46,
+      "sharePct": 5
+    },
+    {
+      "hs6": "2616.90",
+      "heading": "2616",
+      "description": "Precious metal ores and concentrates; (excluding silver)",
+      "exportsUsd": 424650514,
+      "priorExportsUsd": 290058556,
+      "changePct": 46.4,
+      "sharePct": 4.6
+    },
+    {
+      "hs6": "2616.10",
+      "heading": "2616",
+      "description": "Silver ores and concentrates",
+      "exportsUsd": 424300737,
+      "priorExportsUsd": 75524325,
+      "changePct": 461.8,
+      "sharePct": 4.5
+    },
+    {
+      "hs6": "2604.00",
+      "heading": "2604",
+      "description": "Nickel ores and concentrates",
+      "exportsUsd": 180048386,
+      "priorExportsUsd": 138239179,
+      "changePct": 30.2,
+      "sharePct": 1.9
+    },
+    {
+      "hs6": "2620.99",
+      "heading": "2620",
+      "description": "Slag, ash and residues; (not from the manufacture of iron or steel), containing mainly metals or their compounds, n.e.c. in heading no. 2620",
+      "exportsUsd": 149896772,
+      "priorExportsUsd": 83996500,
+      "changePct": 78.5,
+      "sharePct": 1.6
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 26, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 95% of 2025 U.S. Chapter 26 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

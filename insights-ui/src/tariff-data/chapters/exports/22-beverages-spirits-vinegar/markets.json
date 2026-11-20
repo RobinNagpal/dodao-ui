@@ -1,0 +1,1269 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 22,
+    "padded": "22",
+    "slug": "22-beverages-spirits-vinegar",
+    "title": "Beverages, Spirits and Vinegar"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/22-beverages-spirits-vinegar/markets",
+    "h1": "HTS Chapter 22: Beverages, Spirits and Vinegar — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Bourbon, Wine, Beer & Ethanol by Country (HTS Ch. 22) | KoalaGains",
+      "shortDescription": "What Canada, the EU, UK, Mexico, India, Colombia, Korea, Japan and China charge on U.S. bourbon, wine, beer, ethanol and soft drinks in 2026, and whose approval you need to sell there.",
+      "keywords": [
+        "whiskey tariffs china",
+        "whiskey tariffs uk",
+        "bourbon whiskey tariffs india",
+        "eu whiskey tariff",
+        "wine tariffs eu",
+        "ethanol tariff",
+        "canada us alcohol tariff"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "What each large market charges on U.S. beverages, spirits, ethanol and vinegar in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. China is added at the end, although it bought only $82 million in 2025, because it is the market where U.S. whiskey, wine and beer pay the most. For most of the trade the tariff is zero: Canada and Mexico under USMCA, Colombia and Korea under their U.S. trade agreements, and the EU, the UK and Japan on bourbon and other whiskey. India and China are the exceptions. For alcohol, what usually decides access is the buyer’s distribution system and approvals: Canada’s provincial liquor boards, India’s FSSAI and state excise rules, China’s GACC registration and the EU’s VI-1 wine document.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "2201",
+      "label": "Mineral and aerated water, ice and snow (unsweetened)",
+      "shortLabel": "Water"
+    },
+    {
+      "heading": "2202",
+      "label": "Soft drinks, flavored water, energy drinks and other non-alcoholic beverages (incl. non-alcoholic beer)",
+      "shortLabel": "Soft drinks"
+    },
+    {
+      "heading": "2203",
+      "label": "Beer made from malt",
+      "shortLabel": "Beer"
+    },
+    {
+      "heading": "2204",
+      "label": "Wine of fresh grapes (still and sparkling) and grape must",
+      "shortLabel": "Wine"
+    },
+    {
+      "heading": "2205",
+      "label": "Vermouth and other flavored wine",
+      "shortLabel": "Vermouth"
+    },
+    {
+      "heading": "2206",
+      "label": "Cider, perry, mead, sake and other fermented beverages",
+      "shortLabel": "Cider & sake"
+    },
+    {
+      "heading": "2207",
+      "label": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol",
+      "shortLabel": "Ethanol"
+    },
+    {
+      "heading": "2208",
+      "label": "Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy)",
+      "shortLabel": "Spirits"
+    },
+    {
+      "heading": "2209",
+      "label": "Vinegar",
+      "shortLabel": "Vinegar"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) tariff elimination on qualifying U.S. goods; alcohol is sold through provincial liquor boards",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3023899832,
+      "priorExportsUsd": 3190839518,
+      "sharePct": 28,
+      "changePct": -5.2,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "2201": {
+          "exportsUsd": 40116506,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5% (other water); mineral water free",
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN: 2201.10 free, 2201.90 6.5%."
+        },
+        "2202": {
+          "exportsUsd": 950736425,
+          "rate": "Free (CUSMA)",
+          "normalRate": "11% (non-alcoholic beer free)",
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN: 2202.10 and 2202.99.90 11%, 2202.91 free."
+        },
+        "2203": {
+          "exportsUsd": 16684280,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Canada’s Customs Tariff 2026, 2203.00: beer is free under both MFN and CUSMA."
+        },
+        "2204": {
+          "exportsUsd": 103655128,
+          "rate": "Free (CUSMA)",
+          "normalRate": "1.87–4.68¢/L still wine; sparkling free",
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN: still wine in containers of 2 liters or less 1.87¢/L (up to 13.7% vol) or 4.68¢/L (13.7–14.9%); sparkling wine free."
+        },
+        "2205": {
+          "exportsUsd": 57329,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN rate not individually verified."
+        },
+        "2206": {
+          "exportsUsd": 3498024,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN rate not individually verified."
+        },
+        "2207": {
+          "exportsUsd": 1706201251,
+          "rate": "Free",
+          "normalRate": "4.92¢/L of pure alcohol on some denatured lines",
+          "basis": "Canada’s Customs Tariff 2026: 2207.10 (undenatured ethanol) free MFN; 2207.20.11 and 2207.20.12 (specially denatured and denatured alcohol) 4.92¢ per liter of absolute ethyl alcohol, other 2207.20 lines free; all free under CUSMA."
+        },
+        "2208": {
+          "exportsUsd": 176041251,
+          "rate": "Free (CUSMA)",
+          "normalRate": "Whiskey free; vodka 12.28¢/L and gin 4.92¢/L of pure alcohol",
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN: whiskies 2208.30 (including bourbon) free; vodka 12.28¢ and gin 4.92¢ per liter of absolute ethyl alcohol."
+        },
+        "2209": {
+          "exportsUsd": 26909638,
+          "rate": "Free (CUSMA)",
+          "normalRate": "9.5%",
+          "basis": "CUSMA (USMCA) Annex 2-B; Canada’s Customs Tariff 2026, Chapter 22: qualifying U.S. goods enter duty-free. MFN: 9.5%."
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest buyer: $1.71 billion of U.S. ethanol and $951 million of soft drinks, all duty-free under CUSMA. Its 25% federal surtax on U.S. wine, beer, spirits and soft drinks ran from March 4 to August 31, 2025; what still blocks U.S. alcohol is the provincial liquor boards, most of which stopped buying it in March 2025, plus Saskatchewan’s 50% levy from September 8, 2026.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Soft drinks, flavored water, energy drinks and other non-alcoholic beverages (incl. non-alcoholic beer) (2202)",
+        "tariffNow": "Free (CUSMA); 50% Saskatchewan levy on U.S. alcohol",
+        "regulator": {
+          "name": "Provincial liquor boards (for alcohol) and the Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/en/food-labels/labelling/industry/alcoholic-beverages",
+          "requirement": "Beer, wine and spirits reach consumers through each province’s liquor board, which must list (buy) the product; most boards have stopped buying U.S. alcohol since March 2025. Labels must meet CFIA’s alcoholic-beverage labelling rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff (Combined Nomenclature 2026), plus a 0% U.S. quota for some soft drinks under Regulation (EU) 2026/1455",
+      "usTradeAgreement": null,
+      "exportsUsd": 2438294325,
+      "priorExportsUsd": 2023576839,
+      "sharePct": 22.6,
+      "changePct": 20.5,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 1428161447,
+          "priorExportsUsd": 881675174,
+          "changePct": 62
+        },
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 241760838,
+          "priorExportsUsd": 177216441,
+          "changePct": 36.4
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 153296752,
+          "priorExportsUsd": 184506911,
+          "changePct": -16.9
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 140240381,
+          "priorExportsUsd": 175025853,
+          "changePct": -19.9
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 92119972,
+          "priorExportsUsd": 68866276,
+          "changePct": 33.8
+        }
+      ],
+      "cells": {
+        "2201": {
+          "exportsUsd": 9022158,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2201 10 and 2201 90 00."
+        },
+        "2202": {
+          "exportsUsd": 50818128,
+          "rate": "9.6%; 0% within the 20,000 t U.S. quota",
+          "normalRate": "9.6% (dairy-based drinks 5.4–6.4% + €12.1–21.2/100 kg)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2202 10 00, 2202 91 00 and 2202 99 11–19 at 9.6%. Regulation (EU) 2026/1455, Annex III, quota 09.9017 (from July 1, 2026): 0% for 20,000 tonnes a year of U.S. sweetened or flavored waters (2202 10 00), non-alcoholic beer (2202 91 00) and other soft drinks without milk fat (2202 99 19)."
+        },
+        "2203": {
+          "exportsUsd": 20092598,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2203 00 01–10 (beer made from malt)."
+        },
+        "2204": {
+          "exportsUsd": 170223875,
+          "rate": "€13.1–15.4/hl bottled still; €32/hl sparkling",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2204 21 93–98 (still wine in containers of 2 liters or less: €13.1/hl up to 13% vol, €15.4/hl 13–15%), 2204 10 (sparkling, €32/hl), 2204 22 and 2204 29 (bulk wine, €9.9–12.1/hl)."
+        },
+        "2205": {
+          "exportsUsd": 2268107,
+          "rate": "€9–10.9/hl",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2205 10 10 (€10.9/hl) and 2205 90 10 (€9/hl), vermouth up to 18% vol."
+        },
+        "2206": {
+          "exportsUsd": 2064597,
+          "rate": "€5.76–19.2/hl",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2206 00 51–89 (still cider and other fermented drinks, €5.76–7.7/hl) and 2206 00 31–39 (sparkling, €19.2/hl)."
+        },
+        "2207": {
+          "exportsUsd": 889818440,
+          "rate": "€19.2/hl undenatured; €10.2/hl denatured",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2207 10 00 (€19.2/hl) and 2207 20 00 (€10.2/hl). The EU’s 2013 anti-dumping duty on U.S. bioethanol was repealed in 2019 (Implementing Regulation (EU) 2019/765)."
+        },
+        "2208": {
+          "exportsUsd": 1289278465,
+          "rate": "Free (bourbon, other whiskey, vodka, liqueurs)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2208 30 11–88 (whiskies, including bourbon 2208 30 11 / 30 19), 2208 60 (vodka), 2208 70 (liqueurs) and most of 2208 90: free. Rum (2208 40) pays €0.6/%vol/hl + €3.2/hl and undenatured ethanol under 80% (2208 90 91–99) €1/%vol/hl."
+        },
+        "2209": {
+          "exportsUsd": 4707957,
+          "rate": "€3.84–6.4/hl",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2209 00 11–99 (wine vinegar €4.8–6.4/hl, other vinegar €3.84–5.12/hl)."
+        }
+      },
+      "profile": {
+        "headline": "The EU is the biggest market for U.S. bourbon and other spirits ($1.29 billion in 2025, led by the Netherlands, Ireland and Spain) and the second biggest for ethanol. Bourbon, vodka, liqueurs and beer enter duty-free; the EU’s 2025 counter-list would have put 30% on bourbon, wine and almost the whole chapter, but it has been suspended since August 2025 and never applied.",
+        "mainProducts": "Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208) · Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207)",
+        "tariffNow": "Free on bourbon & most spirits and beer; ethanol €19.2/hl; wine €13.1–32/hl",
+        "regulator": {
+          "name": "European Commission (spirit-drink and wine rules) and member-state customs and excise authorities",
+          "url": "https://eur-lex.europa.eu/eli/reg/2019/787/oj",
+          "requirement": "No pre-market approval for spirits, but they must meet the EU spirit-drink definitions and labelling rules of Regulation (EU) 2019/787; “Bourbon” and “Tennessee whiskey” are reserved for U.S. products (Regulation (EC) No 936/2009). Wine needs a VI-1 document (Delegated Regulation (EU) 2018/273), and the importer must hold excise warehouse or registered-consignee status."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff, plus the duty-free U.S. ethanol quota under the U.S.–UK Economic Prosperity Deal",
+      "usTradeAgreement": null,
+      "exportsUsd": 743022987,
+      "priorExportsUsd": 880069471,
+      "sharePct": 6.9,
+      "changePct": -15.6,
+      "status": "lowered",
+      "cells": {
+        "2201": {
+          "exportsUsd": 1557904,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2201."
+        },
+        "2202": {
+          "exportsUsd": 20692427,
+          "rate": "8% (non-alcoholic beer mostly 0%)",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2202 10 00 00 and 2202 99 19 at 8%; 2202 91 00 90 (non-alcoholic beer, other) free; dairy-fat drinks 4% + £17/100 kg."
+        },
+        "2203": {
+          "exportsUsd": 3378061,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2203 00 01 00 and 2203 00 10 00."
+        },
+        "2204": {
+          "exportsUsd": 155463712,
+          "rate": "£10–12/hl bottled still; £26/hl sparkling",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2204 21 97 (still wine in bottles: £10/hl up to 13% vol, £12/hl 13–15%), 2204 10 98 (sparkling, £26/hl), bulk wine £8.20–10/hl. WTO quotas 05.0097 and 05.0095 (£8.36/hl and £6.69/hl) are open to U.S. wine."
+        },
+        "2205": {
+          "exportsUsd": 516378,
+          "rate": "Free (up to 18% vol)",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2205 10 10 00 and 2205 90 10 00."
+        },
+        "2206": {
+          "exportsUsd": 905894,
+          "rate": "£6.40–16/hl",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2206 00 51 00 (still cider in bottles, £6.40/hl) and 2206 00 31 00 (sparkling, £16/hl)."
+        },
+        "2207": {
+          "exportsUsd": 393409046,
+          "rate": "Free within the 1.4bn-liter U.S. quota",
+          "normalRate": "£16/hl undenatured; £8.50/hl denatured",
+          "basis": "U.S.–UK Economic Prosperity Deal: quota 05.9750 for U.S. goods of heading 2207 at 0%, 913 million liters for June 30–December 31, 2025 and 1.4 billion liters a year from January 1, 2026 (The United States Preferential Tariff reference document v1.2, under SI 2025/753). On November 13, 2026 about 100.6 million liters of the 2026 quota were left. Above it, UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty: 2207 10 £16/hl, 2207 20 £8.50/hl."
+        },
+        "2208": {
+          "exportsUsd": 164712151,
+          "rate": "Free (bourbon, other whiskey, vodka, liqueurs)",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2208 30 11 00 / 19 00 (bourbon), 2208 30 82 00 (other whiskies), 2208 60 (vodka), 2208 70 (liqueurs), 2208 90 56 00: free. Undenatured ethanol under 80% (2208 90 91–99) pays £0.80/%vol/hl."
+        },
+        "2209": {
+          "exportsUsd": 2387414,
+          "rate": "£4.20–5.30/hl",
+          "normalRate": null,
+          "basis": "UK Global Tariff (UK Trade Tariff, checked November 19, 2026), third-country duty, 2209 00 11 00 (wine vinegar, £5.30/hl) and 2209 00 91 00 (other vinegar, £4.20/hl)."
+        }
+      },
+      "profile": {
+        "headline": "The UK is the third-largest buyer: mostly ethanol ($393 million), then spirits and wine. Since June 30, 2025 U.S. ethanol has entered duty-free within a quota (1.4 billion liters a year from 2026) instead of paying £16 per hectoliter, but the 2026 quota was nearly used up by mid-November. Bourbon, other spirits and beer pay nothing.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208)",
+        "tariffNow": "Free on spirits & beer; ethanol 0% within the 1.4bn-liter U.S. quota",
+        "regulator": {
+          "name": "HM Revenue & Customs (alcohol duty and AWRS) and the Department for Environment, Food & Rural Affairs (wine rules)",
+          "url": "https://www.gov.uk/guidance/importing-selling-and-labelling-wine",
+          "requirement": "No pre-market approval. Wholesalers must be approved under HMRC’s Alcohol Wholesaler Registration Scheme, and labels must name a UK business; wine shipped to Great Britain no longer needs a VI-1 (Northern Ireland still does). Fuel ethanol counts toward UK targets only if it meets the Renewable Transport Fuel Obligation’s sustainability rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) tariff elimination on qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 548751480,
+      "priorExportsUsd": 581409308,
+      "sharePct": 5.1,
+      "changePct": -5.6,
+      "status": "unchanged",
+      "cells": {
+        "2201": {
+          "exportsUsd": 23372485,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–20%",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 2201.10 20%, 2201.90.01 10%."
+        },
+        "2202": {
+          "exportsUsd": 147561917,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% + US$0.36/kg of sugar",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 2202.10.01 and 2202.99.99 20% plus US$0.36 per kg of sugar."
+        },
+        "2203": {
+          "exportsUsd": 2287171,
+          "rate": "Free (USMCA)",
+          "normalRate": "20%",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 2203.00.01 20%."
+        },
+        "2204": {
+          "exportsUsd": 22132699,
+          "rate": "Free (USMCA)",
+          "normalRate": "20%",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 2204.10 and 2204.21 20%."
+        },
+        "2205": {
+          "exportsUsd": 3956515,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN rate not individually verified."
+        },
+        "2206": {
+          "exportsUsd": 1822646,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN rate not individually verified."
+        },
+        "2207": {
+          "exportsUsd": 232897902,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% + US$0.36/kg of sugar",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 2207.10.01 and 2207.20.01 10% plus US$0.36 per kg of sugar."
+        },
+        "2208": {
+          "exportsUsd": 106450165,
+          "rate": "Free (USMCA)",
+          "normalRate": "Whiskey free; other spirits 20%",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods (including 2208.30.04, bourbon and Tennessee whiskey). MFN (LIGIE): whiskies exempt; vodka, rum, gin and liqueurs 20%."
+        },
+        "2209": {
+          "exportsUsd": 8269980,
+          "rate": "Free (USMCA)",
+          "normalRate": "20%",
+          "basis": "USMCA Annex 2-B, Tariff Schedule of Mexico: 0% on every Chapter 22 fraction for qualifying U.S. goods. MFN (LIGIE): 20%."
+        }
+      },
+      "profile": {
+        "headline": "Mexico buys U.S. ethanol ($233 million), soft drinks ($148 million) and spirits ($106 million), all duty-free under USMCA. Without USMCA most lines pay 20%. Mexico has published no counter-tariff on U.S. drinks, and its January 2026 tariff increase for non-FTA countries does not touch Chapter 22.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Soft drinks, flavored water, energy drinks and other non-alcoholic beverages (incl. non-alcoholic beer) (2202)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "COFEPRIS (Federal Commission for Protection against Sanitary Risks)",
+          "url": "https://www.gob.mx/cofepris/acciones-y-programas/bebidas-alcoholicas-404022",
+          "requirement": "COFEPRIS oversees the sanitary rules for alcoholic and non-alcoholic beverages; the Mexican importer of alcohol must also be on the tax authority’s sector importers’ register."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India’s customs tariff: basic customs duty plus the agriculture infrastructure and development cess (AIDC); no trade agreement with the U.S.",
+      "usTradeAgreement": null,
+      "exportsUsd": 436267699,
+      "priorExportsUsd": 466618359,
+      "sharePct": 4,
+      "changePct": -6.5,
+      "status": "lowered",
+      "cells": {
+        "2201": {
+          "exportsUsd": 12660,
+          "rate": "India normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff, 2201; a very small U.S. trade, rate not checked line by line."
+        },
+        "2202": {
+          "exportsUsd": 163704,
+          "rate": "India normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff, 2202; a very small U.S. trade, rate not checked line by line."
+        },
+        "2203": {
+          "exportsUsd": 0,
+          "rate": "100% (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff, 2203: 100% basic customs duty; beer is not in the AIDC entry. Taken from an unofficial copy of the schedule; no U.S. beer was shipped in 2025."
+        },
+        "2204": {
+          "exportsUsd": 443925,
+          "rate": "150%",
+          "normalRate": null,
+          "basis": "India Customs Tariff with AIDC under Notification No. 11/2021-Customs as amended by No. 14/2025 (February 13, 2025): 50% basic customs duty + 100% AIDC on wine (2204)."
+        },
+        "2205": {
+          "exportsUsd": 0,
+          "rate": "About 150% (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff with AIDC under Notification No. 11/2021-Customs as amended by No. 14/2025 (February 13, 2025): 100% AIDC on 2205; basic duty not individually verified."
+        },
+        "2206": {
+          "exportsUsd": 0,
+          "rate": "About 150% (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff with AIDC under Notification No. 11/2021-Customs as amended by No. 14/2025 (February 13, 2025): 100% AIDC on 2206; basic duty not individually verified."
+        },
+        "2207": {
+          "exportsUsd": 408839805,
+          "rate": "5% denatured; 150% undenatured; no fuel use",
+          "normalRate": null,
+          "basis": "India Customs Tariff as reported by USDA FAS (India Biofuels Annual, June 2025): 2207.20 denatured ethanol 5% (0% for use in making excisable goods), 2207.10 undenatured 150%. Imports for fuel use are prohibited and other imports need a DGFT licence (DGFT Notification 06/2015-2020 of May 24, 2019)."
+        },
+        "2208": {
+          "exportsUsd": 26267128,
+          "rate": "Bourbon 100%; other spirits 150%",
+          "normalRate": null,
+          "basis": "India Customs Tariff with AIDC under Notification No. 11/2021-Customs as amended by No. 14/2025 (February 13, 2025): bourbon whiskey (2208 30 11 and 2208 30 91) 50% basic duty + 50% AIDC since February 13, 2025 (150% before); other whiskies and spirits 50% + 100% AIDC."
+        },
+        "2209": {
+          "exportsUsd": 540477,
+          "rate": "India normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "India Customs Tariff, 2209; a very small U.S. trade, rate not checked line by line."
+        }
+      },
+      "profile": {
+        "headline": "India buys mostly U.S. ethanol ($409 million) and some spirits ($26 million). Bourbon pays 100% since India cut its cess in February 2025, still the highest rate among large buyers; other spirits and wine pay 150%. Ethanol may not be imported for fuel use, and the February 2026 U.S.–India framework names wine and spirits for cuts that have not yet been published.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208)",
+        "tariffNow": "Bourbon 100%; other spirits & wine 150%; ethanol 5–150%",
+        "regulator": {
+          "name": "Food Safety and Standards Authority of India (FSSAI)",
+          "url": "https://www.fssai.gov.in/",
+          "requirement": "Imported beer, wine and spirits must meet the Food Safety and Standards (Alcoholic Beverages) Regulations, 2018 and pass FSSAI import clearance. Non-fuel ethanol imports need a DGFT licence."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 170,
+      "name": "Colombia",
+      "rule": "U.S.–Colombia Trade Promotion Agreement tariff elimination; countervailing duty on U.S. fuel ethanol",
+      "usTradeAgreement": "U.S.–Colombia Trade Promotion Agreement (TPA)",
+      "exportsUsd": 379590428,
+      "priorExportsUsd": 409557471,
+      "sharePct": 3.5,
+      "changePct": -7.3,
+      "status": "unchanged",
+      "cells": {
+        "2201": {
+          "exportsUsd": 1446791,
+          "rate": "Free (TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods; water phased out by 2021."
+        },
+        "2202": {
+          "exportsUsd": 10472707,
+          "rate": "Free (TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods."
+        },
+        "2203": {
+          "exportsUsd": 120754,
+          "rate": "Free (TPA)",
+          "normalRate": "15% (MFN)",
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods (beer duty-free since 2012). MFN from WTO/World Bank WITS (TRAINS), 2023."
+        },
+        "2204": {
+          "exportsUsd": 1126799,
+          "rate": "Free (TPA)",
+          "normalRate": "15% (MFN)",
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods (wine duty-free since 2012). MFN from WITS (TRAINS), 2023."
+        },
+        "2205": {
+          "exportsUsd": 0,
+          "rate": "Free (TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods."
+        },
+        "2206": {
+          "exportsUsd": 267277,
+          "rate": "Free (TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods."
+        },
+        "2207": {
+          "exportsUsd": 351802762,
+          "rate": "Free (TPA); fuel ethanol also US$0.066/kg CVD",
+          "normalRate": "10% (MFN)",
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods (2207.10 from 2012, 2207.20 from 2016). Countervailing duty of US$0.06646 per kg net on U.S. fuel ethanol (2207.20.00.10), imposed by MinCIT Resolution 069 of 2020 and kept for five years by Resolution 044 of March 13, 2023; it is charged on top of the TPA rate. MFN from WITS (TRAINS), 2023."
+        },
+        "2208": {
+          "exportsUsd": 13854869,
+          "rate": "Free (TPA)",
+          "normalRate": "15% (MFN)",
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods (whiskey, vodka and rum duty-free since January 1, 2021). MFN from WITS (TRAINS), 2023."
+        },
+        "2209": {
+          "exportsUsd": 498469,
+          "rate": "Free (TPA)",
+          "normalRate": null,
+          "basis": "U.S.–Colombia Trade Promotion Agreement, Annex 2.3 (Colombia’s schedule): duty-free for U.S. goods."
+        }
+      },
+      "profile": {
+        "headline": "Colombia is almost entirely an ethanol market ($352 million in 2025). U.S. ethanol, spirits, wine and beer all enter duty-free under the TPA, but Colombia has charged a countervailing duty of US$0.06646 per kilogram on U.S. fuel ethanol since 2020, extended in March 2023 for five years.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208)",
+        "tariffNow": "Free (TPA); CVD on U.S. fuel ethanol",
+        "regulator": {
+          "name": "INVIMA (National Food and Drug Surveillance Institute)",
+          "url": "https://www.invima.gov.co/",
+          "requirement": "Alcoholic beverages need an INVIMA sanitary registration before they can be sold (Decree 1686 of 2012)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Colombia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/colombia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS FTA tariff elimination on qualifying U.S. goods; every Chapter 22 line is now duty-free",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 340366411,
+      "priorExportsUsd": 324788008,
+      "sharePct": 3.2,
+      "changePct": 4.8,
+      "status": "unchanged",
+      "cells": {
+        "2201": {
+          "exportsUsd": 746385,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: duty-free since 2016 or 2021 depending on the line."
+        },
+        "2202": {
+          "exportsUsd": 10929638,
+          "rate": "Free (KORUS)",
+          "normalRate": "8–9% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: 2202.10 free since 2012; other lines since 2016 or 2021."
+        },
+        "2203": {
+          "exportsUsd": 43598410,
+          "rate": "Free (KORUS)",
+          "normalRate": "30% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: beer duty-free since January 1, 2018."
+        },
+        "2204": {
+          "exportsUsd": 50470480,
+          "rate": "Free (KORUS)",
+          "normalRate": "15% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: wine duty-free since March 15, 2012."
+        },
+        "2205": {
+          "exportsUsd": 49273,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012."
+        },
+        "2206": {
+          "exportsUsd": 2808680,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012."
+        },
+        "2207": {
+          "exportsUsd": 207014239,
+          "rate": "Free (KORUS)",
+          "normalRate": "8–270% (KORUS base rates)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: denatured ethanol (2207.20) free since 2012; undenatured ethanol (2207.10, base rates 10–270%) free since January 1, 2026."
+        },
+        "2208": {
+          "exportsUsd": 23394762,
+          "rate": "Free (KORUS)",
+          "normalRate": "20% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: bourbon (2208.30.20) free since 2012, other whiskies since January 1, 2016."
+        },
+        "2209": {
+          "exportsUsd": 1354544,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% (KORUS base rate)",
+          "basis": "KORUS FTA, Annex 2-B (Tariff Schedule of Korea), in force March 15, 2012: duty-free since 2016 or 2021 depending on the line."
+        }
+      },
+      "profile": {
+        "headline": "Korea buys U.S. ethanol ($207 million), wine ($50 million) and beer ($44 million). Since the last undenatured-ethanol lines reached zero on January 1, 2026, every Chapter 22 good of U.S. origin enters duty-free under KORUS; without it, beer would pay 30%, whiskey 20% and wine 15%.",
+        "mainProducts": "Ethyl alcohol (undenatured 80%+ and denatured), incl. fuel ethanol (2207) · Wine of fresh grapes (still and sparkling) and grape must (2204)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://www.mfds.go.kr/eng/index.do",
+          "requirement": "Every shipment of beverages or alcohol is reported to MFDS for imported-food inspection, and the overseas manufacturer must be registered with MFDS before export."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s tariff, with U.S.–Japan Trade Agreement (USJTA) rates on wine, most soft drinks, vinegar and undenatured ethanol",
+      "usTradeAgreement": null,
+      "exportsUsd": 238436264,
+      "priorExportsUsd": 249324854,
+      "sharePct": 2.2,
+      "changePct": -4.4,
+      "status": "unchanged",
+      "cells": {
+        "2201": {
+          "exportsUsd": 30724802,
+          "rate": "3% mineral water; other water free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: 2201.10 3% (no USJTA rate), 2201.90 free."
+        },
+        "2202": {
+          "exportsUsd": 9085936,
+          "rate": "Free on most (USJTA); 9.6–13.4% on flavored waters",
+          "normalRate": "9.6–13.4%",
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: USJTA rate free on 2202.99 and on non-alcoholic beer without sugar (2202.91.200); 2202.10 (sweetened or flavored waters) and sugared non-alcoholic beer pay the WTO rate of 9.6–13.4%."
+        },
+        "2203": {
+          "exportsUsd": 4328671,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: beer 2203 free (WTO rate)."
+        },
+        "2204": {
+          "exportsUsd": 92403378,
+          "rate": "Free (USJTA)",
+          "normalRate": "15% or ¥125/l (min ¥67/l) still; ¥182/l sparkling",
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: USJTA rate free on sparkling (2204.10), still (2204.21) and bulk (2204.22, 2204.29) wine; WTO rate 15% or ¥125 per liter, whichever is less, with a ¥67 minimum, on bottled still wine."
+        },
+        "2205": {
+          "exportsUsd": 88517,
+          "rate": "¥50.40–69.30/l (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: 2205.10 vermouth in containers of 2 liters or less; whether a USJTA rate applies was not individually verified."
+        },
+        "2206": {
+          "exportsUsd": 1415847,
+          "rate": "Up to ¥70.40/l (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: cider, mead and sake lines carry specific duties (sake ¥70.40 per liter general rate); the U.S. rate was not individually verified."
+        },
+        "2207": {
+          "exportsUsd": 28480777,
+          "rate": "1.8% (USJTA) undenatured; free for ETBE and industrial uses",
+          "normalRate": "10% undenatured; 27.2% denatured",
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: undenatured ethanol of 90% or more (2207.10.199) 1.8% under USJTA, 10% otherwise; biomass ethanol for ETBE and listed industrial uses free; denatured ethanol (2207.20) 27.2% (no USJTA rate)."
+        },
+        "2208": {
+          "exportsUsd": 68901285,
+          "rate": "Free on whiskey (other spirits not individually verified)",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: whiskies 2208.30 free."
+        },
+        "2209": {
+          "exportsUsd": 3007051,
+          "rate": "Free (USJTA)",
+          "normalRate": "7.5%",
+          "basis": "Japan’s Tariff Schedule as of October 31, 2026, Chapter 22: vinegar free under USJTA; WTO rate 7.5%."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys U.S. wine ($92 million), spirits ($69 million) and bottled water ($31 million). U.S. wine now enters duty-free under the U.S.–Japan Trade Agreement instead of the normal 15% or ¥125 per liter, and whiskey and beer are free for everyone. Japan has also pledged to buy U.S. bioethanol as part of its 2025 purchase goals.",
+        "mainProducts": "Wine of fresh grapes (still and sparkling) and grape must (2204) · Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208)",
+        "tariffNow": "Free on wine, whiskey & beer; ethanol mostly 1.8% or free",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (MHLW)",
+          "url": "https://www.mhlw.go.jp/english/topics/importedfoods/index.html",
+          "requirement": "Every shipment of beverages or alcohol needs an import notification to an MHLW quarantine station under the Food Sanitation Act (Article 27)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China’s normal tariff plus its 2018–19 counter-tariffs (unless excluded) and its 2025 extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 82277795,
+      "priorExportsUsd": 152414975,
+      "sharePct": 0.8,
+      "changePct": -46,
+      "status": "raised",
+      "profile": {
+        "headline": "China bought $152 million of U.S. Chapter 22 goods in 2024 and $82 million in 2025, mostly whiskey ($27 million), wine ($27 million) and beer ($15 million). U.S. whiskey pays about 40% (5% + 25% + 10%) and wine about 64% without an exclusion, while all 30 Chapter 22 lines are on China’s September 2026 list of U.S. goods recommended for lower tariffs.",
+        "mainProducts": "Spirits, liqueurs and other spirituous beverages (whisky, vodka, gin, rum, tequila, brandy) (2208) · Wine of fresh grapes (still and sparkling) and grape must (2204)",
+        "tariffNow": "Normal rate + 25% (2018–19, unless excluded) + 10%; wine also +15%",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "The U.S. producer must be registered with GACC as an overseas food manufacturer (Decree No. 248) before shipping, and labels must be in Chinese; TTB’s consolidated wine export certificate covers China’s certificate requirements for wine."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      },
+      "cells": {
+        "2201": {
+          "exportsUsd": 3752281,
+          "rate": "5% + 25% + 10% (40%)",
+          "normalRate": "15% with an exclusion",
+          "basis": "China Customs Tariff 2026 (5%), 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2202": {
+          "exportsUsd": 3632465,
+          "rate": "5% + 25–27.5% + 10% (40–42.5%)",
+          "normalRate": "15% with an exclusion",
+          "basis": "China Customs Tariff 2026 (5%), Section 301 counter-tariff of 25% (2202.10) or 27.5% (2202.91, 2202.99) unless excluded, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2203": {
+          "exportsUsd": 15364568,
+          "rate": "0% + 25% + 10% (35%)",
+          "normalRate": "10% with an exclusion",
+          "basis": "China Customs Tariff 2026 (beer 0%), 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2204": {
+          "exportsUsd": 26718077,
+          "rate": "14% + 15% + 25% + 10% (64%) bottled",
+          "normalRate": "39% with an exclusion",
+          "basis": "China Customs Tariff 2026 (14% sparkling and bottled still wine, 20% bulk), plus the 15% China has charged on U.S. wine since April 2, 2018 (answering the U.S. Section 232 tariffs; no exclusion process), plus the 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion (10% on bulk wine), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2205": {
+          "exportsUsd": 177220,
+          "rate": "30% + 10% + counter-tariffs (not individually verified)",
+          "normalRate": null,
+          "basis": "China 2026 Tariff Adjustment Plan: vermouth (2205.10) provisional rate 30% (MFN 65%), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026); which 2018–19 counter-tariffs apply was not individually verified."
+        },
+        "2206": {
+          "exportsUsd": 62172,
+          "rate": "Normal rate + 10% (counter-tariffs not individually verified)",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026); a very small group, check the national line."
+        },
+        "2207": {
+          "exportsUsd": 577431,
+          "rate": "40% + 25% + 10% (75%) undenatured; 30% + 15% + 25% + 10% (80%) denatured",
+          "normalRate": null,
+          "basis": "China Customs Tariff 2026 (2207.10 40%, 2207.20 30%), the 15% 2018 counter-tariff on denatured ethanol (Section 232 response), the 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2208": {
+          "exportsUsd": 27418612,
+          "rate": "Whiskey 5% + 25% + 10% (40%)",
+          "normalRate": "15% with an exclusion",
+          "basis": "Tariff Commission Announcement No. 1 of 2026: 5% provisional rate on whisky (2208.30.00) from February 2, 2026, for all origins; plus the 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion (also on other spirits, 2208.40–2208.90), plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        },
+        "2209": {
+          "exportsUsd": 4574969,
+          "rate": "5% + 25% + 10% (40%)",
+          "normalRate": "15% with an exclusion",
+          "basis": "China Customs Tariff 2026 (5%), 25% Section 301 counter-tariff (2018–19 lists, rates since February 14, 2020) unless the importer holds an exclusion, plus the extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025; 24 more points suspended to January 10, 2027 by Announcement No. 6 of 2026)."
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "2207",
+      "exportsUsd": 1706201251,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "2208",
+      "exportsUsd": 1289278465,
+      "rate": "Free (bourbon, other whiskey, vodka, liqueurs)"
+    },
+    {
+      "market": "Canada",
+      "heading": "2202",
+      "exportsUsd": 950736425,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "2207",
+      "exportsUsd": 889818440,
+      "rate": "€19.2/hl undenatured; €10.2/hl denatured"
+    },
+    {
+      "market": "India",
+      "heading": "2207",
+      "exportsUsd": 408839805,
+      "rate": "5% denatured; 150% undenatured; no fuel use"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "2207",
+      "exportsUsd": 393409046,
+      "rate": "Free within the 1.4bn-liter U.S. quota"
+    },
+    {
+      "market": "Colombia",
+      "heading": "2207",
+      "exportsUsd": 351802762,
+      "rate": "Free (TPA); fuel ethanol also US$0.066/kg CVD"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2207",
+      "exportsUsd": 232897902,
+      "rate": "Free (USMCA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in 2026: the EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926) with Regulation (EU) 2026/1455; the UK Trade Tariff (checked November 19, 2026); Canada’s Customs Tariff 2026; Japan’s Tariff Schedule of October 31, 2026; China’s 2026 tariff and its counter-tariff announcements; India’s customs tariff with Notification No. 14/2025; and, for Mexico, Colombia and Korea, the USMCA, TPA and KORUS schedules.",
+    "Each cell names the products that carry most of the trade in that group (bourbon and other whiskey in 2208, still bottled wine in 2204, fuel and industrial ethanol in 2207). Many alcohol duties are specific (per hectoliter, per liter or per liter of pure alcohol), so they do not convert to one percentage. Cells marked “not individually verified” are small groups where the line rate was not checked.",
+    "Trade-agreement rates apply only to goods that meet the agreement’s rules of origin; the normal (MFN) rate is shown beside them where it was checked. Quota rates apply only while the quota lasts.",
+    "Excise taxes, VAT and provincial or state markups on alcohol are not tariffs and are left out; so are Canada’s provincial liquor-store bans, which are on Tariff updates.",
+    "China’s cells add its 2018 counter-tariffs (15% answering U.S. Section 232 on wine and denatured ethanol; 25–27.5% answering Section 301 on almost all Chapter 22 lines, waived only for buyers holding an exclusion) and its extra 10% on all U.S. goods to its normal rate.",
+    "National 8–10-digit lines can set a different rate than the one shown. Check the market’s own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 22, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "eu-cn-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1926",
+      "document": "Commission Implementing Regulation",
+      "title": "Amending Annex I to Council Regulation (EEC) No 2658/87 on the tariff and statistical nomenclature and on the Common Customs Tariff (Combined Nomenclature 2026)",
+      "signed": "2025-09-22",
+      "published": "2025-10-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1926/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America (Annex III, quota 09.9017 for certain non-alcoholic beverages)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-a2m-2026",
+      "publisher": "European Commission (Access2Markets)",
+      "citation": "Access2Markets, Aug 2026",
+      "document": "News item",
+      "title": "New EU tariff duties on imports of goods from the United States applicable from 1 July 2026",
+      "signed": null,
+      "published": "2026-08-11",
+      "url": "https://trade.ec.europa.eu/access-to-markets/en/news/new-eu-tariff-duties-imports-goods-united-states-applicable-1-july-2026"
+    },
+    {
+      "id": "eu-spirits-2019-787",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2019/787",
+      "document": "Regulation",
+      "title": "Definition, description, presentation and labelling of spirit drinks",
+      "signed": "2019-04-17",
+      "published": "2019-05-17",
+      "url": "https://eur-lex.europa.eu/eli/reg/2019/787/oj"
+    },
+    {
+      "id": "eu-bourbon-936-2009",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EC) No 936/2009",
+      "document": "Commission Regulation",
+      "title": "Agreements on the mutual recognition of certain spirit drinks (Bourbon Whiskey and Tennessee Whiskey reserved for U.S. products)",
+      "signed": "2009-10-07",
+      "published": "2009-10-08",
+      "url": "https://eur-lex.europa.eu/eli/reg/2009/936/oj"
+    },
+    {
+      "id": "eu-ethanol-ad-repeal",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2019/765",
+      "document": "Commission Implementing Regulation",
+      "title": "Repealing the anti-dumping duty on imports of bioethanol originating in the United States of America",
+      "signed": "2019-05-14",
+      "published": "2019-05-15",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2019/765/oj"
+    },
+    {
+      "id": "uk-tariff-22",
+      "publisher": "HM Revenue & Customs (UK Trade Tariff)",
+      "citation": "UK Trade Tariff, Chapter 22",
+      "document": "UK Global Tariff",
+      "title": "UK Trade Tariff: whiskies 2208 30 11 00 (bourbon) and other Chapter 22 commodity codes, third-country duty",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.trade-tariff.service.gov.uk/commodities/2208301100"
+    },
+    {
+      "id": "uk-us-pref-tariff",
+      "publisher": "HM Government",
+      "citation": "The United States Preferential Tariff, v1.2",
+      "document": "Reference document under SI 2020/1457",
+      "title": "The United States Preferential Tariff: ethanol quota 05.9750 (913 million liters in 2025, 1.4 billion liters a year from 2026)",
+      "signed": null,
+      "published": "2026-01-13",
+      "url": "https://www.gov.uk/government/publications/reference-documents-for-the-customs-tariff-preferential-trade-arrangements-eu-exit-regulations-2020"
+    },
+    {
+      "id": "uk-si-2025-753",
+      "publisher": "legislation.gov.uk",
+      "citation": "SI 2025/753",
+      "document": "Statutory Instrument",
+      "title": "The Customs (Preferential Trade Arrangements and Tariff Quotas) (US) (Amendment) Regulations 2025",
+      "signed": "2025-06-26",
+      "published": "2025-06-27",
+      "url": "https://www.legislation.gov.uk/uksi/2025/753/contents/made"
+    },
+    {
+      "id": "uk-epd-update",
+      "publisher": "HM Government",
+      "citation": "Update on the UK-US EPD",
+      "document": "Policy paper",
+      "title": "Update on the UK-US Economic Prosperity Deal (EPD): a preferential duty-free quota for U.S. ethanol of 1.4 billion litres per year",
+      "signed": null,
+      "published": "2025-06-20",
+      "url": "https://www.gov.uk/government/publications/us-uk-economic-prosperity-deal-epd/update-on-the-uk-us-economic-prosperity-deal-epd-web-accessible-version"
+    },
+    {
+      "id": "uk-quota-059750",
+      "publisher": "HM Revenue & Customs (UK Trade Tariff)",
+      "citation": "Quota 05.9750",
+      "document": "Quota search",
+      "title": "Tariff quota 05.9750 (U.S. ethanol): 2026 balance",
+      "signed": null,
+      "published": "2026-11-13",
+      "url": "https://www.trade-tariff.service.gov.uk/quota_search?order_number=059750"
+    },
+    {
+      "id": "usmca-text",
+      "publisher": "USTR",
+      "citation": "USMCA text",
+      "document": "Agreement between the United States of America, the United Mexican States, and Canada",
+      "title": "USMCA, Chapter 2 and Annex 2-B tariff schedules",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement/agreement-between"
+    },
+    {
+      "id": "usmca-mx-schedule",
+      "publisher": "USTR",
+      "citation": "USMCA Annex 2-B, Tariff Schedule of Mexico",
+      "document": "Tariff schedule",
+      "title": "Tariff Schedule of Mexico (USMCA), Chapter 22",
+      "signed": "2018-11-30",
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/MX_Tariff_Schedule.pdf"
+    },
+    {
+      "id": "ca-cbsa-ch22",
+      "publisher": "CBSA",
+      "citation": "Customs Tariff 2026, Chapter 22",
+      "document": "Departmental Consolidation of the Customs Tariff 2026",
+      "title": "Canadian Customs Tariff, Chapter 22: Beverages, spirits and vinegar",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch22-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-66",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-66",
+      "document": "United States Surtax Order (2025-1)",
+      "title": "United States Surtax Order (2025-1): 25% surtax on listed U.S. goods from March 4, 2025",
+      "signed": "2025-03-03",
+      "published": "2025-03-12",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors66-eng.html"
+    },
+    {
+      "id": "ca-sk-levy-2026",
+      "publisher": "Government of Saskatchewan",
+      "citation": "News release, Aug 27, 2026",
+      "document": "News release",
+      "title": "Saskatchewan Responds to United States Trade Measures with Levy on American Alcohol",
+      "signed": null,
+      "published": "2026-08-27",
+      "url": "https://www.saskatchewan.ca/government/news-and-media/2026/august/27/saskatchewan-responds-to-us-trade-measures-with-levy-on-american-alcohol"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF 07/06/2022",
+      "document": "Decreto",
+      "title": "Decreto por el que se expide la Ley de los Impuestos Generales de Importación y de Exportación (LIGIE), Chapter 22",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://dof.gob.mx/2022/SEECO/SEECO_070622.pdf"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF 29/12/2025",
+      "document": "Decreto",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE (no Chapter 22 lines)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "in-cbic-14-2025",
+      "publisher": "Central Board of Indirect Taxes and Customs (India)",
+      "citation": "Notification No. 14/2025-Customs, G.S.R. 136(E)",
+      "document": "Customs notification",
+      "title": "Amending Notification No. 11/2021-Customs: AIDC on bourbon whiskey cut to 50%",
+      "signed": "2025-02-13",
+      "published": "2025-02-13",
+      "url": "https://taxinformation.cbic.gov.in/view-pdf/1010315/ENG/Notifications"
+    },
+    {
+      "id": "in-fas-bourbon-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2025-0011",
+      "document": "GAIN report",
+      "title": "India Modifies Tariff on US Bourbon",
+      "signed": null,
+      "published": "2025-02-24",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=India+Modifies+Tariff+on+US+Bourbon_Mumbai_India_IN2025-0011.pdf"
+    },
+    {
+      "id": "in-fas-biofuels-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN IN2025-0031",
+      "document": "GAIN report",
+      "title": "India: Biofuels Annual 2025 (ethanol tariffs and import policy)",
+      "signed": null,
+      "published": "2025-06-20",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Biofuels+Annual_New+Delhi_India_IN2025-0031.pdf"
+    },
+    {
+      "id": "in-framework-ws",
+      "publisher": "The White House",
+      "citation": "U.S.–India Joint Statement, Feb 6, 2026",
+      "document": "Joint statement",
+      "title": "United States-India Joint Statement on a framework for an Interim Agreement on reciprocal trade",
+      "signed": null,
+      "published": "2026-02-06",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/02/united-states-india-joint-statement/"
+    },
+    {
+      "id": "tpa-col-schedule",
+      "publisher": "USTR",
+      "citation": "U.S.–Colombia TPA, Annex 2.3",
+      "document": "Tariff schedule",
+      "title": "Annex 2.3: Agricultural Tariff Schedule of the Republic of Colombia",
+      "signed": "2006-11-22",
+      "published": "2006-11-22",
+      "url": "https://ustr.gov/sites/default/files/uploads/agreements/fta/colombia/asset_upload_file577_10185.pdf"
+    },
+    {
+      "id": "co-mincit-ethanol-cvd",
+      "publisher": "Ministry of Commerce, Industry and Tourism (Colombia)",
+      "citation": "Resolution 044 of 2023",
+      "document": "Sunset review",
+      "title": "Examen quinquenal de alcohol carburante (etanol): countervailing duty of US$0.06646/kg on U.S. fuel ethanol kept for five years",
+      "signed": "2023-03-13",
+      "published": "2023-03-14",
+      "url": "https://www.mincit.gov.co/mincomercioexterior/defensa-comercial/investigaciones-por-subvenciones/derechos-compensatorios-vigentes/examen-quinquenal-de-alcohol-carburante-etanol"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS (TRAINS) MFN applied rates, 2023",
+      "document": "Tariff database",
+      "title": "World Integrated Trade Solution: MFN applied tariff rates (Colombia, Philippines, Brazil, Australia), HS 22",
+      "signed": null,
+      "published": "2023-12-31",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "korus-kr-schedule",
+      "publisher": "USTR",
+      "citation": "KORUS Annex 2-B, Tariff Schedule of Korea",
+      "document": "Tariff schedule",
+      "title": "Tariff Schedule of the Republic of Korea (KORUS), Chapter 22",
+      "signed": "2007-06-30",
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/sites/default/files/uploads/agreements/fta/korus/asset_upload_file786_12756.pdf"
+    },
+    {
+      "id": "jp-tariff-22",
+      "publisher": "Japan Customs",
+      "citation": "Japan’s Tariff Schedule, Chapter 22 (Oct 31, 2026)",
+      "document": "Tariff schedule",
+      "title": "Chapter 22: Beverages, spirits and vinegar (WTO and JP-US rates)",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_22.htm"
+    },
+    {
+      "id": "jp-deal",
+      "publisher": "Federal Register",
+      "citation": "90 FR 43535",
+      "document": "Executive Order 14345",
+      "title": "Implementing the United States-Japan Agreement (Japan to buy U.S. corn, soybeans, fertilizer and bioethanol, $8 billion a year)",
+      "signed": "2025-09-04",
+      "published": "2025-09-09",
+      "url": "https://www.federalregister.gov/documents/2025/09/09/2025-17389/implementing-the-united-states-japan-agreement"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "Announcement",
+      "title": "2026 Tariff Adjustment Plan (provisional import rates from January 1, 2026)",
+      "signed": "2025-12-26",
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-whisky-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 1 of 2026",
+      "document": "Announcement",
+      "title": "Adjusting the import tariff on whisky: 5% provisional rate on 2208.30.00 from February 2, 2026",
+      "signed": "2026-01-30",
+      "published": "2026-01-30",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202601/t20260130_3982984.htm"
+    },
+    {
+      "id": "cn-fas-compendium-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2025-0050",
+      "document": "GAIN report",
+      "title": "China: Compendium of Tariffs on United States Agricultural and Related Products (2018 and 2019 counter-tariff rates by line)",
+      "signed": null,
+      "published": "2025-03-07",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Compendium+of+Tariffs+on+United+States+Agricultural+and+Related+Products_Beijing_China+-+People's+Republic+of_CH2025-0050.pdf"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Continuing the suspension of 24 points of the additional tariff on imports originating in the United States for two months from November 10, 2026 (10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "cn-bot-list",
+      "publisher": "The White House",
+      "citation": "U.S.–China Board of Trade, China Import List",
+      "document": "Product list",
+      "title": "China import list (U.S. products recommended for reduced Chinese tariffs), U.S.–China Board of Trade",
+      "signed": null,
+      "published": "2026-09-27",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
+    },
+    {
+      "id": "cn-gacc-248",
+      "publisher": "General Administration of Customs of China",
+      "citation": "GACC Decree No. 248",
+      "document": "Decree",
+      "title": "Administrative Provisions on Registration of Overseas Manufacturers of Imported Food",
+      "signed": "2021-04-12",
+      "published": "2021-04-12",
+      "url": "https://english.customs.gov.cn/"
+    }
+  ],
+  "coverageNote": "The 8 largest markets take 76% of 2025 U.S. Chapter 22 exports; China (0.8%) is added because it is the market where U.S. whiskey, wine and beer pay the most. A customs union (the EU) is one market: its members share one tariff."
+}

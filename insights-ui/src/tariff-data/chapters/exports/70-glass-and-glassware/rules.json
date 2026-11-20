@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 70,
+    "padded": "70",
+    "slug": "70-glass-and-glassware",
+    "title": "Glass and Glassware"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/70-glass-and-glassware/rules",
+    "h1": "HTS Chapter 70: Glass and Glassware — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Glass & Fiberglass Export Rules: Schedule B, Licence (HTS Ch. 70) | KoalaGains",
+      "shortDescription": "Schedule B numbers for fiberglass, rear-view mirrors and glass bottles, when glass fibre or optical glass needs an export licence, Russia rules, EEI and drawback.",
+      "keywords": [
+        "hs code fiberglass",
+        "hs code glass bottle",
+        "rear view mirror hs code",
+        "lab glassware hs code",
+        "glass fiber hs code",
+        "fiberglass export license"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. exporter of glass, mirrors, bottles or fiberglass takes the same five steps as every exporter, and for most Chapter 70 goods that is all. Bottles, flat and safety glass, mirrors, glassware and ordinary fiberglass are **EAR99**, so they need no export licence for most destinations. Four things are specific to this chapter. **High-strength glass fibre** (continuous yarn, rovings or tape with a specific modulus of 3.18 × 10⁶ m or more and a specific tensile strength of 7.62 × 10⁴ m or more) is ECCN **1C210.b**, controlled for nuclear non-proliferation. **Optical glass**: optical-fibre preforms are 5C991, and ultra-pure fused silica and fluoride glass can fall under 6C004.e. **Russia and Belarus:** 22 six-digit glass codes, including float glass and fiberglass, need a licence, and lead-crystal glassware needs a licence as a luxury good. **Canada:** a Canadian buyer that packages food or drinks in U.S. glass containers can claim back Canada's 50% surtax.",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Glass fibres (7019) have their own Schedule B numbers: chopped strands 7019.11.0000, rovings 7019.12.0040 or 7019.12.0080, yarn 7019.13, mats 7019.14.0000 and 7019.15.0000, woven fabrics 7019.61.0000 to 7019.69.0000, veils 7019.71.0000, glass-wool insulation 7019.80.1000 and other glass fibres 7019.90 (woven 7019.90.1100, bulk 7019.90.5120, filters 7019.90.5140, other 7019.90.5150). Vehicle rear-view mirrors are 7009.10.0000, reported by number. Glass bottles and jars are 7010.90, split by use (pharmaceutical 7010.90.0510 to 7010.90.0540, perfume and toiletry 7010.90.2010 to 7010.90.3040, other containers 7010.90.5005 to 7010.90.5060) and by capacity, reported in gross; ampoules are 7010.10.0000. Laboratory glassware is 7017.10.0000 (fused quartz), 7017.20.0000 (low-expansion glass such as borosilicate), 7017.90.1000 (microscope slides) and 7017.90.5000."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Fiberglass, quartz tubing and optical glass often go to composite, semiconductor and telecom manufacturers, sometimes through distributors. Screen the manufacturer that will use the goods, not only the distributor on the order."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most Chapter 70 goods are EAR99. The listed exceptions: high-strength glass fibres meeting the 1C210.b thresholds (NP and AT controls; other glass fibres for composites with the same thresholds that 1C210 does not catch are 1C990, AT only); optical-fibre preforms (5C991, AT only); fused silica and fluoride glass with under 5 ppm hydroxyl, under 1 ppm metallic impurities and refractive-index variance under 5 × 10⁻⁶ (6C004.e, NS); and lead-glass radiation-shielding windows over 0.09 m², denser than 3 g/cm³ and 100 mm or thicker (1A227, NP). Standard E-glass fiberglass falls below the 1C210.b strength thresholds."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: 22 six-digit Chapter 70 codes are in Supplement No. 4 to 15 CFR Part 746: glass rods and tubes (7002), cast, rolled, drawn and float glass (7003, 7004, 7005), safety glass of 7007.11 and 7007.29, lamp envelopes (7011.10) and glass fibres of 7019.11, 7019.12, 7019.13 and 7019.90. Lead-crystal stemware and glassware (7013.22, 7013.33, 7013.41, 7013.91) is a luxury good under Supplement No. 5. All need a Commerce licence. Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Shipments to Canada are exempt from EEI unless a licence is needed; shipments to Mexico are not. Glass bottles are reported in gross, rear-view mirrors by number and most fiberglass in kilograms or square metres, so check the Schedule B unit before filing."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for the 22 six-digit Chapter 70 codes in Supplement No. 4 to Part 746 (glass rods and tubes, flat glass, some safety glass, lamp envelopes and glass fibres) and for the lead-crystal glassware in Supplement No. 5 (luxury goods)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to Part 746 (industry sector list)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        },
+        {
+          "label": "15 CFR 746.10 and Supplement No. 5 to Part 746 (luxury goods)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.10"
+        }
+      ]
+    },
+    {
+      "id": "bis-1c210-glass-fibre",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "High-strength glass fibres: continuous glass yarns, rovings, tows or tapes with a specific modulus of 3.18 × 10⁶ m or more and a specific tensile strength of 7.62 × 10⁴ m or more are ECCN 1C210.b (NP1 and AT controls; no LVS or GBS), and prepregs made from them are 1C210.c. Glass fibres for composites that meet the same thresholds but not 1C210 are 1C990 (AT only)",
+      "citations": [
+        {
+          "label": "15 CFR Part 774, Supplement No. 1: ECCNs 1C210 and 1C990",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "15 CFR Part 738, Supplement No. 1 (Commerce Country Chart)",
+          "url": "https://www.ecfr.gov/current/title-15/part-738/appendix-Supplement%20No.%201%20to%20Part%20738"
+        }
+      ]
+    },
+    {
+      "id": "bis-optical-glass",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Optical glass: preforms for optical fibres controlled by 5A991 are ECCN 5C991 (AT only); fused silica, phosphate, fluorophosphate and fluoride glass with under 5 ppm hydroxyl ions, under 1 ppm metallic impurities and refractive-index variance under 5 × 10⁻⁶ is 6C004.e (NS2 and AT); bulk fluoride glass and fluoride-fibre preforms are 6C994 (AT only)",
+      "citations": [
+        {
+          "label": "15 CFR Part 774, Supplement No. 1: ECCNs 5C991, 6C004 and 6C994",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "bis-1a227-shielding",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Radiation-shielding windows of lead glass or other high-density glass with a cold area over 0.09 m², a density over 3 g/cm³ and a thickness of 100 mm or more, and their specially designed frames, are ECCN 1A227 (NP1 and AT controls)",
+      "citations": [
+        {
+          "label": "15 CFR Part 774, Supplement No. 1: ECCN 1A227",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "7001",
+      "label": "Cullet, glass waste & scrap; glass in the mass",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7002",
+      "label": "Glass balls, rods & tubes, unworked (incl. fused quartz)",
+      "ruleIds": ["bis-russia-belarus", "bis-optical-glass"],
+      "note": "Fused-quartz tubes and rods for optical-fibre and semiconductor use are often EAR99, but check 5C991 for fibre preforms and 6C004.e for ultra-pure fused silica."
+    },
+    {
+      "heading": "7003",
+      "label": "Cast & rolled glass sheets and profiles (patterned glass)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7004",
+      "label": "Drawn & blown sheet glass",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7005",
+      "label": "Float glass & polished plate glass (incl. LCD glass)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7006",
+      "label": "Bent, edge-worked, enameled or engraved flat glass",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7007",
+      "label": "Safety glass: tempered & laminated, incl. windshields",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only 7007.11 (tempered vehicle glass) and 7007.29 (other laminated glass) are on the Russia and Belarus list. Buyers in the EU and other markets need the glazing type-approved to UN Regulation No 43 (see Markets)."
+    },
+    {
+      "heading": "7008",
+      "label": "Insulating glass units (double glazing)",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7009",
+      "label": "Mirrors, incl. vehicle rear-view mirrors",
+      "ruleIds": [],
+      "note": "Rear-view mirrors are EAR99. Buyers in the EU and other markets that apply UN Regulation No 46 need the mirror type-approved before it can go on a vehicle (see Markets)."
+    },
+    {
+      "heading": "7010",
+      "label": "Glass bottles, jars, vials & closures",
+      "ruleIds": [],
+      "note": "Canada's 50% surtax on these containers can be remitted when the Canadian buyer uses them to package food or beverages, or in manufacturing (see Ways to pay less abroad)."
+    },
+    {
+      "heading": "7011",
+      "label": "Glass envelopes for lamps & CRTs",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only lamp envelopes for electric lighting (7011.10) are on the Russia and Belarus list."
+    },
+    {
+      "heading": "7013",
+      "label": "Glassware: drinking glasses, tableware, kitchen & decor",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": "Only lead-crystal glassware (7013.22, 7013.33, 7013.41, 7013.91) is on the luxury-goods list for Russia and Belarus."
+    },
+    {
+      "heading": "7014",
+      "label": "Signaling glassware & optical glass elements",
+      "ruleIds": ["bis-optical-glass"],
+      "note": null
+    },
+    {
+      "heading": "7015",
+      "label": "Watch glasses & spectacle-lens glass",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7016",
+      "label": "Glass blocks, bricks, mosaic tiles & leaded glass",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7017",
+      "label": "Laboratory & pharmaceutical glassware",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7018",
+      "label": "Glass beads, imitation pearls & stones, microspheres",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "7019",
+      "label": "Glass fibers: fiberglass yarn, rovings, mats, fabric & glass wool",
+      "ruleIds": ["bis-russia-belarus", "bis-1c210-glass-fibre"],
+      "note": "Ordinary E-glass rovings, mats, fabrics and glass-wool insulation are EAR99 for most destinations; high-strength (S-type) continuous fibre can reach the 1C210.b thresholds."
+    },
+    {
+      "heading": "7020",
+      "label": "Other articles of glass (incl. vacuum flask inners, quartz tubes)",
+      "ruleIds": ["bis-optical-glass", "bis-1a227-shielding"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "ca-surtax-remission",
+      "title": "Help the Canadian buyer claim remission of Canada's surtax on glass containers",
+      "saves": "Canada's 50% surtax on U.S. glass bottles, jars and other containers (7010.90.00), refunded or waived when the containers are used to package food or beverages, or in manufacturing, in Canada.",
+      "appliesTo": "U.S. glass containers imported into Canada for use in the packaging of a food product or beverage, or in the manufacture or processing of goods in Canada, for example bottles filled by a Canadian brewery, winery or sauce maker. Section 3 of the United States Surtax Remission Order (2025) has covered goods under the United States Surtax Order (2026) since September 8, 2026; goods for health care and public safety are covered by sections 1 and 2.",
+      "document": "A remission claim by the Canadian importer to the Canada Border Services Agency (for the Minister of Public Safety) within two years of import.",
+      "caveat": "Only the Canadian importer can claim, and containers bought for resale empty do not qualify. The U.S. exporter helps by giving the exact tariff classification and confirming the end use.",
+      "citations": [
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122 (consolidated), ss. 1–3 and 5",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+        },
+        {
+          "label": "United States Surtax Order (2026), SOR/2026-186",
+          "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Ask the Chinese buyer to apply for a tariff exclusion",
+      "saves": "China's 2018–2019 counter-tariff on the goods covered: 10% on U.S. rear-view mirrors, laboratory glassware and most fiberglass, 25% on bottles, glassware and safety glass. The 10% extra duty and China's normal rate still apply.",
+      "appliesTo": "U.S. goods on China's counter-tariff lists bought by a Chinese company under the Tariff Commission's market-based exclusion process. Exclusions are valid until December 31, 2026 under the November 2025 U.S.–China deal.",
+      "document": "An application by the Chinese importer to China's State Council Tariff Commission. Once approved, the exclusion covers only that importer's purchases from the U.S., up to the approved amount.",
+      "caveat": "Only the Chinese buyer can apply. No extension past December 31, 2026 has been announced (see Tariff updates).",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020 (exclusion process)",
+          "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal, Nov 1, 2025",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

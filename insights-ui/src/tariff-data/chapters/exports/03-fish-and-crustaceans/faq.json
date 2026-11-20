@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 3,
+    "padded": "03",
+    "slug": "3-fish-and-crustaceans",
+    "title": "Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/3-fish-and-crustaceans/faq",
+    "h1": "HTS Chapter 03: Fish and Crustaceans, Molluscs and Other Aquatic Invertebrates — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Seafood & Lobster Export FAQ: Tariffs, Buyers, Certificates",
+      "shortDescription": "Short answers on exporting U.S. lobster, salmon and pollock: China's 47% on live lobster, the EU's 0%, who buys U.S. seafood, HS codes and NOAA export certificates.",
+      "keywords": [
+        "china tariffs on us lobster",
+        "lobster tariffs",
+        "us lobster exports",
+        "us seafood exports",
+        "seafood export certificate",
+        "hs code for lobster",
+        "hs code salmon",
+        "seafood export license"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Common questions about exporting U.S. fish, lobster and other seafood, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $5.18 billion of fish and seafood in 2025; live lobster was the largest line at $550 million, and Canada, China and Japan are the largest buyers.",
+    "China charges most U.S. seafood its normal rate plus 40 points (live lobster 47%); Canada, Korea and Hong Kong charge nothing, and the EU 0% on lobster.",
+    "To export you need a Schedule B number, usually a NOAA export health certificate issued before shipment, plant listing for China, the EU and Korea, and an AES filing; no export licence."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"tariff on us lobster\", \"lobster tariff\", \"seafood tariffs\", \"us lobster exports\", \"us seafood exports\", \"seafood export certificate\", \"noaa export certificate\", \"hs code for lobster\", \"hs code salmon\", \"export license seafood\" and \"export seafood to china\".",
+  "faqs": [
+    {
+      "id": "how-much",
+      "question": "How much seafood does the U.S. export?",
+      "answer": "The U.S. exported $5.18 billion of Chapter 03 fish and seafood in 2025, up 14.9% from 2024. Frozen whole fish is 43% of that, led by frozen salmon ($628 million) and fish roe ($535 million); live lobster was the largest single line at $550 million.",
+      "link": "exports",
+      "searchedAs": ["us seafood exports", "us fish exports", "seafood exports by country"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. seafood?",
+      "answer": "Canada took 20.6% of U.S. Chapter 03 exports in 2025, China 20.1% and Japan 14.5%, followed by the Netherlands and South Korea. China is the largest buyer so far in 2026.",
+      "link": "exports",
+      "searchedAs": ["seafood exports by country", "us seafood exports"]
+    },
+    {
+      "id": "lobster-exports",
+      "question": "Where does U.S. lobster go?",
+      "answer": "Live lobster exports were $550 million in 2025. Canada bought $241 million and China $202 million, and frozen lobster added another $68 million.",
+      "link": "exports",
+      "searchedAs": ["us lobster exports", "maine lobster exports", "maine lobster exports to china", "lobster exports by country"]
+    },
+    {
+      "id": "china-lobster",
+      "question": "What tariff does China charge on U.S. lobster?",
+      "answer": "Live lobster pays 47% in China: the 7% normal rate, 25% and 5% from its 2018–19 counter-tariffs and the extra 10% on all U.S. goods. A Chinese buyer holding a market-based exclusion pays 17%; exclusions are valid until December 31, 2026.",
+      "link": "exports/markets",
+      "searchedAs": ["china tariffs on us lobster", "lobster tariffs china", "chinese lobster tariff", "us lobster tariff"]
+    },
+    {
+      "id": "china-retaliation",
+      "question": "Did China raise tariffs on U.S. seafood in 2025?",
+      "answer": "Yes. China added 10% on U.S. aquatic products from March 10 to November 10, 2025, and an extra tariff on all U.S. goods that has been 10% since May 14, 2025. That 10% remains, with 24 more points suspended until January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["seafood tariffs china", "china seafood tariffs", "seafood counter tariffs", "trump seafood tariffs"]
+    },
+    {
+      "id": "eu-lobster",
+      "question": "What tariff does the EU charge on U.S. lobster, pollock and salmon?",
+      "answer": "The EU charges 0% on live, frozen and processed lobster from every country under Regulation (EU) 2026/1461, in force to July 31, 2030. Since July 1, 2026 U.S. Alaska pollock, Pacific salmon, squid and hake enter duty-free within yearly quotas; above them pollock fillets pay 13.7% and frozen salmon 2%.",
+      "link": "exports/markets",
+      "searchedAs": ["lobster tariffs", "us lobster tariff", "seafood tariffs us"]
+    },
+    {
+      "id": "canada-lobster",
+      "question": "Does Canada put tariffs on U.S. lobster and seafood?",
+      "answer": "No. U.S. lobster and other seafood enter Canada duty-free under CUSMA. Canada's 2025 counter-tariffs skipped Chapter 03 and its September 2026 list starts at dairy (heading 0402), so no fish or seafood is covered.",
+      "link": "exports/markets",
+      "searchedAs": ["lobster tariffs canada", "maine lobster canada tariffs 2026", "seafood tariffs canada", "maine lobster tariffs"]
+    },
+    {
+      "id": "japan-korea",
+      "question": "What do Japan and South Korea charge on U.S. seafood?",
+      "answer": "South Korea charges nothing under KORUS; frozen Alaska pollock reached 0% on January 1, 2026. Japan charges its normal rates, such as 1% on lobster, 3.5% on salmon and salmon roe, 4.2% on pollock roe and 10% on pollock fillets, and pollock, cod and cod roe also need a Japanese import quota.",
+      "link": "exports/markets",
+      "searchedAs": ["seafood tariffs"]
+    },
+    {
+      "id": "export-certificate",
+      "question": "How do I get a seafood export certificate?",
+      "answer": "NOAA's Seafood Inspection Program is the U.S. authority that signs seafood export health certificates, and the certificate must be issued before the product ships. China, the EU, Viet Nam, Taiwan, Brazil and Australia require one with every shipment; many buyers also want the plant to be a NOAA Approved Establishment or on an FDA export list.",
+      "link": "exports/rules",
+      "searchedAs": ["seafood export certificate", "fish export certificate", "noaa export certificate", "health certificate for fish export"]
+    },
+    {
+      "id": "china-requirements",
+      "question": "What do I need to export seafood to China?",
+      "answer": "The plant must be a NOAA Approved Establishment on FDA's China export list, registered with China's customs agency (GACC) on the U.S. side's recommendation, and each shipment needs NOAA's China health certificate. The Chinese importer must also be registered with GACC.",
+      "link": "exports/rules",
+      "searchedAs": ["exporting seafood to china", "export fish to china", "list of establishments approved to export seafood to china"]
+    },
+    {
+      "id": "hs-codes",
+      "question": "What is the HS or Schedule B code for lobster and salmon?",
+      "answer": "Live lobster is 0306.32 and frozen lobster 0306.12. Frozen sockeye salmon is 0303.11 and other frozen Pacific salmon 0303.12. The 10-digit Schedule B number you file starts with these six digits.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for lobster",
+        "hs code for live lobster",
+        "hs code for lobster frozen",
+        "hs code salmon",
+        "hs code frozen sockeye salmon",
+        "hs code for frozen fish"
+      ]
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license to export seafood?",
+      "answer": "Not from Commerce: fish and shellfish are EAR99. Seafood exported for food needs no U.S. Fish and Wildlife Service licence either, but live fish shipped for other purposes, such as glass eels for fish farms, needs a USFWS licence and declaration, and CITES-listed species such as some sharks need a CITES permit.",
+      "link": "exports/rules",
+      "searchedAs": ["seafood export license", "export license seafood"]
+    }
+  ]
+}

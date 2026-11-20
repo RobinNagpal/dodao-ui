@@ -1,0 +1,853 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 94,
+    "padded": "94",
+    "slug": "94-furniture-and-lighting-fittings",
+    "title": "Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; luminaires and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated nameplates and the like; prefabricated buildings"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/94-furniture-and-lighting-fittings/markets",
+    "h1": "HTS Chapter 94: Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; luminaires and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated nameplates and the like; prefabricated buildings — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Furniture Tariffs by Country: What Canada, Mexico, EU, China Charge",
+      "shortDescription": "What 9 markets charge on U.S. furniture, seats, mattresses and lighting: Canada 25–50% on listed lines, Mexico free under USMCA, EU 0%, China +10%.",
+      "keywords": [
+        "tariff on furniture from us to canada",
+        "is there duty on furniture from usa to canada",
+        "mexico furniture tariff",
+        "does mexico have tariffs on us goods",
+        "does china have tariffs on us products",
+        "eu tariffs on us goods list",
+        "uk tariffs on american goods"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "For most buyers of U.S. furniture, seats and lighting the tariff is low or zero: Mexico and Canada take qualifying goods free under USMCA, the EU charges 0% on all U.S. Chapter 94 goods from July 1, 2026, Australia is free under AUSFTA and Japan and the UK charge 0–4%. **Canada** is the exception that costs money: surtaxes of **25–50%** on most U.S. household seats, kitchen cabinets, bedroom, metal and plastic furniture and LED fixtures, and **25%** on steel office furniture and prefabricated buildings, on top of CUSMA's 0%. **China** adds 10% to every U.S. good, and the Gulf buyers charge 5–15%. Beyond the tariff, what decides access is product safety: mattress and upholstery flammability rules (the UK and Canada), electrical certification for light fixtures (Mexico, China, the EU), medical-device registration for hospital furniture (Australia, Saudi Arabia) and, from December 30, 2026, EU deforestation due diligence for wooden furniture.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "9401",
+      "label": "Seats, chairs, sofas & parts",
+      "shortLabel": "Seats & sofas"
+    },
+    {
+      "heading": "9402",
+      "label": "Medical, dental & barber furniture",
+      "shortLabel": "Medical furniture"
+    },
+    {
+      "heading": "9403",
+      "label": "Office, kitchen, bedroom & other furniture",
+      "shortLabel": "Furniture"
+    },
+    {
+      "heading": "9404",
+      "label": "Mattresses, pillows, quilts & sleeping bags",
+      "shortLabel": "Mattresses & bedding"
+    },
+    {
+      "heading": "9405",
+      "label": "Lamps, luminaires, LED fixtures & illuminated signs",
+      "shortLabel": "Lighting"
+    },
+    {
+      "heading": "9406",
+      "label": "Prefabricated buildings",
+      "shortLabel": "Prefab buildings"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (duty free), plus surtaxes on U.S.-origin goods with no CUSMA exemption: 25% or 50% on listed seats, furniture and LED lighting under the United States Surtax Order (2026), and 25% on steel office furniture, other furniture parts and prefabricated buildings under the global Steel Derivative Goods Surtax Order",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 4350333721,
+      "priorExportsUsd": 4669112518,
+      "sharePct": 46.3,
+      "changePct": -6.8,
+      "status": "raised",
+      "cells": {
+        "9401": {
+          "exportsUsd": 1507889112,
+          "rate": "Free (CUSMA); 25–50% on most seats",
+          "normalRate": null,
+          "basis": "Representative line 9401.99 (seat parts): free under the CBSA Customs Tariff 2026 MFN rate and CUSMA, and on no surtax list. The United States Surtax Order (2026), SOR/2026-186, adds 25% on upholstered wooden-frame seats (9401.61) and 50% on office swivel chairs (9401.39), other wooden-frame seats (9401.69) and metal-frame seats (9401.71, 9401.79) of U.S. origin (CUSMA marking rules), with no CUSMA exemption. Household seats normally pay 8–9.5% MFN; motor-vehicle seats (9401.20, 6% MFN) and aircraft seats are not listed"
+        },
+        "9402": {
+          "exportsUsd": 292024162,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "9402.90: free under the CBSA Customs Tariff 2026 MFN rate; medical, dental and barbers' furniture is on none of Canada's surtax lists"
+        },
+        "9403": {
+          "exportsUsd": 1500938586,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "8% MFN",
+          "basis": "9403.20 (other metal furniture): 8% MFN, free under CUSMA (CBSA Customs Tariff 2026), plus 50% under SOR/2026-186 since September 8, 2026. The same order charges 50% on wooden bedroom and other wooden furniture (9403.50, 9403.60) and plastic furniture (9403.70) and 25% on wooden kitchen furniture (9403.40) and wooden parts (9403.91); the global Steel Derivative Goods Surtax Order (SOR/2025-267) charges 25% on metal office furniture (9403.10) and other parts (9403.99). Wooden office furniture (9403.30) and bamboo, rattan and other furniture (9403.82–9403.89) are not listed"
+        },
+        "9404": {
+          "exportsUsd": 203471374,
+          "rate": "Free (CUSMA)",
+          "normalRate": "14% MFN",
+          "basis": "9404.90 (pillows, cushions, quilts and similar): 14% MFN, free under CUSMA (CBSA Customs Tariff 2026); mattresses are 9.5% MFN. Not on the 2026 surtax list; 25% from March 4 to September 1, 2025 under SOR/2025-66"
+        },
+        "9405": {
+          "exportsUsd": 618401298,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "7% MFN",
+          "basis": "9405.42 (other LED luminaires): 7% MFN (6% for theatrical spotlights), free under CUSMA (CBSA Customs Tariff 2026), plus 50% under SOR/2026-186 on 9405.11 (LED ceiling and wall fittings), 9405.42 and lamp parts 9405.99. Table and floor lamps, Christmas lights, non-LED fittings and illuminated signs are not listed"
+        },
+        "9406": {
+          "exportsUsd": 227609189,
+          "rate": "Free (CUSMA) + 25% surtax",
+          "normalRate": "6% MFN",
+          "basis": "9406.90 (other prefabricated buildings): 6% MFN (0–15.5% by line), free under CUSMA (CBSA Customs Tariff 2026), plus the 25% Steel Derivative Goods Surtax (SOR/2025-267) since December 26, 2025 on steel modular units (9406.20) and other prefabricated buildings (9406.90), U.S. goods included. Wooden buildings (9406.10) are not listed"
+        }
+      },
+      "profile": {
+        "headline": "The largest buyer by far ($4.35 billion, 46%) and the only one that targets U.S. Chapter 94 goods: household seats, kitchen cabinets, bedroom, metal and plastic furniture and LED fixtures pay 25% or 50% since September 8, 2026, and steel office furniture and prefabricated buildings 25%. Seat parts, the biggest U.S. line, and medical furniture, mattresses and bedding still enter free.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "Free (CUSMA), but 25–50% surtax on most household seats, furniture and LED fixtures",
+        "regulator": {
+          "name": "Health Canada (Canada Consumer Product Safety Act)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2016-183/",
+          "requirement": "No approval before sale, but mattresses must pass the flammability tests of the Mattresses Regulations (SOR/2016-183), and cribs, cradles, bassinets and other children's products have their own regulations; hospital beds and other medical furniture that are medical devices may need a Health Canada medical device licence."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) preferential rate: duty free for qualifying U.S. goods; Mexico's general tariff (raised to 25–35% on most furniture from January 1, 2026) for goods that do not qualify",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 1806464840,
+      "priorExportsUsd": 1774994988,
+      "sharePct": 19.2,
+      "changePct": 1.8,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 1097144044,
+          "rate": "Free (USMCA)",
+          "normalRate": "25% MFN",
+          "basis": "9401.99.99 (seat parts): Mexico's general rate rose from free to 25% under the decree of December 29, 2025 (in force January 1, 2026); most household seats rose from 10% to 25–35%. Motor-vehicle seats (9401.20.01) stay free. USMCA-qualifying U.S. goods enter free"
+        },
+        "9402": {
+          "exportsUsd": 63817702,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "9402.90.99: 15% general rate (LIGIE Tariff, 2022), not changed by the 2025–2026 decrees; free under USMCA"
+        },
+        "9403": {
+          "exportsUsd": 315911781,
+          "rate": "Free (USMCA)",
+          "normalRate": "35% MFN",
+          "basis": "9403.20.91 (other metal furniture): general rate raised from 7% to 35% by the December 29, 2025 decree; the other furniture lines and parts other than of wood now pay 25% or 35%. Free under USMCA"
+        },
+        "9404": {
+          "exportsUsd": 49859664,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "9404.90.99: 15% general rate (LIGIE Tariff, 2022). Mattress supports (9404.10.01) rose to 35% (December 2025 decree), mattresses of other materials (9404.29.99) to 25% and quilts (9404.40.01) to 35% (April 23, 2026 decree). Free under USMCA"
+        },
+        "9405": {
+          "exportsUsd": 231146645,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% MFN",
+          "basis": "9405.42.91 (other LED luminaires): 15% general rate (LIGIE Tariff, 2022); LED illuminated signs (9405.61.01) rose to 25% under the April 23, 2026 decree. Free under USMCA"
+        },
+        "9406": {
+          "exportsUsd": 48585004,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN",
+          "basis": "9406.90.99: 10% general rate (LIGIE Tariff, 2022); free under USMCA"
+        }
+      },
+      "profile": {
+        "headline": "Second buyer ($1.81 billion, up 1.8%), dominated by seats and seat parts ($1.10 billion). Qualifying U.S. goods enter free under USMCA; since January 2026 goods that fail the origin rules face Mexico's raised general rates of 25–35% on most furniture.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "Free (USMCA); 25–35% normal rate on most non-qualifying furniture",
+        "regulator": {
+          "name": "Secretaría de Economía (Mexican Official Standards, NOM)",
+          "url": "https://www.gob.mx/se",
+          "requirement": "Furniture, mattresses and bedding need Spanish-language commercial labels under the applicable NOMs, and electric light fixtures need NOM electrical-safety certification from an accredited body before customs clearance; check the NOM for the exact product with the importer of record."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff, with 0% on all U.S.-origin Chapter 94 goods under Regulation (EU) 2026/1455 (July 1, 2026 to December 31, 2029)",
+      "usTradeAgreement": null,
+      "exportsUsd": 758523060,
+      "priorExportsUsd": 721475951,
+      "sharePct": 8.1,
+      "changePct": 5.1,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 198884747,
+          "priorExportsUsd": 189443055,
+          "changePct": 5
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 169053092,
+          "priorExportsUsd": 155052839,
+          "changePct": 9
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 117502147,
+          "priorExportsUsd": 107031248,
+          "changePct": 9.8
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 59188682,
+          "priorExportsUsd": 54407159,
+          "changePct": 8.8
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 41003583,
+          "priorExportsUsd": 41453770,
+          "changePct": -1.1
+        }
+      ],
+      "cells": {
+        "9401": {
+          "exportsUsd": 196100836,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "1.7–2.7% MFN",
+          "basis": "CN 9401 99 (seat parts): EU MFN 1.7–2.7% (WITS/TRAINS 2023); 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029 under Regulation (EU) 2026/1455, whose Annex I covers all of Chapter 94"
+        },
+        "9402": {
+          "exportsUsd": 175136826,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 9402 90: EU MFN 0% (WITS/TRAINS 2023); also in Annex I of Regulation (EU) 2026/1455"
+        },
+        "9403": {
+          "exportsUsd": 207639779,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "CN 9403 20 (other metal furniture): EU MFN 0% (WITS/TRAINS 2023); bamboo, rattan and other furniture (5.6%) and wooden kitchen furniture and parts (2.7%) are also 0% for U.S. goods under Regulation (EU) 2026/1455"
+        },
+        "9404": {
+          "exportsUsd": 13816264,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "3.7% MFN",
+          "basis": "CN 9404 90 (pillows, quilts, cushions): EU MFN 3.7% (WITS/TRAINS 2023); 0% for U.S. goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "9405": {
+          "exportsUsd": 140771181,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "2.7–4.7% MFN",
+          "basis": "CN 9405 42 (other LED luminaires): EU MFN 2.7–4.7% by CN line (WITS/TRAINS 2023); 0% for U.S. goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "9406": {
+          "exportsUsd": 25058174,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "2.7% MFN",
+          "basis": "CN 9406 90: EU MFN 2.7% (WITS/TRAINS 2023); 0% for U.S. goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        }
+      },
+      "profile": {
+        "headline": "The Netherlands, Germany and France lead $759 million of EU purchases. Since July 1, 2026 every U.S. Chapter 94 line enters the EU at 0%; wooden furniture faces EU deforestation due diligence from December 30, 2026.",
+        "mainProducts": "Office, kitchen, bedroom & other furniture (9403) · Seats, chairs, sofas & parts (9401)",
+        "tariffNow": "Free on all U.S. Chapter 94 goods since July 1, 2026",
+        "regulator": {
+          "name": "General Product Safety Regulation (EU) 2023/988; EU Deforestation Regulation (EU) 2023/1115",
+          "url": "https://eur-lex.europa.eu/eli/reg/2023/988/oj",
+          "requirement": "Consumer furniture, mattresses and lamps must be safe under the GPSR, with an EU-based economic operator responsible for them; electric luminaires need CE marking. From December 30, 2026 (June 30, 2027 for micro and small firms) wooden seats, wooden furniture and parts (9403.30–9403.60, 9403.91) and wooden prefabricated buildings (9406.10) also need an EUDR due-diligence statement from the EU importer."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (MFN); the U.S.–UK Economic Prosperity Deal gives no Chapter 94 preference",
+      "usTradeAgreement": null,
+      "exportsUsd": 263574582,
+      "priorExportsUsd": 258290510,
+      "sharePct": 2.8,
+      "changePct": 2,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 98807927,
+          "rate": "0–2%",
+          "normalRate": null,
+          "basis": "9401.99 (seat parts): UK Global Tariff 0–2% by commodity code (WITS/TRAINS 2023); most finished seats are free, bamboo and rattan seats 4%"
+        },
+        "9402": {
+          "exportsUsd": 18861280,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9402.90: UK Global Tariff 0% (WITS/TRAINS 2023)"
+        },
+        "9403": {
+          "exportsUsd": 89823612,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9403.20 (other metal furniture): UK Global Tariff 0% (WITS/TRAINS 2023); wooden kitchen furniture and parts 2%, bamboo and rattan furniture 4%"
+        },
+        "9404": {
+          "exportsUsd": 3071659,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "9404.90: UK Global Tariff 2% (WITS/TRAINS 2023)"
+        },
+        "9405": {
+          "exportsUsd": 47722399,
+          "rate": "2–4%",
+          "normalRate": null,
+          "basis": "9405.42 (other LED luminaires): UK Global Tariff 2–4% by commodity code (WITS/TRAINS 2023)"
+        },
+        "9406": {
+          "exportsUsd": 5287705,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "9406.90: UK Global Tariff 2% (WITS/TRAINS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "The third buyer ($264 million), mostly seats and furniture. Finished furniture enters free and seats, bedding and lamps pay 0–4%; upholstered furniture and mattresses must pass the UK's own fire-safety tests.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "0–4% (UK Global Tariff); most furniture free",
+        "regulator": {
+          "name": "Furniture and Furnishings (Fire) (Safety) Regulations 1988",
+          "url": "https://www.legislation.gov.uk/uksi/1988/1324/contents",
+          "requirement": "Upholstered domestic furniture, mattresses, cushions and pillows sold in the UK must pass the Regulations' ignition tests and carry the required labels; electric light fixtures need UKCA or CE marking."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN (WTO) rates; the 2025 U.S.–Japan agreement did not change them",
+      "usTradeAgreement": null,
+      "exportsUsd": 172573799,
+      "priorExportsUsd": 145880753,
+      "sharePct": 1.8,
+      "changePct": 18.3,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 61465652,
+          "rate": "Free (parts 0–3.8%)",
+          "normalRate": null,
+          "basis": "9401.99 (seat parts): Japan MFN 0–3.8% by line (WITS/TRAINS 2023); finished seats of every kind are free"
+        },
+        "9402": {
+          "exportsUsd": 22422078,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9402.90: Japan MFN 0% (WITS/TRAINS 2023)"
+        },
+        "9403": {
+          "exportsUsd": 43750962,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9403.20: Japan MFN 0% (WITS/TRAINS 2023); all furniture and parts of 9403 are free"
+        },
+        "9404": {
+          "exportsUsd": 6929481,
+          "rate": "3.8%",
+          "normalRate": null,
+          "basis": "9404.90: Japan MFN 3.8% (WITS/TRAINS 2023); mattress supports 3.2%"
+        },
+        "9405": {
+          "exportsUsd": 27084123,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9405.42: Japan MFN 0% (WITS/TRAINS 2023); illuminated signs 0–4.8%, plastic lamp parts 3.9%"
+        },
+        "9406": {
+          "exportsUsd": 10921503,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9406.90: Japan MFN 0% (WITS/TRAINS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "U.S. sales rose 18% to $173 million in 2025. Japan charges nothing on furniture, seats and lighting and 3.8% on bedding; listed furniture needs Japanese quality labels.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "Free on furniture, seats and lighting; 3.8% on bedding",
+        "regulator": {
+          "name": "Consumer Affairs Agency (Household Goods Quality Labeling Act)",
+          "url": "https://www.caa.go.jp/policies/policy/representation/household_goods/",
+          "requirement": "Listed household furniture such as desks, tables, chairs and cabinets must carry Japanese quality labels (materials, finish, dimensions, care); electric lighting covered by the Electrical Appliances and Material Safety Act needs the PSE mark."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC common external tariff (MFN); no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 148538390,
+      "priorExportsUsd": 160566161,
+      "sharePct": 1.6,
+      "changePct": -7.5,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 97076414,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9401.99: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9402": {
+          "exportsUsd": 8913464,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9402.90: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9403": {
+          "exportsUsd": 19605476,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9403.20: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9404": {
+          "exportsUsd": 6050122,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9404.90: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9405": {
+          "exportsUsd": 16122471,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9405.42: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9406": {
+          "exportsUsd": 770443,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9406.90: GCC common external tariff 5% (UAE, WITS/TRAINS 2023); no U.S. trade agreement"
+        }
+      },
+      "profile": {
+        "headline": "Mostly seats ($97 million of $149 million). Every Chapter 94 line pays the Gulf's 5% common tariff.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "5% (GCC common external tariff)",
+        "regulator": {
+          "name": "Ministry of Industry and Advanced Technology (MoIAT)",
+          "url": "https://moiat.gov.ae/en/services/issue-conformity-certificates-for-regulated-products",
+          "requirement": "Products covered by UAE technical regulations, lighting and other electrical products and children's articles among them, need a MoIAT conformity certificate before sale; check whether the specific product is regulated."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "AUSFTA: duty free for qualifying U.S. goods; MFN (mostly 5%) otherwise",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 143847471,
+      "priorExportsUsd": 153173091,
+      "sharePct": 1.5,
+      "changePct": -6.1,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 28614274,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% MFN",
+          "basis": "9401.99: Australia MFN 0–5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9402": {
+          "exportsUsd": 45347436,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9402.90: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9403": {
+          "exportsUsd": 42179322,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9403.20: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9404": {
+          "exportsUsd": 4872366,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9404.90: Australia MFN 5% (WITS/TRAINS 2023); mattresses are 0% MFN"
+        },
+        "9405": {
+          "exportsUsd": 18795107,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9405.42: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9406": {
+          "exportsUsd": 4038966,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9406.90: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        }
+      },
+      "profile": {
+        "headline": "Medical furniture is the largest U.S. group here ($45 million); all qualifying U.S. goods enter free under AUSFTA, but hospital furniture that is a medical device needs TGA listing first.",
+        "mainProducts": "Medical, dental & barber furniture (9402) · Office, kitchen, bedroom & other furniture (9403)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Therapeutic Goods Administration (ARTG); ACCC product safety",
+          "url": "https://www.tga.gov.au/",
+          "requirement": "Hospital beds, examination tables and other medical furniture that are medical devices must be included on the Australian Register of Therapeutic Goods by an Australian sponsor before sale; consumer furniture such as cots and bunk beds must meet mandatory ACCC safety standards."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 682,
+      "name": "Saudi Arabia",
+      "rule": "Saudi Arabia's applied MFN rates under the GCC customs union (15% on most seats and furniture); no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 134471315,
+      "priorExportsUsd": 147161504,
+      "sharePct": 1.4,
+      "changePct": -8.6,
+      "status": "unchanged",
+      "cells": {
+        "9401": {
+          "exportsUsd": 37519422,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "9401.99 (seat parts): Saudi Arabia applied MFN 15% (WITS/TRAINS 2023); most finished seats 15%, bamboo and rattan seats 5%"
+        },
+        "9402": {
+          "exportsUsd": 39358824,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9402.90: Saudi Arabia applied MFN 5% (WITS/TRAINS 2023)"
+        },
+        "9403": {
+          "exportsUsd": 30219952,
+          "rate": "15%",
+          "normalRate": null,
+          "basis": "9403.20: Saudi Arabia applied MFN 15% (WITS/TRAINS 2023); bamboo, rattan and other furniture 5%"
+        },
+        "9404": {
+          "exportsUsd": 3349340,
+          "rate": "10–15%",
+          "normalRate": null,
+          "basis": "9404.90: Saudi Arabia applied MFN 10–15% by line (WITS/TRAINS 2023); mattresses 15%"
+        },
+        "9405": {
+          "exportsUsd": 13230195,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "9405.42: Saudi Arabia applied MFN 5% (WITS/TRAINS 2023)"
+        },
+        "9406": {
+          "exportsUsd": 10793582,
+          "rate": "5–15%",
+          "normalRate": null,
+          "basis": "9406.90: Saudi Arabia applied MFN 5–15% by line (WITS/TRAINS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "Medical furniture ($39 million) and seats lead U.S. sales; Saudi Arabia charges 15% on most seats and furniture and 5% on medical furniture and lamps.",
+        "mainProducts": "Medical, dental & barber furniture (9402) · Seats, chairs, sofas & parts (9401)",
+        "tariffNow": "5–15% (15% on most seats and furniture)",
+        "regulator": {
+          "name": "Saudi Food and Drug Authority (medical devices); SASO (SABER)",
+          "url": "https://www.sfda.gov.sa/en",
+          "requirement": "Medical furniture, the largest U.S. group in Saudi Arabia, needs SFDA medical-device marketing authorization; other regulated products, lighting among them, need a SABER conformity certificate before shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Saudi Arabia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China MFN rate plus the 10% extra tariff on all U.S. goods (24 further points suspended to January 10, 2027); 2019 counter-tariffs on listed lines unless excluded",
+      "usTradeAgreement": null,
+      "exportsUsd": 122530077,
+      "priorExportsUsd": 129088438,
+      "sharePct": 1.3,
+      "changePct": -5.1,
+      "status": "raised",
+      "cells": {
+        "9401": {
+          "exportsUsd": 42967314,
+          "rate": "0–6% + 10%",
+          "normalRate": "0–6% MFN",
+          "basis": "9401.99 (seat parts): China MFN 0–6% by line (WITS/TRAINS 2023), plus the 10% extra tariff on all U.S. goods; finished seats are 0% MFN except motor-vehicle seats (6%). 2019 counter-tariffs apply to listed lines unless the buyer holds an exclusion"
+        },
+        "9402": {
+          "exportsUsd": 11329754,
+          "rate": "0% + 10%",
+          "normalRate": "0% MFN",
+          "basis": "9402.90: China MFN 0% (WITS/TRAINS 2023) plus 10%; listed at 10% in Annex 3 of the 2019 counter-tariffs (exclusions available to December 31, 2026)"
+        },
+        "9403": {
+          "exportsUsd": 17719438,
+          "rate": "0% + 10%",
+          "normalRate": "0% MFN",
+          "basis": "9403.20: China MFN 0% (WITS/TRAINS 2023) plus 10%; all furniture and parts of 9403 are 0% MFN"
+        },
+        "9404": {
+          "exportsUsd": 7589610,
+          "rate": "10% + 10%",
+          "normalRate": "10% MFN",
+          "basis": "9404.90: China MFN 10% (WITS/TRAINS 2023) plus 10%"
+        },
+        "9405": {
+          "exportsUsd": 41904244,
+          "rate": "6–10% + 10%",
+          "normalRate": "6–10% MFN",
+          "basis": "9405.42: China MFN 6–10% by line (WITS/TRAINS 2023) plus 10%"
+        },
+        "9406": {
+          "exportsUsd": 1019717,
+          "rate": "8% + 10%",
+          "normalRate": "8% MFN",
+          "basis": "9406.90: China MFN 8% (WITS/TRAINS 2023) plus 10%"
+        }
+      },
+      "profile": {
+        "headline": "A small buyer ($123 million), mainly seats and lighting. Furniture is 0% under China's normal rate but pays the 10% extra tariff on all U.S. goods, which would rise to 34% if the suspension ends on January 10, 2027.",
+        "mainProducts": "Seats, chairs, sofas & parts (9401) · Lamps, luminaires, LED fixtures & illuminated signs (9405)",
+        "tariffNow": "Normal rate (0% on furniture) + 10% on all U.S. goods",
+        "regulator": {
+          "name": "State Administration for Market Regulation (China Compulsory Certification)",
+          "url": "https://english.samr.gov.cn/CooperationandExchanges/Organizations/art/2026/art_c2f7533f9c0046a1ae3e65a95259218a.html",
+          "requirement": "Electric luminaires on the CCC catalogue cannot be imported or sold without the CCC certificate and mark; furniture and mattresses need no CCC, while medical furniture registered as a medical device needs NMPA registration or filing."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "9401",
+      "exportsUsd": 1507889112,
+      "rate": "Free (CUSMA); 25–50% on most seats"
+    },
+    {
+      "market": "Canada",
+      "heading": "9403",
+      "exportsUsd": 1500938586,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9401",
+      "exportsUsd": 1097144044,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "9405",
+      "exportsUsd": 618401298,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9403",
+      "exportsUsd": 315911781,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "9402",
+      "exportsUsd": 292024162,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9405",
+      "exportsUsd": 231146645,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "9406",
+      "exportsUsd": 227609189,
+      "rate": "Free (CUSMA) + 25% surtax"
+    }
+  ],
+  "assumptions": [
+    "Each cell uses one representative six-digit subheading per heading, the one with the largest 2025 U.S. exports: 9401.99 (seat parts), 9402.90 (medical furniture), 9403.20 (other metal furniture), 9404.90 (pillows, quilts and cushions), 9405.42 (LED luminaires) and 9406.90 (prefabricated buildings). The basis says where other lines of the heading differ; national 8–10-digit lines can differ too.",
+    "Canada's rates come from the CBSA Customs Tariff 2026 and its surtaxes from the Canada Gazette: the United States Surtax Order (2026), SOR/2026-186, and the global Steel Derivative Goods Surtax Order, SOR/2025-267 (which does not stack with the U.S. surtax). The surtaxes apply to goods of U.S. origin under the CUSMA marking rules, whether or not they qualify for CUSMA. Remission claims (for goods used in Canadian manufacturing, or by health-care and public-safety buyers) are not netted out.",
+    "Mexico's general rates come from the LIGIE Tariff (DOF, June 7, 2022) as amended by the decrees of December 29, 2025 and April 23, 2026. Mexico (USMCA), Canada (CUSMA) and Australia (AUSFTA) apply 0% only to goods that meet the agreement's rules of origin; the normal-rate column shows what a non-qualifying U.S. good pays.",
+    "For the EU, Regulation (EU) 2026/1455 sets 0% on all of Chapter 94 for U.S.-origin goods from July 1, 2026 to December 31, 2029; the normal-rate column shows the EU rate before that date.",
+    "Rates for the EU, UK, Japan, the UAE, Australia, Saudi Arabia and China are World Bank/UNCTAD WITS (TRAINS) MFN applied rates for 2023, the latest year WITS holds; a range shows the lowest and highest national line under the subheading.",
+    "China's cells add the 10% extra tariff on all U.S. goods to the MFN rate. China's 2019 counter-tariffs (for example 10% on the Chapter 94 lines in Annex 3 of Announcement 2019 No. 3) are not added, because importers can hold line-by-line exclusions valid until December 31, 2026.",
+    "VAT, sales taxes, anti-dumping duties and the buyer's import paperwork are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 94, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-cbsa-t2026-94",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 94",
+      "document": "Customs Tariff schedule",
+      "title": "Departmental Consolidation of the Customs Tariff 2026: Chapter 94",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch94-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-267",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2025-267",
+      "document": "Order",
+      "title": "Steel Derivative Goods Surtax Order",
+      "signed": "2025-12-11",
+      "published": "2025-12-31",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-12-31/html/sor-dors267-eng.html"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "LIGIE Tariff, DOF Jun 7, 2022",
+      "document": "Ley de los Impuestos Generales de Importación y de Exportación",
+      "title": "Ley de los Impuestos Generales de Importación y de Exportación (Tarifa), Chapter 94",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5654292&fecha=07/06/2022"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": "2025-12-23",
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "mx-dof-2026-04",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Apr 23, 2026",
+      "document": "Decreto",
+      "title": "Decreto por el que se modifica la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación y el Decreto por el que se establecen diversos Programas de Promoción Sectorial",
+      "signed": "2026-04-23",
+      "published": "2026-04-23",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5785818&fecha=23/04/2026"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-eudr",
+      "publisher": "European Commission (DG Environment)",
+      "citation": "EC, EUDR page",
+      "document": "Web page",
+      "title": "Regulation on deforestation-free products (Regulation (EU) 2023/1115): application dates and implementation",
+      "signed": null,
+      "published": "2026-10-28",
+      "url": "https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en"
+    },
+    {
+      "id": "eu-eudr-reg",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2023/1115, Annex I",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2023/1115 on deforestation-free products (Annex I: relevant products)",
+      "signed": "2023-05-31",
+      "published": "2023-06-09",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/1115/oj"
+    },
+    {
+      "id": "wits-trains-2023",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS/TRAINS MFN applied rates, 2023",
+      "document": "Tariff database",
+      "title": "MFN applied tariff rates by HS six-digit subheading, Chapter 94 (reporters: EU, UK, Japan, UAE, Australia, Saudi Arabia, China, India)",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/CHN/partner/WLD/product/940320"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019, Annex 3",
+      "document": "Announcement annex",
+      "title": "List of U.S. goods subject to an additional 10% tariff",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://www.gov.cn/xinwen/2019-05/13/5391208/files/9ed295b6eef24a9fa64d661be67bc2ed.pdf"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 84% of 2025 U.S. Chapter 94 exports. A customs union (the EU) is one market: its members share one tariff."
+}

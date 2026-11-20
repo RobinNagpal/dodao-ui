@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 47,
+    "padded": "47",
+    "slug": "47-wood-pulp-and-scrap",
+    "title": "Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/47-wood-pulp-and-scrap/faq",
+    "h1": "HTS Chapter 47: Pulp of Wood or of Other Fibrous Cellulosic Material; Recovered (Waste and Scrap) Paper or Paperboard — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Pulp & Waste Paper Export FAQ: China Ban, Fluff Pulp, OCC (HTS Ch. 47) | KoalaGains",
+      "shortDescription": "Short answers on China's waste paper import ban, China's tariff on U.S. fluff pulp, where U.S. OCC goes, India's duty, Canada's pulp surtax, EUDR, HS codes and licences.",
+      "keywords": [
+        "china waste paper import ban",
+        "occ exports",
+        "fluff pulp china",
+        "tariff on us pulp",
+        "hs code for occ waste paper",
+        "waste paper import duty india",
+        "eudr pulp"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Short answers to common questions about exporting U.S. wood pulp, fluff pulp, dissolving pulp and recovered paper (OCC and other waste paper), each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "China has banned recovered-paper imports since January 1, 2021, so U.S. OCC goes to India, Mexico, Thailand, Viet Nam and Malaysia; China still buys U.S. pulp, at 10% (15% without an exclusion).",
+    "Most buyers charge 0% on U.S. pulp and recovered paper; India charges 5% and 2.5%, and Canada charges 50% only on dissolving pulp.",
+    "Pulp and recovered paper are EAR99 and need no U.S. export licence except for Russia, Belarus and embargoed destinations; file EEI when one Schedule B number is worth over $2,500."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com, client=firefox) fetched on November 19, 2026 for \"china waste paper ban\", \"china recovered paper import\", \"occ exports\", \"occ waste paper\", \"waste paper export\", \"scrap paper export\", \"fluff pulp\", \"fluff pulp china\", \"hs code fluff pulp\", \"hs code for waste paper\", \"hs code occ\", \"tariffs on pulp\", \"wood pulp tariff\", \"canada pulp tariff\", \"dissolving pulp tariff\", \"india waste paper import\", \"waste paper import duty\", \"china tariff exclusions\", \"china tariff suspension\", \"eudr pulp\", \"pulp exports\" and \"wood pulp export\". Queries such as \"tariff on us pulp\", \"china tariff on us pulp\", \"us pulp exports\" and \"export license waste paper\" returned no suggestions and were kept from the research brief.",
+  "faqs": [
+    {
+      "id": "china-waste-paper-ban",
+      "question": "Does China still ban imports of waste paper?",
+      "searchedAs": ["china waste paper import ban", "china waste paper ban", "china recovered paper import", "china bans recycling imports"],
+      "answer": "Yes. Since January 1, 2021 China has banned imports of solid waste in any form under Announcement No. 53 of 2020 of its environment and commerce ministries, planning commission and customs, and no longer issues licences for waste used as raw material. That ended U.S. recovered-paper sales to China: $4M in 2025. China still buys U.S. pulp, $996M in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "occ-exports",
+      "question": "Where does the U.S. export OCC and other waste paper?",
+      "searchedAs": ["occ exports", "occ waste paper", "waste paper exporters in usa", "waste paper export"],
+      "answer": "U.S. recovered-paper exports (4707) were $2.28B in 2025, of which old corrugated containers (OCC, 4707.10) were $1.52B. The largest buyers were India ($369M), Mexico ($368M), Thailand ($354M), Viet Nam ($314M) and Malaysia ($294M), followed by Canada, Korea, Taiwan and Indonesia.",
+      "link": "exports"
+    },
+    {
+      "id": "china-tariff-us-pulp",
+      "question": "What tariff does China charge on U.S. wood pulp and fluff pulp?",
+      "searchedAs": ["tariff on us pulp", "china tariff on us pulp", "fluff pulp china", "fluff pulp tariff"],
+      "answer": "10% for buyers with an exclusion, 15% without. China's normal rate on all pulp is 0%, it adds 10% on all U.S. goods, and its 2018 counter-tariff list adds 5% on wood pulp, including fluff pulp and other bleached softwood kraft (4703.21), unless the Chinese buyer holds an exclusion. U.S. pulp exports to China fell 21.1% in 2025 to $996M.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-tariff-dates",
+      "question": "When could China's tariffs on U.S. pulp change?",
+      "searchedAs": ["china tariff exclusions", "china extends us tariff suspension", "china us tariff suspension"],
+      "answer": "Two dates: December 31, 2026, when China's exclusions from its 2018–2019 counter-tariffs end unless extended, which would put the 5% back on U.S. pulp for excluded buyers; and January 10, 2027, when the suspension of 24 points of its extra duty ends, which would raise the 10% to 34%.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-tariff-pulp",
+      "question": "Does Canada have a tariff on U.S. pulp?",
+      "searchedAs": ["canada pulp tariffs", "canada pulp tariff", "dissolving pulp tariff"],
+      "answer": "Only on dissolving pulp. Since September 8, 2026 Canada charges a 50% surtax on U.S. dissolving pulp (4702.00.00), even under CUSMA; buyers that use it in manufacturing can claim it back. Kraft pulp, fluff pulp, mechanical pulp and recovered paper enter free. A first round, 25% on mechanical and dissolving pulp, ran from March 4 to August 31, 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "india-waste-paper-duty",
+      "question": "What is India's import duty on U.S. waste paper and pulp?",
+      "searchedAs": ["waste paper import duty india", "india waste paper import", "paper scrap import duty", "occ waste paper buyers in india"],
+      "answer": "2.5% basic customs duty on recovered paper, OCC included, and 5% on wood pulp (WITS 2023); there is no U.S. trade agreement in force, and the U.S.–India interim framework has published no new rate. India was the largest buyer of U.S. recovered paper in 2025 ($369M). Its import policy prohibits hazardous waste and anything contaminated with it, so bales must be free of hazardous material.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "asia-occ-import-rules",
+      "question": "What do Viet Nam, Indonesia, Thailand and Malaysia require to import U.S. waste paper?",
+      "searchedAs": ["occ waste paper suppliers in thailand", "paper scrap import duty"],
+      "answer": "Viet Nam requires each grade baled separately, at most 2% non-paper impurities and 20% moisture, and an inspection certificate at clearance (QCVN 33:2024/BTNMT, since June 30, 2025). Indonesia admits recovered paper only for producer-importers with an import approval, after a pre-shipment inspection by an appointed surveyor. Malaysia requires an inspection and Certificate of Approval and bans unsorted paper (4707.90). Thailand bans municipal waste, so paper mixed with garbage risks refusal. All four charge 0% duty.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eudr-pulp",
+      "question": "Does the EU deforestation regulation (EUDR) apply to U.S. pulp?",
+      "searchedAs": ["eudr pulp", "eudr pulp and paper"],
+      "answer": "Yes for wood pulp, from December 30, 2026 (June 30, 2027 for micro and small firms): the EU importer must file a due-diligence statement with the geolocation of the harvest plots. Recovered paper and pulp made from it are outside the scope. The EU rates the United States low-risk, so simplified due diligence applies, and it charges 0% duty on all pulp.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "hs-code-waste-paper",
+      "question": "What is the HS or Schedule B code for waste paper and OCC?",
+      "searchedAs": ["hs code for waste paper", "hs code for occ waste paper", "hs code occ", "occ waste paper hsn code", "schedule b waste paper"],
+      "answer": "Recovered paper is heading 4707: OCC and other unbleached kraft or corrugated paper are 4707.10, white or bleached office grades 4707.20, newspapers and magazines 4707.30, and mixed or unsorted paper 4707.90. The 10-digit Schedule B number starts with those six digits and is found with the Census Bureau's Schedule B search tool.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-fluff-pulp",
+      "question": "What is the HS code for fluff pulp?",
+      "searchedAs": ["hs code fluff pulp", "fluff pulp hs code"],
+      "answer": "Fluff pulp made from bleached softwood kraft is classified in 4703.21, the largest U.S. Chapter 47 line ($4.33B in 2025). Bleached hardwood kraft is 4703.29 and dissolving pulp 4702.00. Classify to six digits before quoting, because Canada surtaxes 4702 but not 4703.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "export-license-pulp",
+      "question": "Do I need an export licence for wood pulp or waste paper?",
+      "searchedAs": ["export license waste paper", "export license for waste paper"],
+      "answer": "Usually not. Pulp and recovered paper are EAR99, so most destinations need no licence, and recovered paper is not a hazardous waste, so EPA's export rules do not apply. The exceptions are embargoed destinations, restricted parties and Russia and Belarus, where every Chapter 47 code except dissolving pulp needs a Commerce licence.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "us-pulp-exports",
+      "question": "How much pulp and waste paper does the U.S. export, and who buys it?",
+      "searchedAs": ["pulp exports by country", "us wood pulp exports", "wood pulp export"],
+      "answer": "$7.99B of Chapter 47 goods in 2025, down 6.3%, and $4.94B in January–August 2026, down 7.2%. Kraft pulp is 60% ($4.81B) and recovered paper 29% ($2.28B). China ($996M) and Mexico ($983M) are the largest buyers, followed by India, Japan, Canada, Thailand, Viet Nam, Indonesia and Malaysia.",
+      "link": "exports"
+    }
+  ]
+}

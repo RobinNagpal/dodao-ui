@@ -1,0 +1,1632 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 76,
+    "padded": "76",
+    "slug": "76-aluminum-and-articles",
+    "title": "Aluminum and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/76-aluminum-and-articles/markets",
+    "h1": "HTS Chapter 76: Aluminum and Articles Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Aluminum & Scrap by Country (HTS Ch. 76) | KoalaGains",
+      "shortDescription": "What Canada, Mexico, China, the EU, India, Thailand, Malaysia, Korea and Hong Kong charge on U.S. aluminum and scrap: Canada's 50% surtax, China's 35% on scrap, and each buyer's import rules.",
+      "keywords": [
+        "canada tariff on us aluminum",
+        "tariff on us aluminum scrap china",
+        "eu tariff on us aluminum",
+        "mexico tariff on aluminum",
+        "aluminium scrap import duty india",
+        "malaysia scrap import restrictions",
+        "HS 76 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Tariffs on U.S. aluminum split three ways. **Scrap**, a third of the chapter, enters Thailand, Malaysia, South Korea and Hong Kong duty-free and India at 2.5–5%, so what decides access is the buyer's purity, inspection and permit rules (see each market's regulator) — except in **China**, where U.S. scrap that meets its recycled-aluminum standards pays **35%** and scrap that does not is banned as solid waste. **Finished aluminum** enters Mexico, Korea and, since July 1, 2026, the EU free when it qualifies, but **Canada** adds a **50% surtax** on U.S. ingot, extrusions, sheet, foil and most articles, Mexico charges US$1.72/kg anti-dumping duty on U.S. hollow profiles, and Malaysia charges 25–30% on most semi-finished products.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "7601",
+      "label": "Unwrought aluminum (ingot, billet, slab)",
+      "shortLabel": "Unwrought"
+    },
+    {
+      "heading": "7602",
+      "label": "Aluminum waste and scrap",
+      "shortLabel": "Scrap"
+    },
+    {
+      "heading": "7603",
+      "label": "Aluminum powders and flakes",
+      "shortLabel": "Powders"
+    },
+    {
+      "heading": "7604",
+      "label": "Bars, rods and profiles (extrusions)",
+      "shortLabel": "Extrusions"
+    },
+    {
+      "heading": "7605",
+      "label": "Aluminum wire",
+      "shortLabel": "Wire"
+    },
+    {
+      "heading": "7606",
+      "label": "Plates, sheets and strip (over 0.2 mm)",
+      "shortLabel": "Sheet & plate"
+    },
+    {
+      "heading": "7607",
+      "label": "Aluminum foil (0.2 mm or less)",
+      "shortLabel": "Foil"
+    },
+    {
+      "heading": "7608",
+      "label": "Tubes and pipes",
+      "shortLabel": "Tubes & pipes"
+    },
+    {
+      "heading": "7609",
+      "label": "Tube or pipe fittings",
+      "shortLabel": "Fittings"
+    },
+    {
+      "heading": "7610",
+      "label": "Structures, doors, windows and frames",
+      "shortLabel": "Structures"
+    },
+    {
+      "heading": "7611",
+      "label": "Reservoirs and tanks (over 300 l)",
+      "shortLabel": "Tanks"
+    },
+    {
+      "heading": "7612",
+      "label": "Casks, drums, cans and boxes (up to 300 l)",
+      "shortLabel": "Cans & containers"
+    },
+    {
+      "heading": "7613",
+      "label": "Containers for compressed or liquefied gas",
+      "shortLabel": "Gas cylinders"
+    },
+    {
+      "heading": "7614",
+      "label": "Stranded wire and cables (not insulated)",
+      "shortLabel": "Stranded wire"
+    },
+    {
+      "heading": "7615",
+      "label": "Household, kitchen and sanitary articles",
+      "shortLabel": "Household"
+    },
+    {
+      "heading": "7616",
+      "label": "Other articles of aluminum",
+      "shortLabel": "Other articles"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (sheet rolled in the U.S. from imported ingot qualifies; wire drawn from imported rod does not). General (MFN) rates on many Chapter 76 lines rose to 25–35% under the decrees of December 29, 2025 and April 23, 2026, and U.S. hollow profiles pay a US$1.72/kg anti-dumping duty",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 3832944898,
+      "priorExportsUsd": 4161541740,
+      "sharePct": 28,
+      "changePct": -7.9,
+      "status": "raised",
+      "cells": {
+        "7601": {
+          "exportsUsd": 680271644,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 0% for HS 7601.20 (2023); not changed by the 2025–2026 decrees"
+        },
+        "7602": {
+          "exportsUsd": 283750607,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 0% for HS 7602.00 (2023); not changed by the 2025–2026 decrees"
+        },
+        "7603": {
+          "exportsUsd": 1732117,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 0% for HS 7603.20 (2023); not changed by the 2025–2026 decrees"
+        },
+        "7604": {
+          "exportsUsd": 492617885,
+          "rate": "Free (USMCA) + US$1.72/kg AD on hollow profiles",
+          "normalRate": "25–35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate on HS 7604.29: 35% on 7604.29.01 (decree of December 29, 2025) and 25% on 7604.29.02 and .99 (decree of April 23, 2026). Hollow profiles (7604.21.01) of U.S. origin also pay a definitive anti-dumping duty of US$1.72/kg (DOF, September 4, 2026), whatever their tariff treatment"
+        },
+        "7605": {
+          "exportsUsd": 24702451,
+          "rate": "Free (USMCA)",
+          "normalRate": "Up to 5%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 0–5% for HS 7605.29 (2023); 7605.29 was not changed by the 2025–2026 decrees (7605.11.01 and 7605.21.99 went to 35%)"
+        },
+        "7606": {
+          "exportsUsd": 949467058,
+          "rate": "Free (USMCA)",
+          "normalRate": "Up to 35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate on HS 7606.12: 30% on 7606.12.99 (decree of April 23, 2026) and 35% on aircraft sheet 7606.12.02 (decree of December 29, 2025); other 7606.12 fractions 0–5% (WITS/TRAINS 2023)"
+        },
+        "7607": {
+          "exportsUsd": 394612384,
+          "rate": "Free (USMCA)",
+          "normalRate": "10%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate 10% on HS 7607.11.01 (decree of December 29, 2025)"
+        },
+        "7608": {
+          "exportsUsd": 197645326,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–30%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate on HS 7608.20: 10% on 7608.20.02 and .03 (decree of December 29, 2025), 25% on 7608.20.01 and 30% on 7608.20.99 (decree of April 23, 2026)"
+        },
+        "7609": {
+          "exportsUsd": 52892920,
+          "rate": "Free (USMCA)",
+          "normalRate": "Up to 25%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate 25% on HS 7609.00.02 (decree of April 23, 2026); other fractions 0% (WITS/TRAINS 2023)"
+        },
+        "7610": {
+          "exportsUsd": 45500315,
+          "rate": "Free (USMCA)",
+          "normalRate": "30–35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate on HS 7610.90: 35% on 7610.90.01 (decree of December 29, 2025) and 30% on 7610.90.99 (decree of April 23, 2026)"
+        },
+        "7611": {
+          "exportsUsd": 12244019,
+          "rate": "Free (USMCA)",
+          "normalRate": "35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate 35% on HS 7611.00.01 (decree of December 29, 2025)"
+        },
+        "7612": {
+          "exportsUsd": 126816754,
+          "rate": "Free (USMCA)",
+          "normalRate": "Up to 35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate 35% on HS 7612.90.01 (decree of December 29, 2025); 7612.90.99 not changed (0–15% in WITS/TRAINS 2023)"
+        },
+        "7613": {
+          "exportsUsd": 13434112,
+          "rate": "Free (USMCA)",
+          "normalRate": "35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate 35% on HS 7613.00.02 and .99 (decree of December 29, 2025)"
+        },
+        "7614": {
+          "exportsUsd": 979852,
+          "rate": "Free (USMCA)",
+          "normalRate": "5%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 5% for HS 7614.90 (2023); not changed by the 2025–2026 decrees"
+        },
+        "7615": {
+          "exportsUsd": 9543127,
+          "rate": "Free (USMCA)",
+          "normalRate": "15%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). WITS/TRAINS MFN 15% for HS 7615.10 (2023); 7615.10 not changed by the 2025–2026 decrees (7615.20.01 went to 35%)"
+        },
+        "7616": {
+          "exportsUsd": 546734327,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–35%",
+          "basis": "USMCA (T-MEC) preferential rate 0% for goods that meet the rule of origin (Annex 4-B). General rate on HS 7616.99: 10% on most specific fractions and 35% on 7616.99.06, .07, .13 and .15 (decree of December 29, 2025; ladders by decree of April 23, 2026), 25% on 7616.99.99 (decree of April 23, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest market ($3.83B, down 7.9%), mostly sheet and plate (7606, $950M), unwrought aluminum (7601, $680M) and other articles (7616, $547M). Qualifying goods enter free under USMCA, but U.S. hollow profiles (7604.21) have paid a US$1.72/kg anti-dumping duty since September 2026, and goods that fail the rule of origin now face general rates of 25–35% on many extrusion, sheet, tube and article lines.",
+        "mainProducts": "Plates, sheets and strip (over 0.2 mm) (7606) · Unwrought aluminum (ingot, billet, slab) (7601)",
+        "tariffNow": "Free (USMCA); US$1.72/kg AD duty on hollow profiles",
+        "regulator": {
+          "name": "Secretaría de Economía (automatic import notice for aluminum products)",
+          "url": "https://www.snice.gob.mx/~oracle/SNICE_DOCS/ACUERDO-REGLAS-SE-02ABRIL2026-BIBLIOTECA_20260520-20260520.pdf",
+          "requirement": "The Mexican importer files an automatic import notice (aviso automático) through the Ventanilla Digital for listed aluminum tariff fractions, declaring the countries where the aluminum was smelted and cast and the country of origin (rule 2.2.26 Bis of the Secretaría de Economía's foreign-trade rules, added April 2, 2026)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (UST): Free on every Chapter 76 item. On top of it, the United States Surtax Order (Steel and Aluminum 2025) charges 50% on 27 U.S.-origin aluminum tariff items since September 8, 2026 (25% from March 13, 2025; household articles of 7615 stay at 25%), with no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3034799454,
+      "priorExportsUsd": 3210375337,
+      "sharePct": 22.2,
+      "changePct": -5.5,
+      "status": "raised",
+      "cells": {
+        "7601": {
+          "exportsUsd": 276670147,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7601.20: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7602": {
+          "exportsUsd": 219382532,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7602.00: MFN Free, UST (CUSMA) Free. Not on the aluminum surtax list"
+        },
+        "7603": {
+          "exportsUsd": 9332167,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7603.20: MFN Free, UST (CUSMA) Free. Not on the aluminum surtax list"
+        },
+        "7604": {
+          "exportsUsd": 256144556,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7604.29: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7605": {
+          "exportsUsd": 19336452,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7605.29: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7606": {
+          "exportsUsd": 943478523,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7606.12: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7607": {
+          "exportsUsd": 86190250,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7607.11: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7608": {
+          "exportsUsd": 54868679,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7608.20: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7609": {
+          "exportsUsd": 45366963,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7609.00: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7610": {
+          "exportsUsd": 205603568,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "6.5%",
+          "basis": "CBSA Customs Tariff 2026, HS 7610.90: 6.5% MFN on 7610.90.90 (Free on 7610.90.10), UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7611": {
+          "exportsUsd": 14523757,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7611.00: MFN Free, UST (CUSMA) Free. Not on the aluminum surtax list"
+        },
+        "7612": {
+          "exportsUsd": 605975946,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6.5%",
+          "basis": "CBSA Customs Tariff 2026, HS 7612.90: 6.5% MFN (Free on embossed beverage cans, 7612.90.91), UST (CUSMA) Free. Not on the aluminum surtax list"
+        },
+        "7613": {
+          "exportsUsd": 27731187,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7613.00: MFN Free, UST (CUSMA) Free. Not on the aluminum surtax list"
+        },
+        "7614": {
+          "exportsUsd": 3243553,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "CBSA Customs Tariff 2026, HS 7614.90: MFN Free, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7615": {
+          "exportsUsd": 41534251,
+          "rate": "Free (CUSMA) + 25% surtax",
+          "normalRate": "6.5%",
+          "basis": "CBSA Customs Tariff 2026, HS 7615.10: 6.5% MFN, UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% since March 13, 2025 (household articles were left at 25% in September 2026). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        },
+        "7616": {
+          "exportsUsd": 225416923,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": "Free–6.5%",
+          "basis": "CBSA Customs Tariff 2026, HS 7616.99: 6.5% MFN on 7616.99.90 (Free on 7616.99.10), UST (CUSMA) Free; plus the surtax of the United States Surtax Order (Steel and Aluminum 2025), SOR/2025-95: 25% from March 13, 2025, 50% from September 8, 2026 (SOR/2026-187). It applies to goods of U.S. origin with no CUSMA exemption; goods imported before July 1, 2027 for use in Canadian manufacturing, processing or food and beverage packaging can have it remitted (SOR/2025-122, s. 3)"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($3.03B, down 5.5%) buys mainly sheet and plate (7606, $944M), cans and containers (7612, $606M) and unwrought aluminum (7601, $277M). Ingot, extrusions, sheet, foil and most articles have paid a Canadian surtax since March 13, 2025 — 25% at first, 50% since September 8, 2026 — even when they qualify for CUSMA. Scrap, powders, cans and gas cylinders are not on the list, and aluminum for Canadian manufacturing or food and beverage packaging can have the surtax remitted if imported before July 1, 2027.",
+        "mainProducts": "Plates, sheets and strip (over 0.2 mm) (7606) · Casks, drums, cans and boxes (up to 300 l) (7612)",
+        "tariffNow": "Free (CUSMA) + 50% surtax on most aluminum (not scrap or cans)",
+        "regulator": {
+          "name": "Global Affairs Canada (General Import Permit No. 83, aluminum products)",
+          "url": "https://laws.justice.gc.ca/eng/regulations/SOR-2019-319/FullText.html",
+          "requirement": "Unwrought aluminum, extrusions, wire, sheet, foil, tubes, fittings and listed castings and forgings are imported under General Import Permit No. 83; since October 1, 2026 the importer also declares the countries of largest smelt and most recent cast for shipments over C$5,000. It is monitoring only, with no quota or fee"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 764,
+      "name": "Thailand",
+      "rule": "Thailand's MFN tariff (no U.S. free-trade agreement): 0% on unwrought aluminum, scrap and powders, 3% on extrusions, wire, sheet, foil and tubes, 7–20% on most articles. The U.S.–Thailand reciprocal trade agreement, substantially concluded on November 17, 2026, is not yet signed",
+      "usTradeAgreement": null,
+      "exportsUsd": 1022841272,
+      "priorExportsUsd": 758521401,
+      "sharePct": 7.5,
+      "changePct": 34.8,
+      "status": "pending",
+      "cells": {
+        "7601": {
+          "exportsUsd": 6227401,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7601.20 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7602": {
+          "exportsUsd": 980595129,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7602.00 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7603": {
+          "exportsUsd": 14119753,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7603.20 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7604": {
+          "exportsUsd": 3398853,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7604.29 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7605": {
+          "exportsUsd": 200445,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7605.29 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7606": {
+          "exportsUsd": 4835178,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7606.12 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7607": {
+          "exportsUsd": 1301670,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7607.11 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7608": {
+          "exportsUsd": 302875,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7608.20 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7609": {
+          "exportsUsd": 348029,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7609.00 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7610": {
+          "exportsUsd": 484634,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7610.90 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7611": {
+          "exportsUsd": 7785,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7611.00 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7612": {
+          "exportsUsd": 2194460,
+          "rate": "0–7%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7612.90 (range across national lines, 2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7613": {
+          "exportsUsd": 1545559,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7613.00 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7614": {
+          "exportsUsd": 0,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7614.90 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7615": {
+          "exportsUsd": 285589,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7615.10 (2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        },
+        "7616": {
+          "exportsUsd": 6993912,
+          "rate": "7–10%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7616.99 (range across national lines, 2023, the latest year WITS holds); no U.S. FTA. The U.S.–Thailand agreement substantially concluded on November 17, 2026 is not signed"
+        }
+      },
+      "profile": {
+        "headline": "Thailand ($1.02B, up 34.8%) is almost all scrap: 96% is aluminum scrap (7602, $981M), and scrap enters duty-free. Since October 2026 Thai Customs unloads and inspects every container declared as metal scrap, and the government has proposed limiting scrap imports to licensed factories with pre-shipment inspection, so clean, accurately declared loads matter.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Aluminum powders and flakes (7603)",
+        "tariffNow": "Free on scrap; 3–10% MFN on aluminum products",
+        "regulator": {
+          "name": "Thai Customs Department (metal-scrap inspection)",
+          "url": "https://www.customs.go.th/data_files/501899c34d0128b80f777b093bff6b23.pdf",
+          "requirement": "Metal scrap can still be imported, but every container declared as scrap is physically unloaded and inspected, e-waste found inside is prohibited, and offending loads are sent back at the importer's cost (Customs press release 5/2570, October 21, 2026). A ban with licensed-factory imports and pre-shipment inspection has been proposed but not adopted"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Thailand import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/thailand-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 699,
+      "name": "India",
+      "rule": "India's basic customs duty (no U.S. free-trade agreement): 2.5–5% on aluminum scrap, 7.5% on unwrought aluminum, extrusions, wire, sheet and foil, 10% on tubes and most articles (WITS/TRAINS 2023). No extra duty on U.S. goods; the tariff cuts in the February 2026 U.S.–India framework are not yet published",
+      "usTradeAgreement": null,
+      "exportsUsd": 853469432,
+      "priorExportsUsd": 792522558,
+      "sharePct": 6.2,
+      "changePct": 7.7,
+      "status": "pending",
+      "cells": {
+        "7601": {
+          "exportsUsd": 3192561,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7601.20 (2023) (7.5% on ingots and billets confirmed in DGFT Handbook of Procedures, July 2026, para 2.92); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7602": {
+          "exportsUsd": 786582857,
+          "rate": "2.5–5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7602.00 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7603": {
+          "exportsUsd": 1766656,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7603.20 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7604": {
+          "exportsUsd": 5554107,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7604.29 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7605": {
+          "exportsUsd": 713350,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7605.29 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7606": {
+          "exportsUsd": 20798681,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7606.12 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7607": {
+          "exportsUsd": 2135406,
+          "rate": "7.5%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7607.11 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7608": {
+          "exportsUsd": 1792570,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7608.20 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7609": {
+          "exportsUsd": 1495857,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7609.00 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7610": {
+          "exportsUsd": 4002138,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7610.90 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7611": {
+          "exportsUsd": 2912,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7611.00 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7612": {
+          "exportsUsd": 2480016,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7612.90 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7613": {
+          "exportsUsd": 2513434,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7613.00 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7614": {
+          "exportsUsd": 1684308,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7614.90 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7615": {
+          "exportsUsd": 112977,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7615.10 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        },
+        "7616": {
+          "exportsUsd": 18641602,
+          "rate": "10%",
+          "normalRate": null,
+          "basis": "India basic customs duty, WITS/TRAINS MFN applied rate for HS 7616.99 (2023); no U.S. FTA, no extra duty on U.S. goods. Surcharges on top of basic duty are not shown"
+        }
+      },
+      "profile": {
+        "headline": "India ($853M, up 7.7%) is mainly a scrap market (7602, $787M), and scrap pays 2.5–5% basic customs duty. U.S. scrap cleared at one of eight listed ports (Chennai, Tuticorin, Kandla, JNPT, Mumbai, Krishnapatnam, Mundra and Kattupalli) needs no pre-shipment inspection certificate, only a supplier certificate. India told the WTO in 2025 that it might retaliate for U.S. aluminum tariffs but has applied nothing.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Plates, sheets and strip (over 0.2 mm) (7606)",
+        "tariffNow": "2.5–5% on scrap; 7.5–10% on aluminum products",
+        "regulator": {
+          "name": "Directorate General of Foreign Trade (scrap import conditions and NFMIMS registration)",
+          "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf",
+          "requirement": "Aluminum scrap follows Handbook of Procedures para 2.51: shredded scrap needs a pre-shipment inspection certificate for radiation, unshredded scrap enters only at designated ports, and U.S. scrap at the eight listed ports needs only a supplier certificate. Importers of listed aluminum items must also register in the Non-Ferrous Metal Import Monitoring System (NFMIMS) before customs clearance"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: India import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/india-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff, 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (all of chapter 76) from July 1, 2026, against conventional duties of 0% on scrap and 5–7.5% on other aluminum",
+      "usTradeAgreement": null,
+      "exportsUsd": 734301631,
+      "priorExportsUsd": 812220352,
+      "sharePct": 5.4,
+      "changePct": -9.6,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 188328147,
+          "priorExportsUsd": 225628143,
+          "changePct": -16.5
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 174957804,
+          "priorExportsUsd": 177821395,
+          "changePct": -1.6
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 70626351,
+          "priorExportsUsd": 75510767,
+          "changePct": -6.5
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 61836728,
+          "priorExportsUsd": 73497835,
+          "changePct": -15.9
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 50525621,
+          "priorExportsUsd": 53768364,
+          "changePct": -6
+        }
+      ],
+      "cells": {
+        "7601": {
+          "exportsUsd": 48465520,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7601 20: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7602": {
+          "exportsUsd": 86694835,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (November 19, 2026), CN 7602 00: conventional duty 0% for all origins; not a CBAM good"
+        },
+        "7603": {
+          "exportsUsd": 13769255,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "5%",
+          "basis": "TARIC (November 19, 2026), CN 7603 20: conventional duty 5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7604": {
+          "exportsUsd": 71465846,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "7.5%",
+          "basis": "TARIC (November 19, 2026), CN 7604 29: conventional duty 7.5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7605": {
+          "exportsUsd": 10748988,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "7.5%",
+          "basis": "TARIC (November 19, 2026), CN 7605 29: conventional duty 7.5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7606": {
+          "exportsUsd": 102369934,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "7.5%",
+          "basis": "TARIC (November 19, 2026), CN 7606 12: conventional duty 7.5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7607": {
+          "exportsUsd": 24344164,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "7.5%",
+          "basis": "TARIC (November 19, 2026), CN 7607 11: conventional duty 7.5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7608": {
+          "exportsUsd": 13944827,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "7.5%",
+          "basis": "TARIC (November 19, 2026), CN 7608 20: conventional duty 7.5%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7609": {
+          "exportsUsd": 23691440,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "5.9%",
+          "basis": "TARIC (November 19, 2026), CN 7609 00: conventional duty 5.9%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7610": {
+          "exportsUsd": 20442053,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6–7%",
+          "basis": "TARIC (November 19, 2026), CN 7610 90: conventional duty 6–7%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7611": {
+          "exportsUsd": 282106,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7611 00: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7612": {
+          "exportsUsd": 18302536,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7612 90: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7613": {
+          "exportsUsd": 30467321,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7613 00: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7614": {
+          "exportsUsd": 483344,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7614 90: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        },
+        "7615": {
+          "exportsUsd": 6004159,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7615 10: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026"
+        },
+        "7616": {
+          "exportsUsd": 262825303,
+          "rate": "Free (0% for U.S. goods)",
+          "normalRate": "6%",
+          "basis": "TARIC (November 19, 2026), CN 7616 99: conventional duty 6%; 0% for U.S.-origin goods under Regulation (EU) 2026/1455 (Annex I, all of chapter 76) from July 1, 2026; CBAM applies"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($734M, down 9.6%) buys mainly other aluminum articles (7616, $263M), sheet (7606, $102M) and scrap (7602, $87M). Since July 1, 2026 every Chapter 76 good of U.S. origin enters at 0% (5–7.5% before), but the Commission can restore duties on chapters 72, 73 and 76 if the U.S. still charges more than 15% on EU steel and aluminum derivatives on December 31, 2026.",
+        "mainProducts": "Other articles of aluminum (7616) · Plates, sheets and strip (over 0.2 mm) (7606)",
+        "tariffNow": "Free (0% on U.S. goods since July 1, 2026)",
+        "regulator": {
+          "name": "EU Carbon Border Adjustment Mechanism (CBAM, Regulation (EU) 2023/956)",
+          "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+          "requirement": "Since January 1, 2026 an EU importer of more than 50 tonnes a year of CBAM goods — aluminum of 7601 and 7603–7616 except household articles (7615), not scrap — must be an authorised CBAM declarant and surrender certificates for the embedded emissions, first declared by September 30, 2027 for 2026 imports"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 458,
+      "name": "Malaysia",
+      "rule": "Malaysia's Customs Duties Order 2022 (no U.S. free-trade agreement): 0% on unwrought aluminum, scrap and powders, 25–30% on extrusions, wire, sheet, foil and tubes, 5–30% on articles. The U.S.–Malaysia Agreement on Reciprocal Trade (signed October 26, 2025) would cut many of these but is not in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 713143786,
+      "priorExportsUsd": 1299426338,
+      "sharePct": 5.2,
+      "changePct": -45.1,
+      "status": "pending",
+      "cells": {
+        "7601": {
+          "exportsUsd": 44005798,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7601.20 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7602": {
+          "exportsUsd": 568760866,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7602.00 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force. Each shipment needs a SIRIM Certificate of Approval"
+        },
+        "7603": {
+          "exportsUsd": 10141785,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7603.20 (2023); no U.S. FTA, and the U.S.–Malaysia Agreement on Reciprocal Trade is not in force"
+        },
+        "7604": {
+          "exportsUsd": 2174588,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7604.29 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7605": {
+          "exportsUsd": 376995,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7605.29 (2023); no U.S. FTA, and the U.S.–Malaysia Agreement on Reciprocal Trade is not in force"
+        },
+        "7606": {
+          "exportsUsd": 39383613,
+          "rate": "30%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7606.12 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7607": {
+          "exportsUsd": 22891079,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7607.11 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7608": {
+          "exportsUsd": 1054096,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7608.20 (2023); no U.S. FTA, and the U.S.–Malaysia Agreement on Reciprocal Trade is not in force"
+        },
+        "7609": {
+          "exportsUsd": 411698,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7609.00 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7610": {
+          "exportsUsd": 5564404,
+          "rate": "25%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7610.90 (2023); no U.S. FTA, and the U.S.–Malaysia Agreement on Reciprocal Trade is not in force"
+        },
+        "7611": {
+          "exportsUsd": 182567,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "WITS/TRAINS MFN applied rate for HS 7611.00 (2023); no U.S. FTA, and the U.S.–Malaysia Agreement on Reciprocal Trade is not in force"
+        },
+        "7612": {
+          "exportsUsd": 221749,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7612.90 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7613": {
+          "exportsUsd": 635158,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7613.00 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7614": {
+          "exportsUsd": 20534,
+          "rate": "30%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7614.90 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7615": {
+          "exportsUsd": 32092,
+          "rate": "30%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7615.10 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        },
+        "7616": {
+          "exportsUsd": 17286764,
+          "rate": "5–25%",
+          "normalRate": null,
+          "basis": "Malaysia Customs Duties Order 2022 rate for HS 7616.99 in force on April 24, 2025 (base rates in Annex I, Schedule 1 of the U.S.–Malaysia Agreement on Reciprocal Trade); no U.S. FTA, and the agreement is not in force"
+        }
+      },
+      "profile": {
+        "headline": "Malaysia ($713M, down 45.1%) buys mostly scrap (7602, $569M), which is duty-free but needs a SIRIM Certificate of Approval for every shipment: only licensed manufacturers may import it, loads are inspected before shipment and must be at least 94.75% target metal with no e-waste. Sheet, foil and extrusions pay 25–30%; the October 2025 agreement that would cut them is signed but not ratified.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Unwrought aluminum (ingot, billet, slab) (7601)",
+        "tariffNow": "Free on scrap; 20–30% on most aluminum products",
+        "regulator": {
+          "name": "MITI and SIRIM QAS International (Certificate of Approval for metal scrap)",
+          "url": "https://www.miti.gov.my/miti/resources/Announcement_on_Expansion_of_Metal_Scrap_Categories_that_are_Subjected_to_Certificate_of_Approval_by_SIRIM_(003).pdf",
+          "requirement": "Aluminum scrap (7602) may be imported only by manufacturers holding a MITI manufacturing licence, or traders under agreement with one, with a SIRIM Certificate of Approval for each shipment under the Customs (Prohibition of Imports) Order 2023, pre-shipment inspection, at least 94.75% target metal, no more than 0.25% non-metallic material and no e-waste (MITI guideline, Edition 2, April 2024)"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Malaysia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/malaysia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS FTA: 0% on every Chapter 76 good of U.S. origin (Korea's MFN rates are 0–8%)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 689911231,
+      "priorExportsUsd": 805644585,
+      "sharePct": 5,
+      "changePct": -14.4,
+      "status": "unchanged",
+      "cells": {
+        "7601": {
+          "exportsUsd": 1050222,
+          "rate": "Free (KORUS)",
+          "normalRate": "1–3%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7601.20 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 1–3% (WITS/TRAINS 2023)"
+        },
+        "7602": {
+          "exportsUsd": 437724383,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7602.00 duty-free for U.S.-origin goods (staging completed); Korea's MFN rate is also 0%"
+        },
+        "7603": {
+          "exportsUsd": 2172028,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7603.20 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7604": {
+          "exportsUsd": 37150343,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7604.29 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 8% (WITS/TRAINS 2023)"
+        },
+        "7605": {
+          "exportsUsd": 1497959,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7605.29 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7606": {
+          "exportsUsd": 147994886,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7606.12 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 8% (WITS/TRAINS 2023)"
+        },
+        "7607": {
+          "exportsUsd": 2148621,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7607.11 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 8% (WITS/TRAINS 2023)"
+        },
+        "7608": {
+          "exportsUsd": 1119684,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7608.20 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7609": {
+          "exportsUsd": 5373128,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7609.00 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7610": {
+          "exportsUsd": 7010549,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7610.90 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7611": {
+          "exportsUsd": 523175,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7611.00 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7612": {
+          "exportsUsd": 760066,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7612.90 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 8% (WITS/TRAINS 2023)"
+        },
+        "7613": {
+          "exportsUsd": 2932464,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7613.00 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7614": {
+          "exportsUsd": 18958,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7614.90 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7615": {
+          "exportsUsd": 603941,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7615.10 duty-free for U.S.-origin goods (staging completed)"
+        },
+        "7616": {
+          "exportsUsd": 41830824,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS FTA (Korea Annex 2-B): HS 7616.99 duty-free for U.S.-origin goods (staging completed); Korea's MFN applied rate 8% (WITS/TRAINS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($690M, down 14.4%) buys scrap (7602, $438M) and sheet (7606, $148M). Every Chapter 76 good of U.S. origin enters free under KORUS. Imported scrap is radiation-screened at the port and at the recycler, and a detection is reported to the Nuclear Safety and Security Commission with the exporting country and company.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Plates, sheets and strip (over 0.2 mm) (7606)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Nuclear Safety and Security Commission (radiation screening of scrap metal)",
+          "url": "https://importlicensing.wto.org/sites/default/files/members/78/Act%20on%20Protective%20Action%20Guidelines%20against%20Radiation%20in%20the%20Natural%20Environment_31.10.2019.pdf",
+          "requirement": "Under the Act on Protective Action Guidelines Against Radiation in the Natural Environment, ports run radiation monitors and scrap recyclers must screen incoming scrap metal; detections are reported with the exporting country and company, and the Commission can order the load returned"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "Free port: Hong Kong charges no import duty on Chapter 76 goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 567748013,
+      "priorExportsUsd": 336990987,
+      "sharePct": 4.2,
+      "changePct": 68.5,
+      "status": "unchanged",
+      "cells": {
+        "7601": {
+          "exportsUsd": 896125,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7602": {
+          "exportsUsd": 539491610,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7603": {
+          "exportsUsd": 11115371,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7604": {
+          "exportsUsd": 1337256,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7605": {
+          "exportsUsd": 111195,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7606": {
+          "exportsUsd": 3755942,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7607": {
+          "exportsUsd": 541958,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7608": {
+          "exportsUsd": 126114,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7609": {
+          "exportsUsd": 482984,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7610": {
+          "exportsUsd": 376554,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7611": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7612": {
+          "exportsUsd": 177038,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7613": {
+          "exportsUsd": 1843071,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7614": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7615": {
+          "exportsUsd": 933365,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        },
+        "7616": {
+          "exportsUsd": 6559430,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no import tariffs: 100% of MFN applied lines are duty-free (WTO tariff profile)"
+        }
+      },
+      "profile": {
+        "headline": "Hong Kong ($568M, up 68.5%) buys almost only scrap (7602, $540M). There are no import tariffs, and clean aluminum scrap imported for recycling needs no permit; contaminated scrap, aluminum ash and residues, and e-waste do.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Aluminum powders and flakes (7603)",
+        "tariffNow": "Free (no tariffs)",
+        "regulator": {
+          "name": "Environmental Protection Department (Waste Disposal Ordinance, Cap. 354)",
+          "url": "https://www.epd.gov.hk/epd/english/environmentinhk/waste/guide_ref/guide_wiec_tcs2.html",
+          "requirement": "Uncontaminated aluminum scrap (Sixth Schedule GA140, 7602) imported for recycling needs no permit; contaminated scrap, aluminum ash and residues, and electrical and electronic waste (since January 1, 2025) need an EPD import permit"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff (2026 provisional 0% on recycled aluminum raw materials and unalloyed ingot) plus the 10% extra duty on all U.S. goods, the 25% counter-tariff on U.S. aluminum scrap since 2018, and 2019 counter-tariffs of 10–25% on most other Chapter 76 lines unless excluded",
+      "usTradeAgreement": null,
+      "exportsUsd": 417103309,
+      "priorExportsUsd": 385432600,
+      "sharePct": 3.1,
+      "changePct": 8.2,
+      "status": "raised",
+      "cells": {
+        "7601": {
+          "exportsUsd": 1896823,
+          "rate": "42% (7% + 25% + 10%)",
+          "normalRate": "7% MFN",
+          "basis": "China MFN 7% on HS 7601.20 (WITS/TRAINS 2023); 25% counter-tariff on line 76012000 (Tariff Commission Announcement No. 3 of 2019) unless the importer holds an exclusion; plus the 10% extra duty on all U.S. goods"
+        },
+        "7602": {
+          "exportsUsd": 192792274,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% provisional (1.5% MFN)",
+          "basis": "2026 provisional rate 0% on ex 7602.0000 recycled aluminum raw materials meeting China's standards (MFN 1.5%; 2026 Tariff Adjustment Plan, Annex 1); 25% under China's April 2, 2018 suspension of concessions answering U.S. Section 232 (Shuiweihui [2018] No. 13), which no exclusion process covers; plus the 10% extra duty. Scrap that fails the standards is solid waste and cannot be imported"
+        },
+        "7603": {
+          "exportsUsd": 1253412,
+          "rate": "42% (7% + 25% + 10%)",
+          "normalRate": "7% MFN",
+          "basis": "China MFN 7% on HS 7603.20 (WITS/TRAINS 2023); 25% counter-tariff on line 76032000 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7604": {
+          "exportsUsd": 22125419,
+          "rate": "25–35%",
+          "normalRate": "5% MFN",
+          "basis": "China MFN 5% on HS 7604.29 (WITS/TRAINS 2023); counter-tariff 10% on bars (76042910) or 20% on profiles (76042990) (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7605": {
+          "exportsUsd": 2418459,
+          "rate": "28% (8% + 10% + 10%)",
+          "normalRate": "8% MFN",
+          "basis": "China MFN 8% on HS 7605.29 (WITS/TRAINS 2023); 10% counter-tariff on line 76052900 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7606": {
+          "exportsUsd": 84940548,
+          "rate": "26–41%",
+          "normalRate": "6% MFN",
+          "basis": "China MFN 6% on HS 7606.12 (WITS/TRAINS 2023); counter-tariff 25% on alloy sheet under 0.28 mm and 0.35–4 mm, 20% on 0.28–0.35 mm and 10% over 4 mm (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7607": {
+          "exportsUsd": 12007080,
+          "rate": "26–41%",
+          "normalRate": "6% MFN",
+          "basis": "China MFN 6% on HS 7607.11 (WITS/TRAINS 2023); counter-tariff 25% on foil up to 0.007 mm and other rolled foil, 10% on 0.007–0.01 mm (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7608": {
+          "exportsUsd": 2015120,
+          "rate": "28–43%",
+          "normalRate": "8% MFN",
+          "basis": "China MFN 8% on HS 7608.20 (WITS/TRAINS 2023); counter-tariff 25% on lines 76082010 and 76082091, 10% on 76082099 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7609": {
+          "exportsUsd": 11701056,
+          "rate": "28% (8% + 10% + 10%)",
+          "normalRate": "8% MFN",
+          "basis": "China MFN 8% on HS 7609.00 (WITS/TRAINS 2023); 10% counter-tariff (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7610": {
+          "exportsUsd": 2996376,
+          "rate": "36% (6% + 20% + 10%)",
+          "normalRate": "6% MFN",
+          "basis": "China MFN 6% on HS 7610.90 (WITS/TRAINS 2023); 20% counter-tariff on line 76109000 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7611": {
+          "exportsUsd": 356977,
+          "rate": "29% (9% + 10% + 10%)",
+          "normalRate": "9% MFN",
+          "basis": "China MFN 9% on HS 7611.00 (WITS/TRAINS 2023); 10% counter-tariff (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7612": {
+          "exportsUsd": 3895530,
+          "rate": "29–44%",
+          "normalRate": "9% MFN",
+          "basis": "China MFN 9% on HS 7612.90 (WITS/TRAINS 2023); counter-tariff 25% on cans and can bodies (76129010), 10% on other containers (76129090) (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7613": {
+          "exportsUsd": 6833402,
+          "rate": "26–29%",
+          "normalRate": "6–9% MFN",
+          "basis": "China MFN 6–9% on HS 7613.00 (WITS/TRAINS 2023); 10% counter-tariff (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7614": {
+          "exportsUsd": 715173,
+          "rate": "36% (6% + 20% + 10%)",
+          "normalRate": "6% MFN",
+          "basis": "China MFN 6% on HS 7614.90 (WITS/TRAINS 2023); 20% counter-tariff on line 76149000 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7615": {
+          "exportsUsd": 1769144,
+          "rate": "17–42%",
+          "normalRate": "7% MFN",
+          "basis": "China MFN 7% on HS 7615.10 (WITS/TRAINS 2023); 25% counter-tariff on line 76151090 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        },
+        "7616": {
+          "exportsUsd": 69386516,
+          "rate": "28% (8% + 10% + 10%)",
+          "normalRate": "8% MFN",
+          "basis": "China MFN 8% on HS 7616.99 (WITS/TRAINS 2023); 10% counter-tariff on lines 76169910 and 76169990 (Announcement No. 3 of 2019) unless excluded; plus 10%"
+        }
+      },
+      "profile": {
+        "headline": "China ($417M, up 8.2%) buys mostly scrap (7602, $193M) and sheet (7606, $85M). U.S. scrap that meets China's recycled-aluminum standards pays 35% — a 0% provisional rate, the 25% counter-tariff China has charged since 2018 and the 10% extra on all U.S. goods — and scrap that fails them is banned as solid waste. Most other aluminum lines also carry 10–25% counter-tariffs from 2019 unless the importer holds an exclusion, valid to December 31, 2026.",
+        "mainProducts": "Aluminum waste and scrap (7602) · Plates, sheets and strip (over 0.2 mm) (7606)",
+        "tariffNow": "35% on scrap; MFN + 10% + counter-tariffs on the rest",
+        "regulator": {
+          "name": "Ministry of Ecology and Environment and General Administration of Customs (recycled aluminum raw materials)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202410/t20241024_1090051.html",
+          "requirement": "Aluminum scrap enters only as recycled aluminum or aluminum-alloy raw material meeting Announcement No. 23 of 2024 and standards GB/T 38472, 40382 and 40386: at least 91% aluminum, at most 0.8% inclusions, radiation and hazardous-waste limits, one kind per declaration. Customs inspects at the port, and material that fails is banned solid waste"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Thailand",
+      "heading": "7602",
+      "exportsUsd": 980595129,
+      "rate": "Free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7606",
+      "exportsUsd": 949467058,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7606",
+      "exportsUsd": 943478523,
+      "rate": "Free (CUSMA) + 50% surtax"
+    },
+    {
+      "market": "India",
+      "heading": "7602",
+      "exportsUsd": 786582857,
+      "rate": "2.5–5%"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7601",
+      "exportsUsd": 680271644,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "7612",
+      "exportsUsd": 605975946,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Malaysia",
+      "heading": "7602",
+      "exportsUsd": 568760866,
+      "rate": "Free"
+    },
+    {
+      "market": "Mexico",
+      "heading": "7616",
+      "exportsUsd": 546734327,
+      "rate": "Free (USMCA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. Each column uses one representative six-digit subheading, the one with the largest 2025 U.S. exports in that heading (for example 7602.00 for scrap, 7606.12 for alloy sheet, 7607.11 for foil and 7612.90 for cans). Where a national 2026 schedule or decree was checked (Canada's CBSA tariff, EU TARIC, Mexico's decrees, China's 2026 provisional rates, Malaysia's April 2025 base rates) it is used; otherwise the rate is the World Bank/UNCTAD WITS (TRAINS) MFN applied rate for 2023, the latest year WITS holds. National 8–10-digit lines can differ.",
+    "Mexico, Canada and Korea show the FTA rate for qualifying goods. USMCA's Chapter 76 rules (Annex 4-B) mostly require a change of heading: sheet (7606) rolled from imported ingot qualifies, wire (7605) drawn from imported rod does not. Mexico's normal-rate column shows the general rates set by the decrees of December 29, 2025 and April 23, 2026.",
+    "Canada's cells add the surtax of the United States Surtax Order (Steel and Aluminum 2025): 50% on the 27 tariff items in its Schedule 1.1 and 25% on household articles (7615). The remission available for aluminum used in Canadian manufacturing, packaging or vehicles, and for listed products and importers, is on Export rules.",
+    "China's cells add, in order, China's MFN or 2026 provisional rate, the counter-tariff the line carries (25% on scrap under China's 2018 response to Section 232; 10–25% on other lines under its 2019 lists answering Section 301), and the 10% extra duty on all U.S. goods. An importer holding an exclusion from the 2019 counter-tariffs (valid to December 31, 2026) pays less; scrap has no exclusion route.",
+    "The EU cells show the 0% that Regulation (EU) 2026/1455 grants U.S. goods from July 1, 2026, with the conventional duty that applied before (and still applies to other origins) as the normal rate.",
+    "Only border duties are shown. India's surcharges on top of basic customs duty, VAT, GST and other internal taxes are the buyer's business and are left out."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 76, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: tariff and trade data",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "ca-cbsa-76",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 76",
+      "document": "Customs Tariff schedule",
+      "title": "Departmental Consolidation of the Customs Tariff 2026, Chapter 76: Aluminum and articles thereof",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch76-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-95",
+      "publisher": "Canada Gazette, Part II",
+      "citation": "SOR/2025-95",
+      "document": "United States Surtax Order (Steel and Aluminum 2025)",
+      "title": "United States Surtax Order (Steel and Aluminum 2025)",
+      "signed": "2025-03-12",
+      "published": "2025-03-26",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-26/html/sor-dors95-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-187",
+      "publisher": "Canada Gazette, Part II",
+      "citation": "SOR/2026-187",
+      "document": "Order Amending the United States Surtax Order (Steel and Aluminum 2025)",
+      "title": "Steel and aluminum surtax raised to 50% from September 8, 2026 (aluminum Schedule 1.1; 7615 stays at 25%)",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors187-eng.html"
+    },
+    {
+      "id": "ca-remission",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2025-122 (consolidated)",
+      "document": "United States Surtax Remission Order (2025)",
+      "title": "United States Surtax Remission Order (2025)",
+      "signed": "2025-04-16",
+      "published": "2026-10-29",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+    },
+    {
+      "id": "ca-gip83",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2019-319 (consolidated)",
+      "document": "General Import Permit No. 83 — Aluminum Products",
+      "title": "General Import Permit No. 83 — Aluminum Products (smelt and cast declaration from October 1, 2026, SOR/2026-136)",
+      "signed": "2019-08-26",
+      "published": "2026-10-29",
+      "url": "https://laws.justice.gc.ca/eng/regulations/SOR-2019-319/FullText.html"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": "2025-12-23",
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "mx-dof-2026-04",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Apr 23, 2026",
+      "document": "Decreto",
+      "title": "Decreto por el que se modifica la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación y el Decreto por el que se establecen diversos Programas de Promoción Sectorial",
+      "signed": "2026-04-23",
+      "published": "2026-04-23",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5785818&fecha=23/04/2026"
+    },
+    {
+      "id": "mx-ad-hollow-final",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Sep 4, 2026 (AD_28-24)",
+      "document": "Resolución final",
+      "title": "Resolución final del procedimiento administrativo de investigación antidumping sobre las importaciones de perfiles huecos de aluminio originarias de los Estados Unidos de América y la República Popular China, independientemente del país de procedencia",
+      "signed": null,
+      "published": "2026-09-04",
+      "url": "https://sidof.segob.gob.mx/notas/docFuente/5798041"
+    },
+    {
+      "id": "mx-se-rules",
+      "publisher": "Secretaría de Economía (Mexico), SNICE",
+      "citation": "SE foreign-trade rules, rule 2.2.26 Bis (DOF Apr 2, 2026)",
+      "document": "Acuerdo de reglas y criterios de carácter general en materia de comercio exterior (compiled text)",
+      "title": "Automatic import notice for aluminum products: rule 2.2.26 Bis",
+      "signed": null,
+      "published": "2026-04-02",
+      "url": "https://www.snice.gob.mx/~oracle/SNICE_DOCS/ACUERDO-REGLAS-SE-02ABRIL2026-BIBLIOTECA_20260520-20260520.pdf"
+    },
+    {
+      "id": "usmca-roo",
+      "publisher": "USTR",
+      "citation": "USMCA Chapter 4, Annex 4-B",
+      "document": "USMCA Chapter 4: Rules of Origin, Annex 4-B",
+      "title": "Product-specific rules of origin, Chapter 76",
+      "signed": "2018-11-30",
+      "published": "2019-12-10",
+      "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/04%20Rules%20of%20Origin.pdf"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (DG TAXUD)",
+      "citation": "TARIC, chapter 76, origin US (Nov 19, 2026)",
+      "document": "TARIC measure information",
+      "title": "TARIC: duties on chapter 76 goods originating in the United States",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261119&Area=US&Taric=7606120000"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation (EU) 2026/1455",
+      "title": "Adjustment of customs duties on goods originating in the United States (Annex I lists all of chapter 76; Article 3(2) review for chapters 72, 73 and 76)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-cbam",
+      "publisher": "European Commission (DG TAXUD)",
+      "citation": "CBAM",
+      "document": "Carbon Border Adjustment Mechanism",
+      "title": "Carbon Border Adjustment Mechanism: definitive period from January 1, 2026",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en"
+    },
+    {
+      "id": "in-dgft-hbp",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "Handbook of Procedures 2023, Chapter 2 (para 2.51)",
+      "document": "Handbook of Procedures 2023, Chapter 2 (July 2026 edition)",
+      "title": "Import of metallic waste and scrap: pre-shipment inspection and designated ports",
+      "signed": null,
+      "published": "2026-07-01",
+      "url": "https://content.dgft.gov.in/Website/HBP_07_2026_Chapter_02.pdf"
+    },
+    {
+      "id": "in-dgft-nfmims",
+      "publisher": "Directorate General of Foreign Trade (India)",
+      "citation": "DGFT Notification No. 22/2026-27",
+      "document": "Notification",
+      "title": "Amendment in import policy under Chapter 76 (Policy Condition 1(c), NFMIMS registration) of ITC(HS) 2022",
+      "signed": "2026-06-30",
+      "published": "2026-06-30",
+      "url": "https://content.dgft.gov.in/Website/dgftprod/449397ee-ca25-4243-a1ab-d87b49e6d347/english_0005.pdf"
+    },
+    {
+      "id": "in-wto-1571",
+      "publisher": "World Trade Organization",
+      "citation": "G/SG/N/12/IND/5, G/L/1571",
+      "document": "Notification under Article 12.5 of the Agreement on Safeguards",
+      "title": "India: proposed suspension of concessions and other obligations (U.S. measures on steel and aluminium)",
+      "signed": null,
+      "published": "2025-05-12",
+      "url": "https://docs.wto.org/dol2fe/Pages/SS/directdoc.aspx?filename=q:/G/L/1571.pdf&Open=True"
+    },
+    {
+      "id": "th-customs-2026",
+      "publisher": "Thai Customs Department",
+      "citation": "Press release 5/2570, Oct 21, 2026",
+      "document": "Press release",
+      "title": "Physical inspection of every container declared as metal scrap; proposed restriction of metal and rubber scrap imports",
+      "signed": null,
+      "published": "2026-10-21",
+      "url": "https://www.customs.go.th/data_files/501899c34d0128b80f777b093bff6b23.pdf"
+    },
+    {
+      "id": "th-art-2026",
+      "publisher": "The White House",
+      "citation": "Joint Statement, Nov 17, 2026",
+      "document": "Joint Statement",
+      "title": "Joint Statement on an Agreement Between the United States of America and the Kingdom of Thailand on Reciprocal Trade",
+      "signed": "2026-11-17",
+      "published": "2026-11-17",
+      "url": "https://www.whitehouse.gov/briefings-statements/2026/11/joint-statement-on-an-agreement-between-the-united-states-of-america-and-the-kingdom-of-thailand-on-reciprocal-trade/"
+    },
+    {
+      "id": "my-art-annex",
+      "publisher": "The White House",
+      "citation": "U.S.–Malaysia ART, Annex I, Schedule 1",
+      "document": "Annexes and Appendix",
+      "title": "Agreement between the United States and Malaysia on Reciprocal Trade: Annex I, Schedule 1 (Tariff Schedule of Malaysia, base rates as of April 24, 2025)",
+      "signed": "2025-10-26",
+      "published": "2025-10-26",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2025/10/MALAYSIA-ANNEX_APPENDIX.pdf"
+    },
+    {
+      "id": "my-miti-scrap",
+      "publisher": "Ministry of Investment, Trade and Industry (Malaysia)",
+      "citation": "MITI announcement, April 2024",
+      "document": "Announcement",
+      "title": "Expansion of Metal Scrap Categories that are Subjected to Certificate of Approval by SIRIM",
+      "signed": null,
+      "published": "2024-04-01",
+      "url": "https://www.miti.gov.my/miti/resources/Announcement_on_Expansion_of_Metal_Scrap_Categories_that_are_Subjected_to_Certificate_of_Approval_by_SIRIM_(003).pdf"
+    },
+    {
+      "id": "kr-korus-76",
+      "publisher": "International Trade Administration",
+      "citation": "KORUS Annex 2-B, Tariff Schedule of Korea",
+      "document": "KORUS FTA Annex 2-B",
+      "title": "Tariff Schedule of the Republic of Korea (KORUS FTA)",
+      "signed": "2007-06-30",
+      "published": "2023-09-01",
+      "url": "https://www.trade.gov/sites/default/files/2023-09/Korea%20Tariff%20Schedule.pdf"
+    },
+    {
+      "id": "kr-radiation-act",
+      "publisher": "WTO Import Licensing (Korea NSSC submission)",
+      "citation": "Act on Protective Action Guidelines Against Radiation in the Natural Environment, Arts. 19–22",
+      "document": "Act",
+      "title": "Act on Protective Action Guidelines Against Radiation in the Natural Environment",
+      "signed": null,
+      "published": "2019-10-31",
+      "url": "https://importlicensing.wto.org/sites/default/files/members/78/Act%20on%20Protective%20Action%20Guidelines%20against%20Radiation%20in%20the%20Natural%20Environment_31.10.2019.pdf"
+    },
+    {
+      "id": "hk-wto-profile",
+      "publisher": "World Trade Organization",
+      "citation": "WTO Tariff Profiles: Hong Kong, China",
+      "document": "Tariff profile",
+      "title": "Hong Kong, China: tariff profile (MFN applied, 100% duty-free)",
+      "signed": null,
+      "published": "2025-07-01",
+      "url": "https://www.wto.org/english/res_e/statis_e/daily_update_e/tariff_profiles/HK_e.pdf"
+    },
+    {
+      "id": "hk-epd-wdo",
+      "publisher": "Environmental Protection Department (Hong Kong)",
+      "citation": "EPD: Waste Disposal Ordinance permit control",
+      "document": "Guidance page",
+      "title": "Control on import and export of waste under the Waste Disposal Ordinance (Cap. 354)",
+      "signed": null,
+      "published": "2026-05-18",
+      "url": "https://www.epd.gov.hk/epd/english/environmentinhk/waste/guide_ref/guide_wiec_tcs2.html"
+    },
+    {
+      "id": "cn-2026-plan",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "2026 Tariff Adjustment Plan, Annex 1 (provisional rates)",
+      "title": "国务院关税税则委员会关于2026年关税调整方案的公告 (0% provisional on ex 7602.0000 recycled aluminum raw materials and 7601.1090)",
+      "signed": "2025-12-26",
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2018-232",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Shuiweihui [2018] No. 13",
+      "document": "Notice",
+      "title": "关于对原产于美国的部分进口商品中止关税减让义务的通知 (25% on U.S. aluminum scrap 76020000 from April 2, 2018)",
+      "signed": "2018-04-01",
+      "published": "2018-04-01",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201804/t20180401_2857769.htm"
+    },
+    {
+      "id": "cn-2019-3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement with four annexes (25/20/10/5%)",
+      "title": "国务院关税税则委员会关于对原产于美国的部分进口商品提高加征关税税率的公告",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-mee-2024-23",
+      "publisher": "Ministry of Ecology and Environment (PRC)",
+      "citation": "MEE/GACC/NDRC/MIIT/MOFCOM/SAMR Announcement No. 23 of 2024",
+      "document": "Announcement",
+      "title": "关于规范再生铜及铜合金原料、再生铝及铝合金原料进口管理有关事项的公告 (in force November 15, 2024)",
+      "signed": "2024-10-21",
+      "published": "2024-10-23",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202410/t20241024_1090051.html"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension continued from November 10, 2026; 10% kept)",
+      "signed": "2026-11-09",
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 87% of 2025 U.S. Chapter 76 exports. A customs union (the EU) is one market: its members share one tariff."
+}

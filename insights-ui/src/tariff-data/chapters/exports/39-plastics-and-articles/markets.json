@@ -348,7 +348,7 @@
     {
       "countryCode": 124,
       "name": "Canada",
-      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin. Canada's September 8, 2026 surtax (SOR/2026-186) adds 50% on six listed consumer-plastic tariff items, with no CUSMA exemption",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin. Canada's September 8, 2026 surtax (SOR/2026-186) adds 50% on six listed consumer-plastic tariff items, with no CUSMA exemption, and its global Steel Derivative Goods Surtax Order (SOR/2025-267) has added 25% on plastic doors, windows and frames (3925.20) since December 26, 2025, U.S. goods included",
       "usTradeAgreement": "USMCA (CUSMA in Canada)",
       "exportsUsd": 14290823342,
       "priorExportsUsd": 15065603633,
@@ -502,9 +502,9 @@
         },
         "3925": {
           "exportsUsd": 307169935,
-          "rate": "Free (CUSMA)",
+          "rate": "Free (CUSMA); 25% surtax on listed lines",
           "normalRate": "6.5% MFN",
-          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 392590 (2023); certificate of origin required"
+          "basis": "CUSMA Tariff Schedule of Canada; WITS/TRAINS simple-average MFN 6.5% for HS 392590 (2023); certificate of origin required. Plus the global Steel Derivative Goods Surtax Order (SOR/2025-267) since December 26, 2025: 25% on 3925.20 (doors, windows and their frames and thresholds), U.S. goods included, under the CUSMA marking rules; other lines in the heading are not on the list"
         },
         "3926": {
           "exportsUsd": 1475204032,
@@ -514,9 +514,9 @@
         }
       },
       "profile": {
-        "headline": "Canada is the second-largest market ($14.29B, down 5.1%). Resin and most articles enter free under CUSMA, but since September 8, 2026 six tariff items — vinyl floor coverings (3918.10), narrow self-adhesive film and tape (3919.10.99), polyethylene bags (3923.21.90) and household articles (3924) — carry a 50% surtax. Headings 3918, 3919, 3923 and 3924 hold $3.31B of exports to Canada, but only the listed lines pay.",
+        "headline": "Canada is the second-largest market ($14.29B, down 5.1%). Resin and most articles enter free under CUSMA, but since September 8, 2026 six tariff items — vinyl floor coverings (3918.10), narrow self-adhesive film and tape (3919.10.99), polyethylene bags (3923.21.90) and household articles (3924) — carry a 50% surtax. Headings 3918, 3919, 3923 and 3924 hold $3.31B of exports to Canada, but only the listed lines pay. Plastic doors, windows and frames (3925.20) have also paid Canada's global 25% steel-derivative surtax since December 26, 2025.",
         "mainProducts": "Packaging: boxes, bags, bottles, caps & closures (3923) · Film, sheet & strip, non-cellular and not reinforced (3920)",
-        "tariffNow": "Free (CUSMA); 50% surtax on listed consumer articles",
+        "tariffNow": "Free (CUSMA); 25–50% surtax on listed articles",
         "regulator": {
           "name": "Environment and Climate Change Canada (New Substances) and Health Canada (food packaging)",
           "url": "https://www.canada.ca/en/environment-climate-change/services/managing-pollution/evaluating-new-substances.html",
@@ -1902,7 +1902,7 @@
     "USMCA (Mexico, Canada) and the U.S.–Singapore FTA apply 0% to qualifying U.S.-origin goods; the normal-rate column shows each market's MFN rate for goods that do not qualify.",
     "For the EU, Regulation (EU) 2026/1455 zeroes out Chapter 39 from July 1, 2026 to December 31, 2029; the normal-rate column shows the rate the EU charged before then.",
     "China's cells add the 10% extra duty on all U.S. goods to its MFN rate, and the anti-dumping duty on POM copolymer (HS 3907.1010 and 3907.1090) is shown on heading 3907 only. China's 2019 counter-tariffs on U.S. goods, valid unless a line is covered by an exclusion until December 31, 2026, are not added because exclusions are granted line by line.",
-    "Canada's cells show the CUSMA rate and flag the headings with a line on the September 8, 2026 surtax list (SOR/2026-186, Schedule 3, 50%): only the listed tariff items pay, and the surtax has no CUSMA exemption.",
+    "Canada's cells show the CUSMA rate and flag the headings with a line on the September 8, 2026 surtax list (SOR/2026-186, Schedule 3, 50%): only the listed tariff items pay, and the surtax has no CUSMA exemption. Heading 3925 is also flagged for the 25% global Steel Derivative Goods Surtax (SOR/2025-267) on 3925.20, which does not stack with the U.S. surtax.",
     "India's rates are the basic customs duty only; surcharges and IGST are not included, and the February 2026 U.S.–India framework has not been implemented as far as we found. Brazil, Japan and the UK show MFN rates."
   ],
   "sources": [

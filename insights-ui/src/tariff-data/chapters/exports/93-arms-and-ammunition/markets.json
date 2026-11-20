@@ -1,0 +1,781 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 93,
+    "padded": "93",
+    "slug": "93-arms-and-ammunition",
+    "title": "Arms and Ammunition; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/93-arms-and-ammunition/markets",
+    "h1": "HTS Chapter 93: Arms and Ammunition; Parts and Accessories Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "What Israel, the EU, Japan & Canada Charge on U.S. Guns and Ammo | KoalaGains",
+      "shortDescription": "Five of the eight largest buyers charge 0% on U.S. arms and ammunition; Japan charges 5.4–8.4%, the UAE and Saudi Arabia 5%. Rates and import permits by market.",
+      "keywords": [
+        "tariffs on guns",
+        "tariffs on ammunition",
+        "can you ship ammo from the us to canada",
+        "can you ship a gun to canada",
+        "israel tariff us ammunition",
+        "japan tariff firearms"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Five of the eight largest markets — **Israel, the EU, Australia, South Korea and Canada** — charge **0%** on qualifying U.S. arms and ammunition, the EU since July 1, 2026. **Japan** charges its WTO rates (8.4% on military weapons, pistols and munitions, 5.4–6.3% on sporting guns), and the **UAE** and **Saudi Arabia** the 5% Gulf common tariff. None of them adds an extra duty on U.S. goods today. What decides access is the buyer’s **import permit** — firearms licensing by police or interior ministries, and government control of military goods — so each card names that authority.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "9301",
+      "label": "Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns",
+      "shortLabel": "Military weapons"
+    },
+    {
+      "heading": "9302",
+      "label": "Revolvers and pistols",
+      "shortLabel": "Pistols & revolvers"
+    },
+    {
+      "heading": "9303",
+      "label": "Sporting and hunting shotguns and rifles, muzzle-loaders, blank-firing pistols, flare guns, captive-bolt and line-throwing guns",
+      "shortLabel": "Shotguns & rifles"
+    },
+    {
+      "heading": "9304",
+      "label": "Air guns, airsoft guns, paintball markers, spring guns, truncheons and other arms",
+      "shortLabel": "Air guns & other arms"
+    },
+    {
+      "heading": "9305",
+      "label": "Gun parts and accessories: frames, receivers, barrels, stocks and other parts of firearms and air guns",
+      "shortLabel": "Gun parts"
+    },
+    {
+      "heading": "9306",
+      "label": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts",
+      "shortLabel": "Ammunition"
+    },
+    {
+      "heading": "9307",
+      "label": "Swords, cutlasses, bayonets, lances and similar arms, scabbards and sheaths",
+      "shortLabel": "Swords & bayonets"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 376,
+      "name": "Israel",
+      "rule": "U.S.–Israel FTA: 0% on qualifying U.S. goods (Israel MFN 0–12%)",
+      "usTradeAgreement": "U.S.–Israel Free Trade Agreement",
+      "exportsUsd": 1932332060,
+      "priorExportsUsd": 1596446172,
+      "sharePct": 23,
+      "changePct": 21,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 51917842,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        },
+        "9302": {
+          "exportsUsd": 9121417,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        },
+        "9303": {
+          "exportsUsd": 591980,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        },
+        "9304": {
+          "exportsUsd": 563938,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        },
+        "9305": {
+          "exportsUsd": 59701505,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        },
+        "9306": {
+          "exportsUsd": 1810412549,
+          "rate": "Free (FTA)",
+          "normalRate": "0–12%",
+          "basis": "U.S.–Israel FTA; Israel MFN 0–12% for HS 9306.90, 0% for other 9306 lines (WITS/TRAINS 2022)"
+        },
+        "9307": {
+          "exportsUsd": 22829,
+          "rate": "Free (FTA)",
+          "normalRate": null,
+          "basis": "U.S.–Israel FTA; Israel MFN 0% (WITS/TRAINS 2022)"
+        }
+      },
+      "profile": {
+        "headline": "The largest buyer: $1.93B in 2025 (+21%), almost all of it ammunition and munitions (9306, $1.81B). U.S. goods enter duty-free under the U.S.–Israel FTA when the exporter signs the FTA origin declaration.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Gun parts and accessories: frames, receivers, barrels, stocks and other parts of firearms and air guns (9305)",
+        "tariffNow": "Free (U.S.–Israel FTA)",
+        "regulator": {
+          "name": "Firearm Licensing Department, Ministry of National Security",
+          "url": "https://www.gov.il/he/service/importing_firearms_for_business",
+          "requirement": "A business importing firearms needs a firearms business licence and an import licence for each shipment from this department, plus an import licence from the Ministry of Economy."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Israel import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/israel-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common customs tariff; 0% on U.S.-origin Chapter 93 goods under Regulation (EU) 2026/1455",
+      "usTradeAgreement": null,
+      "exportsUsd": 1530451566,
+      "priorExportsUsd": 1091340398,
+      "sharePct": 18.2,
+      "changePct": 40.2,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 422640245,
+          "priorExportsUsd": 304176521,
+          "changePct": 38.9
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 335452058,
+          "priorExportsUsd": 292434588,
+          "changePct": 14.7
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 138725050,
+          "priorExportsUsd": 39096337,
+          "changePct": 254.8
+        },
+        {
+          "countryCode": 703,
+          "country": "Slovakia",
+          "exportsUsd": 105420680,
+          "priorExportsUsd": 2745477,
+          "changePct": 3739.8
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 66192830,
+          "priorExportsUsd": 69176501,
+          "changePct": -4.3
+        }
+      ],
+      "cells": {
+        "9301": {
+          "exportsUsd": 198006746,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 0% for HS 9301"
+        },
+        "9302": {
+          "exportsUsd": 41401674,
+          "rate": "Free",
+          "normalRate": "2.7%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 2.7% for HS 9302"
+        },
+        "9303": {
+          "exportsUsd": 48311273,
+          "rate": "Free",
+          "normalRate": "3.2%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 3.2% for HS 9303"
+        },
+        "9304": {
+          "exportsUsd": 13921522,
+          "rate": "Free",
+          "normalRate": "3.2%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 3.2% for HS 9304"
+        },
+        "9305": {
+          "exportsUsd": 156864531,
+          "rate": "Free",
+          "normalRate": "0–3.2%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 0% for HS 9305.91 (military weapon parts), 2.7–3.2% for other parts"
+        },
+        "9306": {
+          "exportsUsd": 1069821772,
+          "rate": "Free",
+          "normalRate": "1.7–2.7%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 1.7–2.7% for HS 9306"
+        },
+        "9307": {
+          "exportsUsd": 2124048,
+          "rate": "Free",
+          "normalRate": "1.7%",
+          "basis": "Regulation (EU) 2026/1455, Annex I (all of Chapter 93), from July 1, 2026; EU common customs tariff (WITS/TRAINS 2023) before: 1.7% for HS 9307"
+        }
+      },
+      "profile": {
+        "headline": "$1.53B in 2025, led by Germany ($423M), Poland ($335M), Spain ($139M) and Slovakia ($105M). Since July 1, 2026 every U.S.-origin Chapter 93 good enters duty-free, down from 0–3.2%.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns (9301)",
+        "tariffNow": "Free (EU–U.S. framework, since July 1, 2026)",
+        "regulator": {
+          "name": "Member-state firearms authorities (EU Firearms Regulation)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2025/41/oj/eng",
+          "requirement": "Each member state licenses firearm and ammunition imports under its own law; Regulation (EU) 2025/41, which replaces the EU Firearms Regulation (EU) No 258/2012, applies mostly from February 12, 2029."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC common external tariff (5%); no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 1002929636,
+      "priorExportsUsd": 519404481,
+      "sharePct": 11.9,
+      "changePct": 93.1,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 12050363,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9301 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9302": {
+          "exportsUsd": 8162035,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9302 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9303": {
+          "exportsUsd": 3331582,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9303 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9304": {
+          "exportsUsd": 1362207,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9304 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9305": {
+          "exportsUsd": 7611088,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9305 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9306": {
+          "exportsUsd": 970412361,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9306 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9307": {
+          "exportsUsd": 0,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% for HS 9307 (WITS/TRAINS MFN applied rates, 2023)"
+        }
+      },
+      "profile": {
+        "headline": "$1.00B in 2025, almost double 2024, and 97% of it ammunition and munitions (9306). The UAE charges the 5% Gulf common tariff; it has no trade agreement with the U.S.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns (9301)",
+        "tariffNow": "5% (GCC common tariff)",
+        "regulator": {
+          "name": "UAE licensing authority for weapons (Ministry of Interior)",
+          "url": "https://elaws.moj.gov.ae/UAE-MOJ_LC-En/00_WEAPONS/UAE-LC-En_2019-08-29_00017_Markait.html",
+          "requirement": "Under Federal Decree-Law No. 17 of 2019, importing weapons, ammunition, explosives or military materiel needs a licence from the competent licensing authority; the UAE armed forces, police and security forces are exempt."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s WTO (MFN) rates; no U.S.–Japan Trade Agreement rate for Chapter 93",
+      "usTradeAgreement": null,
+      "exportsUsd": 571398310,
+      "priorExportsUsd": 436046492,
+      "sharePct": 6.8,
+      "changePct": 31,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 9074279,
+          "rate": "8.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 8.4% for 9301.10, 9301.20, 9301.90"
+        },
+        "9302": {
+          "exportsUsd": 137249,
+          "rate": "8.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 8.4% for 9302.00"
+        },
+        "9303": {
+          "exportsUsd": 570060,
+          "rate": "5.4–6.3%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 6.3% for shotguns (9303.20), 5.4% for rifles (9303.30) and other firearms"
+        },
+        "9304": {
+          "exportsUsd": 1377007,
+          "rate": "5.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 5.4% for 9304.00"
+        },
+        "9305": {
+          "exportsUsd": 264013362,
+          "rate": "5.4–8.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 8.4% for military weapon parts (9305.91), 5.4% for shotgun and rifle parts (9305.20)"
+        },
+        "9306": {
+          "exportsUsd": 296219055,
+          "rate": "5.4–8.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 8.4% for munitions (9306.90), 5.4% for shotgun cartridges (9306.21) and sporting cartridges"
+        },
+        "9307": {
+          "exportsUsd": 7298,
+          "rate": "8.4%",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026, WTO column; there is no U.S.–Japan Trade Agreement rate for Chapter 93: 8.4% for 9307.00"
+        }
+      },
+      "profile": {
+        "headline": "$571M in 2025 (+31%), split between ammunition and munitions ($296M) and gun parts ($264M). Japan has no free-trade rate for these U.S. goods, so they pay its WTO rates.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Gun parts and accessories: frames, receivers, barrels, stocks and other parts of firearms and air guns (9305)",
+        "tariffNow": "5.4–8.4% (Japan’s WTO rates)",
+        "regulator": {
+          "name": "METI and the National Police Agency",
+          "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/import.htm",
+          "requirement": "Japan Customs lists these lines under the Import Trade Control Order (METI import approval), the Firearms and Swords Possession Control Law (National Police Agency) and, for ammunition, the Explosives Control Law."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 682,
+      "name": "Saudi Arabia",
+      "rule": "GCC common external tariff (5%); no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 526903654,
+      "priorExportsUsd": 366378095,
+      "sharePct": 6.3,
+      "changePct": 43.8,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 57789164,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9301 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9302": {
+          "exportsUsd": 4333567,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9302 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9303": {
+          "exportsUsd": 2384665,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9303 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9304": {
+          "exportsUsd": 183279,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9304 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9305": {
+          "exportsUsd": 6269154,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9305 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9306": {
+          "exportsUsd": 455915270,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9306 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9307": {
+          "exportsUsd": 28555,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; Saudi MFN 5% for HS 9307 (WITS/TRAINS MFN applied rates, 2023)"
+        }
+      },
+      "profile": {
+        "headline": "$527M in 2025 (+43.8%), 87% of it ammunition and munitions (9306). The Gulf common tariff is 5%, and Saudi law prohibits importing weapons, so ordinary commercial distribution is not open.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns (9301)",
+        "tariffNow": "5% (GCC common tariff)",
+        "regulator": {
+          "name": "Saudi authorities (weapons are a prohibited import)",
+          "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-prohibited-and-restricted-imports",
+          "requirement": "The trade.gov Country Commercial Guide lists weapons among the products Saudi law prohibits from import."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Saudi Arabia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/saudi-arabia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "AUSFTA: 0% on qualifying U.S. goods (Australia MFN 0–5%)",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 419994242,
+      "priorExportsUsd": 256666004,
+      "sharePct": 5,
+      "changePct": 63.6,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 42647383,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; Australia MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9302": {
+          "exportsUsd": 5600757,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; Australia MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9303": {
+          "exportsUsd": 10593457,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; Australia MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9304": {
+          "exportsUsd": 2701514,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; Australia MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9305": {
+          "exportsUsd": 11194577,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5%",
+          "basis": "AUSFTA; Australia MFN 5% for pistol and military weapon parts, 0–5% for 9305.20 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9306": {
+          "exportsUsd": 347145818,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5%",
+          "basis": "AUSFTA; Australia MFN 5% for cartridges (9306.21, 9306.30), 0% for 9306.90 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9307": {
+          "exportsUsd": 110736,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA; Australia MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        }
+      },
+      "profile": {
+        "headline": "$420M in 2025 (+63.6%), mostly ammunition and munitions ($347M). U.S. goods are duty-free under AUSFTA; parts and cartridges otherwise pay up to 5%.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns (9301)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Australian Border Force and state and territory police firearms registries",
+          "url": "https://www.abf.gov.au/importing-exporting-and-manufacturing/prohibited-goods/categories/firearms",
+          "requirement": "Firearms, parts and ammunition are prohibited imports unless the importer holds police certification from the state or territory firearms registry (forms B709A or B709D) or a Commonwealth import permit, shown to the ABF at import."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS: 0% on qualifying U.S. goods (Korea MFN 0–8%)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 345119583,
+      "priorExportsUsd": 245046819,
+      "sharePct": 4.1,
+      "changePct": 40.8,
+      "status": "unchanged",
+      "cells": {
+        "9301": {
+          "exportsUsd": 221294377,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9302": {
+          "exportsUsd": 6615951,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9303": {
+          "exportsUsd": 195397,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS; Korea MFN 8% for HS 9303 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9304": {
+          "exportsUsd": 843554,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS; Korea MFN 8% for HS 9304 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9305": {
+          "exportsUsd": 19663071,
+          "rate": "Free (KORUS)",
+          "normalRate": "0–8%",
+          "basis": "KORUS; Korea MFN 0% for military weapon parts (9305.91), 8% for shotgun and rifle parts (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9306": {
+          "exportsUsd": 96394088,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9307": {
+          "exportsUsd": 113145,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023)"
+        }
+      },
+      "profile": {
+        "headline": "$345M in 2025 (+40.8%), led by military weapons (9301, $221M). KORUS gives qualifying U.S. goods 0%; sporting guns and their parts otherwise pay 8%.",
+        "mainProducts": "Military weapons: artillery, rocket and grenade launchers, military rifles and shotguns, machine guns (9301) · Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Korean National Police Agency",
+          "url": "https://www.police.go.kr/eng/index.do",
+          "requirement": "Under the Control of Firearms, Swords, Explosives, etc. Act, importing firearms or explosives (including ammunition) needs a permit from the Commissioner General of the National Police Agency or a provincial police agency."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA: 0% on qualifying U.S. goods (Canada MFN 0–7.5%)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 296088528,
+      "priorExportsUsd": 363052334,
+      "sharePct": 3.5,
+      "changePct": -18.4,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "9301": {
+          "exportsUsd": 8561204,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–7%",
+          "basis": "CUSMA; Canada MFN 0–7% for HS 9301 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9302": {
+          "exportsUsd": 7534178,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.5%",
+          "basis": "CUSMA; Canada MFN 3.5% for HS 9302 (WITS/TRAINS MFN applied rates, 2023); 25% counter-tariff March 4 to September 1, 2025"
+        },
+        "9303": {
+          "exportsUsd": 58244308,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–7%",
+          "basis": "CUSMA; Canada MFN 0–7% for HS 9303 (WITS/TRAINS MFN applied rates, 2023); 25% counter-tariff March 4 to September 1, 2025"
+        },
+        "9304": {
+          "exportsUsd": 21620302,
+          "rate": "Free (CUSMA)",
+          "normalRate": "3.5–7%",
+          "basis": "CUSMA; Canada MFN 3.5–7% for HS 9304 (WITS/TRAINS MFN applied rates, 2023); 25% counter-tariff March 4 to September 1, 2025"
+        },
+        "9305": {
+          "exportsUsd": 55226988,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–7.5%",
+          "basis": "CUSMA; Canada MFN 0–7.5% for HS 9305 (WITS/TRAINS MFN applied rates, 2023)"
+        },
+        "9306": {
+          "exportsUsd": 143046601,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–7%",
+          "basis": "CUSMA; Canada MFN 0–7% for HS 9306 (WITS/TRAINS MFN applied rates, 2023); 25% counter-tariff on 9306.21, 9306.29 and 9306.30, March 4 to September 1, 2025"
+        },
+        "9307": {
+          "exportsUsd": 1854947,
+          "rate": "Free (CUSMA)",
+          "normalRate": "7%",
+          "basis": "CUSMA; Canada MFN 7% for HS 9307 (WITS/TRAINS MFN applied rates, 2023)"
+        }
+      },
+      "profile": {
+        "headline": "$296M in 2025 (−18.4%) but up 78% in January–August 2026. Qualifying U.S. goods are duty-free under CUSMA; Canada’s 25% counter-tariff on U.S. handguns, rifles, shotguns, air guns and cartridges ran from March 4 to September 1, 2025.",
+        "mainProducts": "Ammunition: cartridges, shotgun shells, air gun pellets and BBs, paintballs, bombs, grenades, missiles and their parts (9306) · Sporting and hunting shotguns and rifles, muzzle-loaders, blank-firing pistols, flare guns, captive-bolt and line-throwing guns (9303)",
+        "tariffNow": "Free (CUSMA); 2025 counter-tariff removed",
+        "regulator": {
+          "name": "RCMP Canadian Firearms Program, CBSA and Global Affairs Canada",
+          "url": "https://rcmp.ca/en/firearms/importing-and-exporting/importing",
+          "requirement": "The importer needs a valid firearms licence, also to import barrels, handgun slides, ammunition and magazines; a handgun import needs a Global Affairs Canada import permit and is allowed only in certain circumstances, and new imports of prohibited firearms are not allowed."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Israel",
+      "heading": "9306",
+      "exportsUsd": 1810412549,
+      "rate": "Free (FTA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "9306",
+      "exportsUsd": 1069821772,
+      "rate": "Free"
+    },
+    {
+      "market": "United Arab Emirates",
+      "heading": "9306",
+      "exportsUsd": 970412361,
+      "rate": "5%"
+    },
+    {
+      "market": "Saudi Arabia",
+      "heading": "9306",
+      "exportsUsd": 455915270,
+      "rate": "5%"
+    },
+    {
+      "market": "Australia",
+      "heading": "9306",
+      "exportsUsd": 347145818,
+      "rate": "Free (AUSFTA)"
+    },
+    {
+      "market": "Japan",
+      "heading": "9306",
+      "exportsUsd": 296219055,
+      "rate": "5.4–8.4%"
+    },
+    {
+      "market": "Japan",
+      "heading": "9305",
+      "exportsUsd": 264013362,
+      "rate": "5.4–8.4%"
+    },
+    {
+      "market": "South Korea",
+      "heading": "9301",
+      "exportsUsd": 221294377,
+      "rate": "Free (KORUS)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. MFN rates are the World Bank/UNCTAD WITS (TRAINS) applied rates for 2023 (Israel 2022) at the six-digit level; a range shows the lowest and highest six-digit rate in the heading. Japan’s rates come from Japan Customs’ tariff schedule of April 1, 2026.",
+    "Free-trade-agreement rates (U.S.–Israel FTA, AUSFTA, KORUS, CUSMA) apply only to goods that meet the agreement’s rules of origin; the normal rate shows what non-qualifying goods pay.",
+    "The EU charges 0% on U.S.-origin Chapter 93 goods from July 1, 2026 under Regulation (EU) 2026/1455, whose Annex I lists the whole chapter; the normal rate is the EU common customs tariff.",
+    "None of these eight markets adds an extra duty on U.S. Chapter 93 goods today. China’s 10% extra tariff on all U.S. goods applies to these goods but China is not one of the markets shown.",
+    "A buyer’s own law may exempt defense goods bought by its armed forces or government from customs duty; such exemptions are not shown.",
+    "National 8- to 10-digit lines can differ from the six-digit rate shown."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 93, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data",
+      "document": "Database",
+      "title": "WITS TRAINS MFN applied tariff rates by reporter and HS six-digit product",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan’s Tariff Schedule, April 1, 2026, Chapter 93",
+      "document": "Tariff schedule",
+      "title": "Japan’s Tariff Schedule (Statistical Code for Import) as of April 1, 2026: Chapter 93",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_93.htm"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "ca-2025-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Mar 2025",
+      "document": "Notice",
+      "title": "List of products from the United States subject to 25 per cent tariffs effective March 4, 2025",
+      "signed": null,
+      "published": "2025-03-04",
+      "url": "https://www.canada.ca/en/department-finance/news/2025/03/list-of-products-from-the-united-states-subject-to-25-per-cent-tariffs-effective-march-4-2025.html"
+    },
+    {
+      "id": "eu-firearms-2025-41",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2025/41",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2025/41 on import, export and transit measures for firearms, their essential components and ammunition",
+      "signed": "2024-12-19",
+      "published": "2025-01-22",
+      "url": "https://eur-lex.europa.eu/eli/reg/2025/41/oj/eng"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 79% of 2025 U.S. Chapter 93 exports. A customs union (the EU) is one market: its members share one tariff."
+}

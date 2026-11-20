@@ -1,0 +1,818 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 21,
+    "padded": "21",
+    "slug": "21-misc-edible-preparations",
+    "title": "Miscellaneous Edible Preparations"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/21-misc-edible-preparations/markets",
+    "h1": "HTS Chapter 21: Miscellaneous Edible Preparations — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Supplements & Sauces by Country (HTS Ch. 21) | KoalaGains",
+      "shortDescription": "What Canada, Mexico, EU, Korea, China, Hong Kong, UAE and Japan charge on U.S. supplements, protein powder, sauces and soups in 2026, and who must approve them.",
+      "keywords": [
+        "tariffs on supplements from us to canada",
+        "protein powder tariffs canada",
+        "does china have tariffs on us goods",
+        "does south korea have tariffs on us goods",
+        "does japan have tariffs on us goods",
+        "mexico tariffs on us products",
+        "eu tariffs on us goods"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "What each large market charges on U.S. supplements, protein powders, sauces, soups, coffee extracts, yeast and ice cream in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. For most of the trade the tariff is zero: Canada and Mexico under USMCA, South Korea under KORUS, and Hong Kong, a free port. Japan lets most U.S. supplements, sauces and soups in free under the 2020 U.S.–Japan Trade Agreement but not ice cream or ketchup, the EU charges 6–14% outside its new U.S. quota, and China stacks counter-tariffs on its normal rate. For these foods, access usually depends more on the buyer’s regulator than on the tariff: plant registration in China and Korea, supplement-ingredient rules in the EU, Canada and Japan.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "2101",
+      "label": "Coffee, tea & maté extracts and preparations; chicory",
+      "shortLabel": "Coffee & tea extracts"
+    },
+    {
+      "heading": "2102",
+      "label": "Yeasts, dead single-cell micro-organisms & baking powder",
+      "shortLabel": "Yeasts"
+    },
+    {
+      "heading": "2103",
+      "label": "Sauces, condiments, seasonings & mustard",
+      "shortLabel": "Sauces & condiments"
+    },
+    {
+      "heading": "2104",
+      "label": "Soups, broths & homogenized composite food (baby food)",
+      "shortLabel": "Soups & baby food"
+    },
+    {
+      "heading": "2105",
+      "label": "Ice cream & other edible ice",
+      "shortLabel": "Ice cream"
+    },
+    {
+      "heading": "2106",
+      "label": "Food preparations n.e.s.i. (supplements, syrups, mixes)",
+      "shortLabel": "Food preparations n.e.s.i."
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "Canada’s Customs Tariff: CUSMA (UST) rate for qualifying U.S. goods; supply-managed dairy lines above access quotas pay the over-access rate",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 3273912207,
+      "priorExportsUsd": 3204368100,
+      "sharePct": 27.9,
+      "changePct": 2.2,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "2101": {
+          "exportsUsd": 185981804,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2101.11 to 2101.30 are free for every origin."
+        },
+        "2102": {
+          "exportsUsd": 75515424,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2102.10 to 2102.30 are free for every origin (WITS 2023)."
+        },
+        "2103": {
+          "exportsUsd": 876143579,
+          "rate": "Free (CUSMA)",
+          "normalRate": "8–12.5% (sauces 9.5%)",
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2103.90.90 (sauces and mixed seasonings) 9.5% MFN, 2103.90.10 (mayonnaise and salad dressing) 11%, ketchup 12.5% (WITS 2023); free for U.S. goods."
+        },
+        "2104": {
+          "exportsUsd": 264769961,
+          "rate": "Free (CUSMA)",
+          "normalRate": "6% (baby food 11%)",
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2104.10.00 (soups and broths) 6% MFN; 2104.20 11% (WITS 2023); free for U.S. goods."
+        },
+        "2105": {
+          "exportsUsd": 21148629,
+          "rate": "Free within access quota; 277% above",
+          "normalRate": "6.5–9.5% within quota",
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2105.00.10 (9.5%) and 2105.00.91 (within access commitment, 6.5%) are free for U.S. goods; 2105.00.92 (over access commitment) pays 277% but not less than $1.16/kg, with no CUSMA rate."
+        },
+        "2106": {
+          "exportsUsd": 1850352810,
+          "rate": "Free (CUSMA)",
+          "normalRate": "10.5% (most); dairy lines over quota 212–274.5%",
+          "basis": "Canada Customs Tariff 2026 (CBSA), UST/CUSMA column: 2106.90.99 (other food preparations, including most supplements and drink mixes) 10.5% MFN and 2106.10.00 (protein concentrates) 11%, free for U.S. goods. Dairy-based lines over access commitments (2106.90.32, .34, .94) pay 212–274.5% with a per-kilogram minimum and have no CUSMA rate."
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest buyer ($3.27 billion), mostly supplements, drink mixes and other food preparations ($1.85 billion) and sauces ($876 million). Qualifying U.S. goods enter free under CUSMA; Canada’s 25% counter-tariff on U.S. sauces, soups and some dairy- and sugar-based preparations ran only from March 4 to August 31, 2025, and dairy-based lines above Canada’s access quotas still pay 212–277%.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "Free (CUSMA); dairy lines over quota 212–277%",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA) and Health Canada (natural health products)",
+          "url": "https://inspection.canada.ca/en/importing-food-plants-animals/food-imports",
+          "requirement": "The Canadian importer needs a Safe Food for Canadians licence from CFIA, and foods must meet Canadian labelling and composition rules. Many supplements are natural health products in Canada and need a Health Canada product licence (NPN) before sale."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA: 0% on originating U.S. goods",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 2113332072,
+      "priorExportsUsd": 2014975895,
+      "sharePct": 18,
+      "changePct": 4.9,
+      "status": "unchanged",
+      "cells": {
+        "2101": {
+          "exportsUsd": 77883356,
+          "rate": "Free (USMCA)",
+          "normalRate": "45% (coffee extracts)",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2101.11 and 2101.12 (coffee extracts and preparations) 45%; roasted chicory 20%."
+        },
+        "2102": {
+          "exportsUsd": 20095210,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–15%",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2102.10.99 and 2102.20.99 (yeasts) 15%, torula yeast 10%, baking powder 15%."
+        },
+        "2103": {
+          "exportsUsd": 433599482,
+          "rate": "Free (USMCA)",
+          "normalRate": "20%",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2103.10 (soy sauce), 2103.20 (ketchup), 2103.30 (mustard) and 2103.90.99 (other sauces and seasonings) 20%."
+        },
+        "2104": {
+          "exportsUsd": 580202476,
+          "rate": "Free (USMCA)",
+          "normalRate": "10%",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2104.10.01 (soups and broths) and 2104.20.01 (homogenized preparations) 10%."
+        },
+        "2105": {
+          "exportsUsd": 81225987,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% + US$0.36/kg of sugar",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2105.00.01 (ice cream) 20% plus US$0.36 per kg of sugar."
+        },
+        "2106": {
+          "exportsUsd": 920325561,
+          "rate": "Free (USMCA)",
+          "normalRate": "15% + US$0.36/kg of sugar",
+          "basis": "USMCA (originating goods free since 2008 under NAFTA); normal rate from Mexico’s LIGIE (DOF, June 7, 2022): 2106.90.99 (other food preparations) 15% plus US$0.36 per kg of sugar; most other 2106.90 lines 10–20%; soy protein concentrate (2106.10.01) free."
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($2.11 billion) buys more U.S. soups and broths ($580 million) than any other market, plus food preparations ($920 million) and sauces ($434 million). Everything that qualifies enters free under USMCA, against normal rates of 10–45%, and Mexico’s 2026 tariff increases on countries without a trade agreement skip Chapter 21.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Soups, broths & homogenized composite food (baby food) (2104)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "Federal Commission for the Protection against Sanitary Risks (COFEPRIS)",
+          "url": "https://www.gob.mx/cofepris",
+          "requirement": "Most processed foods and food supplements need no product registration, but labels must meet NOM-051-SCFI/SSA1-2010, including the front-of-pack warning seals for added sugar, sodium, fat and calories. Some products need a COFEPRIS sanitary import permit."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff (Combined Nomenclature 2026), with a reduced-duty quota for U.S. Chapter 21 goods under Regulation (EU) 2026/1455",
+      "usTradeAgreement": null,
+      "exportsUsd": 770048241,
+      "priorExportsUsd": 720095358,
+      "sharePct": 6.6,
+      "changePct": 6.9,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 299541254,
+          "priorExportsUsd": 299738799,
+          "changePct": -0.1
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 74557010,
+          "priorExportsUsd": 66315898,
+          "changePct": 12.4
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 64766863,
+          "priorExportsUsd": 56857911,
+          "changePct": 13.9
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 60969002,
+          "priorExportsUsd": 46174534,
+          "changePct": 32
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 49273526,
+          "priorExportsUsd": 51051499,
+          "changePct": -3.5
+        }
+      ],
+      "cells": {
+        "2101": {
+          "exportsUsd": 45390800,
+          "rate": "2.3% in U.S. quota (coffee extracts)",
+          "normalRate": "9% (tea extracts 6%)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2101 11 00 (coffee extracts) 9% normal, 2.3% in quota; 2101 20 20 (tea extracts) 6%, 1.5% in quota."
+        },
+        "2102": {
+          "exportsUsd": 13438317,
+          "rate": "3–3.7% in U.S. quota (yeasts)",
+          "normalRate": "12–14.7% (baking powder 6.1%)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2102 10 31 (dried bakers’ yeast) 12% normal, 3% in quota; 2102 10 90 14.7%, 3.7% in quota; 2102 30 00 (baking powder) 6.1%, 1.5% in quota."
+        },
+        "2103": {
+          "exportsUsd": 104624133,
+          "rate": "1.9% in U.S. quota (sauces)",
+          "normalRate": "7.7% (ketchup 10.2%)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2103 90 90 (sauces and mixed seasonings) and 2103 10 00 (soy sauce) 7.7% normal, 1.9% in quota; 2103 20 00 (ketchup) 10.2%, 2.6% in quota."
+        },
+        "2104": {
+          "exportsUsd": 240323,
+          "rate": "2.9% in U.S. quota (soups)",
+          "normalRate": "11.5% (baby food 14.1%)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2104 10 00 (soups and broths) 11.5% normal, 2.9% in quota; 2104 20 00 (homogenized preparations) 14.1%, 3.5% in quota."
+        },
+        "2105": {
+          "exportsUsd": 2667414,
+          "rate": "0% in dairy quota; 2% + €9.63–13.50/100 kg in food quota",
+          "normalRate": "8% + €38.50–54/100 kg",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2105 00 91 and 2105 00 99 (ice cream with 3% milk fat or more) 8% + €38.50 or €54 per 100 kg normal. Ice cream (2105 00) is also in dairy quota 09.9003 (10,000 t a year, shared with milk, yogurt and other dairy) at 0%."
+        },
+        "2106": {
+          "exportsUsd": 603687254,
+          "rate": "3.2% in U.S. quota (most)",
+          "normalRate": "12.8% (9% + agricultural component with milk or sugar)",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty; U.S. quota 09.9016 under Regulation (EU) 2026/1455, Annex III (250,000 t a year from July 1, 2026, first come, first served): 2106 90 92 (food preparations n.e.s., including most supplements, without milk fat, sugar or starch) and 2106 10 20 (protein concentrates) 12.8% normal, 3.2% in quota; 2106 90 98 (with milk fat, sugar or starch) 9% + an agricultural component, 2.3% + €8.35/100 kg in quota."
+        }
+      },
+      "profile": {
+        "headline": "The EU ($770 million, led by the Netherlands, Germany and Poland) buys mostly food preparations and supplements ($604 million). It charged its full rate, 12.8% on most food preparations, until July 1, 2026; since then 250,000 tonnes a year of U.S. Chapter 21 goods pay about a quarter of that, first come, first served. Its 2025 counter-list would have put 25–30% on almost the whole chapter but was suspended and never applied.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "3.2% in U.S. quota on most (12.8% normal)",
+        "regulator": {
+          "name": "European Commission (food supplements and novel foods) and member-state food authorities",
+          "url": "https://eur-lex.europa.eu/eli/dir/2002/46/oj",
+          "requirement": "No pre-market approval for most processed foods, but food supplements may only use the vitamins and minerals listed in Directive 2002/46/EC, and many member states require a notification before sale. Ingredients not eaten in the EU before May 1997 need novel-food authorization (Regulation (EU) 2015/2283)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS: 0% on originating U.S. goods (every Chapter 21 line duty-free since January 1, 2026 at the latest)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 638015795,
+      "priorExportsUsd": 617100680,
+      "sharePct": 5.4,
+      "changePct": 3.4,
+      "status": "unchanged",
+      "cells": {
+        "2101": {
+          "exportsUsd": 11582831,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% (tea preparations 40%)",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2101.11 and 2101.12 (coffee extracts and preparations) 8%; 2101.20 (tea) 40%."
+        },
+        "2102": {
+          "exportsUsd": 4686223,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2102.10 to 2102.30 8%."
+        },
+        "2103": {
+          "exportsUsd": 38055495,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2103.10 to 2103.90 8% MFN applied (WITS 2023). Mixed seasonings with a high share of red pepper, garlic, onion or ginger were the last to go free (staging H, January 1, 2026)."
+        },
+        "2104": {
+          "exportsUsd": 3817576,
+          "rate": "Free (KORUS)",
+          "normalRate": "18–30%",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2104.10 (soups and broths) 18–30%; 2104.20 30%."
+        },
+        "2105": {
+          "exportsUsd": 8898033,
+          "rate": "Free (KORUS)",
+          "normalRate": "8%",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2105.00 (ice cream) 8%."
+        },
+        "2106": {
+          "exportsUsd": 570975637,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% (red ginseng preparations 754.3%)",
+          "basis": "KORUS Annex 2-B, Tariff Schedule of Korea (staging A–H: every Chapter 21 line duty-free by January 1, 2026); normal rate from WITS 2023 MFN applied: 2106.10 and most 2106.90 lines 8%; red ginseng preparations 754.3%."
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($638 million) is the third-largest buyer, almost all food preparations and supplements ($571 million). Every Chapter 21 line is duty-free under KORUS since January 1, 2026 at the latest, against an 8% normal rate on most food preparations and up to 754.3% on red ginseng preparations.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://www.mfds.go.kr/eng/index.do",
+          "requirement": "Under the Special Act on Imported Food Safety Control, every overseas plant that makes food for Korea must be registered with MFDS before its products are imported, and each shipment is inspected. Supplements sold as health functional foods must use functional ingredients that MFDS has listed or approved."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China’s MFN tariff, plus its 2018–19 counter-tariffs (excludable) and its extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 464570252,
+      "priorExportsUsd": 433420991,
+      "sharePct": 4,
+      "changePct": 7.2,
+      "status": "raised",
+      "cells": {
+        "2101": {
+          "exportsUsd": 3991775,
+          "rate": "12% + 25% + 10% (47%)",
+          "normalRate": "22% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (12% on coffee and tea extracts), the 25% 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion (5% on roasted chicory), and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027)."
+        },
+        "2102": {
+          "exportsUsd": 5530725,
+          "rate": "25% + 25% + 10% (60%)",
+          "normalRate": "35% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (25% on yeasts and baking powder), the 25% 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion, and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027)."
+        },
+        "2103": {
+          "exportsUsd": 26379925,
+          "rate": "12% + 25% + 10% (47%) sauces & soy sauce; 32% ketchup & mustard",
+          "normalRate": "22% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (12%), the 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion (25% on soy sauce and other sauces and seasonings 2103.90.90, 10% on ketchup and mustard, 2.5% on MSG), and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027). China’s 10% farm counter-tariff on ketchup (March 10 to November 9, 2025) has ended."
+        },
+        "2104": {
+          "exportsUsd": 78437,
+          "rate": "12% + 25% + 10% (47%)",
+          "normalRate": "22% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (12% on soups and broths; 6% provisional on homogenized preparations, which carry a 10% counter-tariff), the 25% 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion, and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027)."
+        },
+        "2105": {
+          "exportsUsd": 1603620,
+          "rate": "12% + 25% + 10% (47%)",
+          "normalRate": "22% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (12%), the 25% 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion, and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027). China’s 10% farm counter-tariff on ice cream (March 10 to November 9, 2025) has ended."
+        },
+        "2106": {
+          "exportsUsd": 426985770,
+          "rate": "12% + 10% + 10% (32%)",
+          "normalRate": "22% with an exclusion",
+          "basis": "China’s 2026 tariff (Tariff Commission Announcement No. 11 of 2025) (12% on 2106.90.90 food preparations n.e.s.; 10% on 2106.10 protein concentrates), the 10% 2018–19 counter-tariff answering U.S. Section 301, as listed by USDA FAS (GAIN CH2025-0050), waived for importers holding an exclusion, and China’s extra 10% on all U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension of 24 more points continued to January 10, 2027)."
+        }
+      },
+      "profile": {
+        "headline": "China ($465 million in 2025, and 61% more in January–August 2026) buys almost only food preparations and supplements. They pay China’s normal rate (10–12%), a 10% 2018–19 counter-tariff and the extra 10% on all U.S. goods, about 32% in total or 22% for importers holding an exclusion; sauces, soups and ice cream carry a 25% counter-tariff. U.S. supplements sold as health food also need SAMR registration or filing.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "About 32% on food preps; 47% on sauces & soups",
+        "regulator": {
+          "name": "General Administration of Customs (GACC) and State Administration for Market Regulation (SAMR)",
+          "url": "https://www.samr.gov.cn/",
+          "requirement": "Every overseas food plant must be registered with GACC under Decree 248 (condiments, health foods and foods for special dietary purposes through a recommendation from the U.S. authority, other foods by self-registration). Supplements sold as health food need SAMR registration or filing, and infant and special medical formulas need SAMR registration."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "Free port: no customs tariff on any good",
+      "usTradeAgreement": null,
+      "exportsUsd": 314602750,
+      "priorExportsUsd": 214263092,
+      "sharePct": 2.7,
+      "changePct": 46.8,
+      "status": "unchanged",
+      "cells": {
+        "2101": {
+          "exportsUsd": 1351928,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        },
+        "2102": {
+          "exportsUsd": 293053,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        },
+        "2103": {
+          "exportsUsd": 11950879,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        },
+        "2104": {
+          "exportsUsd": 235383,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        },
+        "2105": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        },
+        "2106": {
+          "exportsUsd": 300771507,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong is a free port and levies no customs tariff (Trade and Industry Department)."
+        }
+      },
+      "profile": {
+        "headline": "Hong Kong ($315 million, up 47%) is a free port: U.S. food preparations, sauces and ice cream pay no tariff. Food importers must register with the Centre for Food Safety, and ice cream needs an import permission.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "Free (free port)",
+        "regulator": {
+          "name": "Centre for Food Safety (Food and Environmental Hygiene Department)",
+          "url": "https://www.cfs.gov.hk/english/import/import_icfsg_03.html",
+          "requirement": "Food importers must register under the Food Safety Ordinance. Frozen confections such as ice cream, and milk or milk beverages, need FEHD import permission for each source of manufacture, valid for one year."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC Common Customs Tariff (MFN)",
+      "usTradeAgreement": null,
+      "exportsUsd": 241598856,
+      "priorExportsUsd": 230791028,
+      "sharePct": 2.1,
+      "changePct": 4.7,
+      "status": "unchanged",
+      "cells": {
+        "2101": {
+          "exportsUsd": 2444424,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement."
+        },
+        "2102": {
+          "exportsUsd": 288277,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement."
+        },
+        "2103": {
+          "exportsUsd": 45749169,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement."
+        },
+        "2104": {
+          "exportsUsd": 173647,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement."
+        },
+        "2105": {
+          "exportsUsd": 16925307,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement."
+        },
+        "2106": {
+          "exportsUsd": 176018032,
+          "rate": "0–5% (mostly 5%)",
+          "normalRate": null,
+          "basis": "GCC Common Customs Tariff as applied by the UAE (WITS 2023 MFN applied rates); no U.S. trade agreement. 2106.90: 15 lines, most at 5%."
+        }
+      },
+      "profile": {
+        "headline": "The UAE ($242 million) applies the Gulf states’ common 5% tariff to U.S. food preparations, sauces and ice cream; there is no U.S. trade agreement. Food products are registered with the food-control authority of the emirate they enter, such as Dubai Municipality.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "5% (Gulf common tariff)",
+        "regulator": {
+          "name": "Emirate food-control authorities (e.g. Dubai Municipality)",
+          "url": "https://www.dm.gov.ae",
+          "requirement": "Imported food is registered with the food-control authority of the emirate of entry before sale and must meet UAE and Gulf labelling standards; health supplements need a separate health-product registration."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s tariff: U.S.–Japan Trade Agreement (2020) rate where one exists, otherwise the WTO rate",
+      "usTradeAgreement": null,
+      "exportsUsd": 240149271,
+      "priorExportsUsd": 257117166,
+      "sharePct": 2,
+      "changePct": -6.6,
+      "status": "unchanged",
+      "cells": {
+        "2101": {
+          "exportsUsd": 6114101,
+          "rate": "Free (instant coffee & tea extracts); mixes 15–29.8%",
+          "normalRate": "8.8–15%",
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2101.11.210 (instant coffee, WTO 8.8%) and 2101.20.110/120 (tea extracts, 8–10%) free for U.S. goods; coffee and tea preparations with sugar or 30%+ milk pay 15–29.8% (some + ¥679–1,159/kg)."
+        },
+        "2102": {
+          "exportsUsd": 5153682,
+          "rate": "Free (JP-US)",
+          "normalRate": "3.8–10.5%",
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2102.10 (active yeast, WTO 10.5%), 2102.20 (inactive yeast, 3.8%) and 2102.30 (baking powder, 10.5%) free for U.S. goods."
+        },
+        "2103": {
+          "exportsUsd": 72767796,
+          "rate": "Free (soy sauce, most sauces); ketchup 21.3%, mayonnaise 12.8%, seasonings 10.5%",
+          "normalRate": "7.2%",
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2103.10 (soy sauce, WTO 7.2%) and 2103.90.130 (other sauces, 7.2%) free for U.S. goods; ketchup (2103.20.010) 21.3%, mayonnaise 12.8%, dressings 10.5%, mixed seasonings (2103.90.229) 10.5%, curry 7.2% have no U.S. rate."
+        },
+        "2104": {
+          "exportsUsd": 428491,
+          "rate": "Free (JP-US)",
+          "normalRate": "7–12%",
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2104.10 (soups, WTO 7–8.4%) and 2104.20 (12%) free for U.S. goods."
+        },
+        "2105": {
+          "exportsUsd": 190551,
+          "rate": "21–29.8% (no U.S. rate)",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2105.00 (ice cream) 21% to 29.8% by sugar content, with no JP-US Trade Agreement rate."
+        },
+        "2106": {
+          "exportsUsd": 155494650,
+          "rate": "Free on most (supplements, protein, drink bases); sugared or milk-based 12–29.8%",
+          "normalRate": "10–15%",
+          "basis": "Japan’s Tariff Schedule (October 31, 2026), JP-US Trade Agreement column; normal rate from the WTO column: 2106.90.299 (other food preparations, WTO 15%), 2106.90.295 (vitamin supplements, 12.5%), 2106.90.293 (non-alcoholic drink bases, 10%) and 2106.10.221/229 (vegetable protein, 10.6–15%) free for U.S. goods; preparations with sugar or 30%+ milk solids pay 12–29.8% (some + ¥/kg)."
+        }
+      },
+      "profile": {
+        "headline": "Japan ($240 million, down 7%) lets most U.S. supplements, protein concentrates, drink bases, soy sauce, sauces and soups in duty-free under the 2020 U.S.–Japan Trade Agreement. Ketchup (21.3%), mayonnaise (12.8%), dressings and mixed seasonings (10.5%), ice cream (21–29.8%) and sugar- or milk-heavy preparations still pay the normal rate.",
+        "mainProducts": "Food preparations n.e.s.i. (supplements, syrups, mixes) (2106) · Sauces, condiments, seasonings & mustard (2103)",
+        "tariffNow": "Free on most (JP-US); ice cream 21–29.8%",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (MHLW), with the Consumer Affairs Agency for health claims",
+          "url": "https://www.mhlw.go.jp/english/topics/importedfoods/index.html",
+          "requirement": "Every shipment needs a food import notification to an MHLW quarantine station, and ingredients and additives must be permitted under the Food Sanitation Act. Supplements sold with a health claim need a Foods with Function Claims notification to the Consumer Affairs Agency or FOSHU approval."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "2106",
+      "exportsUsd": 1850352810,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2106",
+      "exportsUsd": 920325561,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "2103",
+      "exportsUsd": 876143579,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "2106",
+      "exportsUsd": 603687254,
+      "rate": "3.2% in U.S. quota; 12.8% normal"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2104",
+      "exportsUsd": 580202476,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "2106",
+      "exportsUsd": 570975637,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2103",
+      "exportsUsd": 433599482,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "China",
+      "heading": "2106",
+      "exportsUsd": 426985770,
+      "rate": "32% (22% with an exclusion)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in 2026: Canada’s Customs Tariff 2026 (CBSA); Mexico’s LIGIE (DOF, June 7, 2022) for normal rates and USMCA for U.S. goods; the EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926) with the U.S. quotas of Regulation (EU) 2026/1455; Korea’s KORUS schedule; Japan’s Tariff Schedule of October 31, 2026 (WTO and JP-US Trade Agreement columns); China’s 2026 tariff, the USDA FAS compendium of its counter-tariffs by line and its extra 10%; Hong Kong’s free-port rules; and WTO/World Bank WITS 2023 MFN rates for the UAE and for Korea’s and Canada’s normal rates.",
+    "Each cell names the products that carry most of the trade in that group: supplements and food preparations not elsewhere specified in 2106, sauces and mixed seasonings in 2103, soups and bouillon in 2104. Lines with milk, sugar or starch often carry a per-kilogram part or a quota, so they do not convert to one percentage.",
+    "Trade-agreement and quota rates apply only to goods that meet the agreement’s rules of origin, and quota rates only while the quota lasts; the normal (MFN) rate is shown beside them.",
+    "China’s cells add to its normal rate its 2018–19 counter-tariffs answering U.S. Section 301 (25% or 10% on most Chapter 21 lines, waived for importers holding an exclusion) and its extra 10% on all U.S. goods.",
+    "VAT, consumption taxes and the buyer’s import paperwork are left out. National 8–10-digit lines can set a different rate than the one shown; check the market’s own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 21, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-cbsa-ch21",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 21",
+      "document": "Departmental Consolidation of the Customs Tariff 2026",
+      "title": "Canadian Customs Tariff, Chapter 21: Miscellaneous edible preparations (MFN and UST/CUSMA rates)",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch21-eng.html"
+    },
+    {
+      "id": "usmca-text",
+      "publisher": "USTR",
+      "citation": "USMCA text",
+      "document": "Agreement between the United States of America, the United Mexican States, and Canada",
+      "title": "USMCA, Chapter 2 and Annex 2-B tariff schedules",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement/agreement-between"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF 07/06/2022",
+      "document": "Decreto",
+      "title": "Decreto por el que se expide la Ley de los Impuestos Generales de Importación y de Exportación (LIGIE), Chapter 21",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://dof.gob.mx/2022/SEECO/SEECO_070622.pdf"
+    },
+    {
+      "id": "eu-cn-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1926",
+      "document": "Commission Implementing Regulation",
+      "title": "Amending Annex I to Council Regulation (EEC) No 2658/87 on the tariff and statistical nomenclature and on the Common Customs Tariff (Combined Nomenclature 2026)",
+      "signed": "2025-09-22",
+      "published": "2025-10-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1926/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America (Annex III: quota 09.9016 for Chapter 21 food preparations, quota 09.9003 for dairy products incl. ice cream)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "korus-kr-schedule",
+      "publisher": "USTR",
+      "citation": "KORUS Annex 2-B, Tariff Schedule of Korea",
+      "document": "Tariff schedule",
+      "title": "Tariff Schedule of the Republic of Korea (KORUS), Chapter 21",
+      "signed": "2007-06-30",
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/sites/default/files/uploads/agreements/fta/korus/asset_upload_file786_12756.pdf"
+    },
+    {
+      "id": "jp-tariff-21",
+      "publisher": "Japan Customs",
+      "citation": "Japan’s Tariff Schedule, Chapter 21 (Oct 31, 2026)",
+      "document": "Tariff schedule",
+      "title": "Chapter 21: Miscellaneous edible preparations (WTO and JP-US Trade Agreement rates)",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_21.htm"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "Announcement",
+      "title": "2026 Tariff Adjustment Plan (provisional import rates from January 1, 2026)",
+      "signed": "2025-12-26",
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-fas-compendium-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2025-0050",
+      "document": "GAIN report",
+      "title": "China: Compendium of Tariffs on United States Agricultural and Related Products (2018 and 2019 counter-tariff rates by line)",
+      "signed": null,
+      "published": "2025-03-07",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Compendium+of+Tariffs+on+United+States+Agricultural+and+Related+Products_Beijing_China+-+People's+Republic+of_CH2025-0050.pdf"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-sctc-2026-6",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 6 of 2026",
+      "document": "Announcement",
+      "title": "Continuing the suspension of 24 points of the additional tariff on imports originating in the United States for two months from November 10, 2026 (10% kept)",
+      "signed": null,
+      "published": "2026-11-09",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202611/t20261109_4004260.htm"
+    },
+    {
+      "id": "cn-gacc-248",
+      "publisher": "General Administration of Customs of China",
+      "citation": "GACC Decree No. 248",
+      "document": "Decree",
+      "title": "Administrative Provisions on Registration of Overseas Manufacturers of Imported Food",
+      "signed": "2021-04-12",
+      "published": "2021-04-12",
+      "url": "https://english.customs.gov.cn/"
+    },
+    {
+      "id": "hk-tid-trade-policy",
+      "publisher": "Trade and Industry Department (Hong Kong)",
+      "citation": "Hong Kong’s Trade Policy",
+      "document": "Policy page",
+      "title": "Hong Kong’s trade policy: a free port with no customs tariff",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.tid.gov.hk/en/our_work/hk_participation_in_ito/hk_trade_policy.html"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS (TRAINS) MFN applied rates, 2023",
+      "document": "Tariff database",
+      "title": "World Integrated Trade Solution: MFN applied tariff rates (UAE, Korea, Canada), HS 21",
+      "signed": null,
+      "published": "2023-12-31",
+      "url": "https://wits.worldbank.org/"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 69% of 2025 U.S. Chapter 21 exports. A customs union (the EU) is one market: its members share one tariff."
+}

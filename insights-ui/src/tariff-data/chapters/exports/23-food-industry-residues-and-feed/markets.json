@@ -1,0 +1,1078 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 23,
+    "padded": "23",
+    "slug": "23-food-industry-residues-and-feed",
+    "title": "Food Industry Residues and Prepared Animal Feed"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/23-food-industry-residues-and-feed/markets",
+    "h1": "HTS Chapter 23: Food Industry Residues and Prepared Animal Feed — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Chapter 23 Export Markets: Tariffs on U.S. Soybean Meal, DDGS & Pet Food by Country",
+      "shortDescription": "What Canada, Mexico, Colombia, Viet Nam, China, the EU and other buyers charge on U.S. soybean meal, DDGS, pet food and animal feed, and whose approval is needed to sell there.",
+      "keywords": [
+        "pet food tariffs canada",
+        "tariff on us soybean meal",
+        "china ddgs anti-dumping duty",
+        "eu pet food import duty",
+        "ddgs import tariff by country",
+        "chapter 23 export markets"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "For most of this chapter the tariff is not what decides a sale. The two biggest buyers, Canada and Mexico, take U.S. pet food, soybean meal and DDGS duty-free under USMCA; Colombia and Korea do the same under their U.S. agreements; and Viet Nam, the Philippines and Japan charge little or nothing even at MFN rates. China is the exception: its 10% extra tariff applies on top of every line, and anti-dumping and countervailing duties keep U.S. DDGS out almost entirely. Pet food is the product group that pays the most where there is no agreement (15% in China, 9.6% or a per-tonne duty in the EU outside its new U.S. quota). Everywhere, access for pet food and animal-origin feed depends on the buyer’s veterinary approval, named on each card.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "2301",
+      "label": "Meat & fish meal",
+      "shortLabel": "Meat & fish meal"
+    },
+    {
+      "heading": "2302",
+      "label": "Bran & milling residues",
+      "shortLabel": "Bran"
+    },
+    {
+      "heading": "2303",
+      "label": "Starch residues, beet pulp & distillers' grains",
+      "shortLabel": "Starch & brewing"
+    },
+    {
+      "heading": "2304",
+      "label": "Soybean meal",
+      "shortLabel": "Soybean meal"
+    },
+    {
+      "heading": "2305",
+      "label": "Peanut meal",
+      "shortLabel": "Peanut meal"
+    },
+    {
+      "heading": "2306",
+      "label": "Canola, sunflower & other oilcake",
+      "shortLabel": "Other oilcake"
+    },
+    {
+      "heading": "2307",
+      "label": "Wine lees",
+      "shortLabel": "Wine lees"
+    },
+    {
+      "heading": "2308",
+      "label": "Acorns, citrus pulp & other plant feed",
+      "shortLabel": "Other plant feed"
+    },
+    {
+      "heading": "2309",
+      "label": "Pet food & prepared animal feed",
+      "shortLabel": "Pet food & feed"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA duty-free treatment for qualifying U.S. goods; Canada’s MFN tariff otherwise",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2236866048,
+      "priorExportsUsd": 2490961951,
+      "sharePct": 16.4,
+      "changePct": -10.2,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "2301": {
+          "exportsUsd": 90669836,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–3%",
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 57150166,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 189182899,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–2.5%",
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303"
+        },
+        "2304": {
+          "exportsUsd": 373676261,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 729987,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 5869619,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 5681348,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 1513905932,
+          "rate": "Free (CUSMA); dairy-based feed above Canada’s access quota excepted",
+          "normalRate": "3.5% (dog & cat food); 0–10.5% other feed",
+          "basis": "CUSMA: duty-free for originating goods; Canada normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90; supply-managed dairy feed lines (e.g. 2309.90.32) keep over-access rates"
+        }
+      },
+      "profile": {
+        "headline": "Canada is the largest buyer, mostly of U.S. pet food and prepared feed, and it pays no duty on qualifying goods under CUSMA. Its March 2025 counter-tariff list caught only one niche line, dairy-based feed above Canada’s access quota, and that was removed on September 1, 2025.",
+        "mainProducts": "Pet food & prepared animal feed (2309) · Soybean meal (2304)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/en/animal-health/terrestrial-animals/imports/import-policies/products-and-products/pet-food",
+          "requirement": "Pet food with animal-origin ingredients needs a USDA-issued zoosanitary export certificate referenced on the shipping document; livestock feeds must meet the Feeds Regulations, 2024, including registration where required."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) duty-free treatment for qualifying U.S. goods; Mexico’s general tariff (TIGIE) otherwise",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 1888926709,
+      "priorExportsUsd": 2112633626,
+      "sharePct": 13.8,
+      "changePct": -10.6,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 71315525,
+          "rate": "Free (USMCA)",
+          "normalRate": "15%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301.10/2301.20"
+        },
+        "2302": {
+          "exportsUsd": 21075187,
+          "rate": "Free (USMCA)",
+          "normalRate": "10%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 544152358,
+          "rate": "Free (USMCA)",
+          "normalRate": "5–15% (DDGS 0–10%)",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303.10–2303.30"
+        },
+        "2304": {
+          "exportsUsd": 814266174,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 129033,
+          "rate": "Free (USMCA)",
+          "normalRate": "15%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 6635767,
+          "rate": "Free (USMCA)",
+          "normalRate": "15%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": "10%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 1608233,
+          "rate": "Free (USMCA)",
+          "normalRate": "10%",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 429744432,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% (dog & cat food); 0–20% other feed",
+          "basis": "USMCA: duty-free for originating goods; Mexico normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "Mexico buys U.S. soybean meal, DDGS and prepared feed for one of the largest livestock and poultry sectors in the Americas, all duty-free under USMCA. Without the agreement it would charge 10–15% on most feed and oilcake lines, so the certificate of origin is what matters.",
+        "mainProducts": "Soybean meal (2304) · Starch residues, beet pulp & distillers' grains (2303)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Service for Agrifood Health, Safety and Quality)",
+          "url": "https://www.gob.mx/senasica/documentos/productos-para-consumo-animal-194178",
+          "requirement": "Feed, oilseed meal and pet food must meet SENASICA’s zoosanitary import requirements for the product and origin (its MCRZI requirements module), and where the requirement sheet says so, come from a plant SENASICA has authorized."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 170,
+      "name": "Colombia",
+      "rule": "U.S.–Colombia Trade Promotion Agreement rates for qualifying U.S. goods; Colombia’s MFN tariff (with the Andean price band on some feed) otherwise",
+      "usTradeAgreement": "U.S.–Colombia Trade Promotion Agreement (TPA)",
+      "exportsUsd": 1191043198,
+      "priorExportsUsd": 990845787,
+      "sharePct": 8.7,
+      "changePct": 20.2,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 9955307,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10–15%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 9883069,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10–15%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 254471205,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303 (DDGS 2303.30)"
+        },
+        "2304": {
+          "exportsUsd": 830296240,
+          "rate": "Free (TPA)",
+          "normalRate": "15%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 2586370,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10–15%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 98898,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10–15%",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 83752109,
+          "rate": "Mostly free (TPA)",
+          "normalRate": "10–20% (dog & cat food); 5–15% other feed",
+          "basis": "U.S.–Colombia TPA (in force May 15, 2012): soybean meal duty-free from entry into force; Colombia normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309; animal feeds entered under duty-free TPA quotas being phased out"
+        }
+      },
+      "profile": {
+        "headline": "Colombia is the third-largest buyer and grew 20% in 2025, mainly on soybean meal, which has entered duty-free under the TPA since 2012 against a 15% normal rate. Other feed lines got duty-free quotas that have mostly phased out; check the trade.gov FTA Tariff Tool for the exact line.",
+        "mainProducts": "Soybean meal (2304) · Starch residues, beet pulp & distillers' grains (2303)",
+        "tariffNow": "Free for soybean meal (TPA); other feed mostly duty-free after phase-out",
+        "regulator": {
+          "name": "Instituto Colombiano Agropecuario (ICA)",
+          "url": "https://www.ica.gov.co/importacion-y-exportacion/procedimientos-importacion/procedimiento-de-importacion-de-animales-producto/alimentos-para-animales",
+          "requirement": "The importer and each feed product must be registered with ICA (registration asks for a certificate of free sale), and feed with animal-origin ingredients needs an ICA zoosanitary import document (DZI) for each shipment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Colombia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/colombia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam’s MFN tariff (no U.S. trade agreement in force)",
+      "usTradeAgreement": null,
+      "exportsUsd": 719768977,
+      "priorExportsUsd": 710660348,
+      "sharePct": 5.3,
+      "changePct": 1.3,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 217763337,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 1327548,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 281908102,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303 (DDGS 2303.30 0%)"
+        },
+        "2304": {
+          "exportsUsd": 164471057,
+          "rate": "0–2% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00 (4 national lines)"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 1248597,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 384294,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 52666042,
+          "rate": "7% dog & cat food; 0–3% other feed (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam buys U.S. DDGS, meat and fish meal and soybean meal for its pig, poultry and fish feed mills at MFN rates that are already 0–2%; only retail pet food (7%) pays a real tariff. The October 2025 U.S.–Viet Nam framework promises preferential access for U.S. farm goods, but no tariff cut has been published.",
+        "mainProducts": "Starch residues, beet pulp & distillers' grains (2303) · Meat & fish meal (2301)",
+        "tariffNow": "Free or near-free on meal and DDGS; 7% on pet food (MFN)",
+        "regulator": {
+          "name": "Ministry of Agriculture and Environment (livestock and veterinary authorities), via the National Single Window",
+          "url": "https://vnsw.gov.vn/profile/MinistriesDetail.aspx?id=19&item=82",
+          "requirement": "Imported feed is registered for state quality inspection through the National Single Window under Decree 13/2020/ND-CP; animal-origin feed is also quarantined, and plant-origin meals need plant-quarantine clearance."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China’s MFN tariff plus its 10% extra tariff on all U.S. goods; anti-dumping and countervailing duties on DDGS; 2018–19 counter-tariffs on some lines unless excluded",
+      "usTradeAgreement": null,
+      "exportsUsd": 641554025,
+      "priorExportsUsd": 839301393,
+      "sharePct": 4.7,
+      "changePct": -23.6,
+      "status": "raised",
+      "cells": {
+        "2301": {
+          "exportsUsd": 210414701,
+          "rate": "2–5% + 10%",
+          "normalRate": "2–5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 13637518,
+          "rate": "3–5% + 10%",
+          "normalRate": "3–5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 6651176,
+          "rate": "5% + 10%; DDGS also 42.2–53.7% AD + 11.2–12.0% CVD",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2303; DDGS (2303.30) anti-dumping and countervailing duties continued from Jan 12, 2023 for five years (MOFCOM Announcements No. 1 and 2 of 2023)"
+        },
+        "2304": {
+          "exportsUsd": 1747912,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 29900,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 409008,
+          "rate": "5% + 10%",
+          "normalRate": "5%",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 408663810,
+          "rate": "15% + 10% (dog & cat food); 5–6.5% + 10% other feed",
+          "normalRate": "15% (dog & cat food); 5–6.5% other feed",
+          "basis": "China MFN rate (WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023) + 10% extra tariff on U.S. goods (Tariff Commission Announcement No. 7 of 2025, suspension extended by No. 6 of 2026), HS 2309.10/2309.90; some lines also on China’s 2018–19 counter-tariff lists unless the importer has an exclusion (valid to Dec 31, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "China is now mainly a pet-food and animal-meal market for the U.S.: its anti-dumping and countervailing duties have all but shut out U.S. DDGS ($7 million in 2025), and the 10% extra tariff on all U.S. goods sits on top of every line. Exports fell 24% in 2025.",
+        "mainProducts": "Pet food & prepared animal feed (2309) · Meat & fish meal (2301)",
+        "tariffNow": "MFN (5% meal & DDGS, 15% pet food) + 10%; DDGS also AD/CVD",
+        "regulator": {
+          "name": "General Administration of Customs (GACC) and Ministry of Agriculture and Rural Affairs (MARA)",
+          "url": "https://www.gov.cn/zhengce/2018-11/23/content_5723442.htm",
+          "requirement": "Feed and pet food must come from a U.S. producer registered with GACC under its import feed inspection and quarantine rules, and pet food and compound feed also need a MARA import feed registration certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff (Combined Nomenclature 2026), plus a 0% U.S. tariff-rate quota for some feed preparations under Regulation (EU) 2026/1455",
+      "usTradeAgreement": null,
+      "exportsUsd": 579901128,
+      "priorExportsUsd": 711852436,
+      "sharePct": 4.2,
+      "changePct": -18.5,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 372,
+          "country": "Ireland",
+          "exportsUsd": 190394046,
+          "priorExportsUsd": 281147524,
+          "changePct": -32.3
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 105733020,
+          "priorExportsUsd": 77232997,
+          "changePct": 36.9
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 89137290,
+          "priorExportsUsd": 88135095,
+          "changePct": 1.1
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 60957487,
+          "priorExportsUsd": 55640924,
+          "changePct": 9.6
+        },
+        {
+          "countryCode": 616,
+          "country": "Poland",
+          "exportsUsd": 30145471,
+          "priorExportsUsd": 20936055,
+          "changePct": 44
+        }
+      ],
+      "cells": {
+        "2301": {
+          "exportsUsd": 6195029,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2301 10 00 / 2301 20 00"
+        },
+        "2302": {
+          "exportsUsd": 3114707,
+          "rate": "€44–89/t (5.1% leguminous)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2302 (by starch content)"
+        },
+        "2303": {
+          "exportsUsd": 227704187,
+          "rate": "Free (corn gluten meal €320/t)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2303 30 00 (DDGS) and 2303 10 19 (corn gluten feed) free; 2303 10 11 (over 40% protein) €320/t"
+        },
+        "2304": {
+          "exportsUsd": 102896850,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2304 00 00"
+        },
+        "2305": {
+          "exportsUsd": 5500,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2305 00 00"
+        },
+        "2306": {
+          "exportsUsd": 2894854,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2306 (olive-oil cake over 3% oil €48/t)"
+        },
+        "2307": {
+          "exportsUsd": 1247175,
+          "rate": "Free (wine lees over 7.9% alcohol €1.62/% vol/hl)",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2307 00"
+        },
+        "2308": {
+          "exportsUsd": 7355166,
+          "rate": "0–1.6%",
+          "normalRate": null,
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2308 00"
+        },
+        "2309": {
+          "exportsUsd": 228487660,
+          "rate": "9.6% or €102–948/t by starch & milk content; 0% within 40,000 t U.S. quota",
+          "normalRate": "9.6% or €102–948/t outside the quota",
+          "basis": "EU Combined Nomenclature 2026 (Implementing Regulation (EU) 2025/1926), conventional duty, CN 2309 10 90 / 2309 90 96 9.6%, starch- and milk-based lines per tonne; Regulation (EU) 2026/1455 Annex III quota 09.9007 (2309 10 51, 2309 10 90, 2309 90 31, 2309 90 41, 2309 90 96) from July 1, 2026"
+        }
+      },
+      "profile": {
+        "headline": "The EU, led by Ireland, buys U.S. pet food, distilling and starch residues (DDGS, corn gluten feed) and soybean meal. Oilseed meal and DDGS are duty-free for everyone; pet food and starch- or dairy-containing feed pay 9.6% or a per-tonne duty, but since July 1, 2026 a 40,000-tonne duty-free quota covers several U.S. lines.",
+        "mainProducts": "Pet food & prepared animal feed (2309) · Starch residues, beet pulp & distillers' grains (2303)",
+        "tariffNow": "Free on meal & DDGS; pet food 9.6% or €/t, 0% in a 40,000 t U.S. quota",
+        "regulator": {
+          "name": "European Commission (DG SANTE) and member-state feed authorities",
+          "url": "https://food.ec.europa.eu/safety/animal-feed_en",
+          "requirement": "Pet food and other animal by-products must come from a U.S. establishment on the EU’s list under Regulation (EU) No 142/2011, with an EU health certificate; feed businesses outside the EU need an EU-based representative under the feed hygiene rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 360,
+      "name": "Indonesia",
+      "rule": "Indonesia’s MFN tariff; the U.S.–Indonesia Agreement on Reciprocal Trade (signed Feb. 19, 2026) is not yet in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 546273688,
+      "priorExportsUsd": 618064621,
+      "sharePct": 4,
+      "changePct": -11.6,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 113866798,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 0,
+          "rate": "0–5% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 319463733,
+          "rate": "0–5% (DDGS 5%) (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303"
+        },
+        "2304": {
+          "exportsUsd": 67740071,
+          "rate": "0–5% (MFN; most lines 0%)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00 (4 national lines)"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "5% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 93103,
+          "rate": "5% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "5% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 0,
+          "rate": "5% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 45109983,
+          "rate": "5% dog & cat food; 0–5% other feed (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "Indonesia buys U.S. DDGS and meat and fish meal for poultry and aquaculture feed at MFN rates of 0–5%. The Agreement on Reciprocal Trade it signed with the U.S. on February 19, 2026 must first be ratified by Indonesia’s parliament, so its tariffs on U.S. goods have not changed yet.",
+        "mainProducts": "Starch residues, beet pulp & distillers' grains (2303) · Meat & fish meal (2301)",
+        "tariffNow": "Free on most soybean meal; 5% on DDGS and pet food (MFN)",
+        "regulator": {
+          "name": "Ministry of Agriculture, Directorate General of Livestock and Animal Health",
+          "url": "https://ditjenpkh.pertanian.go.id/",
+          "requirement": "Imported feed needs a feed registration number and an import recommendation from the Ministry of Agriculture; animal-origin meals and pet food also need a veterinary health certificate and quarantine clearance."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Indonesia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/indonesia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 608,
+      "name": "Philippines",
+      "rule": "Philippine MFN tariff (no U.S. trade agreement in force)",
+      "usTradeAgreement": null,
+      "exportsUsd": 535763002,
+      "priorExportsUsd": 360731509,
+      "sharePct": 3.9,
+      "changePct": 48.5,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 10893149,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 235092,
+          "rate": "3–10% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 32114503,
+          "rate": "0–3% (DDGS 1%) (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303"
+        },
+        "2304": {
+          "exportsUsd": 418562404,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "3% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 19237,
+          "rate": "3–15% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "3% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 4188607,
+          "rate": "3% (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 69750010,
+          "rate": "5% dog & cat food; 0–35% other feed (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "The Philippines is almost entirely a soybean-meal market for this chapter, duty-free at MFN, and U.S. sales rose 49% in 2025. A U.S.–Philippines reciprocal trade deal was announced in July 2025, but no Philippine tariff change on U.S. goods has been published.",
+        "mainProducts": "Soybean meal (2304) · Pet food & prepared animal feed (2309)",
+        "tariffNow": "Free on soybean meal; 5% on pet food (MFN)",
+        "regulator": {
+          "name": "Bureau of Animal Industry (BAI)",
+          "url": "https://www.bai.gov.ph/",
+          "requirement": "The importer must be registered with BAI as a feed importer and get a sanitary and phytosanitary (SPS) import clearance for each shipment; prepared feeds also need BAI product registration."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Philippines import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/philippines-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS FTA rates for qualifying U.S. goods; Korea’s MFN tariff otherwise",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 474843485,
+      "priorExportsUsd": 518968185,
+      "sharePct": 3.5,
+      "changePct": -8.5,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 12953624,
+          "rate": "Free (KORUS)",
+          "normalRate": "5–9%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 361830,
+          "rate": "Free (KORUS)",
+          "normalRate": "2–5%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 328397861,
+          "rate": "Free (KORUS)",
+          "normalRate": "0–5%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303 (DDGS 2303.30)"
+        },
+        "2304": {
+          "exportsUsd": 13481485,
+          "rate": "Free (KORUS)",
+          "normalRate": "1.8%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304.00"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": "5%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305.00"
+        },
+        "2306": {
+          "exportsUsd": 273770,
+          "rate": "Free (KORUS)",
+          "normalRate": "0–5%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 1149800,
+          "rate": "Free (KORUS)",
+          "normalRate": "5%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307.00"
+        },
+        "2308": {
+          "exportsUsd": 16634011,
+          "rate": "Mostly free (KORUS)",
+          "normalRate": "5–46.4%",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308.00"
+        },
+        "2309": {
+          "exportsUsd": 101591104,
+          "rate": "Free (KORUS) for pet food; most feed free, some feed supplements under quota",
+          "normalRate": "5% (dog & cat food); 4.2–71% other feed",
+          "basis": "KORUS FTA (in force Mar. 15, 2012): pet food and DDGS duty-free from entry into force, most other farm lines fully phased out by 2026; Korea normal rates from WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "Korea buys mainly U.S. DDGS and other distilling and starch residues, plus pet food. Pet food and DDGS have been duty-free under KORUS since 2012 and most other feed lines have now phased out; without the agreement, Korea charges 5% on pet food and up to 71% on some feed preparations.",
+        "mainProducts": "Starch residues, beet pulp & distillers' grains (2303) · Pet food & prepared animal feed (2309)",
+        "tariffNow": "Free (KORUS) for most lines",
+        "regulator": {
+          "name": "Animal and Plant Quarantine Agency (APQA) and Ministry of Agriculture, Food and Rural Affairs (MAFRA)",
+          "url": "https://www.qia.go.kr/english/",
+          "requirement": "Imported feed is reported and must meet the Control of Livestock and Fish Feed Act; pet food and feed with animal-origin ingredients need the APHIS sanitary certificate agreed with Korea, endorsed before shipping, and pass APQA quarantine."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s MFN tariff (the 2025 U.S.–Japan agreement did not change these rates)",
+      "usTradeAgreement": null,
+      "exportsUsd": 412459814,
+      "priorExportsUsd": 408368287,
+      "sharePct": 3,
+      "changePct": 1,
+      "status": "unchanged",
+      "cells": {
+        "2301": {
+          "exportsUsd": 14308674,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2301"
+        },
+        "2302": {
+          "exportsUsd": 436758,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2302"
+        },
+        "2303": {
+          "exportsUsd": 132785388,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2303"
+        },
+        "2304": {
+          "exportsUsd": 95787680,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2304"
+        },
+        "2305": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2305"
+        },
+        "2306": {
+          "exportsUsd": 353605,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2306"
+        },
+        "2307": {
+          "exportsUsd": 0,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2307"
+        },
+        "2308": {
+          "exportsUsd": 2244736,
+          "rate": "Free (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2308"
+        },
+        "2309": {
+          "exportsUsd": 166542973,
+          "rate": "Free dog & cat food; 0–12.8% other feed (MFN)",
+          "normalRate": null,
+          "basis": "WTO/World Bank WITS (TRAINS) MFN applied rate reported for 2023, HS 2309.10/2309.90"
+        }
+      },
+      "profile": {
+        "headline": "Japan buys U.S. pet food, distilling and starch residues (DDGS, corn gluten) and soybean meal, and charges no tariff on almost all of this chapter; only a few sugar- or dairy-containing feed preparations pay up to 12.8%. What decides access is MAFF’s pet food and feed safety rules, not the tariff.",
+        "mainProducts": "Pet food & prepared animal feed (2309) · Starch residues, beet pulp & distillers' grains (2303)",
+        "tariffNow": "Free (MFN) on almost all lines",
+        "regulator": {
+          "name": "Ministry of Agriculture, Forestry and Fisheries (MAFF)",
+          "url": "https://www.maff.go.jp/j/syouan/tikusui/petfood/",
+          "requirement": "Dog and cat food must meet the Pet Food Safety Act standards, livestock feed must meet the Feed Safety Act, and animal-origin products pass animal quarantine."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "2309",
+      "exportsUsd": 1513905932,
+      "rate": "Free (CUSMA); dairy-based feed above Canada’s access quota excepted"
+    },
+    {
+      "market": "Colombia",
+      "heading": "2304",
+      "exportsUsd": 830296240,
+      "rate": "Free (TPA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2304",
+      "exportsUsd": 814266174,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2303",
+      "exportsUsd": 544152358,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "2309",
+      "exportsUsd": 429744432,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Philippines",
+      "heading": "2304",
+      "exportsUsd": 418562404,
+      "rate": "Free (MFN)"
+    },
+    {
+      "market": "China",
+      "heading": "2309",
+      "exportsUsd": 408663810,
+      "rate": "15% + 10% (dog & cat food); 5–6.5% + 10% other feed"
+    },
+    {
+      "market": "Canada",
+      "heading": "2304",
+      "exportsUsd": 373676261,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in 2026. For the EU they come from the 2026 Combined Nomenclature (Implementing Regulation (EU) 2025/1926); for the other markets, from the MFN applied rates each country reported to the WTO/World Bank WITS (TRAINS) database for 2023, its latest reported year, with any 2025–2026 change on U.S. goods added from the official text.",
+    "Each cell covers a whole four-digit heading, so it shows the range across its six-digit lines and names the main line where they differ (soybean meal 2304.00, DDGS 2303.30, dog and cat food 2309.10, other prepared feed 2309.90).",
+    "Trade-agreement rates (USMCA/CUSMA, the Colombia TPA, KORUS) apply only to goods that meet the agreement’s rules of origin; the normal (MFN) rate is shown beside them. For Colombia and Korea, the phase-out status of individual feed lines was taken from the agreements’ summaries; check the trade.gov FTA Tariff Tool for the exact line.",
+    "China’s 10% extra tariff on U.S. goods, its anti-dumping and countervailing duties on DDGS and its 2018–19 counter-tariffs are added on top of the MFN rate; their history and dates are on Tariff updates.",
+    "National 8–10-digit lines, specific (per-tonne) duties and quota rates can differ from the ranges shown; check the market’s own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 23, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS TRAINS, MFN applied rates, HS 23, reported 2023",
+      "document": "World Integrated Trade Solution, TRAINS tariff data",
+      "title": "MFN applied tariff rates by HS six-digit subheading, Chapter 23, for Canada, Mexico, Colombia, Viet Nam, China, Indonesia, the Philippines, Korea and Japan",
+      "signed": null,
+      "published": "2026-11-18",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-cn-2026",
+      "publisher": "EUR-Lex",
+      "citation": "Implementing Regulation (EU) 2025/1926",
+      "document": "Commission Implementing Regulation (EU) 2025/1926",
+      "title": "Amending Annex I to Council Regulation (EEC) No 2658/87 on the tariff and statistical nomenclature and on the Common Customs Tariff (Combined Nomenclature 2026)",
+      "signed": null,
+      "published": "2025-10-31",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1926/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation (EU) 2026/1455",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America and opening of tariff quotas (Annex III, quota 09.9007 for certain animal feed preparations)",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Tariff Commission Announcement No. 7 of 2025",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-mofcom-ddgs-ad-2023",
+      "publisher": "Ministry of Commerce (PRC)",
+      "citation": "MOFCOM Announcement No. 2 of 2023",
+      "document": "MOFCOM Announcement No. 2 of 2023",
+      "title": "Expiry review ruling on the anti-dumping measures on distillers’ dried grains originating in the United States (continued for five years from Jan 12, 2023)",
+      "signed": null,
+      "published": "2023-01-11",
+      "url": "https://cacs.mofcom.gov.cn/cacscms/article/jkdc?articleId=175469&type=1"
+    },
+    {
+      "id": "ustr-colombia-ag",
+      "publisher": "USTR",
+      "citation": "USTR, U.S.–Colombia TPA: agriculture",
+      "document": "Expanding Markets for America’s Farmers and Ranchers (U.S.–Colombia Trade Promotion Agreement)",
+      "title": "U.S.–Colombia TPA benefits for agriculture (soybean meal duty-free on entry into force; duty-free quotas for animal feeds)",
+      "signed": null,
+      "published": "2012-05-15",
+      "url": "https://ustr.gov/uscolombiatpa/agriculture"
+    },
+    {
+      "id": "ustr-korus-processed",
+      "publisher": "USTR",
+      "citation": "USTR, KORUS benefits to processed food",
+      "document": "Benefits of the U.S.–South Korea Trade Agreement to the Processed Food Industries",
+      "title": "KORUS: Korea’s 5% tariff on pet food goes to zero immediately",
+      "signed": null,
+      "published": "2012-03-15",
+      "url": "https://ustr.gov/uskoreafta/processed_foods"
+    },
+    {
+      "id": "ustr-vn-framework",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, Oct. 26, 2025",
+      "document": "Fact Sheet: The United States and Viet Nam Reach a Framework for an Agreement on Reciprocal, Fair, and Balanced Trade",
+      "title": "U.S.–Viet Nam framework: preferential market access for substantially all U.S. industrial and agricultural exports",
+      "signed": null,
+      "published": "2025-10-26",
+      "url": "https://ustr.gov/about/policy-offices/press-office/fact-sheets/2025/october/fact-sheet-united-states-and-viet-nam-reach-framework-agreement-reciprocal-fair-and-balanced-trade"
+    }
+  ],
+  "coverageNote": "The 10 markets shown take 68% of 2025 U.S. Chapter 23 exports. A customs union (the EU) is one market: its members share one tariff."
+}

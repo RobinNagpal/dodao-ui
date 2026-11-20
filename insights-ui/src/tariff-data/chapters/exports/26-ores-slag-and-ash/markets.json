@@ -1,0 +1,1601 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 26,
+    "padded": "26",
+    "slug": "26-ores-slag-and-ash",
+    "title": "Ores, Slag and Ash"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/26-ores-slag-and-ash/markets",
+    "h1": "HTS Chapter 26: Ores, Slag and Ash — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariff on U.S. Copper Concentrate & Iron Ore by Country (HTS Ch. 26) | KoalaGains",
+      "shortDescription": "What Mexico, Canada, the EU, Korea, Japan, China, the UK and Taiwan charge on U.S. copper, zinc, lead and moly concentrate, iron ore and slag.",
+      "keywords": [
+        "iron ore tariff",
+        "copper concentrate tariff",
+        "china iron ore tariff",
+        "copper concentrate china",
+        "zinc concentrate tariff",
+        "tariff on us ore"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "Seven of the eight largest markets let U.S. ores, concentrates, slag and ash in **duty-free**. Mexico and Canada charge 0% under USMCA (and 0% as their normal rate), Korea under KORUS, and the EU, Japan, the UK and Taiwan charge 0% on every Chapter 26 line from any supplier. **China** is the exception: its normal rate is 0% on ores and 4% on slag and ash, but U.S. goods add the 10% extra duty and, unless the importer holds an exclusion, a 2018–2019 counter-tariff of 10–25%. That makes **35%** on copper and zinc concentrate and iron ore pellets, 20% on lead and molybdenum concentrate and 10% on iron ore fines. With tariffs this low, access depends on the buyer's rules: waste-import controls for slag and residues, China's ban on solid-waste imports and the EU carbon border mechanism for iron ore pellets (see each market's regulator).",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "2601",
+      "label": "Iron ore & concentrates",
+      "shortLabel": "Iron ore"
+    },
+    {
+      "heading": "2602",
+      "label": "Manganese ore",
+      "shortLabel": "Manganese"
+    },
+    {
+      "heading": "2603",
+      "label": "Copper ore & concentrates",
+      "shortLabel": "Copper"
+    },
+    {
+      "heading": "2604",
+      "label": "Nickel ore",
+      "shortLabel": "Nickel"
+    },
+    {
+      "heading": "2605",
+      "label": "Cobalt ore",
+      "shortLabel": "Cobalt"
+    },
+    {
+      "heading": "2606",
+      "label": "Bauxite (aluminum ore)",
+      "shortLabel": "Bauxite"
+    },
+    {
+      "heading": "2607",
+      "label": "Lead ore & concentrates",
+      "shortLabel": "Lead"
+    },
+    {
+      "heading": "2608",
+      "label": "Zinc ore & concentrates",
+      "shortLabel": "Zinc"
+    },
+    {
+      "heading": "2609",
+      "label": "Tin ore",
+      "shortLabel": "Tin"
+    },
+    {
+      "heading": "2610",
+      "label": "Chromium ore (chromite)",
+      "shortLabel": "Chromite"
+    },
+    {
+      "heading": "2611",
+      "label": "Tungsten ore & concentrates",
+      "shortLabel": "Tungsten"
+    },
+    {
+      "heading": "2612",
+      "label": "Uranium & thorium ore",
+      "shortLabel": "Uranium/thorium"
+    },
+    {
+      "heading": "2613",
+      "label": "Molybdenum ore & concentrates",
+      "shortLabel": "Molybdenum"
+    },
+    {
+      "heading": "2614",
+      "label": "Titanium ore (ilmenite, rutile)",
+      "shortLabel": "Titanium"
+    },
+    {
+      "heading": "2615",
+      "label": "Niobium, tantalum, vanadium & zirconium ores",
+      "shortLabel": "Nb/Ta/V/Zr"
+    },
+    {
+      "heading": "2616",
+      "label": "Silver, gold & other precious-metal ores",
+      "shortLabel": "Precious metal"
+    },
+    {
+      "heading": "2617",
+      "label": "Other ores (antimony, beryllium)",
+      "shortLabel": "Other ores"
+    },
+    {
+      "heading": "2618",
+      "label": "Granulated slag (slag sand)",
+      "shortLabel": "Slag sand"
+    },
+    {
+      "heading": "2619",
+      "label": "Iron & steel slag, dross & scale",
+      "shortLabel": "Steel slag"
+    },
+    {
+      "heading": "2620",
+      "label": "Metal-bearing slag, ash & residues",
+      "shortLabel": "Metal residues"
+    },
+    {
+      "heading": "2621",
+      "label": "Other slag & ash (incinerator ash, kelp)",
+      "shortLabel": "Other ash"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin. Mexico's MFN rate on every Chapter 26 line is also 0%, and the chapter was not part of Mexico's January 1, 2026 tariff increases",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 2417815181,
+      "priorExportsUsd": 1833670228,
+      "sharePct": 25.9,
+      "changePct": 31.9,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 661801,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2601.12 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2602": {
+          "exportsUsd": 82497,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2602.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2603": {
+          "exportsUsd": 2275777082,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2603.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2604": {
+          "exportsUsd": 4320,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2604.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2605.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2606": {
+          "exportsUsd": 3346205,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2606.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2607": {
+          "exportsUsd": 26619713,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2607.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2608": {
+          "exportsUsd": 2797,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2608.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2609": {
+          "exportsUsd": 42906,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2609.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2610": {
+          "exportsUsd": 640408,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2610.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2611.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2612.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2613": {
+          "exportsUsd": 87964148,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2613.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2614": {
+          "exportsUsd": 3352445,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2614.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2615": {
+          "exportsUsd": 8807269,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2615.10 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2616": {
+          "exportsUsd": 227668,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2616.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2617": {
+          "exportsUsd": 1476792,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2617.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2618": {
+          "exportsUsd": 340898,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2618.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2619": {
+          "exportsUsd": 1695041,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2619.00 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2620": {
+          "exportsUsd": 5859841,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2620.99 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        },
+        "2621": {
+          "exportsUsd": 913350,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Tariff Schedule of Mexico: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2621.90 (2023). Not in Mexico's December 29, 2025 tariff decree"
+        }
+      },
+      "profile": {
+        "headline": "Mexico ($2.42B, up 31.9%) is almost all copper concentrate (2603, $2.28B) for its smelters, plus molybdenum concentrate ($88M). Mexico's normal rate on ores is already 0%, so U.S. ore enters free with or without a USMCA certificate, and its January 2026 tariff increases skipped Chapter 26.",
+        "mainProducts": "Copper ore & concentrates (2603) · Molybdenum ore & concentrates (2613)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SEMARNAT (hazardous waste imports) and SAT importer registry",
+          "url": "https://www.gob.mx/semarnat",
+          "requirement": "Ores and concentrates need no product approval; the importer must be in the importers' registry (Padrón de Importadores). Slag, ash and residues that Mexico classes as hazardous waste need a SEMARNAT import authorization"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff: 0% for U.S.-origin goods that meet the rules of origin; Canada's MFN rate on every Chapter 26 line is also 0%. No Canadian surtax order of 2025 or 2026 lists a Chapter 26 good",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2403484588,
+      "priorExportsUsd": 2298722199,
+      "sharePct": 25.8,
+      "changePct": 4.6,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 410943351,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2601.12 (2023). Not on any Canadian surtax list"
+        },
+        "2602": {
+          "exportsUsd": 523529,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2602.00 (2023). Not on any Canadian surtax list"
+        },
+        "2603": {
+          "exportsUsd": 774370691,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2603.00 (2023). Not on any Canadian surtax list"
+        },
+        "2604": {
+          "exportsUsd": 148301386,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2604.00 (2023). Not on any Canadian surtax list"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2605.00 (2023). Not on any Canadian surtax list"
+        },
+        "2606": {
+          "exportsUsd": 2491109,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2606.00 (2023). Not on any Canadian surtax list"
+        },
+        "2607": {
+          "exportsUsd": 315952251,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2607.00 (2023). Not on any Canadian surtax list"
+        },
+        "2608": {
+          "exportsUsd": 534626116,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2608.00 (2023). Not on any Canadian surtax list"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2609.00 (2023). Not on any Canadian surtax list"
+        },
+        "2610": {
+          "exportsUsd": 2935177,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2610.00 (2023). Not on any Canadian surtax list"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2611.00 (2023). Not on any Canadian surtax list"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2612.10 (2023). Not on any Canadian surtax list"
+        },
+        "2613": {
+          "exportsUsd": 19134880,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2613.10 (2023). Not on any Canadian surtax list"
+        },
+        "2614": {
+          "exportsUsd": 476284,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2614.00 (2023). Not on any Canadian surtax list"
+        },
+        "2615": {
+          "exportsUsd": 3347354,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2615.10 (2023). Not on any Canadian surtax list"
+        },
+        "2616": {
+          "exportsUsd": 1153701,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2616.90 (2023). Not on any Canadian surtax list"
+        },
+        "2617": {
+          "exportsUsd": 434883,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2617.90 (2023). Not on any Canadian surtax list"
+        },
+        "2618": {
+          "exportsUsd": 14625401,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2618.00 (2023). Not on any Canadian surtax list"
+        },
+        "2619": {
+          "exportsUsd": 14786913,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2619.00 (2023). Not on any Canadian surtax list"
+        },
+        "2620": {
+          "exportsUsd": 139416909,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2620.99 (2023). Not on any Canadian surtax list"
+        },
+        "2621": {
+          "exportsUsd": 19964653,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA Tariff Schedule of Canada: 0% for originating goods; WITS/TRAINS MFN 0% for HS 2621.90 (2023). Not on any Canadian surtax list"
+        }
+      },
+      "profile": {
+        "headline": "Canada ($2.40B, up 4.6%) buys copper concentrate ($774M), zinc concentrate ($535M), iron ore, mostly pellets ($411M), lead concentrate ($316M), nickel concentrate ($148M) and metal-bearing residues ($139M) for its smelters and steel mills. All of it enters free, and none of Canada's counter-tariff orders of 2025 or 2026 lists a Chapter 26 good.",
+        "mainProducts": "Copper ore & concentrates (2603) · Zinc ore & concentrates (2608)",
+        "tariffNow": "Free (CUSMA)",
+        "regulator": {
+          "name": "Environment and Climate Change Canada (hazardous waste and hazardous recyclable material permits)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2021-25/",
+          "requirement": "Ores and concentrates need no import permit. Slag, ash or residues that count as hazardous waste or hazardous recyclable material need a permit under the Cross-border Movement of Hazardous Waste and Hazardous Recyclable Material Regulations before they enter"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common customs tariff: 0% on every Chapter 26 line for all suppliers (TARIC). Agglomerated iron ore (CN 2601 12 00) is covered by the carbon border adjustment mechanism (CBAM) from January 1, 2026",
+      "usTradeAgreement": null,
+      "exportsUsd": 1520976788,
+      "priorExportsUsd": 1239122794,
+      "sharePct": 16.3,
+      "changePct": 22.7,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 711137520,
+          "priorExportsUsd": 591447733,
+          "changePct": 20.2
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 268845760,
+          "priorExportsUsd": 127956959,
+          "changePct": 110.1
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 234400322,
+          "priorExportsUsd": 176209591,
+          "changePct": 33
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 213517168,
+          "priorExportsUsd": 230547112,
+          "changePct": -7.4
+        },
+        {
+          "countryCode": 246,
+          "country": "Finland",
+          "exportsUsd": 35567112,
+          "priorExportsUsd": 50837658,
+          "changePct": -30
+        }
+      ],
+      "cells": {
+        "2601": {
+          "exportsUsd": 76764465,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (checked November 19, 2026): third-country duty 0% for CN 2601 12 00; agglomerated iron ore is a CBAM good from January 1, 2026 (Regulation (EU) 2023/956)"
+        },
+        "2602": {
+          "exportsUsd": 702650,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2602.00 (2023)"
+        },
+        "2603": {
+          "exportsUsd": 113077031,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2603.00 (2023)"
+        },
+        "2604": {
+          "exportsUsd": 2031581,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2604.00 (2023)"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2605.00 (2023)"
+        },
+        "2606": {
+          "exportsUsd": 472081,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2606.00 (2023)"
+        },
+        "2607": {
+          "exportsUsd": 38495733,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2607.00 (2023)"
+        },
+        "2608": {
+          "exportsUsd": 401860027,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (checked November 19, 2026): third-country duty 0% for CN 2608 00 00"
+        },
+        "2609": {
+          "exportsUsd": 3093134,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2609.00 (2023)"
+        },
+        "2610": {
+          "exportsUsd": 8168,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2610.00 (2023)"
+        },
+        "2611": {
+          "exportsUsd": 1208042,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2611.00 (2023)"
+        },
+        "2612": {
+          "exportsUsd": 3197,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2612.10 (2023)"
+        },
+        "2613": {
+          "exportsUsd": 664775567,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "TARIC (checked November 19, 2026): third-country duty 0% for CN 2613 10 00"
+        },
+        "2614": {
+          "exportsUsd": 203329,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2614.00 (2023)"
+        },
+        "2615": {
+          "exportsUsd": 7676335,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2615.10 (2023)"
+        },
+        "2616": {
+          "exportsUsd": 116307317,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2616.90 (2023)"
+        },
+        "2617": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2617.90 (2023)"
+        },
+        "2618": {
+          "exportsUsd": 107460,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2618.00 (2023)"
+        },
+        "2619": {
+          "exportsUsd": 165501,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2619.00 (2023)"
+        },
+        "2620": {
+          "exportsUsd": 86117696,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2620.99 (2023)"
+        },
+        "2621": {
+          "exportsUsd": 7907474,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff: WITS/TRAINS MFN 0% for HS 2621.90 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The EU ($1.52B, up 22.7%) buys molybdenum concentrate, mostly through the Netherlands ($665M in all), zinc concentrate for smelters in Spain and Belgium ($402M), and gold and copper ores for Germany. Every Chapter 26 line is free from any supplier, so the EU–U.S. framework of July 2026 changed nothing here.",
+        "mainProducts": "Molybdenum ore & concentrates (2613) · Zinc ore & concentrates (2608)",
+        "tariffNow": "Free (0% EU tariff on all suppliers)",
+        "regulator": {
+          "name": "European Commission (CBAM for iron ore pellets; Waste Shipment Regulation for residues)",
+          "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en",
+          "requirement": "Ores and concentrates need no approval. Agglomerated iron ore (2601.12) is a CBAM good: since January 1, 2026 the EU importer must be an authorised CBAM declarant and report the emissions embedded in the pellets. Slag, ash and residues shipped as waste follow Regulation (EU) 2024/1157"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS preferential tariff: 0% for U.S.-origin goods that meet the rules of origin (Korea's MFN rate is 0% on ores and concentrates and 2% on slag and ash)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 1014129207,
+      "priorExportsUsd": 496328949,
+      "sharePct": 10.9,
+      "changePct": 104.3,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 5094,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2601.12 (2023)"
+        },
+        "2602": {
+          "exportsUsd": 367235,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2602.00 (2023)"
+        },
+        "2603": {
+          "exportsUsd": 59344520,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2603.00 (2023)"
+        },
+        "2604": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2604.00 (2023)"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2605.00 (2023)"
+        },
+        "2606": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2606.00 (2023)"
+        },
+        "2607": {
+          "exportsUsd": 174981255,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2607.00 (2023)"
+        },
+        "2608": {
+          "exportsUsd": 282849388,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2608.00 (2023)"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2609.00 (2023)"
+        },
+        "2610": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2610.00 (2023)"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2611.00 (2023)"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2612.10 (2023)"
+        },
+        "2613": {
+          "exportsUsd": 27982258,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2613.10 (2023)"
+        },
+        "2614": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2614.00 (2023)"
+        },
+        "2615": {
+          "exportsUsd": 97120,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2615.10 (2023)"
+        },
+        "2616": {
+          "exportsUsd": 455065821,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2616.90 (2023)"
+        },
+        "2617": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 0% for HS 2617.90 (2023)"
+        },
+        "2618": {
+          "exportsUsd": 80500,
+          "rate": "Free (KORUS)",
+          "normalRate": "2% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 2% for HS 2618.00 (2023)"
+        },
+        "2619": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": "2% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 2% for HS 2619.00 (2023)"
+        },
+        "2620": {
+          "exportsUsd": 13356016,
+          "rate": "Free (KORUS)",
+          "normalRate": "2% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 2% for HS 2620.99 (2023)"
+        },
+        "2621": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": "2% MFN",
+          "basis": "KORUS Tariff Schedule of Korea: duty free for originating goods; WITS/TRAINS MFN 2% for HS 2621.90 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "South Korea ($1.01B, up 104%) buys gold and silver ores and concentrates (2616, $455M), zinc concentrate ($283M) and lead concentrate ($175M) for its smelters. All of it enters free under KORUS; origin certification matters only for slag and ash, which otherwise pay 2%.",
+        "mainProducts": "Silver, gold & other precious-metal ores (2616) · Zinc ore & concentrates (2608)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Korea Customs Service",
+          "url": "https://www.customs.go.kr/english/main.do",
+          "requirement": "Ores and concentrates need no product approval in Korea; customs clears them on the KORUS certification of origin. Slag, ash and residues that Korea treats as waste also need the Ministry of Environment's import permit or report before shipment"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's MFN tariff: 0% on every Chapter 26 line; no U.S. free-trade agreement needed",
+      "usTradeAgreement": null,
+      "exportsUsd": 502972565,
+      "priorExportsUsd": 346436118,
+      "sharePct": 5.4,
+      "changePct": 45.2,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2601.12 (2023). No U.S. free-trade agreement needed"
+        },
+        "2602": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2602.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2603": {
+          "exportsUsd": 111174290,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2603.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2604": {
+          "exportsUsd": 28023,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2604.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2605.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2606": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2606.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2607": {
+          "exportsUsd": 58172378,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2607.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2608": {
+          "exportsUsd": 137782067,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2608.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2609.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2610": {
+          "exportsUsd": 2510,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2610.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2611": {
+          "exportsUsd": 9669,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2611.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2612.10 (2023). No U.S. free-trade agreement needed"
+        },
+        "2613": {
+          "exportsUsd": 124473961,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2613.10 (2023). No U.S. free-trade agreement needed"
+        },
+        "2614": {
+          "exportsUsd": 58626,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2614.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2615": {
+          "exportsUsd": 2199147,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2615.10 (2023). No U.S. free-trade agreement needed"
+        },
+        "2616": {
+          "exportsUsd": 49517091,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2616.90 (2023). No U.S. free-trade agreement needed"
+        },
+        "2617": {
+          "exportsUsd": 59608,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2617.90 (2023). No U.S. free-trade agreement needed"
+        },
+        "2618": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2618.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2619": {
+          "exportsUsd": 6600,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2619.00 (2023). No U.S. free-trade agreement needed"
+        },
+        "2620": {
+          "exportsUsd": 19404309,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2620.99 (2023). No U.S. free-trade agreement needed"
+        },
+        "2621": {
+          "exportsUsd": 84286,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan's customs tariff; WITS/TRAINS MFN 0% for HS 2621.90 (2023). No U.S. free-trade agreement needed"
+        }
+      },
+      "profile": {
+        "headline": "Japan ($503M, up 45.2%) buys zinc ($138M), molybdenum ($125M), copper ($111M) and lead concentrate ($58M). Japan charges 0% on every Chapter 26 line, unchanged since January 2025.",
+        "mainProducts": "Zinc ore & concentrates (2608) · Molybdenum ore & concentrates (2613)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "Ministry of the Environment and METI (Basel Act import controls)",
+          "url": "https://www.env.go.jp/recycle/yugai/pdf/tebiki_import_R07_0701.pdf",
+          "requirement": "Ores and concentrates need no approval. Slag, ash and residues that are specified hazardous wastes under Japan's Basel Act, such as lead- or arsenic-bearing residues, need import approval, and importers can ask the ministries in advance whether a cargo is covered"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's MFN tariff (0% on ores and concentrates, 4% on slag and ash; no 2026 provisional rates) plus the 10% extra duty on all U.S.-origin goods since May 14, 2025, plus China's 2018–2019 counter-tariffs (10–25%) unless the importer holds an exclusion",
+      "usTradeAgreement": null,
+      "exportsUsd": 369296248,
+      "priorExportsUsd": 1292135185,
+      "sharePct": 4,
+      "changePct": -71.4,
+      "status": "raised",
+      "cells": {
+        "2601": {
+          "exportsUsd": 30612105,
+          "rate": "10% fines; 35% pellets",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2601.12 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on agglomerated ore and pellets (2601.12); fines and concentrate (2601.11) not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2602": {
+          "exportsUsd": 0,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2602.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2603": {
+          "exportsUsd": 100750247,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2603.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on copper ores and concentrates. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2604": {
+          "exportsUsd": 18825,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2604.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2605.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2606": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2606.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2607": {
+          "exportsUsd": 130936944,
+          "rate": "20% (0% + 10% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2607.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 3: 10%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2608": {
+          "exportsUsd": 0,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2608.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on zinc ores and concentrates. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2609.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2610": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2610.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2611.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2612.10 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: not on the 2018–2019 counter-tariff lists. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2613": {
+          "exportsUsd": 90911452,
+          "rate": "20% (0% + 10% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2613.10 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 3: 10% on roasted and unroasted molybdenum ores. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2614": {
+          "exportsUsd": 7917780,
+          "rate": "35% (0% + 25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2614.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25%. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2615": {
+          "exportsUsd": 7906207,
+          "rate": "10–35%",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2615.10 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on zircon (2615.10) and on niobium, tantalum and vanadium ores other than tantalum-niobium raw material. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2616": {
+          "exportsUsd": 3210,
+          "rate": "30–35% (0% + 20–25% + 10%)",
+          "normalRate": "0% MFN",
+          "basis": "China customs tariff: 0% MFN for HS 2616.90 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 2: 20% on silver ores (2616.10); Annex 1: 25% on gold and other precious-metal ores (2616.90). Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2617": {
+          "exportsUsd": 0,
+          "rate": "10–35%",
+          "normalRate": "0–3% MFN",
+          "basis": "China customs tariff: 0–3% MFN for HS 2617.90 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 1: 25% on other ores (2617.90); antimony ores not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2618": {
+          "exportsUsd": 0,
+          "rate": "14–39%",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 2618.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2018 List 2: 25% on manganese slag from iron and steel making; other granulated slag not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2619": {
+          "exportsUsd": 8294,
+          "rate": "39% (4% + 25% + 10%)",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 2619.00 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2018 List 2: 25% since August 23, 2018. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2620": {
+          "exportsUsd": 231184,
+          "rate": "14–39%",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 2620.99 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2018 List 2: 25% on other ash and residues containing metals (2620.99.90); zinc, lead, copper and aluminum residues not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        },
+        "2621": {
+          "exportsUsd": 0,
+          "rate": "14–24%",
+          "normalRate": "4% MFN",
+          "basis": "China customs tariff: 4% MFN for HS 2621.90 (WITS/TRAINS 2023; no 2026 provisional rate); plus the 10% extra duty on all U.S. goods; counter-tariff: 2019 Annex 3: 10% on other slag and ash (2621.90); incinerator ash (2621.10) not listed. Lines lose the counter-tariff only if the importer holds an exclusion (valid until December 31, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "China ($369M, down 71.4% from $1.29B) now buys mainly lead concentrate ($131M), copper concentrate ($101M) and molybdenum concentrate ($91M). U.S. copper and zinc concentrate pay 35% and lead and molybdenum concentrate 20% unless the Chinese importer holds an exclusion, which runs only to December 31, 2026. Iron ore fines pay 10%, pellets 35%.",
+        "mainProducts": "Lead ore & concentrates (2607) · Copper ore & concentrates (2603)",
+        "tariffNow": "35% on copper and zinc concentrate, 20% on lead and moly, unless excluded",
+        "regulator": {
+          "name": "General Administration of Customs and Ministry of Ecology and Environment (solid-waste import ban)",
+          "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202011/t20201125_809835.html",
+          "requirement": "Ores and concentrates need no import licence but are inspected by customs on arrival. Since January 1, 2021 China bans imports of solid waste in any form (Announcement No. 53 of 2020), so slag, ash and residues that customs judges to be waste are refused"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff: 0% on every Chapter 26 line for all suppliers",
+      "usTradeAgreement": null,
+      "exportsUsd": 306710083,
+      "priorExportsUsd": 350831234,
+      "sharePct": 3.3,
+      "changePct": -12.6,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 24594,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2601.12 (2023)"
+        },
+        "2602": {
+          "exportsUsd": 6800,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2602.00 (2023)"
+        },
+        "2603": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2603.00 (2023)"
+        },
+        "2604": {
+          "exportsUsd": 41372,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2604.00 (2023)"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2605.00 (2023)"
+        },
+        "2606": {
+          "exportsUsd": 213647,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2606.00 (2023)"
+        },
+        "2607": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2607.00 (2023)"
+        },
+        "2608": {
+          "exportsUsd": 3755,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2608.00 (2023)"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2609.00 (2023)"
+        },
+        "2610": {
+          "exportsUsd": 2599,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2610.00 (2023)"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2611.00 (2023)"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2612.10 (2023)"
+        },
+        "2613": {
+          "exportsUsd": 303083508,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2613.10 (2023)"
+        },
+        "2614": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2614.00 (2023)"
+        },
+        "2615": {
+          "exportsUsd": 1644762,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2615.10 (2023)"
+        },
+        "2616": {
+          "exportsUsd": 3570,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2616.90 (2023)"
+        },
+        "2617": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2617.90 (2023)"
+        },
+        "2618": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2618.00 (2023)"
+        },
+        "2619": {
+          "exportsUsd": 3000,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2619.00 (2023)"
+        },
+        "2620": {
+          "exportsUsd": 1674476,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2620.99 (2023)"
+        },
+        "2621": {
+          "exportsUsd": 8000,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff; WITS/TRAINS MFN 0% for HS 2621.90 (2023)"
+        }
+      },
+      "profile": {
+        "headline": "The UK ($307M, down 12.6%) buys almost only molybdenum concentrate ($303M). It charges 0% on every Chapter 26 line under the UK Global Tariff, so the U.S.–UK Economic Prosperity Deal had nothing to change here.",
+        "mainProducts": "Molybdenum ore & concentrates (2613) · Metal-bearing slag, ash & residues (2620)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "Environment Agency (waste shipments)",
+          "url": "https://www.gov.uk/guidance/importing-and-exporting-waste",
+          "requirement": "Molybdenum concentrate and other ores need no UK import approval. Slag, ash and residues shipped as waste follow the UK's waste shipment rules, with prior notification and consent for hazardous or amber-list residues"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 490,
+      "name": "Taiwan",
+      "rule": "Taiwan's customs tariff: 0% on every Chapter 26 line for all suppliers; the U.S.–Taiwan Agreement on Reciprocal Trade is not in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 212342218,
+      "priorExportsUsd": 156749410,
+      "sharePct": 2.3,
+      "changePct": 35.5,
+      "status": "unchanged",
+      "cells": {
+        "2601": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2601.12 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2602": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2602.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2603": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2603.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2604": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2604.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2605": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2605.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2606": {
+          "exportsUsd": 38702,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2606.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2607": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2607.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2608": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2608.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2609": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2609.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2610": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2610.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2611": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2611.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2612": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2612.10 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2613": {
+          "exportsUsd": 1049489,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2613.10 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2614": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2614.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2615": {
+          "exportsUsd": 1065524,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2615.10 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2616": {
+          "exportsUsd": 206403194,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2616.90 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2617": {
+          "exportsUsd": 152557,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2617.90 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2618": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2618.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2619": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2619.00 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2620": {
+          "exportsUsd": 3632752,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2620.99 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        },
+        "2621": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Taiwan's customs tariff; WITS/TRAINS MFN 0% for HS 2621.90 (2023). The 2026 Agreement on Reciprocal Trade is not in force and changes nothing here"
+        }
+      },
+      "profile": {
+        "headline": "Taiwan ($212M, up 35.5%) buys gold and silver ores and concentrates (2616, $206M) for precious-metal refining. Taiwan charges 0% on every Chapter 26 line, so the reciprocal trade agreement signed in February 2026 changes nothing for these goods.",
+        "mainProducts": "Silver, gold & other precious-metal ores (2616) · Metal-bearing slag, ash & residues (2620)",
+        "tariffNow": "Free",
+        "regulator": {
+          "name": "Ministry of Environment (industrial waste import permits)",
+          "url": "https://www.moenv.gov.tw/",
+          "requirement": "Precious-metal ores and concentrates need no product approval. Slag, ash and residues imported as industrial waste need a Ministry of Environment import permit"
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Taiwan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/taiwan-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "2603",
+      "exportsUsd": 2275777082,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "2603",
+      "exportsUsd": 774370691,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "2613",
+      "exportsUsd": 664775567,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "2608",
+      "exportsUsd": 534626116,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "2616",
+      "exportsUsd": 455065821,
+      "rate": "Free (KORUS)"
+    },
+    {
+      "market": "Canada",
+      "heading": "2601",
+      "exportsUsd": 410943351,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "2608",
+      "exportsUsd": 401860027,
+      "rate": "Free"
+    },
+    {
+      "market": "Canada",
+      "heading": "2607",
+      "exportsUsd": 315952251,
+      "rate": "Free (CUSMA)"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. They come from the WITS (TRAINS) MFN applied rate for one six-digit subheading per heading, the one with the largest 2025 U.S. exports in that heading (for example 2603.00 for copper concentrate, 2601.12 for iron ore pellets, 2613.10 for roasted molybdenum concentrate and 2616.90 for gold ores), for 2023, the latest year WITS holds. EU rates were checked in TARIC for iron ore pellets, zinc concentrate and roasted molybdenum. National 8–10-digit lines can differ.",
+    "Every market shown except Korea and China has a 0% MFN rate on every Chapter 26 line. Mexico, Canada and Korea show the free-trade-agreement rate; Korea's normal-rate column shows the 2% that slag and ash pay without KORUS origin.",
+    "China's cells add three layers: China's MFN rate (0% on ores, 4% on slag and ash; no Chapter 26 line has a 2026 provisional rate), the 10% extra duty on all U.S. goods, and the 2018–2019 counter-tariff of the line (25%, 20% or 10%, or none). An importer with an exclusion pays only the first two. A range shows that lines in the heading differ.",
+    "Trade agreements that are signed or announced but not in force (Taiwan, Thailand, Malaysia, India) are not applied; see Tariff updates."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 26, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS tariff data (2023)",
+      "document": "WITS TRAINS applied tariff rates, HS six-digit",
+      "title": "World Integrated Trade Solution: MFN applied tariff rates for every Chapter 26 subheading, 2023",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "eu-taric",
+      "publisher": "European Commission (TARIC)",
+      "citation": "TARIC consultation, origin US, November 19, 2026",
+      "document": "TARIC measure information",
+      "title": "TARIC measures for U.S.-origin ores (CN 2601 12 00, 2608 00 00, 2613 10 00): third-country duty 0%; CBAM measure on agglomerated iron ore",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&SimDate=20261119&Area=US&Taric=2601120000&LangDescr=en"
+    },
+    {
+      "id": "eu-cbam",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2023/956",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2023/956 establishing a carbon border adjustment mechanism (Annex I lists agglomerated iron ores, CN 2601 12 00)",
+      "signed": "2023-05-10",
+      "published": "2023-05-16",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/956/oj"
+    },
+    {
+      "id": "eu-wsr",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2024/1157",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2024/1157 on shipments of waste (applies from May 21, 2026)",
+      "signed": "2024-04-11",
+      "published": "2024-04-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1157/oj"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2026-186",
+      "document": "United States Surtax Order (2026)",
+      "title": "United States Surtax Order (2026): surtaxes of 15%, 25% and 50% on listed U.S. goods from September 8, 2026",
+      "signed": "2026-09-04",
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "ca-cbhw",
+      "publisher": "Justice Laws (Canada)",
+      "citation": "SOR/2021-25",
+      "document": "Cross-border Movement of Hazardous Waste and Hazardous Recyclable Material Regulations",
+      "title": "Cross-border Movement of Hazardous Waste and Hazardous Recyclable Material Regulations",
+      "signed": null,
+      "published": "2021-02-17",
+      "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2021-25/"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la LIGIE",
+      "title": "Mexico's decree raising general tariffs from January 1, 2026 (no Chapter 26 line)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025, Annex 1",
+      "document": "2026 Tariff Adjustment Plan, Annex 1 (provisional import rates)",
+      "title": "2026 provisional import rates (no Chapter 26 line has one, so China's MFN rate applies)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Tariff Commission Announcement No. 7 of 2025",
+      "title": "Extra tariff on U.S. goods cut to 10% from May 14, 2025",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-2018-list2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2018",
+      "document": "Tariff Commission Announcement No. 7 of 2018 and its List 2",
+      "title": "Extra 25% duty on List 2 of U.S. goods from August 23, 2018 (items 2–4: manganese slag 2618.0010, iron and steel slag, dross and scale 2619.0000, other metal-bearing ash and residues 2620.9990)",
+      "signed": null,
+      "published": "2018-08-08",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201808/t20180808_2983770.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Tariff Commission Announcement No. 3 of 2019 and Annexes 1–4 (25%, 20%, 10% and 5% lists)",
+      "title": "Higher additional tariffs on part of the U.S. goods on the US$60 billion list, from June 1, 2019 (Annex 1: iron ore pellets, manganese, copper, nickel, zinc and titanium ores, zircon, gold and other ores at 25%; Annex 2: silver ores at 20%; Annex 3: lead and molybdenum ores and other slag and ash at 10%)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2020-exclusion",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Tariff Commission Announcement No. 2 of 2020",
+      "title": "Market-based purchase exclusion process for U.S. goods subject to China's additional tariffs",
+      "signed": null,
+      "published": "2020-02-17",
+      "url": "https://www.gov.cn/zhengce/zhengceku/2020-02/18/content_5480381.htm"
+    },
+    {
+      "id": "cn-mee-53-2020",
+      "publisher": "Ministry of Ecology and Environment (PRC)",
+      "citation": "MEE/MOFCOM/NDRC/GACC Announcement No. 53 of 2020",
+      "document": "Announcement No. 53 of 2020",
+      "title": "Announcement on the complete ban on imports of solid waste (from January 1, 2021)",
+      "signed": "2020-11-24",
+      "published": "2020-11-25",
+      "url": "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202011/t20201125_809835.html"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 94% of 2025 U.S. Chapter 26 exports. A customs union (the EU) is one market: its members share one tariff."
+}

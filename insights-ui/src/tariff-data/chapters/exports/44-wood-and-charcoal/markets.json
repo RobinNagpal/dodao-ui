@@ -1,0 +1,1643 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 44,
+    "padded": "44",
+    "slug": "44-wood-and-charcoal",
+    "title": "Wood and articles of wood; wood charcoal"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/44-wood-and-charcoal/markets",
+    "h1": "HTS Chapter 44: Wood and articles of wood; wood charcoal — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Lumber, Logs & Wood Pellets by Country (2026)",
+      "shortDescription": "What Canada, the UK, Mexico, China, Viet Nam, the EU and Japan charge on U.S. lumber, logs, pellets and plywood in 2026, and the approval each needs.",
+      "keywords": [
+        "china tariffs on us lumber",
+        "canada tariff on us lumber",
+        "does canada have a tariff on us lumber",
+        "china wood tariff",
+        "eudr wood products",
+        "wood pellets export to europe",
+        "japan tariff lumber"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "What each large market charges on U.S. wood in 2026, next to what the U.S. shipped there in 2025; the EU counts as one market because its members share one tariff. For the three products that matter most, tariffs are low: logs enter every market shown free except China (10%), pellets everywhere except China and Viet Nam (3%), and lumber everywhere except Canada (25% on softwood), China (10%) and Japan (4.8% on S-P-F and pine). The costs are in panels: Canada charges 50% on U.S. plywood, and Japan 6% on plywood and OSB. For logs and lumber, the buyer’s plant-health rules usually decide more than the tariff, and for EU buyers the Deforestation Regulation from December 30, 2026.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "4401",
+      "label": "Fuel wood, wood chips, sawdust & wood pellets",
+      "shortLabel": "Fuel wood & pellets"
+    },
+    {
+      "heading": "4402",
+      "label": "Wood charcoal, incl. shell & bamboo charcoal",
+      "shortLabel": "Wood charcoal"
+    },
+    {
+      "heading": "4403",
+      "label": "Logs and wood in the rough",
+      "shortLabel": "Logs"
+    },
+    {
+      "heading": "4404",
+      "label": "Hoopwood, split poles, stakes & sticks",
+      "shortLabel": "Hoopwood & stakes"
+    },
+    {
+      "heading": "4405",
+      "label": "Wood wool (excelsior) & wood flour",
+      "shortLabel": "Wood wool & flour"
+    },
+    {
+      "heading": "4406",
+      "label": "Railway sleepers (cross-ties)",
+      "shortLabel": "Railway ties"
+    },
+    {
+      "heading": "4407",
+      "label": "Sawn lumber: softwood, hardwood & tropical",
+      "shortLabel": "Lumber"
+    },
+    {
+      "heading": "4408",
+      "label": "Veneer sheets",
+      "shortLabel": "Veneer"
+    },
+    {
+      "heading": "4409",
+      "label": "Mouldings, flooring strips & continuously shaped wood",
+      "shortLabel": "Mouldings"
+    },
+    {
+      "heading": "4410",
+      "label": "Particle board & OSB",
+      "shortLabel": "OSB & particle board"
+    },
+    {
+      "heading": "4411",
+      "label": "Fiberboard & MDF",
+      "shortLabel": "Fiberboard & MDF"
+    },
+    {
+      "heading": "4412",
+      "label": "Plywood, LVL & veneered panels",
+      "shortLabel": "Plywood"
+    },
+    {
+      "heading": "4413",
+      "label": "Densified wood",
+      "shortLabel": "Densified wood"
+    },
+    {
+      "heading": "4414",
+      "label": "Wooden picture & mirror frames",
+      "shortLabel": "Frames"
+    },
+    {
+      "heading": "4415",
+      "label": "Pallets, crates, boxes & cable drums",
+      "shortLabel": "Pallets & crates"
+    },
+    {
+      "heading": "4416",
+      "label": "Barrels, casks & staves",
+      "shortLabel": "Barrels"
+    },
+    {
+      "heading": "4417",
+      "label": "Tools, tool handles & shoe lasts",
+      "shortLabel": "Tools & handles"
+    },
+    {
+      "heading": "4418",
+      "label": "Builders' joinery: doors, windows, flooring, glulam",
+      "shortLabel": "Joinery"
+    },
+    {
+      "heading": "4419",
+      "label": "Wooden tableware & kitchenware",
+      "shortLabel": "Kitchenware"
+    },
+    {
+      "heading": "4420",
+      "label": "Wood marquetry, jewelry boxes & ornaments",
+      "shortLabel": "Ornaments & boxes"
+    },
+    {
+      "heading": "4421",
+      "label": "Other articles of wood",
+      "shortLabel": "Other articles"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA (USMCA) duty-free entry, plus Canada’s 2026 surtax on listed U.S.-origin goods (no CUSMA exemption)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2063092727,
+      "priorExportsUsd": 2358105964,
+      "sharePct": 23.5,
+      "changePct": -12.5,
+      "status": "raised",
+      "cells": {
+        "4401": {
+          "exportsUsd": 128040894,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4402": {
+          "exportsUsd": 13758074,
+          "rate": "Free (CUSMA) + 50% surtax on 4402.90 charcoal",
+          "normalRate": "MFN 0–6.5% (WITS/TRAINS 2023) when CUSMA is not claimed",
+          "basis": "United States Surtax Order (2026), SOR/2026-186, Schedule 3: 50% on U.S.-origin goods of tariff items 4402.90.10 and 4402.90.90 (lump and briquette charcoal) from September 8, 2026, on top of the CUSMA rate. Bamboo and shell charcoal (4402.10, 4402.20) are not listed."
+        },
+        "4403": {
+          "exportsUsd": 278468848,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4404": {
+          "exportsUsd": 3665534,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4405": {
+          "exportsUsd": 1425970,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4406": {
+          "exportsUsd": 136250273,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4407": {
+          "exportsUsd": 379689911,
+          "rate": "Free (CUSMA); softwood lumber + 25% surtax",
+          "normalRate": null,
+          "basis": "SOR/2026-186, Schedule 2: 25% on U.S.-origin pine, fir and spruce, S-P-F, hem-fir and other coniferous lumber (4407.11.00–4407.19.00) from September 8, 2026, with no CUSMA exemption. Hardwood lumber (oak, maple, cherry, ash, poplar, 4407.91–4407.99) and tropical lumber are not listed and stay free under CUSMA."
+        },
+        "4408": {
+          "exportsUsd": 145771894,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4409": {
+          "exportsUsd": 41762283,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4410": {
+          "exportsUsd": 142689061,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4411": {
+          "exportsUsd": 88830934,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4412": {
+          "exportsUsd": 146320617,
+          "rate": "Free (CUSMA) + 50% surtax",
+          "normalRate": null,
+          "basis": "SOR/2026-186, Schedule 3: 50% on U.S.-origin plywood (4412.10, 4412.31–4412.39), LVL (4412.41–4412.49), blockboard (4412.51, 4412.52) and other laminated wood (4412.91–4412.99) from September 8, 2026. Only 4412.59 (blockboard with coniferous outer plies) is not listed."
+        },
+        "4413": {
+          "exportsUsd": 3022774,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4414": {
+          "exportsUsd": 11727210,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4415": {
+          "exportsUsd": 53411951,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4416": {
+          "exportsUsd": 22580776,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4417": {
+          "exportsUsd": 3803981,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4418": {
+          "exportsUsd": 351853532,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4419": {
+          "exportsUsd": 16725153,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4420": {
+          "exportsUsd": 18923766,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        },
+        "4421": {
+          "exportsUsd": 74369291,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA (USMCA) Annex 2-B, Canada's schedule; Canada's Customs Tariff, 2026: qualifying U.S. wood enters duty-free, and Canada's normal (MFN) rate is also 0% on most Chapter 44 lines (WITS/TRAINS 2023). Not on Canada's 2026 surtax list."
+        }
+      },
+      "profile": {
+        "headline": "Canada buys the widest range of U.S. wood: lumber, joinery such as doors and engineered beams, logs, panels and railway ties. All of it was duty-free under CUSMA until Canada’s 2026 surtax put 25% on U.S. softwood lumber and 50% on plywood, LVL and charcoal from September 8, 2026, answering the U.S. Section 338 tariffs on Canadian wood. Hardwood lumber, logs, pellets, OSB, MDF and joinery are not on the list.",
+        "mainProducts": "Sawn lumber: softwood, hardwood & tropical (4407) · Builders' joinery: doors, windows, flooring, glulam (4418)",
+        "tariffNow": "Free (CUSMA), but 25% on softwood lumber and 50% on plywood and charcoal",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA)",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "CFIA’s Automated Import Reference System (AIRS) gives the plant-health conditions for each U.S. wood product and state of origin. Kiln-dried lumber and panels usually move freely; logs with bark, firewood and some species from regulated U.S. areas need a phytosanitary certificate or treatment."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (no U.S. trade agreement; the 2025 U.S.–UK Economic Prosperity Deal changed nothing for wood)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1686803933,
+      "priorExportsUsd": 1629355950,
+      "sharePct": 19.2,
+      "changePct": 3.5,
+      "status": "unchanged",
+      "cells": {
+        "4401": {
+          "exportsUsd": 1450120777,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on all 4401 lines, including wood pellets (4401.31.00.00), chips and sawdust."
+        },
+        "4402": {
+          "exportsUsd": 1522738,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4403": {
+          "exportsUsd": 2171442,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4404": {
+          "exportsUsd": 472652,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4405": {
+          "exportsUsd": 208148,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4406": {
+          "exportsUsd": 0,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4407": {
+          "exportsUsd": 93316563,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4408": {
+          "exportsUsd": 2288086,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4409": {
+          "exportsUsd": 236980,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4410": {
+          "exportsUsd": 224988,
+          "rate": "0–6% (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: particle board and OSB lines carry 0% or 6% depending on the 10-digit line."
+        },
+        "4411": {
+          "exportsUsd": 541583,
+          "rate": "0–6% (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: MDF and other fibreboard lines carry 0% or 6% depending on the 10-digit line."
+        },
+        "4412": {
+          "exportsUsd": 408728,
+          "rate": "0–10% (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: plywood and laminated-wood lines carry 0%, 6% or 10% depending on the outer ply and the 10-digit line."
+        },
+        "4413": {
+          "exportsUsd": 30211,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4414": {
+          "exportsUsd": 169187,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4415": {
+          "exportsUsd": 2066641,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        },
+        "4416": {
+          "exportsUsd": 127362697,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on 4416.00.00.00 casks, barrels and staves."
+        },
+        "4417": {
+          "exportsUsd": 54299,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4418": {
+          "exportsUsd": 510286,
+          "rate": "0–2% (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: most joinery lines are 0%; a few (windows, some doors and flooring panels) are 2%."
+        },
+        "4419": {
+          "exportsUsd": 291065,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4420": {
+          "exportsUsd": 514587,
+          "rate": "Low or free (check UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), 2026. Small U.S. trade; the line-level rate was not individually verified, so check the 10-digit commodity code."
+        },
+        "4421": {
+          "exportsUsd": 4292275,
+          "rate": "Free (UK tariff)",
+          "normalRate": null,
+          "basis": "UK Trade Tariff (UK Global Tariff), November 2026: third-country duty 0.00% on every line of the heading; the U.S. has no FTA with the UK and needs none here."
+        }
+      },
+      "profile": {
+        "headline": "The UK is the largest market for U.S. wood pellets: fuel wood and pellets were $1.45 billion in 2025, 86% of what it buys from the U.S. in this chapter. It also buys casks and barrels ($127 million) and hardwood lumber. All three enter duty-free; for pellets, what decides sales is the UK’s biomass sustainability criteria.",
+        "mainProducts": "Fuel wood, wood chips, sawdust & wood pellets (4401) · Barrels, casks & staves (4416)",
+        "tariffNow": "Free on pellets, lumber and barrels (UK tariff)",
+        "regulator": {
+          "name": "Ofgem (Renewables Obligation biomass sustainability)",
+          "url": "https://www.ofgem.gov.uk/environmental-and-social-schemes/renewables-obligation-ro/applicants/biomass-sustainability",
+          "requirement": "Power stations of 1 MW or more that burn biomass for Renewables Obligation support must meet UK land and greenhouse-gas sustainability criteria, report fuel data monthly and file an independent annual audit, so UK buyers ask U.S. pellet mills for sourcing and emissions evidence."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) duty-free entry for qualifying U.S. goods",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 913208754,
+      "priorExportsUsd": 978513394,
+      "sharePct": 10.4,
+      "changePct": -6.7,
+      "status": "unchanged",
+      "cells": {
+        "4401": {
+          "exportsUsd": 2797583,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4402": {
+          "exportsUsd": 959055,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4403": {
+          "exportsUsd": 5402614,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4404": {
+          "exportsUsd": 623081,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4405": {
+          "exportsUsd": 1673600,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4406": {
+          "exportsUsd": 14035557,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 5% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4407": {
+          "exportsUsd": 398446394,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 0–5% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4408": {
+          "exportsUsd": 33685835,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4409": {
+          "exportsUsd": 103051162,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4410": {
+          "exportsUsd": 77737017,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4411": {
+          "exportsUsd": 94475340,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 0–5% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4412": {
+          "exportsUsd": 68578527,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 7% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4413": {
+          "exportsUsd": 4510469,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4414": {
+          "exportsUsd": 259907,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4415": {
+          "exportsUsd": 69666346,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4416": {
+          "exportsUsd": 3809263,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 0–15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4417": {
+          "exportsUsd": 880368,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4418": {
+          "exportsUsd": 11206887,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN up to 15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4419": {
+          "exportsUsd": 3344379,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4420": {
+          "exportsUsd": 1569619,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        },
+        "4421": {
+          "exportsUsd": 16495751,
+          "rate": "Free (USMCA)",
+          "normalRate": "MFN 5–15% (WITS/TRAINS 2023)",
+          "basis": "USMCA Annex 2-B, Mexico's schedule: qualifying U.S. wood enters duty-free. The normal rate shown is Mexico's MFN rate for goods that do not qualify (WITS/TRAINS 2023 six-digit average; Mexico's 2026 tariff not individually checked)."
+        }
+      },
+      "profile": {
+        "headline": "Mexico buys U.S. lumber ($398 million), mouldings, MDF, OSB, plywood and pallets, all duty-free under USMCA. Without a USMCA claim, panels, mouldings and pallets would pay 7–15%, so the certification of origin is worth getting right. Mexico has imposed no counter-tariff on U.S. goods.",
+        "mainProducts": "Sawn lumber: softwood, hardwood & tropical (4407) · Mouldings, flooring strips & continuously shaped wood (4409)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SEMARNAT / PROFEPA (forest-product import inspection)",
+          "url": "https://www.gob.mx/profepa",
+          "requirement": "Imported new sawn wood must meet Mexico’s phytosanitary standard NOM-016-SEMARNAT-2013, and PROFEPA inspects forest products and wood packaging at the border; logs and lumber travel with a USDA phytosanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China’s normal tariff plus its 2025 extra 10% on all U.S. goods; 2018–19 counter-tariffs on listed lines unless excluded",
+      "usTradeAgreement": null,
+      "exportsUsd": 805872806,
+      "priorExportsUsd": 1621757126,
+      "sharePct": 9.2,
+      "changePct": -50.3,
+      "status": "raised",
+      "cells": {
+        "4401": {
+          "exportsUsd": 1459738,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 0% on wood pellets (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4402": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4403": {
+          "exportsUsd": 159900486,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 0% on logs (WITS/TRAINS 2023). U.S. log imports were suspended March 4–November 10, 2025 (GACC Announcements No. 29 and No. 216 of 2025); USDA reports U.S. logs paid the 10% after the reopening. Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4404": {
+          "exportsUsd": 4714,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4405": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4406": {
+          "exportsUsd": 0,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4407": {
+          "exportsUsd": 615682154,
+          "rate": "10% (0% + 10%)",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 0% on softwood and hardwood lumber (WITS/TRAINS 2023); USDA reports U.S. hardwood lumber paid the 10% retaliatory tariff for most of 2025. Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4408": {
+          "exportsUsd": 2025841,
+          "rate": "3–4% + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 3–4% on veneer (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4409": {
+          "exportsUsd": 393294,
+          "rate": "4% + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 4% on hardwood flooring strips and mouldings (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4410": {
+          "exportsUsd": 53577,
+          "rate": "4% + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 4% on particle board (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4411": {
+          "exportsUsd": 239661,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4412": {
+          "exportsUsd": 271900,
+          "rate": "4% + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 4% on plywood (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4413": {
+          "exportsUsd": 19500,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4414": {
+          "exportsUsd": 11040,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4415": {
+          "exportsUsd": 4022185,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4416": {
+          "exportsUsd": 19741786,
+          "rate": "12% + 10% = 22%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 12% on casks, barrels and staves (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4417": {
+          "exportsUsd": 411043,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4418": {
+          "exportsUsd": 536557,
+          "rate": "4% + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China MFN 4% on doors and joinery (WITS/TRAINS 2023). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4419": {
+          "exportsUsd": 341687,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4420": {
+          "exportsUsd": 443370,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        },
+        "4421": {
+          "exportsUsd": 314273,
+          "rate": "Normal rate + 10%",
+          "normalRate": "Plus China’s 2018–19 counter-tariffs answering U.S. Section 301 on the lines they list, if the buyer holds no exclusion (exclusions valid to Dec 31, 2026)",
+          "basis": "China Customs Tariff 2026 normal rate (not individually checked for this small group). Tariff Commission Announcements No. 7 and No. 10 of 2025: an extra 10% on all U.S.-origin goods (24 more points suspended to January 10, 2027)."
+        }
+      },
+      "profile": {
+        "headline": "China bought $1.62 billion of U.S. wood in 2024, mostly hardwood lumber and logs. In 2025 it added an extra tariff on all U.S. goods (125% at the April peak, 10% since May 14) and suspended U.S. log imports from March 4 to November 10, 2025. Sales halved to $806 million and part of the trade moved to Viet Nam. Lumber and logs pay 0% normally, so the 10% is the whole tariff today for buyers that use China’s exclusion process; its September 2026 Board of Trade list names U.S. hardwood lumber and logs for possible cuts.",
+        "mainProducts": "Sawn lumber: softwood, hardwood & tropical (4407) · Logs and wood in the rough (4403)",
+        "tariffNow": "Normal rate (0% on logs and lumber) + 10% on all U.S. goods",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "Logs and lumber need a USDA phytosanitary certificate, and U.S. logs with bark must be fumigated in the U.S. (it can be recorded on the certificate); GACC re-inspects on arrival and can suspend a supplier or a whole origin after pest finds, as it did for U.S. logs in 2025."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 704,
+      "name": "Viet Nam",
+      "rule": "Viet Nam’s normal (MFN) tariff; no extra duty on U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 750456977,
+      "priorExportsUsd": 350692419,
+      "sharePct": 8.5,
+      "changePct": 114,
+      "status": "unchanged",
+      "cells": {
+        "4401": {
+          "exportsUsd": 22108,
+          "rate": "3% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 3% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4402": {
+          "exportsUsd": 28590,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4403": {
+          "exportsUsd": 512464714,
+          "rate": "Free (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate Free for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4404": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4405": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4406": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4407": {
+          "exportsUsd": 224067406,
+          "rate": "Free (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate Free for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4408": {
+          "exportsUsd": 7252558,
+          "rate": "Free (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate Free for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4409": {
+          "exportsUsd": 7403,
+          "rate": "3% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 3% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4410": {
+          "exportsUsd": 7013,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 5% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4411": {
+          "exportsUsd": 11947,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4412": {
+          "exportsUsd": 4585475,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 5% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4413": {
+          "exportsUsd": 41057,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4414": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4415": {
+          "exportsUsd": 711348,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4416": {
+          "exportsUsd": 85325,
+          "rate": "20% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 20% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4417": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4418": {
+          "exportsUsd": 552774,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate 5% for the heading's main U.S. lines (WITS/TRAINS 2023); Viet Nam has no FTA with the U.S. and charges U.S. goods no extra duty."
+        },
+        "4419": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4420": {
+          "exportsUsd": 0,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        },
+        "4421": {
+          "exportsUsd": 619259,
+          "rate": "Normal rate (check Viet Nam tariff)",
+          "normalRate": null,
+          "basis": "Viet Nam MFN applied rate; small U.S. trade, not individually verified. Viet Nam charges U.S. goods no extra duty."
+        }
+      },
+      "profile": {
+        "headline": "Viet Nam more than doubled its purchases in 2025 to $750 million, mostly U.S. hardwood logs ($512 million) and lumber for its furniture mills, as Chinese buyers moved sawmilling there. Both enter duty-free under Viet Nam’s normal tariff, and the 2025 U.S.–Viet Nam framework did not change that.",
+        "mainProducts": "Logs and wood in the rough (4403) · Sawn lumber: softwood, hardwood & tropical (4407)",
+        "tariffNow": "Free on logs and lumber (normal rate)",
+        "regulator": {
+          "name": "Plant Protection Department (Ministry of Agriculture and Environment)",
+          "url": "https://www.ppd.gov.vn/",
+          "requirement": "U.S. logs and lumber need a USDA phytosanitary certificate and are quarantine-inspected on arrival; under Viet Nam’s timber legality system (Decree 102/2020/ND-CP) the importer must document that the wood was legally harvested."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Vietnam import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/vietnam-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU Common Customs Tariff with 0% on all U.S. Chapter 44 goods (Regulation (EU) 2026/1455, Annex I)",
+      "usTradeAgreement": null,
+      "exportsUsd": 740178058,
+      "priorExportsUsd": 783881709,
+      "sharePct": 8.4,
+      "changePct": -5.6,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 208,
+          "country": "Denmark",
+          "exportsUsd": 132959565,
+          "priorExportsUsd": 123291537,
+          "changePct": 7.8
+        },
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 100372167,
+          "priorExportsUsd": 126629554,
+          "changePct": -20.7
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 89993553,
+          "priorExportsUsd": 94740556,
+          "changePct": -5
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 77133799,
+          "priorExportsUsd": 66523221,
+          "changePct": 16
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 73808495,
+          "priorExportsUsd": 54189294,
+          "changePct": 36.2
+        }
+      ],
+      "cells": {
+        "4401": {
+          "exportsUsd": 311229775,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029. The EU normal rate was already 0% on these lines (WITS/TRAINS 2023)."
+        },
+        "4402": {
+          "exportsUsd": 794847,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4403": {
+          "exportsUsd": 49760051,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029. The EU normal rate was already 0% on these lines (WITS/TRAINS 2023)."
+        },
+        "4404": {
+          "exportsUsd": 414851,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4405": {
+          "exportsUsd": 635827,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4406": {
+          "exportsUsd": 0,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029. The EU normal rate was already 0% on these lines (WITS/TRAINS 2023)."
+        },
+        "4407": {
+          "exportsUsd": 160072550,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 0% on oak and most lumber; up to 2.5% on some other lines (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4408": {
+          "exportsUsd": 93059340,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 0–4% (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4409": {
+          "exportsUsd": 2908810,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4410": {
+          "exportsUsd": 2936725,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 7% (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4411": {
+          "exportsUsd": 4538392,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 7% (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4412": {
+          "exportsUsd": 5387519,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 7% on most plywood (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4413": {
+          "exportsUsd": 171839,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4414": {
+          "exportsUsd": 338852,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4415": {
+          "exportsUsd": 34764573,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 3–4% (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4416": {
+          "exportsUsd": 55023129,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029. The EU normal rate was already 0% on these lines (WITS/TRAINS 2023)."
+        },
+        "4417": {
+          "exportsUsd": 797894,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4418": {
+          "exportsUsd": 7023610,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029. The EU normal rate was already 0% on these lines (WITS/TRAINS 2023)."
+        },
+        "4419": {
+          "exportsUsd": 1280869,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4420": {
+          "exportsUsd": 2816576,
+          "rate": "Free (U.S. preference)",
+          "normalRate": null,
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        },
+        "4421": {
+          "exportsUsd": 6222029,
+          "rate": "Free (U.S. preference)",
+          "normalRate": "EU normal rate 0–4% (WITS/TRAINS 2023)",
+          "basis": "Regulation (EU) 2026/1455, Article 1 and Annex I (all of CN Chapter 44): 0% on U.S.-origin goods from July 1, 2026 to December 31, 2029."
+        }
+      },
+      "profile": {
+        "headline": "EU buyers take U.S. pellets (Denmark, the Netherlands, France), hardwood lumber, veneer and barrels. Since July 1, 2026 every U.S. Chapter 44 good enters at 0%, which matters for panels and plywood (normally 7%); pellets, logs and lumber were already free. The bigger change is the EU Deforestation Regulation from December 30, 2026.",
+        "mainProducts": "Fuel wood, wood chips, sawdust & wood pellets (4401) · Sawn lumber: softwood, hardwood & tropical (4407)",
+        "tariffNow": "Free on all U.S. wood since July 1, 2026",
+        "regulator": {
+          "name": "EU Deforestation Regulation (Regulation (EU) 2023/1115), national competent authorities",
+          "url": "https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en",
+          "requirement": "From December 30, 2026 (June 30, 2027 for micro and small firms) the EU importer must file a due-diligence statement showing the wood is deforestation-free, legally harvested and traceable to where it was cut; wood and wood products are in scope, so U.S. suppliers are asked for harvest-location and legality data."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s WTO (MFN) tariff; the U.S.–Japan agreements give wood no preference",
+      "usTradeAgreement": null,
+      "exportsUsd": 659776726,
+      "priorExportsUsd": 687898813,
+      "sharePct": 7.5,
+      "changePct": -4.1,
+      "status": "unchanged",
+      "cells": {
+        "4401": {
+          "exportsUsd": 302347339,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "All 4401 lines, including wood pellets (4401.31) and chips, are free. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4402": {
+          "exportsUsd": 92070,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "All charcoal lines are free. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4403": {
+          "exportsUsd": 245172626,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Coniferous and hardwood logs are free (only kiri/paulownia logs carry a duty). Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4404": {
+          "exportsUsd": 0,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4405": {
+          "exportsUsd": 39782,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4406": {
+          "exportsUsd": 0,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Railway sleepers are free. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4407": {
+          "exportsUsd": 67152556,
+          "rate": "Free; 4.8% SPF, pine, fir and spruce",
+          "normalRate": null,
+          "basis": "Hardwood lumber (oak, maple, cherry, ash, 4407.91–4407.97), hem-fir (4407.14) and other coniferous lumber such as Douglas fir (4407.19 other) are free; pine, fir and spruce and S-P-F (4407.11–4407.13) pay 4.8%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4408": {
+          "exportsUsd": 1342140,
+          "rate": "5–6%",
+          "normalRate": null,
+          "basis": "Veneer sheets for plywood pay 5%; sliced laminated veneer 6%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4409": {
+          "exportsUsd": 1495305,
+          "rate": "Free–5%",
+          "normalRate": null,
+          "basis": "Most hardwood and coniferous shaped wood is free; mouldings and drawn wood pay 3.6–3.7%, some pine and fir boards 5%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4410": {
+          "exportsUsd": 118170,
+          "rate": "5–6%",
+          "normalRate": null,
+          "basis": "Particle board and OSB in sheets pay 6%, other forms 5%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4411": {
+          "exportsUsd": 43098,
+          "rate": "2.6%",
+          "normalRate": null,
+          "basis": "MDF and other fibreboard pay 2.6%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4412": {
+          "exportsUsd": 1216878,
+          "rate": "6% on most lines",
+          "normalRate": null,
+          "basis": "Most plywood, LVL and laminated wood pay 6% (some tropical-faced plywood 8.5–10%). Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4413": {
+          "exportsUsd": 1316669,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4414": {
+          "exportsUsd": 1364128,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4415": {
+          "exportsUsd": 1275976,
+          "rate": "2.8–3.9%",
+          "normalRate": null,
+          "basis": "Crates and boxes 2.8%, pallets 3.9%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4416": {
+          "exportsUsd": 29937412,
+          "rate": "2.2%",
+          "normalRate": null,
+          "basis": "Casks, barrels and staves pay 2.2%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4417": {
+          "exportsUsd": 144922,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4418": {
+          "exportsUsd": 5734027,
+          "rate": "Free–3.9%",
+          "normalRate": null,
+          "basis": "Doors and windows are free; flooring panels and shuttering 2%, glulam, CLT and I-beams 3.9%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4419": {
+          "exportsUsd": 107204,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4420": {
+          "exportsUsd": 541459,
+          "rate": "Check Japan tariff",
+          "normalRate": null,
+          "basis": "Small U.S. trade; the line-level rate was not individually verified. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        },
+        "4421": {
+          "exportsUsd": 334965,
+          "rate": "2.9–3.9%",
+          "normalRate": null,
+          "basis": "Most other wooden articles pay 2.9–3.9%. Japan's Tariff Schedule (April 1, 2026), WTO rate (or general rate where lower); the U.S.–Japan Trade Agreement column has no rate for Chapter 44, so U.S. goods pay the MFN rate."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys U.S. wood pellets ($302 million), logs ($245 million), lumber and barrels. Pellets, logs, hardwood and hem-fir enter free; S-P-F and pine lumber pay 4.8%, plywood and OSB 6%. Japan’s 2025 deal with the U.S. changed no wood tariffs.",
+        "mainProducts": "Fuel wood, wood chips, sawdust & wood pellets (4401) · Logs and wood in the rough (4403)",
+        "tariffNow": "Free on pellets, logs and hardwood; 4.8% on SPF and pine lumber",
+        "regulator": {
+          "name": "MAFF Plant Protection Station",
+          "url": "https://www.maff.go.jp/pps/",
+          "requirement": "Logs and other unprocessed wood are inspected on arrival under Japan’s Plant Protection Act and must carry a USDA phytosanitary certificate; lots found with pests are fumigated before release."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 214,
+      "name": "Dominican Republic",
+      "rule": "CAFTA-DR duty-free entry for qualifying U.S. goods",
+      "usTradeAgreement": "U.S.–Dominican Republic–Central America FTA (CAFTA-DR)",
+      "exportsUsd": 108270317,
+      "priorExportsUsd": 107272569,
+      "sharePct": 1.2,
+      "changePct": 0.9,
+      "status": "unchanged",
+      "cells": {
+        "4401": {
+          "exportsUsd": 680380,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4402": {
+          "exportsUsd": 123069,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4403": {
+          "exportsUsd": 1823743,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4404": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4405": {
+          "exportsUsd": 0,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4406": {
+          "exportsUsd": 197226,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4407": {
+          "exportsUsd": 78437539,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4408": {
+          "exportsUsd": 281613,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4409": {
+          "exportsUsd": 520283,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "MFN 0–20% (WITS/TRAINS 2023)",
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4410": {
+          "exportsUsd": 201213,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4411": {
+          "exportsUsd": 38280,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4412": {
+          "exportsUsd": 4415252,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4413": {
+          "exportsUsd": 41322,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4414": {
+          "exportsUsd": 112147,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4415": {
+          "exportsUsd": 849843,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "MFN 14% (WITS/TRAINS 2023)",
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4416": {
+          "exportsUsd": 1176378,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4417": {
+          "exportsUsd": 82528,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4418": {
+          "exportsUsd": 899602,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "MFN 14–20% (WITS/TRAINS 2023)",
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4419": {
+          "exportsUsd": 296862,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4420": {
+          "exportsUsd": 520545,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": null,
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        },
+        "4421": {
+          "exportsUsd": 17572492,
+          "rate": "Free (CAFTA-DR)",
+          "normalRate": "MFN 0–20% (WITS/TRAINS 2023)",
+          "basis": "CAFTA-DR tariff schedule of the Dominican Republic: duties on U.S. industrial goods, wood included, are fully phased out. The normal rate shown is the DR's MFN rate for goods that do not qualify (WITS/TRAINS 2023)."
+        }
+      },
+      "profile": {
+        "headline": "The Dominican Republic buys U.S. lumber ($78 million) and wooden articles, all duty-free under CAFTA-DR. Doors, pallets and joinery would otherwise pay 14–20%.",
+        "mainProducts": "Sawn lumber: softwood, hardwood & tropical (4407) · Other articles of wood (4421)",
+        "tariffNow": "Free (CAFTA-DR)",
+        "regulator": {
+          "name": "Ministry of Agriculture (plant health), via trade.gov import guide",
+          "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation",
+          "requirement": "Wood shipments travel with a USDA phytosanitary certificate and are inspected by the Ministry of Agriculture’s plant-health service on arrival; wood packaging must carry the ISPM 15 mark."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Dominican Republic import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/dominican-republic-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "United Kingdom",
+      "heading": "4401",
+      "exportsUsd": 1450120777,
+      "rate": "Free (UK tariff)"
+    },
+    {
+      "market": "China",
+      "heading": "4407",
+      "exportsUsd": 615682154,
+      "rate": "10% (0% + 10%)"
+    },
+    {
+      "market": "Viet Nam",
+      "heading": "4403",
+      "exportsUsd": 512464714,
+      "rate": "Free (normal rate)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "4407",
+      "exportsUsd": 398446394,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "4407",
+      "exportsUsd": 379689911,
+      "rate": "Free (CUSMA); softwood lumber + 25% surtax"
+    },
+    {
+      "market": "Canada",
+      "heading": "4418",
+      "exportsUsd": 351853532,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "4401",
+      "exportsUsd": 311229775,
+      "rate": "Free (U.S. preference)"
+    },
+    {
+      "market": "Japan",
+      "heading": "4401",
+      "exportsUsd": 302347339,
+      "rate": "Free"
+    }
+  ],
+  "assumptions": [
+    "Rates are each market’s 2026 tariff for U.S.-origin goods: Canada’s CUSMA schedule plus its United States Surtax Order (2026), the UK Global Tariff (UK Trade Tariff, November 2026), Mexico’s USMCA schedule, China’s normal rate plus its 2025 extra 10% on U.S. goods, Viet Nam’s MFN rate, the EU Common Customs Tariff with Regulation (EU) 2026/1455, Japan’s Tariff Schedule of April 1, 2026, and the Dominican Republic’s CAFTA-DR schedule.",
+    "Each cell names the products that carry most of the trade in that heading; other lines in the same heading can pay a different rate. Where the source is WITS/TRAINS, the rate is the 2023 six-digit MFN average, and the market’s 2026 national line can differ.",
+    "Trade-agreement rates (USMCA, CAFTA-DR) apply only to goods that meet the agreement’s rules of origin and are claimed with a certification of origin; the normal rate is shown for goods that do not qualify.",
+    "Canada’s 2026 surtax applies to goods of U.S. origin under Canada’s marking rules, even when they qualify for CUSMA. China’s 2018–19 counter-tariffs answering U.S. Section 301 apply on top of the rates shown on the lines they list, unless the Chinese importer holds an exclusion; the line-by-line rates were not individually verified here.",
+    "Sanitary rules, the EU Deforestation Regulation and VAT are not tariffs and are not in the rates; the profile cards name the approval each market needs."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 44, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-2026-list",
+      "publisher": "Department of Finance Canada",
+      "citation": "Finance Canada, Aug 2026",
+      "document": "Notice",
+      "title": "List of products from the United States subject to counter-tariffs effective September 8, 2026",
+      "signed": null,
+      "published": "2026-08-26",
+      "url": "https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "usmca-text",
+      "publisher": "Office of the U.S. Trade Representative",
+      "citation": "USMCA text",
+      "document": "Agreement text",
+      "title": "Agreement between the United States of America, the United Mexican States, and Canada (USMCA), including Annex 2-B tariff schedules",
+      "signed": null,
+      "published": "2020-07-01",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/united-states-mexico-canada-agreement/agreement-between"
+    },
+    {
+      "id": "uk-tariff",
+      "publisher": "UK Government (HMRC / Department for Business and Trade)",
+      "citation": "UK Trade Tariff, Nov 2026",
+      "document": "UK Global Tariff (online tariff)",
+      "title": "UK Integrated Online Tariff: Chapter 44, third-country duties",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.trade-tariff.service.gov.uk/chapters/44"
+    },
+    {
+      "id": "uk-ofgem-biomass",
+      "publisher": "Ofgem",
+      "citation": "Ofgem, RO biomass sustainability",
+      "document": "Guidance page",
+      "title": "Renewables Obligation: biomass sustainability criteria and reporting",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://www.ofgem.gov.uk/environmental-and-social-schemes/renewables-obligation-ro/applicants/biomass-sustainability"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (cut to 10% with 24 points suspended for 90 days from May 14, 2025)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-24-suspend",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 10 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (24-point suspension extended one year from November 10, 2025)",
+      "signed": null,
+      "published": "2025-11-05",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202511/t20251105_3975756.htm"
+    },
+    {
+      "id": "cn-gacc-216-2025",
+      "publisher": "Ministry of Commerce of China (China Foreign Trade and Economic Cooperation Gazette)",
+      "citation": "GACC Announcement No. 216 of 2025",
+      "document": "Announcement (listed in the 2025 Gazette index, issue 75)",
+      "title": "中华人民共和国海关总署公告2025年第216号 (repeals GACC Announcement No. 29 of 2025 from November 10, 2025)",
+      "signed": null,
+      "published": "2025-11-07",
+      "url": "https://www.mofcom.gov.cn/zcfb/zgdwjjmywg/art/2026/art_04ec4f21b1674e5aa57a4b005267e21e.html"
+    },
+    {
+      "id": "usda-cn-solidwood-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2026-0020",
+      "document": "GAIN report: Solid Wood Annual 2025 (China)",
+      "title": "Solid Wood Annual 2025, China",
+      "signed": null,
+      "published": "2026-02-18",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Solid+Wood+Annual+2025_Beijing_China+-+People%27s+Republic+of_CH2026-0020.pdf"
+    },
+    {
+      "id": "usda-cn-301-excl",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2025-0223",
+      "document": "GAIN report: Trade Alert",
+      "title": "Trade Alert: China Extends Section 301 Tariff Exclusions for US Agricultural Products",
+      "signed": null,
+      "published": "2025-11-24",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Trade+Alert+-+China+Extends+Section+301+Tariff+Exclusions+for+US+Agricultural+Products_Beijing_China+-+People%27s+Republic+of_CH2025-0223.pdf"
+    },
+    {
+      "id": "cn-bot-list",
+      "publisher": "The White House",
+      "citation": "30-for-30 China Import List",
+      "document": "Product list",
+      "title": "China import list (U.S. products recommended for reduced Chinese tariffs), U.S.–China Board of Trade",
+      "signed": null,
+      "published": "2026-09-27",
+      "url": "https://www.whitehouse.gov/wp-content/uploads/2026/09/China-Import-List.pdf"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-a2m-2026",
+      "publisher": "European Commission (Access2Markets)",
+      "citation": "Access2Markets, Aug 2026",
+      "document": "News item",
+      "title": "New EU tariff duties on imports of goods from the United States applicable from 1 July 2026",
+      "signed": null,
+      "published": "2026-08-11",
+      "url": "https://trade.ec.europa.eu/access-to-markets/en/news/new-eu-tariff-duties-imports-goods-united-states-applicable-1-july-2026"
+    },
+    {
+      "id": "eu-eudr",
+      "publisher": "European Commission (DG Environment)",
+      "citation": "EC, EUDR page",
+      "document": "Web page",
+      "title": "Regulation on deforestation-free products (Regulation (EU) 2023/1115): application dates and implementation",
+      "signed": null,
+      "published": "2026-10-28",
+      "url": "https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en"
+    },
+    {
+      "id": "jp-tariff-2026",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, Apr 1, 2026, Chapter 44",
+      "document": "Tariff schedule",
+      "title": "Japan's Tariff Schedule as of April 1, 2026: Chapter 44 (wood and articles of wood)",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_44.htm"
+    },
+    {
+      "id": "cafta-text",
+      "publisher": "Office of the U.S. Trade Representative",
+      "citation": "CAFTA-DR final text",
+      "document": "Agreement text",
+      "title": "Dominican Republic–Central America–United States Free Trade Agreement (CAFTA-DR), final text and tariff schedules",
+      "signed": null,
+      "published": "2004-08-05",
+      "url": "https://ustr.gov/trade-agreements/free-trade-agreements/cafta-dr-dominican-republic-central-america-fta/final-text"
+    },
+    {
+      "id": "wits-mfn",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS/TRAINS MFN applied rates, 2023",
+      "document": "Tariff database",
+      "title": "MFN applied tariff rates at the HS six-digit level (Viet Nam, China, EU, Mexico, Canada, Dominican Republic, India), 2023",
+      "signed": null,
+      "published": "2026-11-19",
+      "url": "https://wits.worldbank.org/"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 88% of 2025 U.S. Chapter 44 exports. A customs union (the EU) is one market: its members share one tariff."
+}

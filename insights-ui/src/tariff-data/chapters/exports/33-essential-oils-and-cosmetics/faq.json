@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 33,
+    "padded": "33",
+    "slug": "33-essential-oils-and-cosmetics",
+    "title": "Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/33-essential-oils-and-cosmetics/faq",
+    "h1": "HTS Chapter 33: Essential Oils and Resinoids; Perfumery, Cosmetic or Toilet Preparations — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Cosmetics & Perfume Export FAQ: Foreign Tariffs, HS Codes, FDA Certificates & EEI (HTS Ch. 33) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. cosmetics? Does China? What is the HS code for perfume or cosmetics, how do you get an FDA certificate of free sale, and can you ship perfume abroad? Short answers with the dates that matter.",
+      "keywords": [
+        "canadian tariffs on us cosmetics",
+        "china tariffs cosmetics",
+        "hs code for cosmetics",
+        "hs code for perfume",
+        "certificate of free sale cosmetics",
+        "shipping perfume internationally"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Questions people search about exporting U.S. cosmetics, perfume, toiletries and essential oils, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Most large buyers let U.S. cosmetics in duty-free; Canada (50% on perfume and lip, eye and nail make-up since September 8, 2026) and China (about 38% on most lines) are the exceptions.",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions end, and its extra tariff could rise from 10% to 34%.",
+    "No export licence is needed except for Russia and Belarus, but alcohol-based perfumes and aerosols ship as hazardous materials, and many buyers ask for an FDA export certificate."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"tariff on us cosmetics\", \"canada tariff on us cosmetics\", \"cosmetics tariff\", \"perfume tariff\", \"hs code for cosmetics\", \"hs code for perfume\", \"certificate of free sale cosmetics\", \"shipping perfume internationally\", \"do i need to file eei for\" and \"us cosmetics exports\", collected on November 18, 2026.",
+  "faqs": [
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have tariffs on U.S. cosmetics?",
+      "searchedAs": ["canadian tariffs on us cosmetics", "canada tariffs on us cosmetics", "cosmetics tariffs canada", "perfume tariffs canada"],
+      "answer": "Yes, on some of them. Since September 8, 2026 Canada charges a 50% surtax on U.S. perfume (3303), lip, eye and nail make-up (3304.10–3304.30) and other hair preparations (3305.90), even when they qualify for CUSMA. Skin care, shampoo, toothpaste, deodorant, essential oils and flavor bases stay duty-free under CUSMA. An earlier 25% surtax on most U.S. cosmetics ran from March 4 to August 31, 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "china-tariff",
+      "question": "Does China have tariffs on U.S. cosmetics?",
+      "searchedAs": ["china tariffs cosmetics", "tariff on us cosmetics"],
+      "answer": "Yes. U.S. perfume, make-up, shampoo, toothpaste and deodorant pay China's normal rate (1–5%), a 2019 counter-tariff of 25% (27.5% on skin care) and an extra 10% on all U.S. goods, about 38% in total. An importer holding an exclusion, valid until December 31, 2026, pays only the normal rate plus 10%. U.S. sales to China fell 24% in 2025.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-deadline",
+      "question": "When does China's tariff suspension on U.S. goods end?",
+      "searchedAs": ["china tariffs cosmetics", "what products are affected by us tariffs"],
+      "answer": "China's Tariff Commission extended the suspension of 24 points of its extra tariff on U.S. goods to January 10, 2027 (Announcement No. 6 of 2026, November 9, 2026). If it lapses, the extra tariff goes from 10% to 34%, and U.S. perfume would pay 62%. Separately, China's exclusions from its 2019 counter-tariffs are valid until December 31, 2026.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU charge tariffs on U.S. cosmetics and perfume?",
+      "searchedAs": ["cosmetics tariffs", "perfume tariff", "cpnp notification"],
+      "answer": "No, for almost all of them. Since July 1, 2026 the EU charges 0% on U.S. Chapter 33 goods under Regulation (EU) 2026/1455, except food and drink flavor bases (3302.10); perfume, make-up and hair products were already duty-free. The EU's 2025 counter-tariff list named nearly the whole chapter but was never applied. To sell, each product needs an EU Responsible Person and a CPNP notification.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "hs-code",
+      "question": "What is the HS or Schedule B code for cosmetics and perfume?",
+      "searchedAs": ["hs code for cosmetics", "hs code for perfume", "cosmetics tariff code", "perfume tariff code", "hs code for essential oils"],
+      "answer": "Perfume and cologne are 3303.00, skin care and sunscreen 3304.99, lip make-up 3304.10, eye make-up 3304.20, shampoo 3305.10, toothpaste 3306.10 and deodorants 3307.20. Most essential oils, such as lavender or tea tree, are 3301.29. The 10-digit Schedule B number starts with these six digits.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "free-sale",
+      "question": "How do I get an FDA certificate of free sale for cosmetics?",
+      "searchedAs": ["certificate of free sale cosmetics", "certificate of free sale fda", "certificate of free sale us fda", "cosmetic export certificate"],
+      "answer": "FDA does not issue a \"Certificate of Free Sale\" for cosmetics; its cosmetics export certificate is titled \"CERTIFICATE\" and is requested online through the Certificate Application Process in FDA's eCATS. FDA issues it only for products used solely as cosmetics. Sunscreens, antiperspirants and fluoride toothpastes are drugs in the U.S., so buyers get a Certificate of Pharmaceutical Product from CDER instead.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "licence-eei",
+      "question": "Do I need an export license or an EEI filing for cosmetics?",
+      "searchedAs": ["eei filing requirements", "when to file eei", "do i need to file an eei for shipments to canada"],
+      "answer": "Cosmetics are EAR99, so no licence is needed except for Russia and Belarus, where perfume, make-up, skin care and fragrance compounds are on the luxury-goods list. File EEI in AES when one Schedule B number in a shipment is worth over $2,500. Shipments to Canada need no EEI unless they need a licence or are going on to another country.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "ship-perfume",
+      "question": "Can you ship perfume internationally from the U.S.?",
+      "searchedAs": [
+        "shipping perfume internationally",
+        "sending perfume internationally",
+        "shipping fragrances internationally",
+        "can you ship perfume to canada from us"
+      ],
+      "answer": "Yes, but alcohol-based perfume is a flammable liquid (UN1266) under U.S. hazardous-materials rules, so the shipper must pack, mark, label and document it, or use the limited-quantity rules for small retail packs; air shipments also follow IATA rules. Perfume going to Canada now pays a 50% surtax, and perfume to Russia or Belarus needs a Commerce licence.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "exports-trade",
+      "question": "How much cosmetics and perfume does the U.S. export, and who buys it?",
+      "searchedAs": ["korea vs us cosmetics exports", "cosmetics exports by country", "perfume exporting countries"],
+      "answer": "The U.S. exported $15.05B of Chapter 33 goods in 2025, 2% less than in 2024; make-up and skin care were 39% and perfume 14%. Canada bought 25%, followed by Mexico, the UK, China and Australia. January–August 2026 exports were $10.09B, flat on a year earlier.",
+      "link": "exports"
+    }
+  ]
+}

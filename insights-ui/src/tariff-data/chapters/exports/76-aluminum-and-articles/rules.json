@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 76,
+    "padded": "76",
+    "slug": "76-aluminum-and-articles",
+    "title": "Aluminum and Articles Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/76-aluminum-and-articles/rules",
+    "h1": "HTS Chapter 76: Aluminum and Articles Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Aluminum & Scrap Export Rules: Schedule B, ECCN, EEI & Drawback (HTS Ch. 76) | KoalaGains",
+      "shortDescription": "What U.S. exporters of aluminum and aluminum scrap must do before shipping: Schedule B codes for UBC and other scrap, ECCN 1C202 alloys, the Russia licence rule, EEI, the Section 232 drawback bar and Canada surtax remission.",
+      "keywords": [
+        "schedule b aluminum scrap",
+        "hs code for aluminium scrap ubc",
+        "aluminum export license",
+        "eccn 1c202 aluminum",
+        "section 232 drawback aluminum",
+        "canada aluminum surtax remission"
+      ]
+    },
+    "lastCheckedAt": "2026-11-19"
+  },
+  "intro": "A U.S. exporter of aluminum or aluminum scrap takes the same five steps as every exporter, and for most Chapter 76 goods that is all: scrap, ingot, sheet, foil and cans are **EAR99** and need no export licence. Four things are specific to this chapter. **High-strength alloys:** aluminum alloy tubes and solid cylinders, including forgings, over 75 mm in outside diameter that can reach 460 MPa are controlled under ECCN 1C202, and some alloy and spherical powders under 1C002 and 1C111. **Russia and Belarus:** all 35 six-digit Chapter 76 codes need a Commerce licence. **Drawback:** the Section 232 duty paid on imported aluminum articles cannot be refunded when they are exported. And **scrap** is excluded from federal hazardous-waste rules when it is recycled, so it needs no EPA export notice, while buyers in China, Malaysia, India and Thailand set their own purity and inspection rules (see Markets).",
+  "regulationsAsOf": "2026-11-17",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Aluminum scrap (7602) was a third of 2025 exports ($4.46B), and its Schedule B numbers split it by type: 7602.00.0035 used beverage containers (UBC), 7602.00.0045 auto and truck wheels, 7602.00.0055 scrap from industrial processes (turnings, borings, clippings), 7602.00.0065 other recyclable aluminum and 7602.00.0075 other, all reported in kilograms. Can sheet is 7606.12.3070; beverage cans are 7612.90.1030 (up to 355 ml) and 7612.90.1060 (larger) and are counted by number."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Scrap is often sold through trading houses and resold afloat, so screen the melting plant and final consignee, not only the trader on the contract."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most Chapter 76 goods are EAR99. Check three ECCNs: 1C202 (nuclear) covers aluminum alloys capable of an ultimate tensile strength of 460 MPa or more at 20 °C in tubes or solid cylinders, including forgings, with an outside diameter over 75 mm, which can catch large 7xxx and 2xxx bar, forgings and tube; 1C002 (national security) covers atomized Al-Mg, Al-Zn and Al-Fe alloy powders and alloys made from them; and 1C111.a.1 (missile technology) covers spherical aluminum powder under 200 µm with at least 97% aluminum. Alloys specially designed for uranium enrichment are licensed by the NRC."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Russia and Belarus: all 35 six-digit Chapter 76 codes, from unwrought aluminum and scrap to foil, cans and articles, are listed in Supplement No. 4 to 15 CFR Part 746 (in full since June 2024), so every Chapter 76 export to either country needs a Commerce licence. Cuba, Iran, North Korea and Syria are covered by country-wide rules."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Scrap moves in ocean containers, so the EEI is due 24 hours before loading for each Schedule B number worth over $2,500. A shipment that needs a licence (any Chapter 76 good to Russia or Belarus, or a 1C202 alloy to a controlled destination) needs EEI at any value."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-1c202",
+      "agency": "Bureau of Industry and Security (BIS); Nuclear Regulatory Commission (NRC)",
+      "title": "High-strength aluminum alloys: ECCN 1C202.a covers alloys capable of 460 MPa or more ultimate tensile strength at 293 K in tubes or cylindrical solid forms (including forgings) with an outside diameter over 75 mm; it is controlled for nuclear nonproliferation (NP Column 1), and alloys specially designed for uranium isotope separation are licensed by the NRC (10 CFR Part 110)",
+      "citations": [
+        {
+          "label": "Commerce Control List, Category 1 (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "10 CFR Part 110 (NRC export licensing)",
+          "url": "https://www.ecfr.gov/current/title-10/part-110"
+        }
+      ]
+    },
+    {
+      "id": "bis-powders",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Aluminum powders: ECCN 1C002 covers aluminum-alloy powder (Al-Mg-X, Al-Zn-X, Al-Fe-X) made by atomization, splat quenching or mechanical alloying and the alloys made from it (national security); ECCN 1C111.a.1 covers spherical or spheroidal aluminum powder under 200 µm with 97% or more aluminum (missile technology)",
+      "citations": [
+        {
+          "label": "Commerce Control List, Category 1 (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: a licence is required for every Chapter 76 good — all 35 six-digit codes are in Supplement No. 4 to Part 746 (15 CFR 746.8(a)(5)); gas containers of 7613 are also on the oil-and-gas list (Supplement No. 2)",
+      "citations": [
+        {
+          "label": "15 CFR 746.8 (sanctions against Russia and Belarus)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to Part 746 (industry sector list)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ]
+    },
+    {
+      "id": "epa-scrap",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Aluminum scrap being recycled is excluded (processed, home and prompt scrap) or exempt (other scrap metal) from hazardous-waste rules, so no EPA export notice or consent is needed; dross, salt cake or contaminated scrap that is itself a RCRA hazardous waste falls under the export notice rules of 40 CFR Part 262 Subpart H",
+      "citations": [
+        {
+          "label": "40 CFR 261.4(a)(13) (excluded scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.4"
+        },
+        {
+          "label": "40 CFR 261.6(a)(3)(ii) (other scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.6"
+        },
+        {
+          "label": "40 CFR 261.1(c)(6) (definition of scrap metal)",
+          "url": "https://www.ecfr.gov/current/title-40/section-261.1"
+        },
+        {
+          "label": "40 CFR Part 262 Subpart H (hazardous waste exports)",
+          "url": "https://www.ecfr.gov/current/title-40/chapter-I/subchapter-I/part-262/subpart-H"
+        }
+      ]
+    },
+    {
+      "id": "cbp-232-drawback",
+      "agency": "U.S. Customs and Border Protection (CBP)",
+      "title": "No drawback of the Section 232 duty on imported aluminum articles (7601, 7604–7609 and castings and forgings of 7616.99.5160 and .5170), even when they or products made from them are exported (Proclamation 11021, clauses 13 and 14: manufacturing drawback is allowed only for certain derivative articles of trade-agreement partners whose aluminum was smelted and cast there); ordinary duties on the same entry can still be claimed, and scrap (7602) carries no Section 232 duty",
+      "citations": [
+        {
+          "label": "Proclamation 11021 (91 FR 18201), clauses 13–14",
+          "url": "https://www.federalregister.gov/documents/2026/04/09/2026-06960/strengthening-actions-taken-to-adjust-imports-of-aluminum-steel-and-copper-into-the-united-states"
+        },
+        {
+          "label": "CBP CSMS #68253075 (Section 232 guidance)",
+          "url": "https://content.govdelivery.com/accounts/USDHSCBP/bulletins/4117593"
+        },
+        {
+          "label": "19 CFR Part 190 (drawback)",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "7601",
+      "label": "Unwrought aluminum (ingot, billet, slab)",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7602",
+      "label": "Aluminum waste and scrap",
+      "ruleIds": ["bis-russia-belarus", "epa-scrap"],
+      "note": "Scrap is not a Section 232 aluminum article, so drawback of any U.S. duty on imported scrap follows the normal rules. Buyers' purity, radiation and inspection rules (China's 91% aluminum minimum, Malaysia's SIRIM certificate, India's pre-shipment inspection) are their import rules; see Markets."
+    },
+    {
+      "heading": "7603",
+      "label": "Aluminum powders and flakes",
+      "ruleIds": ["bis-russia-belarus", "bis-powders"],
+      "note": "Ordinary flake and irregular powder is EAR99; check particle shape, size and purity against 1C111 before export."
+    },
+    {
+      "heading": "7604",
+      "label": "Bars, rods and profiles (extrusions)",
+      "ruleIds": ["bis-russia-belarus", "bis-1c202", "cbp-232-drawback"],
+      "note": "Large-diameter round bar in high-strength 7xxx or 2xxx alloys can fall under 1C202; ordinary extrusions are EAR99."
+    },
+    {
+      "heading": "7605",
+      "label": "Aluminum wire",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7606",
+      "label": "Plates, sheets and strip (over 0.2 mm)",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7607",
+      "label": "Aluminum foil (0.2 mm or less)",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7608",
+      "label": "Tubes and pipes",
+      "ruleIds": ["bis-russia-belarus", "bis-1c202", "cbp-232-drawback"],
+      "note": "High-strength alloy tube over 75 mm in outside diameter can fall under 1C202; ordinary tube is EAR99."
+    },
+    {
+      "heading": "7609",
+      "label": "Tube or pipe fittings",
+      "ruleIds": ["bis-russia-belarus", "cbp-232-drawback"],
+      "note": null
+    },
+    {
+      "heading": "7610",
+      "label": "Structures, doors, windows and frames",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7611",
+      "label": "Reservoirs and tanks (over 300 l)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7612",
+      "label": "Casks, drums, cans and boxes (up to 300 l)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7613",
+      "label": "Containers for compressed or liquefied gas",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7614",
+      "label": "Stranded wire and cables (not insulated)",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7615",
+      "label": "Household, kitchen and sanitary articles",
+      "ruleIds": ["bis-russia-belarus"],
+      "note": null
+    },
+    {
+      "heading": "7616",
+      "label": "Other articles of aluminum",
+      "ruleIds": ["bis-russia-belarus", "bis-1c202", "cbp-232-drawback"],
+      "note": "Castings and forgings of 7616.99.5160 and .5170 are Section 232 aluminum articles (no drawback of that duty); high-strength forgings over 75 mm in diameter can fall under 1C202."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "ca-surtax-remission",
+      "title": "Help the Canadian buyer claim remission of Canada's aluminum surtax",
+      "saves": "Canada's 50% surtax on U.S. aluminum (25% on household articles), refunded or waived when the goods qualify.",
+      "appliesTo": "U.S. aluminum imported before July 1, 2027 for use in Canada in manufacturing or processing, food and beverage packaging or agricultural production (section 3), or imported from February 1, 2026 to June 30, 2027 for making motor vehicles, vehicle parts or aircraft (section 3.1); about 27 narrowly described aluminum products in Schedule 2, such as 3104 can-body sheet, 1100 and 8011 foil, aerospace plate, rivets and forging bar, with no time limit; and named importers in Schedule 4.1.",
+      "document": "A remission claim by the Canadian importer to the Canada Border Services Agency within two years of import.",
+      "caveat": "The general remission for aluminum used in manufacturing covers only goods imported before July 1, 2027 (for steel it ended on February 1, 2026). Only the Canadian importer can claim; the U.S. exporter helps by giving the exact tariff classification and end use.",
+      "citations": [
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122 (consolidated)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/FullText.html"
+        },
+        {
+          "label": "SOR/2026-154 (remission extended to June 30, 2027)",
+          "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-07-01/html/sor-dors154-eng.html"
+        },
+        {
+          "label": "Finance Canada, June 3, 2026: steel and aluminum measures extended",
+          "url": "https://www.canada.ca/en/department-finance/news/2026/06/canada-to-extend-steel-and-aluminum-tariff-measures-to-support-workers-and-businesses.html"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

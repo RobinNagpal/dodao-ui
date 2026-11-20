@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 73,
+    "padded": "73",
+    "slug": "73-articles-of-iron-steel",
+    "title": "Articles of Iron or Steel"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/73-articles-of-iron-steel/faq",
+    "h1": "HTS Chapter 73: Articles of Iron or Steel — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Steel Article Export FAQ (HTS Ch. 73) | KoalaGains",
+      "shortDescription": "Short answers on Canada's steel surtax, EU tariffs and quotas, China's extra duty, Schedule B codes, export licences, USMCA origin and Section 232 drawback for U.S. steel articles.",
+      "keywords": [
+        "canada tariff on us steel",
+        "canada steel surtax remission",
+        "eu tariff on us steel",
+        "eu steel quota 2026",
+        "steel export license",
+        "duty drawback section 232"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Short answers to real questions people search about exporting U.S. fasteners, pipe, fittings, structures and other steel articles, each with a link to the page that has the detail.",
+  "keyTakeaways": [
+    "Canada charges a 50% surtax on most U.S. steel articles since September 8, 2026, even when they qualify for CUSMA; Mexico, South Korea and, since July 1, 2026, the EU charge nothing on most of the chapter.",
+    "China adds a 10% extra duty to its 3–8% rates, and the EU and the UK charge 50% on steel pipe and tube once their quotas are used up.",
+    "Most steel articles are EAR99 and need no U.S. export licence except for Russia, Belarus and embargoed destinations, and Section 232 duty on imported steel inputs is now mostly not refundable through drawback."
+  ],
+  "questionSource": "Google search suggestions for \"canada tariff on us steel\", \"canada steel surtax\", \"eu tariff on us steel\", \"eu steel quota 2026\", \"us steel exports\", \"schedule b steel\", \"export license steel\", \"usmca rules of origin steel\" and \"drawback section 232\".",
+  "faqs": [
+    {
+      "id": "canada-tariff-us-steel",
+      "question": "Are there Canadian tariffs on U.S. steel products?",
+      "searchedAs": ["are there canadian tariffs on us steel", "canada tariff on us steel products", "current canadian tariff on us steel"],
+      "answer": "Yes. Canada has charged a surtax on U.S.-origin steel goods since March 13, 2025: 25% at first, raised to 50% on most Chapter 73 lines on September 8, 2026. Leaf springs, stove parts, steel radiators, kitchenware and sinks pay 25%, stoves and cooking appliances were added at 25% and cast-iron castings such as manhole covers at 50%. The surtax applies even when the goods qualify for CUSMA.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-surtax-remission",
+      "question": "Can a Canadian buyer get Canada's steel surtax back?",
+      "searchedAs": ["canada steel surtax remission", "canada steel surtax order"],
+      "answer": "Sometimes. The United States Surtax Remission Order (2025) remits the surtax on listed products Canada finds in short supply or not made in Canada, such as many seamless tube lines, rails and sheet piling, and on goods imported before July 1, 2027 to make motor vehicles, aircraft and their parts. The general relief for steel used in other Canadian manufacturing ended on January 31, 2026. The Canadian importer claims within two years of import.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "canada-derivative-surtax",
+      "question": "Does Canada's steel derivative surtax apply to U.S. goods?",
+      "searchedAs": ["canada steel derivative surtax", "canadian steel derivative surtax"],
+      "answer": "Not on top of the U.S. surtax. Canada's global 25% surtax on steel derivative products such as fasteners, wire, chain and prefabricated structures, in force since December 26, 2025, does not apply to goods already subject to the surtax on U.S. steel goods, and almost every derivative line it lists is on that U.S. list. U.S. goods therefore pay the U.S. surtax, 50% on most lines.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-tariff-us-steel",
+      "question": "What tariff does the EU charge on U.S. steel articles?",
+      "searchedAs": ["eu tariff on us steel", "eu tariffs on us steel and aluminum", "does the eu have tariffs on us goods"],
+      "answer": "None on most of the chapter since July 1, 2026. Regulation (EU) 2026/1455 cut EU duties on U.S. goods of Chapter 73, which were up to 3.7%, to zero until December 31, 2029. The Commission can suspend that for chapters 72, 73 and 76 if the U.S. still charges more than 15% on EU steel derivatives on December 31, 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-steel-quota",
+      "question": "How does the EU steel quota work for U.S. pipe and tube in 2026?",
+      "searchedAs": ["eu steel quota 2026"],
+      "answer": "Since July 1, 2026 the EU's steel regulation (EU) 2026/1384 has replaced its safeguard. U.S. seamless and welded pipe and tube, sheet piling and rails share the quota for 'other countries' and pay a 50% duty once it is used up, even though their normal EU tariff is zero. The UK runs a similar Steel Trade Measure with 50% above quota, where the U.S. has its own quota for two welded-tube categories.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-tariff-us-steel",
+      "question": "Does China charge extra tariffs on U.S. steel articles?",
+      "searchedAs": ["china tariff on us steel"],
+      "answer": "Yes. China adds a 10% extra duty on all U.S. goods to its MFN rates of 3–8% on these goods, so U.S. bolts now pay 18% against 8% in January 2025. Lines on China's 2019 counter-tariff lists, such as some bolts, nuts and pipe fittings, pay more unless the Chinese buyer holds an exclusion, valid until December 31, 2026.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "us-steel-exports-by-country",
+      "question": "How much steel do U.S. companies export, and to which countries?",
+      "searchedAs": ["us steel exports", "us steel exports by country", "us steel exports 2025", "us steel exports to canada"],
+      "answer": "U.S. exports of articles of iron or steel were $21.82B in 2025, down 5.1%. Mexico bought $7.32B and Canada $5.81B, together 60%, followed by the EU, China and the UK. Other articles such as forgings and stampings (7326) and fasteners (7318) are 55% of the total.",
+      "link": "exports"
+    },
+    {
+      "id": "schedule-b-steel",
+      "question": "What is the Schedule B number for steel articles?",
+      "searchedAs": ["schedule b number for stainless steel", "schedule b steel"],
+      "answer": "Articles of iron or steel are in Schedule B Chapter 73; the first six digits match the HS code abroad, for example 7318.15 for screws and bolts and 7326.90 for other articles of iron or steel. Look up the 10-digit number in the Census Schedule B tool and classify to at least six digits, because surtaxes and quotas abroad split headings.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "steel-export-license",
+      "question": "Do I need an export license to ship steel articles?",
+      "searchedAs": ["steel export license", "export license steel"],
+      "answer": "Usually not. Almost all Chapter 73 goods are EAR99 and need a licence only for embargoed countries, restricted parties, and Russia and Belarus, where nearly every Chapter 73 code is on Commerce's lists. Lined or high-nickel chemical storage tanks over 100 liters and multi-walled lined piping can be ECCN 2B350. You still file EEI when a Schedule B line is worth over $2,500.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "usmca-steel-rules",
+      "question": "What are the USMCA rules of origin for steel articles?",
+      "searchedAs": ["usmca steel rules of origin", "usmca rules of origin steel"],
+      "answer": "It depends on the heading. Fasteners qualify when made from steel of another heading, such as imported wire rod, but seamless tube must be made from material of another chapter. Pipe of 73.05–73.07, structures, wire rope, mesh and nails need at least 70% by weight of their steel inputs to be originating, or a high regional value content.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "drawback-section-232",
+      "question": "Can I get Section 232 duties back through drawback when I export steel products?",
+      "searchedAs": ["drawback section 232", "duty drawback on section 232 tariffs"],
+      "answer": "Mostly no. Since Proclamation 11021 of April 2026, Section 232 duty is refundable only through manufacturing drawback on goods of the 25% derivative list from Trade Agreement Partners whose steel was melted there. Section 232 duty on imported flat steel, wire rod, pipe and most derivatives is not refunded; ordinary duties still are.",
+      "link": "exports/rules"
+    }
+  ]
+}

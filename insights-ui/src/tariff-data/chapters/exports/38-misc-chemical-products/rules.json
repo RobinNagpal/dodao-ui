@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 38,
+    "padded": "38",
+    "slug": "38-misc-chemical-products",
+    "title": "Miscellaneous Chemical Products"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/38-misc-chemical-products/rules",
+    "h1": "HTS Chapter 38: Miscellaneous Chemical Products — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Chemical Product Export Rules: FIFRA, TSCA 12(b), RFS & CWC (HTS Ch. 38) | KoalaGains",
+      "shortDescription": "What U.S. exporters of pesticides, reagents, biodiesel, refrigerant blends and other Chapter 38 chemicals must do before shipping: EPA pesticide export rules, TSCA 12(b) notices, RIN retirement, FDA certificates and BIS licences.",
+      "keywords": [
+        "exporting unregistered pesticides",
+        "TSCA 12(b) export notification",
+        "biodiesel export RIN retirement",
+        "FDA certificate to foreign government diagnostic",
+        "schedule b code diagnostic reagents"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "A U.S. exporter of Chapter 38 chemical products takes the same five steps as every exporter, then the agency rules that fit the product. **EPA** has the most: export labeling for every pesticide and a signed foreign purchaser acknowledgement for unregistered ones (FIFRA), TSCA section 12(b) notices for regulated chemicals, RIN retirement for exported biodiesel, prior consent for hazardous waste and quarterly reports for HFC and HCFC refrigerant blends. **FDA** export certificates are what buyers ask for with diagnostic reagents, and **BIS** licences apply to mixtures and test kits with chemical-weapons chemicals, special graphite and some semiconductor wafers. Most Chapter 38 goods are EAR99, but many of their HS codes need a licence for Russia and Belarus.",
+  "regulationsAsOf": "2026-11-16",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Diagnostic and laboratory reagents (3822) were 31% of 2025 exports; the largest line was 3822.19 (other diagnostic or laboratory reagents, $10.48B), then 3824.99 (other chemical preparations, $5.14B) and 3811.21 (lubricating oil additives, $1.92B). HS 2022 gave malaria, Zika and blood-grouping reagents their own subheadings (3822.11–3822.13) and moved mixtures of halogenated methane, ethane and propane, such as refrigerant blends, into new heading 3827, so check codes carried over from older paperwork."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Many Chapter 38 goods move through distributors and toll formulators; screen the end user named in the order, not only the distributor that pays."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most Chapter 38 goods are EAR99. The exceptions: mixtures and test kits containing Chemical Weapons Convention chemicals or chemical-weapons precursors (ECCN 1C350, 1C355, 1C395), diagnostic test kits containing listed toxins (1C991), nuclear-grade or rocket-nozzle graphite (1C298, 1C107), and hetero-epitaxial or compound-semiconductor wafers (3C001, 3C005, 3C006)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        },
+        {
+          "label": "15 CFR 746 Supp. No. 4 (Russia and Belarus HS-code list)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ],
+      "chapterNote": "Many Chapter 38 HS codes are on BIS's Russia and Belarus industry-sector list (Supplement No. 4 to 15 CFR Part 746), including fuel and lubricant additives (3811), catalysts (3815), doped silicon (3818), other chemical preparations (3824.99) and biodiesel (3826), so even EAR99 goods under those codes need a licence for Russia or Belarus. Pesticides (3808) and diagnostic reagents (3822) are not on it."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        },
+        {
+          "label": "15 CFR 30.36 (shipments to Canada)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.36"
+        }
+      ],
+      "chapterNote": "Shipments to Canada, the largest buyer, are exempt from EEI unless they need a licence or are only passing through Canada to a third country (15 CFR 30.36). A hazardous-waste export needs an EEI filing that cites the EPA consent, at any value (40 CFR 262.83)."
+    }
+  ],
+  "rules": [
+    {
+      "id": "epa-fifra-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Pesticides, herbicides and disinfectants (FIFRA section 17): every export pesticide must carry export labeling in English and the destination's language and be produced under EPA's establishment reporting rules; an unregistered pesticide also needs a signed foreign purchaser acknowledgement statement, obtained before the shipment and submitted to EPA (per shipment, or for the first shipment to each buyer each year plus an annual summary by March 1)",
+      "citations": [
+        {
+          "label": "40 CFR Part 168, Subpart D (export pesticides)",
+          "url": "https://www.ecfr.gov/current/title-40/part-168/subpart-D"
+        },
+        {
+          "label": "40 CFR 168.75 (purchaser acknowledgement statements)",
+          "url": "https://www.ecfr.gov/current/title-40/section-168.75"
+        },
+        {
+          "label": "40 CFR Part 167 (producing establishments)",
+          "url": "https://www.ecfr.gov/current/title-40/part-167"
+        },
+        {
+          "label": "EPA: international activities related to pesticides",
+          "url": "https://www.epa.gov/pesticides/international-activities-related-pesticides"
+        }
+      ]
+    },
+    {
+      "id": "epa-tsca-12b",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "TSCA section 12(b): notify EPA through CDX of the export of a chemical substance or mixture subject to certain TSCA actions (section 4 or 5(b) data requirements, section 5 orders or rules, section 6 rules, section 7 actions), within seven days of forming the intent to export or on the export date, whichever is earlier; components under 1% (0.1% for carcinogens) are exempt, and pesticides follow FIFRA instead",
+      "citations": [
+        {
+          "label": "40 CFR 707.65 (submission to the agency)",
+          "url": "https://www.ecfr.gov/current/title-40/section-707.65"
+        },
+        {
+          "label": "40 CFR Part 707, Subpart D (export notification)",
+          "url": "https://www.ecfr.gov/current/title-40/part-707/subpart-D"
+        },
+        {
+          "label": "EPA: TSCA requirements for exporting chemicals",
+          "url": "https://www.epa.gov/tsca-import-export-requirements/tsca-requirements-exporting-chemicals"
+        }
+      ]
+    },
+    {
+      "id": "epa-rfs-exporter",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Biodiesel and other renewable fuel (Renewable Fuel Standard): an exporter must acquire and retire RINs to meet its Exporter Renewable Volume Obligation for the volume shipped, unless it bought the fuel directly from the producer and can show no RINs were generated",
+      "citations": [
+        {
+          "label": "40 CFR 80.1430 (requirements for exporters of renewable fuels)",
+          "url": "https://www.ecfr.gov/current/title-40/section-80.1430"
+        },
+        {
+          "label": "EPA: Renewable Fuel Standard program",
+          "url": "https://www.epa.gov/renewable-fuel-standard-program"
+        }
+      ]
+    },
+    {
+      "id": "epa-hazwaste-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "Hazardous waste: notify EPA through WIETS at least 60 days before the first shipment and ship only after EPA issues an acknowledgment of consent (AOC) from the importing and transit countries; each shipment needs a movement document and an EEI filing",
+      "citations": [
+        {
+          "label": "40 CFR 262.83 (exports of hazardous waste)",
+          "url": "https://www.ecfr.gov/current/title-40/section-262.83"
+        },
+        {
+          "label": "EPA: transboundary shipments of hazardous waste",
+          "url": "https://www.epa.gov/hwgenerators/international-agreements-transboundary-shipments-hazardous-waste"
+        }
+      ]
+    },
+    {
+      "id": "epa-hfc-ods-export",
+      "agency": "Environmental Protection Agency (EPA)",
+      "title": "HFC, HCFC and halon blends (refrigerants, extinguishing agents): exporters of regulated HFCs report each quarter under the AIM Act, within 45 days of the quarter end, and exporters of ozone-depleting substances report under the Clean Air Act rules (class II within 30 days after each quarter)",
+      "citations": [
+        {
+          "label": "40 CFR 84.31 (HFC recordkeeping and reporting)",
+          "url": "https://www.ecfr.gov/current/title-40/section-84.31"
+        },
+        {
+          "label": "40 CFR 82.24 (class II substances)",
+          "url": "https://www.ecfr.gov/current/title-40/section-82.24"
+        },
+        {
+          "label": "40 CFR 82.13 (class I substances)",
+          "url": "https://www.ecfr.gov/current/title-40/section-82.13"
+        },
+        {
+          "label": "EPA: HFC phasedown",
+          "url": "https://www.epa.gov/climate-hfcs-reduction"
+        }
+      ]
+    },
+    {
+      "id": "bis-cwc-mixtures",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Mixtures and test kits containing Chemical Weapons Convention chemicals or chemical-weapons precursors (ECCN 1C350, 1C355, 1C395): licences for the destinations on the chemical and biological (CB) column of the Country Chart, and for States not Party to the Convention, where kits with Schedule 3 chemicals can instead ship with an end-use certificate",
+      "citations": [
+        {
+          "label": "15 CFR 742.18 (Chemical Weapons Convention)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.18"
+        },
+        {
+          "label": "15 CFR 742.2 (chemical and biological weapons)",
+          "url": "https://www.ecfr.gov/current/title-15/section-742.2"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 1",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: Chemical Weapons Convention",
+          "url": "https://www.bis.gov/licensing/chemical-weapons-convention"
+        }
+      ]
+    },
+    {
+      "id": "bis-graphite",
+      "agency": "Bureau of Industry and Security (BIS) / Nuclear Regulatory Commission",
+      "title": "Special graphite: nuclear-grade graphite (boron under 5 ppm, density over 1.5 g/cm³) is ECCN 1C298 when not for a reactor and needs an NRC licence when it is; fine-grain graphite of 1.72 g/cm³ or more, or pyrolytic or fibrous reinforced graphite, usable for rocket nozzles and re-entry nose tips is ECCN 1C107 (missile technology)",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1): 1C107, 1C298",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "10 CFR Part 110 (NRC export licensing)",
+          "url": "https://www.ecfr.gov/current/title-10/part-110"
+        }
+      ]
+    },
+    {
+      "id": "bis-semiconductor-materials",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Semiconductor materials: most doped silicon wafers are EAR99, but hetero-epitaxial wafers (ECCN 3C001) and high-resistivity silicon carbide, gallium nitride, aluminum nitride, gallium oxide or diamond substrates and wafers built on them (3C005, 3C006) are controlled for national security and need a licence for many destinations",
+      "citations": [
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1), Category 3",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ]
+    },
+    {
+      "id": "fda-ivd-export",
+      "agency": "Food and Drug Administration (FDA)",
+      "title": "Diagnostic reagents and clinical culture media: in vitro diagnostic products are medical devices, so FDA's device export rules apply; a legally marketed device can get a Certificate to Foreign Government through CECATS, which many buyers' regulators ask for, and an unapproved device may be exported only under FD&C Act section 801(e) or 802",
+      "citations": [
+        {
+          "label": "FDA: exporting medical devices",
+          "url": "https://www.fda.gov/medical-devices/importing-and-exporting-medical-devices/exporting-medical-devices"
+        }
+      ]
+    },
+    {
+      "id": "dea-chemical-mixtures",
+      "agency": "Drug Enforcement Administration (DEA)",
+      "title": "Mixtures containing a DEA listed chemical above the concentration limits in 21 CFR 1310.12 are not exempt: exporting a quantity at or above the threshold needs DEA Form 486 at least 15 calendar days before release at the port",
+      "citations": [
+        {
+          "label": "21 CFR 1310.12 (exempt chemical mixtures)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1310.12"
+        },
+        {
+          "label": "21 CFR 1313.21 (notification prior to export)",
+          "url": "https://www.ecfr.gov/current/title-21/section-1313.21"
+        }
+      ]
+    },
+    {
+      "id": "aphis-animal-origin",
+      "agency": "USDA Animal and Plant Health Inspection Service (APHIS)",
+      "title": "Goods with animal-derived ingredients (such as serum or peptones in culture media and reagents): many buyers' governments require a USDA APHIS veterinary export certificate; APHIS's IRegs list each country's requirements",
+      "citations": [
+        {
+          "label": "APHIS: international animal product export regulations (IRegs)",
+          "url": "https://www.aphis.usda.gov/animal-product-export/international-animal-product-export-regulations"
+        }
+      ]
+    },
+    {
+      "id": "dot-hazmat",
+      "agency": "Department of Transportation (PHMSA)",
+      "title": "Hazardous chemicals ship as dangerous goods: classification, packaging, marking and documentation under the Hazardous Materials Regulations, which also underpin the ocean (IMDG) and air (IATA) rules",
+      "citations": [
+        {
+          "label": "49 CFR Part 172 (hazardous materials table, communications)",
+          "url": "https://www.ecfr.gov/current/title-49/part-172"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "3801",
+      "label": "Artificial graphite & carbon pastes",
+      "ruleIds": ["bis-graphite", "epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3802",
+      "label": "Activated carbon",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3803",
+      "label": "Tall oil",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3804",
+      "label": "Lignin sulfonates & wood-pulp lyes",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3805",
+      "label": "Turpentine & pine oil",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": "Turpentine and pine oil are flammable liquids and ship as dangerous goods."
+    },
+    {
+      "heading": "3806",
+      "label": "Rosin & ester gums",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3807",
+      "label": "Wood tar & brewers' pitch",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": null
+    },
+    {
+      "heading": "3808",
+      "label": "Pesticides, herbicides & disinfectants",
+      "ruleIds": ["epa-fifra-export", "dot-hazmat"],
+      "note": "Pesticides are regulated under FIFRA, not TSCA. Disinfectants and sanitizers (3808.94) are antimicrobial pesticides and follow the same export rules; registration in the buyer's market is listed on the Markets page."
+    },
+    {
+      "heading": "3809",
+      "label": "Textile, paper & leather finishing agents",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3810",
+      "label": "Pickling preparations & soldering fluxes",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": "Pickling acids and fluxes are often corrosive and ship as dangerous goods."
+    },
+    {
+      "heading": "3811",
+      "label": "Fuel & lubricant additives",
+      "ruleIds": ["epa-tsca-12b", "dot-hazmat"],
+      "note": null
+    },
+    {
+      "heading": "3812",
+      "label": "Rubber accelerators, plasticizers & stabilizers",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3813",
+      "label": "Fire-extinguisher charges",
+      "ruleIds": ["epa-hfc-ods-export", "dot-hazmat"],
+      "note": "Charges containing HFCs or halons fall under EPA's HFC and ozone-depleting-substance reporting; pressurized extinguishers ship as dangerous goods."
+    },
+    {
+      "heading": "3814",
+      "label": "Solvents, thinners & paint removers",
+      "ruleIds": ["epa-tsca-12b", "dea-chemical-mixtures", "dot-hazmat"],
+      "note": "Solvent blends can contain DEA listed chemicals such as toluene or acetone; check the concentration limits before export."
+    },
+    {
+      "heading": "3815",
+      "label": "Catalysts",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3816",
+      "label": "Refractory cements & mortars",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3817",
+      "label": "Mixed alkylbenzenes (LAB)",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3818",
+      "label": "Doped silicon wafers & electronic chemicals",
+      "ruleIds": ["bis-semiconductor-materials"],
+      "note": null
+    },
+    {
+      "heading": "3819",
+      "label": "Brake & hydraulic fluids",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3820",
+      "label": "Antifreeze & deicing fluids",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3821",
+      "label": "Culture media",
+      "ruleIds": ["fda-ivd-export", "aphis-animal-origin"],
+      "note": null
+    },
+    {
+      "heading": "3822",
+      "label": "Diagnostic & laboratory reagents",
+      "ruleIds": ["fda-ivd-export", "bis-cwc-mixtures", "aphis-animal-origin"],
+      "note": "Research-use-only reagents are not medical devices. Test kits containing CWC chemicals can fall under ECCN 1C395, and diagnostic kits containing listed toxins under 1C991."
+    },
+    {
+      "heading": "3823",
+      "label": "Industrial fatty acids & fatty alcohols",
+      "ruleIds": ["epa-tsca-12b"],
+      "note": null
+    },
+    {
+      "heading": "3824",
+      "label": "Other chemical preparations (n.e.s.)",
+      "ruleIds": ["epa-tsca-12b", "bis-cwc-mixtures", "dea-chemical-mixtures"],
+      "note": null
+    },
+    {
+      "heading": "3825",
+      "label": "Chemical, municipal & clinical waste",
+      "ruleIds": ["epa-hazwaste-export"],
+      "note": "Clinical waste, spent solvents and other residues in this heading are often RCRA hazardous waste; check before quoting a shipment."
+    },
+    {
+      "heading": "3826",
+      "label": "Biodiesel",
+      "ruleIds": ["epa-rfs-exporter"],
+      "note": "Canada bought $257M of the $316M of U.S. biodiesel exported in 2025."
+    },
+    {
+      "heading": "3827",
+      "label": "Refrigerant & other halogenated blends",
+      "ruleIds": ["epa-hfc-ods-export", "dot-hazmat"],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

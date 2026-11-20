@@ -1,0 +1,468 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 4,
+    "padded": "04",
+    "slug": "4-dairy-eggs-honey",
+    "title": "Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/4-dairy-eggs-honey/rules",
+    "h1": "HTS Chapter 04: Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "U.S. Dairy Export Rules: Schedule B, AMS Certificates, Plant Lists",
+      "shortDescription": "What the U.S. requires before you export cheese, milk powder, whey, eggs or honey: Schedule B codes, USDA AMS dairy certificates, FDA export lists and AES.",
+      "keywords": [
+        "usda dairy export certificate",
+        "dairy export certificate",
+        "dairy sanitary export certificate",
+        "hs code for cheese",
+        "hs code for milk powder",
+        "hs code whey powder",
+        "hs code honey",
+        "dairy export license"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "U.S. dairy, eggs and honey leave the country without an export licence: they are EAR99, so the federal steps are the usual ones (Schedule B number, buyer screening, AES filing). The work is the buyer's food-safety paperwork. **USDA's Agricultural Marketing Service (AMS)** signs **dairy sanitary export certificates** and table-egg certificates; **FDA** keeps the plant lists that Chile, China, the EU, India and the UK require for dairy, and the EU's lists for eggs and honey; **FSIS** certifies egg products; and **APHIS** signs health certificates for hatching eggs. For the EU, the UK, Viet Nam and others the certificate must be issued before the shipment leaves.",
+  "regulationsAsOf": "2026-11-18",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Cheese is heading 0406 (0406.10 fresh cheese and curd, 0406.20 grated or powdered, 0406.30 processed, 0406.40 blue, 0406.90 cheddar and other cheese); skim milk powder is 0402.10 and whole milk powder 0402.21; whey is 0404.10 and butter 0405.10. Whey protein concentrates and isolates with more than 80% whey protein are 3502.20, lactose 1702 and infant formula 1901.10, outside Chapter 04. Hatching eggs are 0407.11, table eggs 0407.21 and honey 0409.00."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Milk powder and whey often move through traders and re-packers in Mexico, Southeast Asia and the Middle East. Screen the consignee and, where you know it, the final buyer."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Dairy products, eggs and honey are EAR99, so no Commerce licence is needed unless the destination or end user is restricted (see the sanctions step)."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "Food sales to sanctioned destinations run under special rules: to Cuba under BIS License Exception AGR (15 CFR 740.18) and to Iran under OFAC's general license for agricultural commodities (31 CFR 560.530). Check the current program before quoting."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "A container of cheese, milk powder or whey is almost always worth more than $2,500 per Schedule B number, so plan to file in AES."
+    }
+  ],
+  "rules": [
+    {
+      "id": "ams-dairy-cert",
+      "agency": "USDA Agricultural Marketing Service (AMS), Dairy Grading Branch",
+      "title": "Dairy sanitary export certificate: AMS issues the sanitary certificates most buyers ask for, but only for products from plants on FDA's Interstate Milk Shippers list, the EU's list of approved U.S. dairy establishments or AMS's own list of USDA-approved plants. Requests go through AMS's ATLAS system, with country worksheets for China, Algeria, Peru, Taiwan and others. Allow at least 5 business days: the EU, Viet Nam and many other buyers require the certificate to be dated before the product ships. An original certificate costs $104.",
+      "citations": [
+        {
+          "label": "AMS: dairy exports",
+          "url": "https://www.ams.usda.gov/services/imports-exports/dairy-exports"
+        },
+        {
+          "label": "AMS: how to apply",
+          "url": "https://www.ams.usda.gov/services/imports-exports/dairy-exports/how-to-apply"
+        },
+        {
+          "label": "AMS: dairy sanitary certificates",
+          "url": "https://www.ams.usda.gov/services/imports-exports/dairy-exports/dairy-sanitary-certificates"
+        },
+        {
+          "label": "7 CFR Part 58 (dairy grading and inspection)",
+          "url": "https://www.ecfr.gov/current/title-7/part-58"
+        }
+      ]
+    },
+    {
+      "id": "fda-dairy-lists",
+      "agency": "U.S. Food and Drug Administration (FDA)",
+      "title": "Dairy export lists: Chile, China, the EU, India and the UK accept dairy only from plants on a list FDA sends them. Plants apply through FDA's Export Listing Module (ELM); FDA sends updates about once a quarter, and the buyer often takes 6 weeks to publish them. Product made or shipped before the plant is listed can be detained or rejected, and listings must be renewed every two years.",
+      "citations": [
+        {
+          "label": "FDA: dairy export lists",
+          "url": "https://www.fda.gov/food/food-export-lists/dairy-export-lists"
+        },
+        {
+          "label": "FDA: food export lists",
+          "url": "https://www.fda.gov/food/exporting-food-products-united-states/food-export-lists"
+        },
+        {
+          "label": "FDA: Export Listing Module",
+          "url": "https://www.fda.gov/food/food-export-lists/online-applications-export-lists"
+        }
+      ]
+    },
+    {
+      "id": "china-registration",
+      "agency": "General Administration of Customs of China (GACC), through FDA and AMS",
+      "title": "China registration and certificate: China admits U.S. dairy only from plants registered with GACC under its rules for overseas food manufacturers (Decree 248); for dairy, FDA manages the China plant list. Each shipment needs the USDA China dairy sanitary certificate, issued electronically by AMS, and only firms on the FDA-managed China list can get it.",
+      "citations": [
+        {
+          "label": "AMS: China dairy exports",
+          "url": "https://www.ams.usda.gov/services/imports-exports/dairy-exports/china-dairy"
+        },
+        {
+          "label": "FDA: dairy export lists (China)",
+          "url": "https://www.fda.gov/food/food-export-lists/dairy-export-lists"
+        },
+        {
+          "label": "GACC (English)",
+          "url": "https://english.customs.gov.cn/"
+        }
+      ]
+    },
+    {
+      "id": "eu-evp",
+      "agency": "USDA AMS Dairy Program (EU Export Verification Program)",
+      "title": "EU, UK and Türkiye: dairy exporters and their suppliers must take part in AMS's EU Export Verification Program, the plant must be on the EU (or UK) list through FDA's ELM, and the certificate must be issued before the shipment departs; AMS asks for applications five days ahead. Composite foods that contain dairy need their own EU certificate.",
+      "citations": [
+        {
+          "label": "AMS: EU, GB and Türkiye dairy exports",
+          "url": "https://www.ams.usda.gov/services/imports-exports/dairy-exports/eu-dairy-exports"
+        }
+      ]
+    },
+    {
+      "id": "ams-shell-eggs",
+      "agency": "USDA AMS Livestock and Poultry Program",
+      "title": "Table eggs: AMS, acting as a certifying agent recognized by APHIS, grades and certifies shell eggs for export with a shell egg grading certificate (Form LPS-210S) and a disease-free statement. The layer flock must trace to breeder stock certified under the National Poultry Improvement Plan (NPIP), and unless a country asks for more the eggs must be U.S. Grade B or better. Some buyers, such as Taiwan, also want a veterinarian-signed APHIS certificate.",
+      "citations": [
+        {
+          "label": "AMS: shell egg export requirements",
+          "url": "https://www.ams.usda.gov/services/shell-egg-export-requirements/general"
+        },
+        {
+          "label": "AMS: certification of shell eggs for export (fact sheet)",
+          "url": "https://www.ams.usda.gov/sites/default/files/media/EggExportFactsheet.pdf"
+        },
+        {
+          "label": "7 CFR Part 56 (shell egg grading)",
+          "url": "https://www.ecfr.gov/current/title-7/part-56"
+        }
+      ]
+    },
+    {
+      "id": "aphis-animal-products",
+      "agency": "USDA Animal and Plant Health Inspection Service (APHIS), Veterinary Services",
+      "title": "Hatching eggs and animal-health statements: APHIS signs health certificates for hatching eggs (for Mexico, VS Form 17-6, with sampling and testing under the National Poultry Improvement Plan) and the VS Form 16-4 export certificate for animal products when a buyer wants a veterinarian's signature. APHIS's international regulations (IREGs) list each country's conditions, including any limits linked to avian influenza.",
+      "citations": [
+        {
+          "label": "APHIS: animal product exports",
+          "url": "https://www.aphis.usda.gov/animal-product-export"
+        },
+        {
+          "label": "APHIS: international animal product export regulations",
+          "url": "https://www.aphis.usda.gov/animal-product-export/international-animal-product-export-regulations"
+        },
+        {
+          "label": "9 CFR Part 145 (NPIP breeding flocks and hatcheries)",
+          "url": "https://www.ecfr.gov/current/title-9/part-145"
+        }
+      ]
+    },
+    {
+      "id": "fsis-egg-products",
+      "agency": "USDA Food Safety and Inspection Service (FSIS)",
+      "title": "Egg products: liquid, frozen and dried egg products come from FSIS-inspected breaking plants, and FSIS issues their export certificates; its Export Library lists each country's requirements. For the EU and the UK the plant must also be on the EU egg list, applied for through FDA's ELM.",
+      "citations": [
+        {
+          "label": "FSIS: Export Library",
+          "url": "https://www.fsis.usda.gov/inspection/import-export/import-export-library"
+        },
+        {
+          "label": "FDA: egg and egg products export lists",
+          "url": "https://www.fda.gov/food/food-export-lists/egg-and-egg-products-export-lists"
+        },
+        {
+          "label": "9 CFR Part 590 (egg products inspection)",
+          "url": "https://www.ecfr.gov/current/title-9/part-590"
+        }
+      ]
+    },
+    {
+      "id": "honey-eu-listing",
+      "agency": "USDA AMS Specialty Crops Inspection Division and FDA",
+      "title": "Honey for the EU: since November 29, 2024 the EU takes honey and other bee products, including those inside composite foods, only from establishments on its approved list (Regulation (EU) 2023/2652). A U.S. plant first passes an AMS on-site assessment (HACCP verification, plant survey and food-defense survey), then applies to FDA's export list through ELM. Saudi Arabia also keeps a list of approved honey establishments.",
+      "citations": [
+        {
+          "label": "FDA: honey and other apiculture export lists",
+          "url": "https://www.fda.gov/food/food-export-lists/honey-and-other-apiculture-export-lists"
+        },
+        {
+          "label": "FDA: food export lists",
+          "url": "https://www.fda.gov/food/exporting-food-products-united-states/food-export-lists"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "0401",
+      "label": "Fluid milk and cream",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists", "eu-evp"],
+      "note": "Fluid milk and cream go mostly to Canada ($70 million in 2025) and Mexico. Buyers that list dairy plants (Chile, China, the EU, India, the UK) also need the plant on FDA's export list."
+    },
+    {
+      "heading": "0402",
+      "label": "Milk powder and condensed milk (skim and whole milk powder)",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists", "china-registration"],
+      "note": "Skim milk powder ($1.92 billion) for Mexico, Southeast Asia and Colombia: an AMS sanitary certificate per shipment, and for China a GACC-registered plant on FDA's China list."
+    },
+    {
+      "heading": "0403",
+      "label": "Yogurt, buttermilk and fermented milk",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists"],
+      "note": "Yogurt, buttermilk and fermented milk follow the same AMS certificate and plant-listing rules as other dairy."
+    },
+    {
+      "heading": "0404",
+      "label": "Whey and other milk-constituent products",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists", "china-registration"],
+      "note": "Whey ($662 million) is China's main U.S. dairy purchase, so a registered plant and the USDA China dairy certificate matter most. Whey protein with more than 80% whey protein is classified in 3502.20, outside this chapter."
+    },
+    {
+      "heading": "0405",
+      "label": "Butter, butteroil and dairy spreads",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists", "eu-evp"],
+      "note": "Butter and butteroil (Canada $228 million, Saudi Arabia $49 million): an AMS sanitary certificate; EU and UK sales need an EU-listed plant under AMS's Export Verification Program."
+    },
+    {
+      "heading": "0406",
+      "label": "Cheese and curd",
+      "ruleIds": ["ams-dairy-cert", "fda-dairy-lists", "china-registration", "eu-evp"],
+      "note": "Cheese for Mexico, Korea, Japan and Australia: an AMS sanitary certificate per shipment; China, the EU, Chile, India and the UK also need the plant listed through FDA."
+    },
+    {
+      "heading": "0407",
+      "label": "Eggs in shell (hatching and table eggs)",
+      "ruleIds": ["ams-shell-eggs", "aphis-animal-products"],
+      "note": "Shell eggs go mainly to Canada ($300 million), Mexico and Brazil. Hatching eggs ($471 million) need an APHIS health certificate and NPIP-certified flocks; table eggs need the AMS grading certificate."
+    },
+    {
+      "heading": "0408",
+      "label": "Egg products (dried, liquid, frozen) and yolks",
+      "ruleIds": ["fsis-egg-products"],
+      "note": "Dried, liquid and frozen egg products ($86 million; Japan is the largest buyer) are certified by FSIS."
+    },
+    {
+      "heading": "0409",
+      "label": "Natural honey",
+      "ruleIds": ["honey-eu-listing"],
+      "note": "Honey exports are small ($25 million, $14 million of it to Canada). EU sales need an AMS assessment and an FDA-listed establishment."
+    },
+    {
+      "heading": "0410",
+      "label": "Insects and other edible animal products",
+      "ruleIds": [],
+      "note": "No chapter-specific U.S. export rule beyond the steps above; check the buyer's import conditions."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Have your Chinese buyer use China's tariff exclusion process",
+      "saves": "China's 2018–19 counter-tariff of 25 points on whey and skim milk powder: whey pays 12% instead of 37%, skim milk powder 20% instead of 45%.",
+      "appliesTo": "Skim milk powder (0402.10) and whey (0404.10), the only Chapter 04 items on China's list of goods eligible for exclusion.",
+      "document": "The Chinese importer applies under China's market-based exclusion process for an approved purchase amount; the U.S. exporter supplies the product and origin details.",
+      "caveat": "Exclusions are valid until December 31, 2026, with no extension announced. They do not remove China's extra 10% on all U.S. goods.",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 2 of 2020 (market-based exclusion process)",
+          "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal (Nov 1, 2025)",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        },
+        {
+          "label": "USDA FAS: China tariffs on U.S. farm goods (GAIN CH2025-0050)",
+          "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Compendium+of+Tariffs+on+United+States+Agricultural+and+Related+Products_Beijing_China+-+People's+Republic+of_CH2025-0050.pdf"
+        }
+      ]
+    },
+    {
+      "id": "ca-quota-remission",
+      "title": "Sell within Canada's CUSMA quotas, and let processors claim back the surtax",
+      "saves": "Canada's over-quota duties of about 200–300% (245.5% on cheese, 298.5% on butter) and, for buyers who process the goods in Canada, the 25% or 50% surtax.",
+      "appliesTo": "U.S. dairy, butter, eggs and egg products imported by a Canadian firm holding a CUSMA tariff-rate-quota allocation; surtax remission for goods used in manufacturing, processing, agricultural production or food packaging in Canada.",
+      "document": "The Canadian importer holds a quota allocation and import permit; to recover the surtax it files a remission claim with the CBSA under the United States Surtax Remission Order (2025), which SOR/2026-186 extended to the 2026 counter-tariffs.",
+      "caveat": "Quota allocations go to Canadian firms, not U.S. exporters, and the remission for manufacturing inputs currently runs to June 30, 2027. How Canada allocates the quotas has been tested twice under USMCA: the U.S. won in 2021 on the share set aside for processors, Canada in November 2023 on its revised method.",
+      "citations": [
+        {
+          "label": "SOR/2026-186: United States Surtax Order (2026)",
+          "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+        },
+        {
+          "label": "CBSA: Customs Tariff 2026, Chapter 4",
+          "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch04-eng.html"
+        },
+        {
+          "label": "USTR: U.S. prevails in USMCA dairy dispute (Jan 2022)",
+          "url": "https://ustr.gov/about-us/policy-offices/press-office/press-releases/2022/january/united-states-prevails-usmca-dispute-canadian-dairy-restrictions"
+        },
+        {
+          "label": "USTR: second USMCA dairy panel report (Nov 2023)",
+          "url": "https://ustr.gov/about-us/policy-offices/press-office/press-releases/2023/november/usmca-panel-releases-canada-dairy-report-biden-harris-administration-will-continue-seeking-full"
+        }
+      ]
+    },
+    {
+      "id": "eu-us-dairy-trq",
+      "title": "Use the EU's duty-free quotas for U.S. cheese and other dairy",
+      "saves": "The EU's normal duty on cheese, and on milk, cream, yogurt, buttermilk, dairy spreads and milk fats, within the quota.",
+      "appliesTo": "U.S.-origin cheese (fresh, grated or powdered, processed, blue other than Roquefort and Gorgonzola, cheese for processing and cheddar), 10,000 t a year (order 09.9004), and other dairy (milk and cream up to 10% fat, yogurt, buttermilk, dairy spreads, milk fats other than natural butter, lactose and ice cream), 10,000 t a year (order 09.9003), from July 1, 2026.",
+      "document": "The EU importer declares the quota with proof of U.S. origin; the plant must be EU-listed and each shipment needs an AMS EU certificate.",
+      "caveat": "Each quota is first come, first served in 12-month periods from July 1; once it is used the normal duty applies. Milk powder, whey, natural butter, eggs and honey get no quota.",
+      "citations": [
+        {
+          "label": "Regulation (EU) 2026/1455, Annex III",
+          "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+        },
+        {
+          "label": "Access2Markets: EU duties on U.S. goods from July 1, 2026",
+          "url": "https://trade.ec.europa.eu/access-to-markets/en/news/new-eu-tariff-duties-imports-goods-united-states-applicable-1-july-2026"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 8,
+    "padded": "08",
+    "slug": "8-fruit-and-nuts",
+    "title": "Edible Fruit and Nuts; Peel of Citrus Fruit or Melons"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/8-fruit-and-nuts/faq",
+    "h1": "HTS Chapter 08: Edible Fruit and Nuts — U.S. Export FAQ",
+    "seo": {
+      "title": "Chapter 08 U.S. Fruit & Nut Export FAQ: Tariffs, Buyers & Rules",
+      "shortDescription": "Answers to common questions about exporting U.S. almonds, pistachios, walnuts and fresh fruit: who buys them, what China, India and the EU charge, and what the U.S. requires.",
+      "keywords": [
+        "us almond exports by country",
+        "almond import duty in india",
+        "tariffs on almonds",
+        "hs code for almonds",
+        "hs code for pistachios",
+        "phytosanitary certificate for export",
+        "us apple exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Common questions about exporting U.S. fruit and nuts, answered from the rest of this export report.",
+  "keyTakeaways": [
+    "The U.S. exported $18.02 billion of fruit and nuts in 2025; almonds alone were $6.08 billion, and Canada, India and Mexico are the largest buyers.",
+    "Canada and Mexico charge nothing under USMCA and the EU nothing on nuts within its U.S. quota; India and China are the costly markets.",
+    "To ship you need a Schedule B number, usually a USDA phytosanitary certificate for fresh fruit, grade inspection for apples and table grapes, and an AES filing; no export licence applies in the ordinary case."
+  ],
+  "questionSource": "Google search suggestions (November 2026) for queries such as \"us almond exports\", \"almond tariffs\", \"almond import duty in india\", \"us pistachio exports\", \"hs code for almonds\", \"phytosanitary certificate for export\" and \"us apple exports\".",
+  "faqs": [
+    {
+      "id": "how-much",
+      "question": "How much fruit and nuts does the U.S. export?",
+      "answer": "The U.S. exported $18.02 billion of Chapter 08 goods in 2025, up 9.8% from 2024. Nuts of heading 0802 are 59% of that, and almonds alone (in shell and shelled) were $6.08 billion.",
+      "link": "exports",
+      "searchedAs": ["us fruit exports", "what produce does the us export", "us almond exports"]
+    },
+    {
+      "id": "top-buyers",
+      "question": "Who buys the most U.S. fruit and nuts?",
+      "answer": "Canada takes 23.7% of U.S. Chapter 08 exports, mostly fresh fruit, followed by India (8.3%) and Mexico (7.8%). Germany, Spain, the Netherlands and Italy together take another 15.4%, almost all nuts.",
+      "link": "exports",
+      "searchedAs": ["us almond exports by country", "almond exports by country", "us almond exports to india"]
+    },
+    {
+      "id": "top-products",
+      "question": "What are the largest U.S. fruit and nut exports?",
+      "answer": "Shelled almonds ($4.43 billion in 2025) lead, followed by in-shell pistachios ($2.33 billion), in-shell almonds ($1.64 billion), fresh apples ($1.07 billion) and shelled walnuts ($993 million). Fresh grapes, strawberries, oranges and cherries are the largest fresh fruits after apples.",
+      "link": "exports",
+      "searchedAs": ["us pistachio exports", "us walnut exports", "us apple exports", "us cherry exports"]
+    },
+    {
+      "id": "india-almond-duty",
+      "question": "What is India’s import duty on U.S. almonds?",
+      "answer": "India charges ₹35 per kilo on in-shell almonds and ₹100 per kilo on shelled almonds, the rates in force since it dropped its 2019 retaliatory duties in September 2023. In-shell walnuts pay 100% and apples 50%. The February 2026 U.S.–India framework promises cuts, but no schedule is published.",
+      "link": "exports/markets",
+      "searchedAs": ["almond import duty in india", "california almond import duty in india", "tariffs on almonds in india", "india walnut tariff"]
+    },
+    {
+      "id": "china-almond-tariff",
+      "question": "What tariff does China charge on U.S. almonds and walnuts?",
+      "answer": "China adds a 15% counter-tariff from 2018 and its extra 10% on all U.S. goods to its normal rate, so raw almonds pay about 35% and in-shell walnuts about 50%. Without an exclusion, its 2018–19 counter-tariffs of 25% or more come on top.",
+      "link": "exports/markets",
+      "searchedAs": ["almond tariffs", "almond exports to china", "walnut tariffs", "pistachio tariffs"]
+    },
+    {
+      "id": "eu-nut-tariff",
+      "question": "What tariff does the EU charge on U.S. almonds and other nuts?",
+      "answer": "Since July 1, 2026 U.S. tree nuts enter the EU duty-free within a 500,000-tonne yearly quota. Above the quota the normal EU rate applies, for example 5.6% on in-shell and 3.5% on shelled almonds.",
+      "link": "exports/markets",
+      "searchedAs": ["almond tariffs", "pistachio tariffs", "tariffs on almonds"]
+    },
+    {
+      "id": "china-retaliation",
+      "question": "Did China retaliate against U.S. fruit and nuts in 2025?",
+      "answer": "Yes. China added 10% on U.S. fruit, nuts and other farm goods from March 10, 2025 and lifted it on November 10, 2025. Its extra 10% on all U.S. goods remains, and two dates are ahead: its exclusions end on December 31, 2026 and its 24-point suspension on January 10, 2027.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["china retaliatory tariffs us agriculture", "almond tariff news"]
+    },
+    {
+      "id": "canada-counter-tariffs",
+      "question": "Does Canada charge counter-tariffs on U.S. fruit?",
+      "answer": "Not now. Canada charged 25% on U.S. oranges and other citrus, watermelons, peaches, pecans and frozen berries from March 4 to September 1, 2025. Its September 2026 counter-tariffs skip Chapter 08, so U.S. fruit and nuts enter duty-free under CUSMA.",
+      "link": "exports/tariff-updates",
+      "searchedAs": ["us fruit exports"]
+    },
+    {
+      "id": "schedule-b",
+      "question": "What is the HS or Schedule B code for almonds, pistachios and walnuts?",
+      "answer": "Almonds are 0802.11 in shell and 0802.12 shelled, pistachios 0802.51 and 0802.52, and walnuts 0802.31 and 0802.32. The 10-digit Schedule B number you file starts with these six digits.",
+      "link": "exports/rules",
+      "searchedAs": [
+        "hs code for almonds",
+        "hs code for pistachios",
+        "hs code for walnuts",
+        "almond tariff code",
+        "pistachio tariff code",
+        "walnut tariff code"
+      ]
+    },
+    {
+      "id": "phyto",
+      "question": "Do I need a phytosanitary certificate to export fruit or nuts?",
+      "answer": "The U.S. does not require one, but most buyers do for fresh fruit and many do for raw nuts. APHIS or an authorized state inspector issues it through the PCIT system, and APHIS’s PExD database lists each country’s conditions.",
+      "link": "exports/rules",
+      "searchedAs": ["phytosanitary certificate for export", "do i need a phytosanitary certificate", "what products require phytosanitary certificate"]
+    },
+    {
+      "id": "apples-grapes",
+      "question": "What inspection do U.S. apples and table grapes need before export?",
+      "answer": "Apples must grade at least U.S. No. 1 and be inspected and certified under the Export Apple Act, except small lots and bulk bins to Canada. Table grapes must be inspected within 14 days before export under the Export Grape and Plum Act, except to Canada and Mexico.",
+      "link": "exports/rules",
+      "searchedAs": ["us apple exports", "us apple exports to india"]
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license for fruit or nuts?",
+      "answer": "No, in the ordinary case: fresh, dried and frozen fruit and nuts are EAR99. A licence or special rules apply only for restricted destinations or end users, such as Cuba, where food is sold under the Trade Sanctions Reform Act.",
+      "link": "exports/rules",
+      "searchedAs": ["do i need an export license", "do i need export license in usa", "export license requirements"]
+    }
+  ]
+}

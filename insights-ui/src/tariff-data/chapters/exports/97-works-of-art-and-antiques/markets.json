@@ -1,0 +1,1094 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 97,
+    "padded": "97",
+    "slug": "97-works-of-art-and-antiques",
+    "title": "Works of art, collectors' pieces and antiques"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/97-works-of-art-and-antiques/markets",
+    "h1": "HTS Chapter 97: Works of art, collectors' pieces and antiques — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Import Duty on U.S. Art: UK, EU, Switzerland, China and Hong Kong Rates | KoalaGains",
+      "shortDescription": "Eight of the ten largest markets charge 0% on U.S. paintings, sculpture and antiques; China adds counter-tariffs. Rates and import rules by market.",
+      "keywords": [
+        "import duty on art into uk",
+        "import duty art switzerland",
+        "eu regulation import cultural goods",
+        "is there a tariff on art",
+        "customs duty on artwork",
+        "selling art in china"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Eight of the ten largest markets — the **EU, the UK, Switzerland, Hong Kong, South Korea, Japan, Mexico and Canada** — charge **0%** on U.S. paintings, prints, sculpture, stamps, collections and antiques. **China** charges a low normal rate (0–6%) but adds its 2019 counter-tariffs (10–25%) and the 10% extra on all U.S. goods, so an original painting pays 31%; the **UAE** charges the 5% Gulf common tariff. With duty mostly at zero, access depends on each market’s rules for cultural property and protected wildlife, so each card names that authority. Import VAT and the buyer’s own paperwork are outside this page.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "9701",
+      "label": "Paintings, drawings, pastels, collages & mosaics (executed by hand)",
+      "shortLabel": "Paintings & drawings"
+    },
+    {
+      "heading": "9702",
+      "label": "Original engravings, prints & lithographs",
+      "shortLabel": "Original prints"
+    },
+    {
+      "heading": "9703",
+      "label": "Original sculptures & statuary, in any material",
+      "shortLabel": "Sculptures"
+    },
+    {
+      "heading": "9704",
+      "label": "Postage & revenue stamps, first-day covers, postal stationery",
+      "shortLabel": "Stamps"
+    },
+    {
+      "heading": "9705",
+      "label": "Collections & collectors' pieces: archaeological, ethnographic, natural history, coins",
+      "shortLabel": "Collectors' pieces & coins"
+    },
+    {
+      "heading": "9706",
+      "label": "Antiques over 100 years old",
+      "shortLabel": "Antiques"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common customs tariff: 0% on every Chapter 97 line",
+      "usTradeAgreement": null,
+      "exportsUsd": 3828306014,
+      "priorExportsUsd": 3560820502,
+      "sharePct": 37.5,
+      "changePct": 7.5,
+      "status": "unchanged",
+      "members": [
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 1295981482,
+          "priorExportsUsd": 1432513070,
+          "changePct": -9.5
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 608062876,
+          "priorExportsUsd": 567965109,
+          "changePct": 7.1
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 403829333,
+          "priorExportsUsd": 394771239,
+          "changePct": 2.3
+        },
+        {
+          "countryCode": 56,
+          "country": "Belgium",
+          "exportsUsd": 401649324,
+          "priorExportsUsd": 297286696,
+          "changePct": 35.1
+        },
+        {
+          "countryCode": 442,
+          "country": "Luxembourg",
+          "exportsUsd": 343799579,
+          "priorExportsUsd": 175333573,
+          "changePct": 96.1
+        }
+      ],
+      "cells": {
+        "9701": {
+          "exportsUsd": 2772851846,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 120167127,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 630421980,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 2377464,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 98931423,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 203556174,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "EU common customs tariff 0% for every Chapter 97 line (WITS/TRAINS MFN applied rates, 2023); also listed in Annex I of Regulation (EU) 2026/1455: HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "The largest market: $3.83B in 2025 (+7.5%), led by France ($1.30B), Germany ($608M), Italy ($404M), Belgium ($402M) and Luxembourg ($344M, +96%). Duty is 0%; for older cultural goods the importer needs an EU import licence or importer statement.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (EU tariff 0% on all of Chapter 97)",
+        "regulator": {
+          "name": "Member-state competent authorities, through the EU’s ICG system (Regulation (EU) 2019/880)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2019/880/oj",
+          "requirement": "Since June 28, 2025, archaeological objects and dismembered parts of monuments over 250 years old need an import licence, and paintings, prints, sculpture, collections and antiques over 200 years old worth €18,000 or more an importer statement, unless created or discovered in the EU. Proof of lawful export from the country of creation is needed, or from the last country of over five years’ stay for goods that left before April 24, 1972."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff: 0% on every Chapter 97 line",
+      "usTradeAgreement": null,
+      "exportsUsd": 2364932809,
+      "priorExportsUsd": 2302718272,
+      "sharePct": 23.2,
+      "changePct": 2.7,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 1788218165,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 73759397,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 251140924,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 734226,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 68780756,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 182299341,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "UK Global Tariff 0% (UK Trade Tariff, Nov 2026; WITS/TRAINS MFN applied rates, 2023): HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "$2.36B in 2025 (+2.7%), the largest single buyer, and up 5.1% in January–August 2026. Paintings and drawings were $1.79B of it. The UK charges no duty on art; antiques containing ivory need an Ivory Act exemption.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (UK Global Tariff 0%)",
+        "regulator": {
+          "name": "Animal and Plant Health Agency (Ivory Act 2018)",
+          "url": "https://www.gov.uk/guidance/dealing-in-items-containing-ivory-or-made-of-ivory",
+          "requirement": "Importing an item made of or containing elephant, hippo, killer whale, narwhal or sperm whale ivory to sell or hire needs a registered exemption (for example pre-1947 with under 10% ivory, or a pre-1918 portrait miniature) or an exemption certificate for a pre-1918 item of outstandingly high value."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 757,
+      "name": "Switzerland",
+      "rule": "Swiss tariff: 0% on works of art (industrial tariffs abolished January 1, 2024)",
+      "usTradeAgreement": null,
+      "exportsUsd": 1652822699,
+      "priorExportsUsd": 1574069713,
+      "sharePct": 16.2,
+      "changePct": 5,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 1326682303,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 33552947,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 247802022,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 2905951,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 14036306,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 27843170,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Swiss tariff 0% (WITS/TRAINS MFN applied rates, 2023); Switzerland abolished all industrial tariffs on January 1, 2024: HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "$1.65B in 2025 (+5.0%), though January–August 2026 was down 23.1%. Paintings and drawings were $1.33B. Switzerland charges no duty, but cultural property must be declared as such at customs.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (Swiss tariff 0%)",
+        "regulator": {
+          "name": "Federal Office of Culture and the Federal Office for Customs and Border Security (Cultural Property Transfer Act)",
+          "url": "https://www.bak.admin.ch/en/import-transit-and-export-of-cultural-property",
+          "requirement": "Cultural property must be declared as such and in detail at Swiss customs, including in a customs warehouse or free port; since the revised ordinance of January 1, 2026 the declaration gives the type, dating and dimensions of each object."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Switzerland import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/switzerland-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 344,
+      "name": "Hong Kong",
+      "rule": "No tariffs (free port)",
+      "usTradeAgreement": null,
+      "exportsUsd": 675066998,
+      "priorExportsUsd": 1162342536,
+      "sharePct": 6.6,
+      "changePct": -41.9,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 464290579,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 10053873,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 63556350,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 538095,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 39597970,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 97030131,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Hong Kong charges no tariffs (free port; WITS/TRAINS MFN applied rates, 2023): HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "$675M in 2025, down 41.9%, but up 39.5% to $700M in January–August 2026. Hong Kong charges no duty; it bans elephant ivory imports except antique ivory.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Antiques over 100 years old (9706)",
+        "tariffNow": "Free (free port)",
+        "regulator": {
+          "name": "Agriculture, Fisheries and Conservation Department (Cap. 586)",
+          "url": "https://www.afcd.gov.hk/english/conservation/con_end/con_end.html",
+          "requirement": "Elephant ivory imports have been banned since December 31, 2021 except antique ivory worked before July 1, 1925, which needs a pre-Convention certificate from the exporting place and an AFCD Licence to Import."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Hong Kong import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/import-requirements-and-documentation-hong-kong-macau"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS: 0% on U.S. goods (Korea’s MFN rate is also 0%)",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 287127248,
+      "priorExportsUsd": 329898383,
+      "sharePct": 2.8,
+      "changePct": -13,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 199862662,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 4430627,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 63782479,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 0,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 4066777,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 14984703,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS; Korea MFN 0% (WITS/TRAINS MFN applied rates, 2023): HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "$287M in 2025 (−13.0%), $200M of it paintings and drawings, and up 3.4% in January–August 2026. Korea charges no duty on art.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (KORUS; Korea’s normal rate is also 0%)",
+        "regulator": {
+          "name": "Regional environmental offices (CITES permits), checked by Korea Customs Service",
+          "url": "https://www.kbr.go.kr/content/view.do?menuKey=716&contentKey=135",
+          "requirement": "No import licence is needed for art in general; works made with CITES-listed species, such as ivory or tortoiseshell, need a CITES import permit from a regional environmental office."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan’s WTO rate: 0% on every Chapter 97 line",
+      "usTradeAgreement": null,
+      "exportsUsd": 247111336,
+      "priorExportsUsd": 255688133,
+      "sharePct": 2.4,
+      "changePct": -3.4,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 185531913,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9701 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        },
+        "9702": {
+          "exportsUsd": 8339061,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9702 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        },
+        "9703": {
+          "exportsUsd": 36103741,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9703 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        },
+        "9704": {
+          "exportsUsd": 57182,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9704 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        },
+        "9705": {
+          "exportsUsd": 8906785,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9705 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        },
+        "9706": {
+          "exportsUsd": 8172654,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "Japan’s Tariff Schedule, April 1, 2026: free for HS 9706 (WTO and every preferential column); no U.S.–Japan Trade Agreement rate needed"
+        }
+      },
+      "profile": {
+        "headline": "$247M in 2025 (−3.4%), mostly paintings ($186M) and sculpture ($36M). Japan charges no duty on art, so the U.S.–Japan agreement changes nothing here.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (Japan’s normal rate 0%)",
+        "regulator": {
+          "name": "Agency for Cultural Affairs and METI (Act No. 81 of 2002)",
+          "url": "https://www.japaneselawtranslation.go.jp/en/laws/view/3791/en",
+          "requirement": "Importing “specified foreign cultural property”, an object a foreign state has reported stolen from a museum or similar institution, needs METI import approval under the Foreign Exchange and Foreign Trade Act; other art needs none."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA: 0% on qualifying U.S. goods (Mexico’s general rate is also exempt)",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 135508476,
+      "priorExportsUsd": 117773508,
+      "sharePct": 1.3,
+      "changePct": 15.1,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 113942391,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9701)"
+        },
+        "9702": {
+          "exportsUsd": 1681929,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9702)"
+        },
+        "9703": {
+          "exportsUsd": 17946193,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9703)"
+        },
+        "9704": {
+          "exportsUsd": 218293,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9704)"
+        },
+        "9705": {
+          "exportsUsd": 1018602,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9705)"
+        },
+        "9706": {
+          "exportsUsd": 701068,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA; Mexico’s LIGIE (DOF June 7, 2022) lists every Chapter 97 line as exempt (HS 9706)"
+        }
+      },
+      "profile": {
+        "headline": "$136M in 2025 (+15.1%), mostly paintings ($114M). Mexico’s tariff exempts all of Chapter 97, so U.S. art enters duty-free with or without a USMCA certification.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (USMCA; Mexico’s normal rate is also 0%)",
+        "regulator": {
+          "name": "SEMARNAT, Directorate General of Wildlife (procedure SEMARNAT-08-009)",
+          "url": "https://www.gob.mx/semarnat/documentos/tramite-semarnat-08-009",
+          "requirement": "No import permit is needed for art in general; pieces made with CITES-listed wildlife need a SEMARNAT CITES import permit, supported by the U.S. CITES export or re-export document."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China’s MFN rates (0–6%) + 2019 counter-tariffs + 10% extra on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 123666861,
+      "priorExportsUsd": 145640937,
+      "sharePct": 1.2,
+      "changePct": -15.1,
+      "status": "raised",
+      "cells": {
+        "9701": {
+          "exportsUsd": 56980456,
+          "rate": "31% on original paintings (1% + 20% + 10%)",
+          "normalRate": "1–6% normal; 0% in 2026 on paintings over 100 years",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 1% on original paintings under 100 years (9701.9119), 6% on thangka, reproductions, mosaics and collages, 0% interim on paintings over 100 years (9701.21–29); 2019 counter-tariff 20% on original paintings other than thangka (Annex 2) and 10% on reproductions and collages (Annex 3) unless excluded; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        },
+        "9702": {
+          "exportsUsd": 922412,
+          "rate": "21% (1% + 10% + 10%)",
+          "normalRate": "1% normal",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 1% for 9702.10 and 9702.90; 2019 counter-tariff 10% on original prints (Annex 3) unless excluded; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        },
+        "9703": {
+          "exportsUsd": 23452652,
+          "rate": "31% (1% + 20% + 10%)",
+          "normalRate": "1% normal",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 1% for 9703.10 and 9703.90; 2019 counter-tariff 20% on original sculpture (Annex 2) unless excluded; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        },
+        "9704": {
+          "exportsUsd": 19126,
+          "rate": "39% on postage stamps (4% + 25% + 10%)",
+          "normalRate": "4–6% normal",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 4% on postage stamps (9704.0010), 6% on other items (9704.0090); 2019 counter-tariff 25% on postage stamps (Annex 1); the 10% on other items listed in 2019 was never applied; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        },
+        "9705": {
+          "exportsUsd": 513823,
+          "rate": "20% (0% + 10% + 10%)",
+          "normalRate": "0% normal",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 0% for 9705.10–9705.39; 2019 counter-tariff 10% on collections and collectors’ pieces (Annex 3) unless excluded; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        },
+        "9706": {
+          "exportsUsd": 41778392,
+          "rate": "30% (0% + 20% + 10%)",
+          "normalRate": "0% normal",
+          "basis": "China Customs Tariff 2026 and 2026 interim rates (Announcements No. 12 and No. 11 of 2025): 0% for 9706.10 and 9706.90; 2019 counter-tariff 20% on antiques over 100 years (Annex 2) unless excluded; plus the 10% extra on all U.S. goods (Announcement No. 7 of 2025), 24 more points suspended to January 10, 2027"
+        }
+      },
+      "profile": {
+        "headline": "$124M in 2025 (−15.1%): $57M of paintings and $42M of antiques. The costliest large market: an original painting pays 31% and an antique 30%. Imported artworks for sale also need provincial approval.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Antiques over 100 years old (9706)",
+        "tariffNow": "0–6% normal + 10–25% (2019 counter-tariffs) + 10%",
+        "regulator": {
+          "name": "Provincial departments of culture and tourism (Art Market Management Measures)",
+          "url": "https://www.gov.cn/gongbao/content/2016/content_5070760.htm",
+          "requirement": "A business importing artworks must apply, before import, to the culture department of the province of the port of entry with its business licence, the works’ source and a catalogue; customs clears the works on the approval, and unapproved imports may not be sold (Articles 14 and 18)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 784,
+      "name": "United Arab Emirates",
+      "rule": "GCC common external tariff (5%); no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 116475199,
+      "priorExportsUsd": 50442480,
+      "sharePct": 1.1,
+      "changePct": 130.9,
+      "status": "unchanged",
+      "cells": {
+        "9701": {
+          "exportsUsd": 50265223,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9701"
+        },
+        "9702": {
+          "exportsUsd": 2299207,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9702"
+        },
+        "9703": {
+          "exportsUsd": 33881786,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9703"
+        },
+        "9704": {
+          "exportsUsd": 26650,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9704"
+        },
+        "9705": {
+          "exportsUsd": 22789092,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9705"
+        },
+        "9706": {
+          "exportsUsd": 7213241,
+          "rate": "5%",
+          "normalRate": null,
+          "basis": "GCC common external tariff; UAE MFN 5% (WITS/TRAINS MFN applied rates, 2023): HS 9706"
+        }
+      },
+      "profile": {
+        "headline": "$116M in 2025, more than double 2024 (+130.9%), with paintings ($50M), sculpture ($34M) and collectors’ pieces ($23M). The UAE charges the 5% Gulf common tariff on all of Chapter 97.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "5% (GCC common tariff)",
+        "regulator": {
+          "name": "Ministry of Climate Change and Environment (CITES import certificate)",
+          "url": "https://www.moccae.gov.ae/en/services/import-of-cites-listed-species",
+          "requirement": "No import licence is needed for art in general; pieces made with CITES-listed species need a ministry CITES import certificate, valid for one shipment, and for Appendix I species such as elephant ivory a CITES export certificate or prior approval."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: United Arab Emirates import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-arab-emirates-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA: 0% on qualifying U.S. goods (Canada’s MFN is free on original works)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 111495584,
+      "priorExportsUsd": 127042131,
+      "sharePct": 1.1,
+      "changePct": -12.2,
+      "status": "raisedThenRemoved",
+      "cells": {
+        "9701": {
+          "exportsUsd": 63413682,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–7%",
+          "basis": "CUSMA; Canada Customs Tariff 2026: originals by artists free (9701.21.10, 9701.91.10 and similar), other hand-painted items 5.5–7%; 25% counter-tariff on 9701.91.10 from March 4 to September 1, 2025 (SOR/2025-66)"
+        },
+        "9702": {
+          "exportsUsd": 9811420,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA; Canada Customs Tariff 2026: 9702.10.00 and 9702.90.00 free"
+        },
+        "9703": {
+          "exportsUsd": 21870002,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA; Canada Customs Tariff 2026: 9703.10.00 and 9703.90.00 free"
+        },
+        "9704": {
+          "exportsUsd": 1488786,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA; Canada Customs Tariff 2026 and WITS/TRAINS MFN applied rates, 2023: free"
+        },
+        "9705": {
+          "exportsUsd": 7479947,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA; Canada Customs Tariff 2026 and WITS/TRAINS MFN applied rates, 2023: free"
+        },
+        "9706": {
+          "exportsUsd": 7431747,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "CUSMA; Canada Customs Tariff 2026: 9706.10.00 and 9706.90.00 free"
+        }
+      },
+      "profile": {
+        "headline": "$111M in 2025 (−12.2%). Original paintings, prints, sculpture and antiques are duty-free from any country; other hand-painted items are free only under CUSMA. Canada’s 25% counter-tariff on U.S. original paintings ended September 1, 2025.",
+        "mainProducts": "Paintings, drawings, pastels, collages & mosaics (executed by hand) (9701) · Original sculptures & statuary, in any material (9703)",
+        "tariffNow": "Free (CUSMA); 2025 counter-tariff on original paintings removed",
+        "regulator": {
+          "name": "Canada Border Services Agency (Cultural Property Export and Import Act)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/c-51/FullText.html",
+          "requirement": "No import permit is needed for art; it is illegal to import foreign cultural property illegally exported from a state that has a cultural property agreement with Canada (sections 37(2) and 43)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "European Union",
+      "heading": "9701",
+      "exportsUsd": 2772851846,
+      "rate": "Free"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "9701",
+      "exportsUsd": 1788218165,
+      "rate": "Free"
+    },
+    {
+      "market": "Switzerland",
+      "heading": "9701",
+      "exportsUsd": 1326682303,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "9703",
+      "exportsUsd": 630421980,
+      "rate": "Free"
+    },
+    {
+      "market": "Hong Kong",
+      "heading": "9701",
+      "exportsUsd": 464290579,
+      "rate": "Free"
+    },
+    {
+      "market": "United Kingdom",
+      "heading": "9703",
+      "exportsUsd": 251140924,
+      "rate": "Free"
+    },
+    {
+      "market": "Switzerland",
+      "heading": "9703",
+      "exportsUsd": 247802022,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "9706",
+      "exportsUsd": 203556174,
+      "rate": "Free"
+    }
+  ],
+  "assumptions": [
+    "Rates are what U.S.-origin goods pay in November 2026. MFN rates are the World Bank/UNCTAD WITS (TRAINS) applied rates for 2023 at the six-digit level, checked against the 2026 schedules of the UK, Japan, Canada and China and Mexico’s LIGIE.",
+    "China’s cells add three layers: its 2026 MFN or interim rate, the 2019 counter-tariffs (Annexes 1–3 of Tariff Commission Announcement No. 3 of 2019, charged unless the buyer holds an exclusion valid to December 31, 2026) and the 10% extra on all U.S. goods. The 2019 lists use 2017-edition lines (9701.1019, 9703.0000, 9706.0000 and so on), which cover the same goods.",
+    "Free-trade-agreement rates (KORUS, USMCA/CUSMA) apply to goods that meet the agreement’s rules of origin; the normal rate shows what other goods pay. For most of Chapter 97 the normal rate is already 0%.",
+    "Each heading’s cell is the rate on its main six-digit lines; where lines differ (China, Canada 9701) the basis gives each.",
+    "Import VAT and sales taxes, which several markets charge on art at import, are the buyer’s business and are not shown.",
+    "National 8- to 10-digit lines can differ from the six-digit rate shown."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 97, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "wits-trains",
+      "publisher": "World Bank WITS",
+      "citation": "WITS/TRAINS MFN applied rates (2023)",
+      "document": "Database",
+      "title": "WITS TRAINS MFN applied tariff rates by reporter and HS six-digit product, Chapter 97",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/"
+    },
+    {
+      "id": "uk-tariff-97",
+      "publisher": "HM Revenue & Customs (UK Trade Tariff)",
+      "citation": "UK Trade Tariff, commodity 9701 91 00 00",
+      "document": "Tariff schedule",
+      "title": "UK Trade Tariff: paintings, drawings and pastels (9701 91 00 00), third-country duty 0%",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.trade-tariff.service.gov.uk/commodities/9701910000"
+    },
+    {
+      "id": "jp-tariff-97",
+      "publisher": "Japan Customs",
+      "citation": "Japan’s Tariff Schedule, Apr 1, 2026, Chapter 97",
+      "document": "Tariff schedule",
+      "title": "Japan’s Tariff Schedule (Statistical Code for Import) as of April 1, 2026: Chapter 97",
+      "signed": null,
+      "published": "2026-04-01",
+      "url": "https://www.customs.go.jp/english/tariff/2026_04_01/data/e_97.htm"
+    },
+    {
+      "id": "ca-cbsa-97",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 97",
+      "document": "Tariff schedule",
+      "title": "Departmental Consolidation of the Customs Tariff 2026: Chapter 97",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch97-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-66",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-66",
+      "document": "Order",
+      "title": "United States Surtax Order (2025-1)",
+      "signed": "2025-03-04",
+      "published": "2025-03-12",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-03-12/html/sor-dors66-eng.html"
+    },
+    {
+      "id": "ca-sor-2025-181",
+      "publisher": "Canada Gazette",
+      "citation": "SOR/2025-181",
+      "document": "Order",
+      "title": "Order Amending and Repealing Certain Orders Made Under the Customs Tariff (United States Surtax)",
+      "signed": "2025-08-29",
+      "published": "2025-09-10",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2025/2025-09-10/html/sor-dors181-eng.html"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "LIGIE Tariff, DOF Jun 7, 2022",
+      "document": "Law",
+      "title": "Ley de los Impuestos Generales de Importación y de Exportación (Chapter 97)",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5654292&fecha=07/06/2022"
+    },
+    {
+      "id": "cn-tariff-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 12 of 2025",
+      "document": "Tariff schedule",
+      "title": "Customs Import and Export Tariff of the PRC (2026), Chapter 97",
+      "signed": null,
+      "published": "2025-12-31",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251231_3981044.htm"
+    },
+    {
+      "id": "cn-interim-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "Announcement",
+      "title": "2026 Tariff Adjustment Plan, Annex 1: interim import rates (9701.21–9701.29 at 0%)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-2019-3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Announcement",
+      "title": "Raising the additional tariffs on certain goods originating in the United States (Annexes 1–4)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-2019-annex1",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Announcement No. 3 of 2019, Annex 1 (25%)",
+      "document": "Annex",
+      "title": "List of goods subject to an additional 25% tariff (includes 9704.0010 postage stamps)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/P020190513719203602248.pdf"
+    },
+    {
+      "id": "cn-2019-annex2",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Announcement No. 3 of 2019, Annex 2 (20%)",
+      "document": "Annex",
+      "title": "List of goods subject to an additional 20% tariff (includes 9701.1019, 9703.0000, 9706.0000)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/P020190513719204287788.pdf"
+    },
+    {
+      "id": "cn-2019-annex3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Announcement No. 3 of 2019, Annex 3 (10%)",
+      "document": "Annex",
+      "title": "List of goods subject to an additional 10% tariff (includes 9701.1020, 9701.9000, 9702.0000, 9705.0000)",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/P020190513719204715521.pdf"
+    },
+    {
+      "id": "cn-2019-no7",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2019",
+      "document": "Announcement",
+      "title": "Not applying the additional tariffs on the Annex 2 goods of Announcement No. 4 of 2019 (December 15, 2019 tranche)",
+      "signed": null,
+      "published": "2019-12-15",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201912/t20191215_3441954.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (10% kept, 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-art-measures",
+      "publisher": "State Council of the PRC (gov.cn)",
+      "citation": "Art Market Management Measures (2016)",
+      "document": "Ministerial regulation",
+      "title": "Measures for the Administration of Art Business (Ministry of Culture Order No. 56), Articles 14–18",
+      "signed": null,
+      "published": "2016-01-18",
+      "url": "https://www.gov.cn/gongbao/content/2016/content_5070760.htm"
+    },
+    {
+      "id": "eu-2019-880",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2019/880",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2019/880 on the introduction and the import of cultural goods",
+      "signed": "2019-04-17",
+      "published": "2019-06-07",
+      "url": "https://eur-lex.europa.eu/eli/reg/2019/880/oj"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "ch-seco",
+      "publisher": "SECO",
+      "citation": "SECO",
+      "document": "Web page",
+      "title": "Swiss–U.S. trade relations",
+      "signed": null,
+      "published": "2026-08-01",
+      "url": "https://www.seco.admin.ch/en/swiss-us-trade-relations"
+    },
+    {
+      "id": "ch-bak-cpta",
+      "publisher": "Federal Office of Culture (Switzerland)",
+      "citation": "FOC: import, transit and export of cultural property",
+      "document": "Guidance",
+      "title": "Import, transit and export of cultural property (revised Cultural Property Transfer Ordinance in force January 1, 2026)",
+      "signed": null,
+      "published": "2026-01-06",
+      "url": "https://www.bak.admin.ch/en/import-transit-and-export-of-cultural-property"
+    },
+    {
+      "id": "uk-ivory",
+      "publisher": "HM Government",
+      "citation": "GOV.UK, updated Jul 24, 2026",
+      "document": "Guidance",
+      "title": "Deal in items made of or containing ivory",
+      "signed": null,
+      "published": "2026-07-24",
+      "url": "https://www.gov.uk/guidance/dealing-in-items-containing-ivory-or-made-of-ivory"
+    },
+    {
+      "id": "hk-ivory-2021",
+      "publisher": "Hong Kong SAR Government",
+      "citation": "Press release, Dec 31, 2021",
+      "document": "Press release",
+      "title": "Protection of Endangered Species of Animals and Plants (Amendment) Ordinance 2018 fully implemented today",
+      "signed": null,
+      "published": "2021-12-31",
+      "url": "https://www.info.gov.hk/gia/general/202112/31/P2021123000620.htm"
+    },
+    {
+      "id": "hk-afcd-ivory-faq",
+      "publisher": "Agriculture, Fisheries and Conservation Department (Hong Kong)",
+      "citation": "AFCD: ivory trade FAQ",
+      "document": "Guidance",
+      "title": "Frequently asked questions on the Amendment Ordinance 2018 (antique ivory)",
+      "signed": null,
+      "published": "2019-07-04",
+      "url": "https://www.afcd.gov.hk/english/conservation/con_end/files/ES01_18e_FAQ.pdf"
+    },
+    {
+      "id": "hk-wto-profile",
+      "publisher": "World Trade Organization",
+      "citation": "WTO Tariff Profiles: Hong Kong, China",
+      "document": "Tariff profile",
+      "title": "World Tariff Profiles: Hong Kong, China",
+      "signed": null,
+      "published": "2025-07-01",
+      "url": "https://www.wto.org/english/res_e/statis_e/daily_update_e/tariff_profiles/HK_e.pdf"
+    },
+    {
+      "id": "jp-act-81-2002",
+      "publisher": "Ministry of Justice (Japan)",
+      "citation": "Act No. 81 of 2002",
+      "document": "Law",
+      "title": "Act on Controls on the Illicit Export and Import and Other Matters of Cultural Property (English translation)",
+      "signed": null,
+      "published": "2002-07-03",
+      "url": "https://www.japaneselawtranslation.go.jp/en/laws/view/3791/en"
+    },
+    {
+      "id": "kr-cites",
+      "publisher": "National Institute of Biological Resources (Korea)",
+      "citation": "KBR: CITES import and export procedures",
+      "document": "Guidance",
+      "title": "CITES: administrative procedures for import and export",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.kbr.go.kr/content/view.do?menuKey=716&contentKey=135"
+    },
+    {
+      "id": "mx-semarnat-cites",
+      "publisher": "SEMARNAT (Mexico)",
+      "citation": "Procedure SEMARNAT-08-009",
+      "document": "Procedure",
+      "title": "Authorization, permit or certificate to import, export or re-export wildlife specimens, parts and derivatives",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.gob.mx/semarnat/documentos/tramite-semarnat-08-009"
+    },
+    {
+      "id": "ae-moccae-cites",
+      "publisher": "Ministry of Climate Change and Environment (UAE)",
+      "citation": "MOCCAE: import of CITES-listed species",
+      "document": "Service page",
+      "title": "Import of a species listed in CITES Appendices",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.moccae.gov.ae/en/services/import-of-cites-listed-species"
+    },
+    {
+      "id": "ca-cpeia",
+      "publisher": "Department of Justice Canada",
+      "citation": "Cultural Property Export and Import Act, R.S.C. 1985, c. C-51",
+      "document": "Law",
+      "title": "Cultural Property Export and Import Act, sections 37 and 43",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://laws-lois.justice.gc.ca/eng/acts/c-51/FullText.html"
+    }
+  ],
+  "coverageNote": "The 10 markets shown take 93% of 2025 U.S. Chapter 97 exports. A customs union (the EU) is one market: its members share one tariff."
+}

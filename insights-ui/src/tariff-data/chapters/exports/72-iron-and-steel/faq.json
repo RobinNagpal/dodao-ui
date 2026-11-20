@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 72,
+    "padded": "72",
+    "slug": "72-iron-and-steel",
+    "title": "Iron and Steel"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/72-iron-and-steel/faq",
+    "h1": "HTS Chapter 72: Iron and Steel — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Steel & Scrap Export FAQ: Canada Surtax, EU Quotas, HS Codes & Licences (HTS Ch. 72) | KoalaGains",
+      "shortDescription": "Does Canada tariff U.S. steel? What does the EU charge? What is the HS code for steel scrap, do you need an export licence, and can you get Section 232 duty back? Short answers with the dates that matter.",
+      "keywords": [
+        "canada tariff on us steel",
+        "eu tariff on us steel",
+        "hs code for scrap metal",
+        "scrap metal export license",
+        "section 232 drawback",
+        "india steel safeguard duty"
+      ]
+    },
+    "lastCheckedAt": "2026-11-18"
+  },
+  "intro": "Questions people search about exporting U.S. steel and ferrous scrap, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "Scrap enters the big scrap markets duty-free; finished steel is where the new duties are: Canada 50%, the EU 50% above quota, India 11.5% on flat steel.",
+    "Watch December 31, 2026 and January 10, 2027: China's exclusions and its 24-point tariff suspension both expire unless extended.",
+    "Most steel and scrap needs no export licence, except for Russia and Belarus and for maraging steel, and the Section 232 duty on imported steel cannot be drawn back."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"canada tariff on us steel\", \"canada steel surtax\", \"eu tariff on us steel\", \"eu steel safeguard\", \"india steel safeguard duty\", \"us steel exports\", \"us scrap exports\", \"hs code for scrap metal\", \"scrap metal export\" and \"section 232 drawback\", collected on November 18, 2026.",
+  "faqs": [
+    {
+      "id": "canada-tariff",
+      "question": "Does Canada have tariffs on U.S. steel?",
+      "searchedAs": [
+        "canada tariff on us steel",
+        "does canada tariff us steel",
+        "current canadian tariff on us steel",
+        "are there canadian tariffs on us steel",
+        "canada counter tariffs steel and aluminum"
+      ],
+      "answer": "Yes. Canada has charged a surtax on U.S. steel since March 13, 2025: 25% at first and 50% since September 8, 2026, on 134 tariff items from 7206 to 7229. It applies to steel of U.S. origin even when it qualifies for CUSMA. Pig iron, ferroalloys, DRI, scrap and powders (7201–7205) are not covered.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "canada-remission",
+      "question": "Can Canada's steel surtax be remitted?",
+      "searchedAs": ["canada steel surtax remission", "canada steel remission order", "canada steel surtax order"],
+      "answer": "Sometimes. Canada's United States Surtax Remission Order (2025) waives the surtax with no time limit on the lines in its Schedule 6, which include all stainless flat-rolled steel (7219, 7220) and electrical steel, on listed products and importers, and on steel imported from February 1, 2026 to June 30, 2027 for making motor vehicles, parts or aircraft. The Canadian importer claims it within two years; the general remission for steel used in manufacturing ended for imports from February 1, 2026.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "eu-tariff",
+      "question": "Does the EU have tariffs on U.S. steel?",
+      "searchedAs": ["eu tariff on us steel", "eu tariffs on us steel and aluminum", "eu steel safeguard 2026", "eu steel safeguard quotas"],
+      "answer": "The duty is 0%, but since July 1, 2026 most finished steel falls under the EU steel tariff quotas that replaced its safeguard. U.S. steel shares the \"other countries\" quota and pays 50% once it is used up, and from October 1, 2026 the importer must prove where the steel was melted and poured. Scrap, DRI and semis are outside the quotas.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "india-safeguard",
+      "question": "Does India charge a safeguard duty on U.S. steel?",
+      "searchedAs": [
+        "india steel safeguard duty",
+        "india imposes steel safeguard duties",
+        "india imposed safeguard duty on steel imports from which countries mainly"
+      ],
+      "answer": "Yes, on non-alloy and alloy flat steel (7208–7212, 7225, 7226), on top of India's 7.5% duty: 12% from April 21, 2025, 11.5% from April 21, 2026 and 11% from April 21, 2027 to April 20, 2028. It does not apply when the CIF price is at or above the floor for the product, and stainless, electrical and tin-mill steel are excluded. Scrap is not covered.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "india-scrap",
+      "question": "What does India require for U.S. steel scrap?",
+      "searchedAs": ["scrap metal export from usa to india"],
+      "answer": "India charges 0% on ferrous scrap. U.S. scrap cleared at one of the designated ports needs no pre-shipment inspection certificate, only a supplier certificate that it is free of radioactive material and explosives; elsewhere, shredded scrap needs a pre-shipment inspection certificate for radiation and unshredded scrap may enter only at listed ports.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "how-much",
+      "question": "How much steel does the U.S. export?",
+      "searchedAs": ["us steel exports", "us steel exports 2025", "us steel exports by year", "us steel exports by country"],
+      "answer": "U.S. exports of iron and steel (HS Chapter 72) were $16.77B in 2025, down 14.4% from 2024 and 20% below the 2022 peak of $20.89B. Mexico and Canada took 58%. From January to August 2026 exports were $12.72B, up 11.6% on the same months of 2025.",
+      "link": "exports"
+    },
+    {
+      "id": "scrap-buyers",
+      "question": "Who buys U.S. steel scrap?",
+      "searchedAs": ["us scrap metal exports", "us scrap exports", "iron scrap exporters in usa", "steel scrap export"],
+      "answer": "Ferrous scrap (7204) was a third of U.S. Chapter 72 exports in 2025, $5.45B. The largest buyers were Türkiye ($1.27B), Thailand ($796M) and India ($741M), followed by Bangladesh, Mexico, Pakistan, Taiwan and Viet Nam. Türkiye, Thailand, India, Bangladesh and Taiwan all charge 0% on it.",
+      "link": "exports"
+    },
+    {
+      "id": "hs-code",
+      "question": "What is the HS or Schedule B code for steel scrap?",
+      "searchedAs": ["hs code for scrap metal", "hs code for scrap steel", "hs code for scrap iron", "tariff code for scrap metal"],
+      "answer": "Ferrous scrap is heading 7204. The U.S. Schedule B numbers split it by grade: 7204.49.0020 No. 1 heavy melting, 7204.49.0040 No. 2 heavy melting, 7204.49.0060 cut plate and structural, 7204.49.0070 shredded and 7204.49.0080 other, with turnings and bundles in 7204.41 and stainless and alloy scrap in 7204.21 and 7204.29. The first six digits are the HS code the buyer's country uses.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "licence",
+      "question": "Do I need an export license for steel or scrap metal?",
+      "searchedAs": ["scrap metal export license", "export license process"],
+      "answer": "Usually not: almost all Chapter 72 goods are EAR99. The exceptions are Russia and Belarus, where every Chapter 72 code needs a Commerce licence, and maraging steel (ECCNs 1C116 and 1C216). Recycled scrap is excluded from federal hazardous-waste rules, so it needs no EPA export notice, but an EEI filing is still due for vessel cargo 24 hours before loading.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "drawback",
+      "question": "Can I get Section 232 duty back (drawback) when I export steel?",
+      "searchedAs": ["section 232 drawback", "section 232 duty drawback", "section 232 manufacturing drawback"],
+      "answer": "No, not for Chapter 72 steel. Proclamation 11021 bars drawback of the Section 232 duty on imported steel articles, even when they or products made from them are exported; manufacturing drawback is allowed only for certain derivative articles of trade-agreement partners. Ordinary duties on the same entry can still be claimed back.",
+      "link": "exports/rules"
+    }
+  ]
+}
