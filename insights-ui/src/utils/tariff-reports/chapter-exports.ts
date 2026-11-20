@@ -30,6 +30,11 @@ import ch02Markets from '@/tariff-data/chapters/exports/02-meat-and-offal/market
 import ch02Overview from '@/tariff-data/chapters/exports/02-meat-and-offal/overview.json';
 import ch02Rules from '@/tariff-data/chapters/exports/02-meat-and-offal/rules.json';
 import ch02Updates from '@/tariff-data/chapters/exports/02-meat-and-offal/tariff-updates.json';
+import ch04Faq from '@/tariff-data/chapters/exports/04-dairy-eggs-honey/faq.json';
+import ch04Markets from '@/tariff-data/chapters/exports/04-dairy-eggs-honey/markets.json';
+import ch04Overview from '@/tariff-data/chapters/exports/04-dairy-eggs-honey/overview.json';
+import ch04Rules from '@/tariff-data/chapters/exports/04-dairy-eggs-honey/rules.json';
+import ch04Updates from '@/tariff-data/chapters/exports/04-dairy-eggs-honey/tariff-updates.json';
 import ch10Faq from '@/tariff-data/chapters/exports/10-cereals/faq.json';
 import ch10Markets from '@/tariff-data/chapters/exports/10-cereals/markets.json';
 import ch10Overview from '@/tariff-data/chapters/exports/10-cereals/overview.json';
@@ -100,6 +105,16 @@ import ch94Markets from '@/tariff-data/chapters/exports/94-furniture-and-lightin
 import ch94Overview from '@/tariff-data/chapters/exports/94-furniture-and-lighting-fittings/overview.json';
 import ch94Rules from '@/tariff-data/chapters/exports/94-furniture-and-lighting-fittings/rules.json';
 import ch94Updates from '@/tariff-data/chapters/exports/94-furniture-and-lighting-fittings/tariff-updates.json';
+import ch95Faq from '@/tariff-data/chapters/exports/95-toys-games-and-sports-requisites/faq.json';
+import ch95Markets from '@/tariff-data/chapters/exports/95-toys-games-and-sports-requisites/markets.json';
+import ch95Overview from '@/tariff-data/chapters/exports/95-toys-games-and-sports-requisites/overview.json';
+import ch95Rules from '@/tariff-data/chapters/exports/95-toys-games-and-sports-requisites/rules.json';
+import ch95Updates from '@/tariff-data/chapters/exports/95-toys-games-and-sports-requisites/tariff-updates.json';
+import ch97Faq from '@/tariff-data/chapters/exports/97-works-of-art-and-antiques/faq.json';
+import ch97Markets from '@/tariff-data/chapters/exports/97-works-of-art-and-antiques/markets.json';
+import ch97Overview from '@/tariff-data/chapters/exports/97-works-of-art-and-antiques/overview.json';
+import ch97Rules from '@/tariff-data/chapters/exports/97-works-of-art-and-antiques/rules.json';
+import ch97Updates from '@/tariff-data/chapters/exports/97-works-of-art-and-antiques/tariff-updates.json';
 import ch38Faq from '@/tariff-data/chapters/exports/38-misc-chemical-products/faq.json';
 import ch38Markets from '@/tariff-data/chapters/exports/38-misc-chemical-products/markets.json';
 import ch38Overview from '@/tariff-data/chapters/exports/38-misc-chemical-products/overview.json';
@@ -155,6 +170,11 @@ import ch22Markets from '@/tariff-data/chapters/exports/22-beverages-spirits-vin
 import ch22Overview from '@/tariff-data/chapters/exports/22-beverages-spirits-vinegar/overview.json';
 import ch22Rules from '@/tariff-data/chapters/exports/22-beverages-spirits-vinegar/rules.json';
 import ch22Updates from '@/tariff-data/chapters/exports/22-beverages-spirits-vinegar/tariff-updates.json';
+import ch21Faq from '@/tariff-data/chapters/exports/21-misc-edible-preparations/faq.json';
+import ch21Markets from '@/tariff-data/chapters/exports/21-misc-edible-preparations/markets.json';
+import ch21Overview from '@/tariff-data/chapters/exports/21-misc-edible-preparations/overview.json';
+import ch21Rules from '@/tariff-data/chapters/exports/21-misc-edible-preparations/rules.json';
+import ch21Updates from '@/tariff-data/chapters/exports/21-misc-edible-preparations/tariff-updates.json';
 import ch44Faq from '@/tariff-data/chapters/exports/44-wood-and-charcoal/faq.json';
 import ch44Markets from '@/tariff-data/chapters/exports/44-wood-and-charcoal/markets.json';
 import ch44Overview from '@/tariff-data/chapters/exports/44-wood-and-charcoal/overview.json';
@@ -247,6 +267,13 @@ const EXPORTS_BY_SLUG: Record<string, TariffChapterExports> = {
     markets: ch02Markets as TariffExportMarketsContent,
     rules: ch02Rules as TariffExportRulesContent,
     faq: ch02Faq as TariffExportFaqContent,
+  },
+  '4-dairy-eggs-honey': {
+    overview: ch04Overview as TariffExportOverviewContent,
+    tariffUpdates: ch04Updates as TariffExportUpdatesContent,
+    markets: ch04Markets as TariffExportMarketsContent,
+    rules: ch04Rules as TariffExportRulesContent,
+    faq: ch04Faq as TariffExportFaqContent,
   },
   '10-cereals': {
     overview: ch10Overview as TariffExportOverviewContent,
@@ -346,6 +373,20 @@ const EXPORTS_BY_SLUG: Record<string, TariffChapterExports> = {
     rules: ch94Rules as TariffExportRulesContent,
     faq: ch94Faq as TariffExportFaqContent,
   },
+  '95-toys-games-and-sports-requisites': {
+    overview: ch95Overview as TariffExportOverviewContent,
+    tariffUpdates: ch95Updates as TariffExportUpdatesContent,
+    markets: ch95Markets as TariffExportMarketsContent,
+    rules: ch95Rules as TariffExportRulesContent,
+    faq: ch95Faq as TariffExportFaqContent,
+  },
+  '97-works-of-art-and-antiques': {
+    overview: ch97Overview as TariffExportOverviewContent,
+    tariffUpdates: ch97Updates as TariffExportUpdatesContent,
+    markets: ch97Markets as TariffExportMarketsContent,
+    rules: ch97Rules as TariffExportRulesContent,
+    faq: ch97Faq as TariffExportFaqContent,
+  },
   '38-misc-chemical-products': {
     overview: ch38Overview as TariffExportOverviewContent,
     tariffUpdates: ch38Updates as TariffExportUpdatesContent,
@@ -422,6 +463,13 @@ const EXPORTS_BY_SLUG: Record<string, TariffChapterExports> = {
     markets: ch22Markets as TariffExportMarketsContent,
     rules: ch22Rules as TariffExportRulesContent,
     faq: ch22Faq as TariffExportFaqContent,
+  },
+  '21-misc-edible-preparations': {
+    overview: ch21Overview as TariffExportOverviewContent,
+    tariffUpdates: ch21Updates as TariffExportUpdatesContent,
+    markets: ch21Markets as TariffExportMarketsContent,
+    rules: ch21Rules as TariffExportRulesContent,
+    faq: ch21Faq as TariffExportFaqContent,
   },
   '44-wood-and-charcoal': {
     overview: ch44Overview as TariffExportOverviewContent,

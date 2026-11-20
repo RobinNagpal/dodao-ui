@@ -1,0 +1,1034 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 4,
+    "padded": "04",
+    "slug": "4-dairy-eggs-honey",
+    "title": "Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/4-dairy-eggs-honey/markets",
+    "h1": "HTS Chapter 04: Dairy Produce; Birds' Eggs; Natural Honey; Edible Products of Animal Origin, Not Elsewhere Specified or Included — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Tariffs on U.S. Dairy by Country: Canada, China, Mexico, Japan",
+      "shortDescription": "What top buyers charge on U.S. cheese, milk powder and whey in 2026: Canada 25–50% on top of quotas, China 37–55%, Mexico and Korea free, Japan 13% on cheese.",
+      "keywords": [
+        "canada tariff on us dairy",
+        "canada dairy tariff",
+        "dairy tariffs canada us",
+        "china dairy tariffs",
+        "tariffs on american dairy",
+        "usmca dairy tariffs",
+        "japan cheese tariff",
+        "korea cheese tariff"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "What each large market charges on U.S. dairy, eggs and honey in 2026, next to what the U.S. shipped there in 2025. Mexico and Australia charge nothing under U.S. trade agreements, South Korea's tariff on U.S. cheese reached 0% in 2026, and the Philippines and Indonesia charge low normal rates (0–7% and 5%). Canada and Japan protect their dairy farmers: Canada lets most U.S. dairy in free only within its CUSMA quotas, charges about 200–300% above them and, since September 2026, adds 25% on cheese and 50% on milk powder, whey and honey; Japan still charges 13% on U.S. hard cheese and keeps butter and milk powder under state-trading quotas. China adds 35–40 points to its normal rate. Beyond the tariff, the plant listing and the sanitary certificate usually decide who can sell.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "0401",
+      "label": "Fluid milk and cream",
+      "shortLabel": "Milk & cream"
+    },
+    {
+      "heading": "0402",
+      "label": "Milk powder and condensed milk (skim and whole milk powder)",
+      "shortLabel": "Milk powder"
+    },
+    {
+      "heading": "0403",
+      "label": "Yogurt, buttermilk and fermented milk",
+      "shortLabel": "Yogurt"
+    },
+    {
+      "heading": "0404",
+      "label": "Whey and other milk-constituent products",
+      "shortLabel": "Whey"
+    },
+    {
+      "heading": "0405",
+      "label": "Butter, butteroil and dairy spreads",
+      "shortLabel": "Butter"
+    },
+    {
+      "heading": "0406",
+      "label": "Cheese and curd",
+      "shortLabel": "Cheese"
+    },
+    {
+      "heading": "0407",
+      "label": "Eggs in shell (hatching and table eggs)",
+      "shortLabel": "Shell eggs"
+    },
+    {
+      "heading": "0408",
+      "label": "Egg products (dried, liquid, frozen) and yolks",
+      "shortLabel": "Egg products"
+    },
+    {
+      "heading": "0409",
+      "label": "Natural honey",
+      "shortLabel": "Honey"
+    },
+    {
+      "heading": "0410",
+      "label": "Insects and other edible animal products",
+      "shortLabel": "Other"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA tariff elimination on originating U.S. goods (Mexico's schedule); Mexico's normal (MFN) rates apply only to goods that don't qualify",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 2566751215,
+      "priorExportsUsd": 2460707253,
+      "sharePct": 32.6,
+      "changePct": 4.3,
+      "status": "unchanged",
+      "cells": {
+        "0401": {
+          "exportsUsd": 52337359,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023."
+        },
+        "0402": {
+          "exportsUsd": 1084694265,
+          "rate": "Free (USMCA)",
+          "normalRate": "45% on skim milk powder if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: skim milk powder (0402.10) 45% normal rate."
+        },
+        "0403": {
+          "exportsUsd": 86470737,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023."
+        },
+        "0404": {
+          "exportsUsd": 168476040,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% on whey if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: whey (0404.10) 10% normal rate."
+        },
+        "0405": {
+          "exportsUsd": 38909685,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% on butter if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: butter (0405.10) 20% normal rate."
+        },
+        "0406": {
+          "exportsUsd": 965683625,
+          "rate": "Free (USMCA)",
+          "normalRate": "20–45% if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: cheese 20–45% normal rate (fresh and processed cheese 45%)."
+        },
+        "0407": {
+          "exportsUsd": 151135237,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: hatching and table eggs (0407.11, 0407.21) 0% normal rate."
+        },
+        "0408": {
+          "exportsUsd": 18857700,
+          "rate": "Free (USMCA)",
+          "normalRate": "Up to 20% if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: egg products 0–20% normal rate."
+        },
+        "0409": {
+          "exportsUsd": 63545,
+          "rate": "Free (USMCA)",
+          "normalRate": "20% if not USMCA-qualifying",
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023: honey 20% normal rate; a negligible group."
+        },
+        "0410": {
+          "exportsUsd": 123022,
+          "rate": "Free (USMCA)",
+          "normalRate": null,
+          "basis": "USMCA Annex 2-B (Mexico's schedule): originating U.S. goods enter duty-free; the normal rate shown is Mexico's MFN rate reported to WITS for 2023; a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "Mexico is the largest buyer by far, taking skim milk powder ($1.08 billion in 2025) and cheese ($966 million) duty-free under USMCA, and it has put no counter-tariff on U.S. goods. Its purchases are up 19.8% in January–August 2026.",
+        "mainProducts": "Milk powder (0402) · Cheese (0406)",
+        "tariffNow": "Free (USMCA)",
+        "regulator": {
+          "name": "SENASICA (National Agri-Food Health, Safety and Quality Service)",
+          "url": "https://www.gob.mx/senasica",
+          "requirement": "Each shipment needs a SENASICA zoosanitary import certificate based on its published requirements for the product, backed by a U.S. export certificate (AMS for dairy and table eggs, APHIS for hatching eggs)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "Canada's Customs Tariff 2026: CUSMA rate free within the U.S. dairy, egg and butter tariff-rate quotas and about 200–300% above them, plus the United States Surtax Order (2026)",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 894808301,
+      "priorExportsUsd": 709854379,
+      "sharePct": 11.4,
+      "changePct": 26.1,
+      "status": "raised",
+      "cells": {
+        "0401": {
+          "exportsUsd": 69684092,
+          "rate": "Free within CUSMA quota",
+          "normalRate": "241–292.5% above the quota",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): within-access lines (0401.x0.10) free under CUSMA; over-access 241% (up to 6% fat) or 292.5% (over 6%). Not on the 2026 surtax list."
+        },
+        "0402": {
+          "exportsUsd": 16506643,
+          "rate": "Free within CUSMA quota + 50% surtax",
+          "normalRate": "201.5–295.5% above the quota, plus the 50% surtax",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): skim milk powder within access (0402.10.10) free, over access (0402.10.20) 201.5% but not less than $2.01/kg; whole milk powder over access 243%. The 50% surtax of SOR/2026-186 Schedule 3 covers 0402.10, 0402.21, 0402.91 and 0402.99 (not 0402.29) since September 8, 2026."
+        },
+        "0403": {
+          "exportsUsd": 4302934,
+          "rate": "Free within CUSMA quota",
+          "normalRate": "208–250.5% above the quota",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): yogurt and buttermilk within access free, over access 208–250.5%; flavoured retail yogurt (0403.20.10) free for everyone. Not on the 2026 surtax list."
+        },
+        "0404": {
+          "exportsUsd": 99261817,
+          "rate": "Free + 50% surtax",
+          "normalRate": "208–270% on over-quota whey powder and blends, plus the 50% surtax",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): whey protein concentrate (0404.10.10) and modified whey (0404.10.90) free under CUSMA with no quota; powdered whey free within access, 208% over access; milk-constituent blends (0404.90) 270% over access. Every 0404 line is on SOR/2026-186 Schedule 3 (50%) since September 8, 2026."
+        },
+        "0405": {
+          "exportsUsd": 228347004,
+          "rate": "Free within CUSMA quota",
+          "normalRate": "274.5–313.5% above the quota (butter 298.5%)",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): butter within access (0405.10.10) free, over access 298.5% but not less than $4.00/kg; other milk fats 313.5%. Not on the 2026 surtax list."
+        },
+        "0406": {
+          "exportsUsd": 154682860,
+          "rate": "Free within CUSMA quota + 25% surtax",
+          "normalRate": "245.5% above the quota, plus the 25% surtax",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): every cheese type has a within-access line (free under CUSMA) and an over-access line at 245.5% with a minimum per kg. All 0406 lines are on SOR/2026-186 Schedule 2 (25%) since September 8, 2026."
+        },
+        "0407": {
+          "exportsUsd": 300158594,
+          "rate": "Free within CUSMA quota",
+          "normalRate": "163.5–238% above the quota",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): hatching eggs for broilers and table eggs within access free, over access 163.5–238%; turkey hatching eggs (0407.19) free for everyone. Not on the 2026 surtax list."
+        },
+        "0408": {
+          "exportsUsd": 7749280,
+          "rate": "Free within CUSMA quota",
+          "normalRate": "$1.52–6.12/kg above the quota",
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): egg products within access free, over access $1.52–6.12/kg. Not on the 2026 surtax list."
+        },
+        "0409": {
+          "exportsUsd": 14083383,
+          "rate": "Free + 50% surtax",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): natural honey (0409.00.00) is free under both the MFN and CUSMA columns; it is on SOR/2026-186 Schedule 3 (50%) since September 8, 2026."
+        },
+        "0410": {
+          "exportsUsd": 31694,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "Canada Customs Tariff 2026, Chapter 4 (CUSMA/UST column): 0410 lines free under CUSMA; a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "Canada buys U.S. eggs ($300 million in 2025), butter ($228 million), cheese and whey, most of it duty-free only within quota allocations. Since September 8, 2026 its counter-tariffs add 25% on U.S. cheese and 50% on milk powder, whey and honey, with no CUSMA exemption.",
+        "mainProducts": "Shell eggs (0407) · Butter (0405)",
+        "tariffNow": "Free in CUSMA quotas; +25% on cheese, +50% on milk powder, whey, honey",
+        "regulator": {
+          "name": "Canadian Food Inspection Agency (CFIA); Global Affairs Canada for quota permits",
+          "url": "https://inspection.canada.ca/",
+          "requirement": "The Canadian importer needs a Safe Food for Canadians licence, and in-quota dairy, butter and egg imports also need an import permit under Canada's tariff-rate quotas."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS tariff schedule: U.S. cheese free from 2026, skim milk powder in a duty-free U.S. quota",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 452748739,
+      "priorExportsUsd": 329717757,
+      "sharePct": 5.8,
+      "changePct": 37.3,
+      "status": "lowered",
+      "cells": {
+        "0401": {
+          "exportsUsd": 625387,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (36% base rate), as reported by USDA FAS (GAIN KS2025-0041): Korea's tariff on U.S. milk is 0 in 2026."
+        },
+        "0402": {
+          "exportsUsd": 13429881,
+          "rate": "Skim milk powder free within a 7,564 t U.S. quota",
+          "normalRate": "176% above the quota",
+          "basis": "KORUS Korea schedule as reported by USDA FAS (GAIN KS2025-0041, Table 9): skim milk powder (0402.10) duty-free within a U.S. quota of 7,564 t in 2026, growing 3% a year; 176% above it."
+        },
+        "0403": {
+          "exportsUsd": 4225372,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (36–89% base rates); a small group, check the line in the trade.gov FTA Tariff Tool."
+        },
+        "0404": {
+          "exportsUsd": 16898461,
+          "rate": "Feed whey free; food whey under a U.S. quota (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (Annex 2-B): whey for feed (0404.10) staging category A, duty-free since 2012; whey for food (49.5% base rate) follows the Schedule of Korea's quota terms."
+        },
+        "0405": {
+          "exportsUsd": 35238561,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (Annex 2-B): butter base rate 89%, dairy spreads duty-free (category A); check the butter line in the trade.gov FTA Tariff Tool."
+        },
+        "0406": {
+          "exportsUsd": 373994337,
+          "rate": "Free (KORUS, since Jan. 1, 2026)",
+          "normalRate": "36% (normal rate)",
+          "basis": "KORUS Korea schedule as reported by USDA FAS (GAIN KS2025-0041, Table 4): the 36% base rate on U.S. cheese, cheddar included, reached 0% in 2026."
+        },
+        "0407": {
+          "exportsUsd": 1504458,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (27% base rate); a small group."
+        },
+        "0408": {
+          "exportsUsd": 3112082,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (27–41.6% base rates); a small group."
+        },
+        "0409": {
+          "exportsUsd": 3512532,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule; a small group."
+        },
+        "0410": {
+          "exportsUsd": 207668,
+          "rate": "KORUS rate (not individually verified)",
+          "normalRate": null,
+          "basis": "KORUS Korea schedule (8% base rate); a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "Korea's purchases grew 37.3% in 2025 and 27.3% so far in 2026, almost all cheese ($374 million). Its 36% tariff on U.S. cheese reached 0% on January 1, 2026 under KORUS; skim milk powder is free only within a 7,564 t U.S. quota and pays 176% above it.",
+        "mainProducts": "Cheese (0406) · Butter (0405)",
+        "tariffNow": "Cheese free since Jan. 2026 (KORUS); milk powder in a quota",
+        "regulator": {
+          "name": "Ministry of Food and Drug Safety (MFDS)",
+          "url": "https://www.mfds.go.kr/eng/",
+          "requirement": "Overseas food plants must be registered with MFDS before export, and imports are inspected under Korea's imported food safety rules."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "U.S.–Japan Trade Agreement (in force January 1, 2020), matching Japan's CPTPP cuts on cheese and whey",
+      "usTradeAgreement": null,
+      "exportsUsd": 360851661,
+      "priorExportsUsd": 270710162,
+      "sharePct": 4.6,
+      "changePct": 33.3,
+      "status": "lowered",
+      "cells": {
+        "0401": {
+          "exportsUsd": 8039,
+          "rate": "No U.S. concession (normal rate)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: no U.S. rate; 21.3% plus ¥54–1,199/kg outside Japan's pooled quota; a negligible group."
+        },
+        "0402": {
+          "exportsUsd": 3869681,
+          "rate": "No U.S. concession: 25–35% within state-trading quotas",
+          "normalRate": "21.3–29.8% + ¥396–1,023/kg outside the quotas",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: no U.S. rate for skim or whole milk powder; imports within the quotas run by the Agriculture and Livestock Industries Corporation pay 25–35%, others 21.3–29.8% plus ¥396–1,023/kg."
+        },
+        "0403": {
+          "exportsUsd": 3326,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column; a negligible group."
+        },
+        "0404": {
+          "exportsUsd": 60601501,
+          "rate": "Free on whey protein (45%+ protein); 11.6% + ¥18.67/kg on sweet whey powder",
+          "normalRate": "29.8% + ¥425–687/kg (normal rate)",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: whey of 45% or more milk protein free; 25–45% protein 15% + ¥24/kg; under 25% protein 11.6% + ¥18.67/kg; feed whey free within the pooled quota; non-concentrated whey 3.8%."
+        },
+        "0405": {
+          "exportsUsd": 10366452,
+          "rate": "No U.S. concession: 35% within state-trading quotas",
+          "normalRate": "29.8% + ¥985–1,159/kg outside the quotas",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: no U.S. rate for butter; 35% within the quotas run by the Agriculture and Livestock Industries Corporation, 29.8% + ¥985–1,159/kg outside."
+        },
+        "0406": {
+          "exportsUsd": 252792795,
+          "rate": "13% on cheddar, gouda and other hard cheese",
+          "normalRate": "29.8% (normal rate)",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: other cheese except high-moisture soft cheese (0406.90) 13% for FY2026, cut each April to 0 in 2033; shredded cheese (0406.10, dry matter up to 48%) 9.8%; grated cheese 11.5%; blue cheese 17.6%; processed cheese 7.2% within the pooled quota, 40% outside."
+        },
+        "0407": {
+          "exportsUsd": 308046,
+          "rate": "17% on table eggs; hatching eggs free",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: no U.S. rate for table eggs (0407.21), which pay the 17% WTO rate; hatching eggs (0407.11) free."
+        },
+        "0408": {
+          "exportsUsd": 32665911,
+          "rate": "Free on egg yolks; 5.3% on dried whole egg",
+          "normalRate": "18.8–21.3% (normal rate)",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: egg yolks (0408.11, 0408.19) and other egg products (0408.99) free; dried whole egg (0408.91) 5.3%."
+        },
+        "0409": {
+          "exportsUsd": 228564,
+          "rate": "Free (U.S.–Japan agreement)",
+          "normalRate": "25.5% (normal rate)",
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column: natural honey (0409.00) free."
+        },
+        "0410": {
+          "exportsUsd": 7346,
+          "rate": "Normal rate (not individually verified)",
+          "normalRate": null,
+          "basis": "Japan's Tariff Schedule as of October 31, 2026, JP-US Trade Agreement column; a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "Japan buys mostly cheese ($253 million in 2025) and whey ($61 million). Its 29.8% tariff on U.S. cheddar, gouda and other hard cheese is 13% for April 2026 to March 2027 and reaches zero in 2033; butter and skim milk powder still go through state-trading quotas with no U.S. concession.",
+        "mainProducts": "Cheese (0406) · Whey (0404)",
+        "tariffNow": "Cheese 13%, falling to 0 by 2033 (U.S.–Japan agreement)",
+        "regulator": {
+          "name": "Ministry of Health, Labour and Welfare (MHLW), quarantine stations",
+          "url": "https://www.mhlw.go.jp/english/",
+          "requirement": "The importer files a food import notification under the Food Sanitation Act; dairy products that carry animal-disease risk also go through the Ministry of Agriculture's Animal Quarantine Service."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 608,
+      "name": "Philippines",
+      "rule": "Philippine customs tariff, MFN rates (no U.S. trade agreement)",
+      "usTradeAgreement": null,
+      "exportsUsd": 343711067,
+      "priorExportsUsd": 343036858,
+      "sharePct": 4.4,
+      "changePct": 0.2,
+      "status": "unchanged",
+      "cells": {
+        "0401": {
+          "exportsUsd": 837723,
+          "rate": "3% (normal rate)",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement); a small group."
+        },
+        "0402": {
+          "exportsUsd": 224321912,
+          "rate": "0–1% on milk powder; 5% on evaporated and condensed milk",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement): skim milk powder (0402.10) 0–1%, whole milk powder (0402.21) 1%, 0402.91 and 0402.99 5%."
+        },
+        "0403": {
+          "exportsUsd": 45402457,
+          "rate": "7% on yogurt; 3–7% on buttermilk and fermented milk",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement)."
+        },
+        "0404": {
+          "exportsUsd": 22383202,
+          "rate": "Free on whey; 3% on other milk-constituent products",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement): whey (0404.10) 0%, 0404.90 3%."
+        },
+        "0405": {
+          "exportsUsd": 271803,
+          "rate": "7% on butter",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement): butter (0405.10) 7%, other milk fats (0405.90) 1%."
+        },
+        "0406": {
+          "exportsUsd": 44715120,
+          "rate": "3–7%",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement): fresh and blue cheese 3%, grated 3–7%, processed and other cheese 7%."
+        },
+        "0407": {
+          "exportsUsd": 4144264,
+          "rate": "0–10% on hatching eggs; 10% on table eggs",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement)."
+        },
+        "0408": {
+          "exportsUsd": 283057,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement); a small group."
+        },
+        "0409": {
+          "exportsUsd": 1279829,
+          "rate": "7%",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement); a small group."
+        },
+        "0410": {
+          "exportsUsd": 71700,
+          "rate": "3%",
+          "normalRate": null,
+          "basis": "Philippine MFN rates reported to WITS for 2023 (no U.S. trade agreement); a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "The Philippines is a milk-powder market: $224 million of its $344 million in 2025 purchases. Its normal rates are low, 0–1% on milk powder and 0% on whey, and it has no trade agreement with the U.S.",
+        "mainProducts": "Milk powder (0402) · Yogurt (0403)",
+        "tariffNow": "Normal rate: 0–1% on milk powder, 3–7% on cheese",
+        "regulator": {
+          "name": "Department of Agriculture, Bureau of Animal Industry (BAI)",
+          "url": "https://www.bai.gov.ph/",
+          "requirement": "The importer needs a sanitary and phytosanitary import clearance from the Department of Agriculture for dairy and egg shipments, and retail products need Philippine FDA registration."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Philippines import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/philippines-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China's 2026 tariff and interim rates plus its 2018–19 counter-tariffs on U.S. dairy and honey (25–30%) and its extra 10% on all U.S. goods",
+      "usTradeAgreement": null,
+      "exportsUsd": 264079223,
+      "priorExportsUsd": 298647309,
+      "sharePct": 3.4,
+      "changePct": -11.6,
+      "status": "raised",
+      "cells": {
+        "0401": {
+          "exportsUsd": 251232,
+          "rate": "15% + 27.5% + 10% = 52.5%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026). A negligible group."
+        },
+        "0402": {
+          "exportsUsd": 14204565,
+          "rate": "10% + 25% + 10% = 45%",
+          "normalRate": "20% on skim milk powder for a buyer holding an exclusion",
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): milk powder 10% normal rate; skim milk powder (0402.10) is on China's 2020 list of goods eligible for exclusion."
+        },
+        "0403": {
+          "exportsUsd": 168545,
+          "rate": "Yogurt 45–47.5%; buttermilk 57.5%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): yogurt 10% normal rate + 25–27.5%; buttermilk and fermented milk (0403.90) 20% + 27.5%; each + 10%."
+        },
+        "0404": {
+          "exportsUsd": 220457695,
+          "rate": "Whey 2% + 25% + 10% = 37%",
+          "normalRate": "12% on whey for a buyer holding an exclusion",
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): whey (0404.10) 2% interim rate (6% MFN) and on China's exclusion-eligible list; other milk-constituent products (0404.90) 20% + 25% + 10% = 55%."
+        },
+        "0405": {
+          "exportsUsd": 1651420,
+          "rate": "10% + 25% + 10% = 45%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): butter, dairy spreads and other milk fats 10% normal rate."
+        },
+        "0406": {
+          "exportsUsd": 26305939,
+          "rate": "8% + 27.5% + 10% = 45.5%; fresh cheese 49.5%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): grated, processed, blue and other cheese 8% interim rate (12–15% MFN); fresh cheese and curd (0406.10) 12% normal rate."
+        },
+        "0407": {
+          "exportsUsd": 915150,
+          "rate": "Normal rate + 10% (not individually verified)",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): shell eggs are not on the 2018–19 lists compiled by USDA FAS; a negligible group."
+        },
+        "0408": {
+          "exportsUsd": 33731,
+          "rate": "Egg yolks 20% + 12.5% + 10% = 42.5%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): liquid or frozen egg yolks (0408.19); other egg products not checked line by line. A negligible group."
+        },
+        "0409": {
+          "exportsUsd": 87903,
+          "rate": "15% + 30% + 10% = 55%",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026): natural honey 15% normal rate. A negligible group."
+        },
+        "0410": {
+          "exportsUsd": 3043,
+          "rate": "Normal rate + 10% (not individually verified)",
+          "normalRate": null,
+          "basis": "China 2026 Customs Tariff and interim rates (Tariff Commission Announcement No. 11 of 2025) plus the 2018–19 counter-tariffs as compiled by USDA FAS (GAIN CH2025-0050) and the extra 10% on all U.S. goods (Announcements No. 7 of 2025 and No. 6 of 2026); a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "China buys mainly U.S. whey ($220 million of $264 million in 2025), plus cheese and milk powder. Whey pays 37% (2% normal rate, 25% 2018–19 counter-tariff, 10% extra), or 12% for a buyer holding an exclusion valid to December 31, 2026.",
+        "mainProducts": "Whey (0404) · Cheese (0406)",
+        "tariffNow": "Normal rate + 35–40 points (whey 37%, cheese 45.5%)",
+        "regulator": {
+          "name": "General Administration of Customs of China (GACC)",
+          "url": "https://english.customs.gov.cn/",
+          "requirement": "U.S. dairy plants must be registered with GACC (through FDA's China dairy list), and each shipment needs the USDA China dairy sanitary certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "AUSFTA: 0% for qualifying U.S. goods (Australia's MFN rate is also 0% on most Chapter 04 lines)",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 259330333,
+      "priorExportsUsd": 133338575,
+      "sharePct": 3.3,
+      "changePct": 94.5,
+      "status": "unchanged",
+      "cells": {
+        "0401": {
+          "exportsUsd": 8206,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0402": {
+          "exportsUsd": 5312679,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0403": {
+          "exportsUsd": 3184572,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% (normal rate)",
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is 0–5% on yogurt."
+        },
+        "0404": {
+          "exportsUsd": 16279175,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0405": {
+          "exportsUsd": 43538116,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "4% on dairy spreads (normal rate)",
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is 0% on butter and 4% on dairy spreads."
+        },
+        "0406": {
+          "exportsUsd": 189474910,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0407": {
+          "exportsUsd": 848188,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0408": {
+          "exportsUsd": 649244,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0409": {
+          "exportsUsd": 35243,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        },
+        "0410": {
+          "exportsUsd": 0,
+          "rate": "Free (AUSFTA)",
+          "normalRate": null,
+          "basis": "AUSFTA: 0% on qualifying U.S. goods; Australia's MFN rates reported to WITS for 2023: Australia's MFN rate is also 0% on these lines."
+        }
+      },
+      "profile": {
+        "headline": "Australia nearly doubled its purchases in 2025 (up 94.5% to $259 million), mostly cheese ($190 million) and butter. U.S. goods are duty-free under AUSFTA, so biosecurity import conditions decide what can enter.",
+        "mainProducts": "Cheese (0406) · Butter (0405)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Department of Agriculture, Fisheries and Forestry (biosecurity)",
+          "url": "https://www.agriculture.gov.au/biosecurity-trade/import",
+          "requirement": "Check the product's import conditions in BICON; many dairy and egg products need an import permit and a U.S. government health certificate."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 360,
+      "name": "Indonesia",
+      "rule": "Indonesia's MFN tariff (5% on most dairy); the February 2026 U.S.–Indonesia Agreement on Reciprocal Trade is signed but not in force",
+      "usTradeAgreement": null,
+      "exportsUsd": 179853920,
+      "priorExportsUsd": 214756911,
+      "sharePct": 2.3,
+      "changePct": -16.3,
+      "status": "pending",
+      "cells": {
+        "0401": {
+          "exportsUsd": 0,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force; a negligible group."
+        },
+        "0402": {
+          "exportsUsd": 99084080,
+          "rate": "5% (sweetened condensed milk 10%)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force: milk powder (0402.10, 0402.21) 5%, 0402.99 10%."
+        },
+        "0403": {
+          "exportsUsd": 1420423,
+          "rate": "5–10% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force: yogurt (0403.20) 10%, other fermented milk 5%."
+        },
+        "0404": {
+          "exportsUsd": 48415395,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force: whey (0404.10) 5%."
+        },
+        "0405": {
+          "exportsUsd": 3244205,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force."
+        },
+        "0406": {
+          "exportsUsd": 27689817,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force."
+        },
+        "0407": {
+          "exportsUsd": 0,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force; a negligible group."
+        },
+        "0408": {
+          "exportsUsd": 0,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force; a negligible group."
+        },
+        "0409": {
+          "exportsUsd": 0,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force; a negligible group."
+        },
+        "0410": {
+          "exportsUsd": 0,
+          "rate": "5% (normal rate)",
+          "normalRate": null,
+          "basis": "Indonesia MFN rates reported to WITS for 2023; the U.S.–Indonesia Agreement on Reciprocal Trade (signed February 19, 2026) is not in force; a negligible group."
+        }
+      },
+      "profile": {
+        "headline": "Indonesia buys milk powder ($99 million in 2025) and whey ($48 million) at its 5% normal rate. The Agreement on Reciprocal Trade signed February 19, 2026 would cut tariffs on about 99% of lines and exempt U.S. farm goods from import licensing, but it is not in force yet.",
+        "mainProducts": "Milk powder (0402) · Whey (0404)",
+        "tariffNow": "5% normal rate (U.S. agreement signed, not in force)",
+        "regulator": {
+          "name": "Ministry of Agriculture (Directorate General of Livestock and Animal Health Services)",
+          "url": "https://ditjenpkh.pertanian.go.id/",
+          "requirement": "Each U.S. dairy plant must be approved by Indonesia's Ministry of Agriculture after a desk audit before it can ship, and retail products need registration with Indonesia's food and drug agency (BPOM)."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Indonesia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/indonesia-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Mexico",
+      "heading": "0402",
+      "exportsUsd": 1084694265,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "0406",
+      "exportsUsd": 965683625,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "South Korea",
+      "heading": "0406",
+      "exportsUsd": 373994337,
+      "rate": "Free (KORUS) since Jan. 2026"
+    },
+    {
+      "market": "Canada",
+      "heading": "0407",
+      "exportsUsd": 300158594,
+      "rate": "Free within CUSMA quota"
+    },
+    {
+      "market": "Japan",
+      "heading": "0406",
+      "exportsUsd": 252792795,
+      "rate": "13% on hard cheese (U.S.–Japan agreement)"
+    },
+    {
+      "market": "Canada",
+      "heading": "0405",
+      "exportsUsd": 228347004,
+      "rate": "Free within CUSMA quota"
+    },
+    {
+      "market": "Philippines",
+      "heading": "0402",
+      "exportsUsd": 224321912,
+      "rate": "0–1% (normal rate)"
+    },
+    {
+      "market": "China",
+      "heading": "0404",
+      "exportsUsd": 220457695,
+      "rate": "Whey 37% (12% with an exclusion)"
+    }
+  ],
+  "assumptions": [
+    "Rates are each market's 2026 schedule: Canada's Customs Tariff 2026 (CUSMA column) with the United States Surtax Order (2026), Japan's Tariff Schedule of October 31, 2026 (JP-US Trade Agreement column), China's 2026 interim rates with its 2018–19 counter-tariffs as compiled by USDA FAS, Korea's KORUS schedule as reported by USDA FAS, and the Philippine, Indonesian, Australian and Mexican MFN rates reported to WITS for 2023.",
+    "Each cell names the products that carry most of the trade in that group (cheddar and other hard cheese, skim milk powder, whey and whey protein, butter, hatching and table eggs); other lines in the same heading can pay a different rate. Cells marked \"not individually verified\" are small groups not checked line by line.",
+    "Canada's cells give the CUSMA rate within its tariff-rate quotas, which only importers holding an allocation can use; everything else pays the over-quota rate shown as the normal rate. The 2026 surtax applies on top of either, with no CUSMA exemption.",
+    "China's cells add its 2018–19 counter-tariffs (25–30% on most dairy and honey) and its extra 10% on all U.S. goods to the normal rate. A buyer holding a market-based exclusion, valid until December 31, 2026, pays the normal rate plus 10%; only skim milk powder (0402.10) and whey (0404.10) are on the eligible list.",
+    "Trade-agreement and quota rates apply only to goods that meet the rules of origin. National 8–10-digit lines can set a different rate than the six-digit subheading; check the market's own schedule before relying on this page for a transaction."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 04, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-tariff-2026-ch04",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 4",
+      "document": "Customs Tariff",
+      "title": "Departmental Consolidation of the Customs Tariff 2026, Chapter 4: dairy produce, eggs, honey",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch04-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "cn-compendium-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CH2025-0050",
+      "document": "GAIN report",
+      "title": "Compendium of Tariffs on United States Agricultural and Related Products (China), as of March 10, 2025",
+      "signed": null,
+      "published": "2025-03-07",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Compendium+of+Tariffs+on+United+States+Agricultural+and+Related+Products_Beijing_China+-+People's+Republic+of_CH2025-0050.pdf"
+    },
+    {
+      "id": "cn-interim-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "Announcement and Annex 1 (2026 interim import rates)",
+      "title": "2026 tariff adjustment plan: interim rates of 2% on whey (0404.10) and 8% on most cheese (0406.20 to 0406.90)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    },
+    {
+      "id": "cn-mbe-2020",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 2 of 2020",
+      "document": "Announcement and annex",
+      "title": "Market-based exclusion process for goods subject to the counter-tariffs on U.S. goods (eligible list includes 0402.10 and 0404.10)",
+      "signed": null,
+      "published": "2020-02-18",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202002/t20200218_3470901.htm"
+    },
+    {
+      "id": "cn-sctc-may2025",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 7 of 2025",
+      "document": "Announcement",
+      "title": "Adjusting the additional tariffs on imports originating in the United States (10% kept, 24 points suspended)",
+      "signed": null,
+      "published": "2025-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202505/t20250513_3963684.htm"
+    },
+    {
+      "id": "cn-gacc-248",
+      "publisher": "General Administration of Customs of China",
+      "citation": "GACC Decree No. 248",
+      "document": "Administrative Provisions on the Registration of Overseas Manufacturers of Imported Food",
+      "title": "Registration of overseas manufacturers of imported food (in force January 1, 2022)",
+      "signed": null,
+      "published": "2021-04-12",
+      "url": "https://english.customs.gov.cn/"
+    },
+    {
+      "id": "jp-tariff-2026-04",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule (as of October 31, 2026), Chapter 4",
+      "document": "Tariff schedule",
+      "title": "Japan's Tariff Schedule, Chapter 4: dairy produce, birds' eggs, natural honey (JP-US Trade Agreement column)",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_04.htm"
+    },
+    {
+      "id": "usjta-dairy-ustr",
+      "publisher": "USTR",
+      "citation": "USTR fact sheet, October 2019",
+      "document": "Provisions of the U.S.–Japan Trade Agreement: dairy products",
+      "title": "Fact Sheet on Provisions of the U.S.-Japan Trade Agreement: Dairy Products",
+      "signed": null,
+      "published": "2019-10-07",
+      "url": "https://ustr.gov/about-us/policy-offices/press-office/fact-sheets/2019/october/provisions-of-the-us-japan-trade-agreement-dairy-products"
+    },
+    {
+      "id": "kr-dairy-gain-2025",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN KS2025-0041",
+      "document": "GAIN report",
+      "title": "Korea: Dairy and Products Annual 2025 (KORUS cheese and skim milk powder schedules)",
+      "signed": null,
+      "published": "2025-11-25",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Dairy+and+Products+Annual_Seoul+ATO_Korea+-+Republic+of_KS2025-0041.pdf"
+    },
+    {
+      "id": "kr-korus",
+      "publisher": "International Trade Administration",
+      "citation": "KORUS: Korea Tariff Schedule (Annex 2-B)",
+      "document": "Tariff schedule",
+      "title": "U.S.–Korea Free Trade Agreement, Korea's tariff schedule",
+      "signed": null,
+      "published": "2023-09-18",
+      "url": "https://www.trade.gov/sites/default/files/2023-09/Korea%20Tariff%20Schedule.pdf"
+    },
+    {
+      "id": "fta-tool",
+      "publisher": "International Trade Administration",
+      "citation": "trade.gov FTA Tariff Tool",
+      "document": "Tariff database",
+      "title": "FTA Tariff Tool: partner tariffs on U.S. goods by HS code (USMCA, AUSFTA, KORUS and other U.S. agreements)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://www.trade.gov/fta-tariff-tool-home"
+    },
+    {
+      "id": "mx-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Mexico MFN 2023",
+      "document": "Tariff database",
+      "title": "Mexico MFN applied tariff rates, Chapter 04 (2023 reported data): the rates for goods that do not qualify for USMCA",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/MEX/partner/WLD/product/04"
+    },
+    {
+      "id": "ph-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Philippines MFN 2023",
+      "document": "Tariff database",
+      "title": "Philippines MFN applied tariff rates, Chapter 04 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/PHL/partner/WLD/product/04"
+    },
+    {
+      "id": "id-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Indonesia MFN 2023",
+      "document": "Tariff database",
+      "title": "Indonesia MFN applied tariff rates, Chapter 04 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/IDN/partner/WLD/product/04"
+    },
+    {
+      "id": "au-wits",
+      "publisher": "World Bank WITS",
+      "citation": "WITS TRAINS, Australia MFN 2023",
+      "document": "Tariff database",
+      "title": "Australia MFN applied tariff rates, Chapter 04 (2023 reported data)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/AUS/partner/WLD/product/04"
+    },
+    {
+      "id": "id-art-text",
+      "publisher": "USTR",
+      "citation": "U.S.–Indonesia Agreement on Reciprocal Trade",
+      "document": "Agreement (signed February 19, 2026)",
+      "title": "Agreement between the United States of America and the Republic of Indonesia on Reciprocal Trade",
+      "signed": "2026-02-19",
+      "published": "2026-02-19",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/02.19.26%20US-IDN%20ART%20Full%20Agreement%20-%20US%20Final%20for%20Website%20sanitized.pdf"
+    },
+    {
+      "id": "nte-2025",
+      "publisher": "USTR",
+      "citation": "2025 National Trade Estimate Report",
+      "document": "Report",
+      "title": "2025 National Trade Estimate Report on Foreign Trade Barriers (Canada supply management, Dominican Republic, India and Indonesia dairy)",
+      "signed": null,
+      "published": "2025-03-31",
+      "url": "https://ustr.gov/sites/default/files/files/Press/Reports/2025NTE.pdf"
+    }
+  ],
+  "coverageNote": "The 8 markets shown take 68% of 2025 U.S. Chapter 04 exports. A customs union (the EU) is one market: its members share one tariff."
+}

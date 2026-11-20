@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 97,
+    "padded": "97",
+    "slug": "97-works-of-art-and-antiques",
+    "title": "Works of art, collectors' pieces and antiques"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/97-works-of-art-and-antiques/rules",
+    "h1": "HTS Chapter 97: Works of art, collectors' pieces and antiques — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Exporting Art & Antiques from the U.S.: Schedule B, Licences, Ivory | KoalaGains",
+      "shortDescription": "U.S. art is EAR99 and needs no export licence except to Russia, Belarus and embargoed countries. Schedule B codes, AES, ivory, CITES and STOP Act rules.",
+      "keywords": [
+        "art export license",
+        "antique export license",
+        "export license usa",
+        "ivory antiques rules",
+        "ivory antique exemption",
+        "cites antiques",
+        "schedule b drawings"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Most U.S. art, collectors’ pieces and antiques need **no export licence**: they are not on the Commerce Control List (EAR99). The exceptions are destinations, not objects: **Russia and Belarus**, where BIS requires a licence for every Chapter 97 item worth $300 or more per unit, and the embargoed countries. The object rules come from other agencies: the **Fish and Wildlife Service** for pieces containing ivory, tortoiseshell or other protected wildlife, and the **STOP Act** for Native American cultural items. File the export in AES when a Schedule B line is worth over $2,500, which most artworks are.",
+  "regulationsAsOf": "2026-11-18",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Chapter 97 Schedule B numbers follow the HS: 9701 paintings, drawings and pastels made entirely by hand, mosaics and collages (9701.21–29 if over 100 years old, 9701.91–99 otherwise), 9702 original prints, 9703 original sculpture, 9704 stamps, 9705 collections and collectors’ pieces, 9706 antiques over 100 years (9706.10 over 250 years). Mass-produced reproductions and commercial craft items are not Chapter 97 goods (Chapter 97 Notes 2 and 4)."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Screen the actual buyer, not only the gallery, agent or shell company that fronts the sale: OFAC’s 2020 art advisory warns that intermediaries and confidentiality make high-value art attractive for sanctions evasion."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Works of art, collectors’ pieces and antiques are EAR99. A licence is needed for Russia and Belarus for every Chapter 97 line valued at $300 or more per unit wholesale (15 CFR 746.8(a)(7), Supplement No. 5 to Part 746), and BIS applies a general policy of denial to art, antiques and collectibles for North Korea (15 CFR 746.4(b)(1))."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": "OFAC’s October 30, 2020 advisory says the informational-materials exemption does not shield artwork in which a blocked person has an interest when the work serves mainly as an investment or medium of exchange, and urges particular caution with works worth over $100,000."
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Most art shipments pass the $2,500 per-Schedule-B threshold, so file EEI; a shipment to Russia or Belarus that needs a BIS licence is filed whatever its value."
+    }
+  ],
+  "rules": [
+    {
+      "id": "bis-luxury",
+      "agency": "BIS (Commerce)",
+      "title": "Luxury-goods licences for Russia and Belarus: every Chapter 97 line (paintings, prints, sculpture, stamps, collectors’ pieces and antiques) valued at $300 or more per unit wholesale price in the U.S. needs a BIS licence to Russia or Belarus. For North Korea every item needs a licence, and art, antiques and collectibles such as rare coins and stamps face a general policy of denial.",
+      "citations": [
+        {
+          "label": "15 CFR 746.8(a)(7)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 5 to Part 746",
+          "url": "https://www.ecfr.gov/current/title-15/part-746/appendix-Supplement%20No.%205%20to%20Part%20746"
+        },
+        {
+          "label": "15 CFR 746.4 (North Korea)",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.4"
+        }
+      ]
+    },
+    {
+      "id": "fws-wildlife",
+      "agency": "U.S. Fish and Wildlife Service",
+      "title": "Art and antiques made with wildlife (ivory, tortoiseshell, horn, coral, whale bone, feathers): before export, file a Declaration for Importation or Exportation of Fish or Wildlife (Form 3-177) with FWS at the port of export. Species listed under CITES also need a CITES document; for an old piece this is usually a pre-Convention certificate (application Form 3-200-23), and it works only if the importing country accepts it. A business that exports wildlife items commercially needs an FWS import/export licence.",
+      "citations": [
+        {
+          "label": "50 CFR 14.63 (export declaration)",
+          "url": "https://www.ecfr.gov/current/title-50/section-14.63"
+        },
+        {
+          "label": "50 CFR 14.91 (import/export licence)",
+          "url": "https://www.ecfr.gov/current/title-50/section-14.91"
+        },
+        {
+          "label": "50 CFR 23.45 (pre-Convention specimens)",
+          "url": "https://www.ecfr.gov/current/title-50/section-23.45"
+        }
+      ]
+    },
+    {
+      "id": "fws-ivory-antique",
+      "agency": "U.S. Fish and Wildlife Service",
+      "title": "African elephant ivory: commercial export is prohibited except for antiques that meet all four Endangered Species Act tests: at least 100 years old, made in whole or part of a listed species, not repaired or modified with any listed species on or after December 28, 1973, and entered through a port designated for antiques. Such antiques may be exported without an ESA permit if the FWS and CITES requirements of 50 CFR parts 13, 14 and 23 are met; manufactured items with de minimis ivory have their own narrow exception.",
+      "citations": [
+        {
+          "label": "50 CFR 17.40(e) (African elephant)",
+          "url": "https://www.ecfr.gov/current/title-50/section-17.40"
+        },
+        {
+          "label": "16 U.S.C. 1539(h) (ESA antiques)",
+          "url": "https://www.govinfo.gov/link/uscode/16/1539?link-type=html"
+        },
+        {
+          "label": "50 CFR 14.22 (antique ports)",
+          "url": "https://www.ecfr.gov/current/title-50/section-14.22"
+        }
+      ]
+    },
+    {
+      "id": "stop-act",
+      "agency": "Interior / CBP (STOP Act)",
+      "title": "Native American cultural items: the Safeguard Tribal Objects of Patrimony (STOP) Act of 2022 makes it unlawful to export, attempt to export or conceal the export of an item taken, possessed or sold in violation of NAGPRA, ARPA or other federal law; CBP detains such items for repatriation, and penalties reach a year and a day in prison for a first offence and 10 years after that. The Act also requires an export certification for “Items Requiring Export Certification”; Interior proposed the certification system (25 CFR part 1194) on October 25, 2024 and has not finalized it. Items made solely for commercial purposes are presumed not to need certification.",
+      "citations": [
+        {
+          "label": "25 U.S.C. 3073",
+          "url": "https://www.govinfo.gov/link/uscode/25/3073?link-type=html"
+        },
+        {
+          "label": "89 FR 85078 (proposed rule, Oct. 25, 2024)",
+          "url": "https://www.federalregister.gov/documents/2024/10/25/2024-24332/safeguard-tribal-objects-of-patrimony"
+        }
+      ]
+    },
+    {
+      "id": "ofac-art",
+      "agency": "OFAC (Treasury)",
+      "title": "High-value art and blocked persons: OFAC treats artwork in which a blocked person has an interest as blocked property when it serves mainly as an investment or medium of exchange, so the informational-materials exemption does not cover the sale. OFAC urges particular caution with works estimated above $100,000 and asks U.S. persons to seek guidance or a licence first.",
+      "citations": [
+        {
+          "label": "OFAC art advisory (Oct. 30, 2020)",
+          "url": "https://ofac.treasury.gov/media/49091/download?inline="
+        },
+        {
+          "label": "OFAC recent actions, Oct. 30, 2020",
+          "url": "https://ofac.treasury.gov/recent-actions/20201030"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "9701",
+      "label": "Paintings, drawings, pastels, collages & mosaics (executed by hand)",
+      "ruleIds": ["bis-luxury", "ofac-art"],
+      "note": "Paintings and drawings are EAR99: no licence except for Russia, Belarus (from $300 a unit) and embargoed countries. The largest line, 9701.91, is works under 100 years old; older works go to 9701.21–29."
+    },
+    {
+      "heading": "9702",
+      "label": "Original engravings, prints & lithographs",
+      "ruleIds": ["bis-luxury"],
+      "note": "Original prints made directly from plates worked by hand by the artist (Chapter 97 Note 3); prints made by mechanical or photomechanical processes are classified elsewhere."
+    },
+    {
+      "heading": "9703",
+      "label": "Original sculptures & statuary, in any material",
+      "ruleIds": ["bis-luxury", "fws-wildlife", "fws-ivory-antique", "ofac-art"],
+      "note": "Original sculpture is 9703.10 if over 100 years old and 9703.90 otherwise, and is EAR99. Carvings in ivory, horn, tortoiseshell or coral bring in FWS and CITES rules, and African elephant ivory can be sold abroad only as an ESA antique."
+    },
+    {
+      "heading": "9704",
+      "label": "Postage & revenue stamps, first-day covers, postal stationery",
+      "ruleIds": ["bis-luxury"],
+      "note": "Used stamps and unused stamps not of current issue are 9704; unused stamps of current or new issue are 4907."
+    },
+    {
+      "heading": "9705",
+      "label": "Collections & collectors' pieces: archaeological, ethnographic, natural history, coins",
+      "ruleIds": ["bis-luxury", "stop-act", "fws-wildlife"],
+      "note": "Coin collections and other numismatic pieces are 9705.31–39. Archaeological, ethnographic and historical pieces (9705.10) can be Native American cultural items under the STOP Act; zoological, botanical and paleontological specimens (9705.21–29) of protected species need FWS and CITES documents."
+    },
+    {
+      "heading": "9706",
+      "label": "Antiques over 100 years old",
+      "ruleIds": ["bis-luxury", "fws-ivory-antique", "fws-wildlife", "stop-act"],
+      "note": "Antiques over 100 years old are 9706 (9706.10 over 250 years), but an old painting, print or sculpture stays in 9701–9703 (Chapter 97 Note 5(B)). All are EAR99; antiques with ivory or other listed wildlife need the ESA antique tests and CITES papers, and Native American cultural items fall under the STOP Act."
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

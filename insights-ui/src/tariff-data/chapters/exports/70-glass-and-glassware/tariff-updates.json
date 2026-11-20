@@ -30,7 +30,7 @@
   "stats": [
     {
       "label": "Actions tracked",
-      "value": "41"
+      "value": "42"
     },
     {
       "label": "In force & cost these goods",
@@ -300,6 +300,19 @@
       "status": "Framework announced Feb. 6, 2026; interim agreement not yet confirmed signed",
       "detail": "India will eliminate or reduce tariffs on all U.S. industrial goods and a wide range of U.S. food and farm products, including dried distillers' grains, red sorghum for animal feed, tree nuts, fruit, soybean oil and wine and spirits. India also intends to buy $500 billion of U.S. energy, aircraft and parts, precious metals, technology products and coking coal over five years. It is a framework for an interim agreement: no rates or start dates are published. India's tariffs on U.S. glass have not changed under it: most glass pays 10% basic customs duty, mirrors and safety glass 15% and glassware 20% (see Markets).",
       "sourceIds": ["in-framework-ws"]
+    },
+    {
+      "id": "co-milk-powder-cvd",
+      "date": "2025-12-30",
+      "type": "reference",
+      "countries": ["Colombia"],
+      "title": "Colombia closes its countervailing duty case on U.S. milk powder without duties",
+      "before": "4.86% provisional duty (Sept 2024 to Jan 2025)",
+      "now": "No duty",
+      "coversChapter": "no",
+      "status": "Closed without duties by Resolution 365 of December 30, 2025",
+      "detail": "Colombia's trade ministry (MINCIT) opened the case itself in July 2024 (Resolution 192) and put a 4.86% provisional duty on U.S. milk powder from September 2024 for four months, ending in January 2025. Its January 8, 2025 essential-facts report recommended a 2.8% final duty, but Resolution 365 of December 30, 2025 closed the investigation with no duty, finding no substantial causal link between U.S. milk powder and the injury to Colombia's dairy sector. U.S. milk powder keeps entering under the U.S.–Colombia trade agreement, whose quota phases out in 2026.",
+      "sourceIds": ["co-fas-milk-powder-cvd-2026"]
     },
     {
       "id": "mx-ligie-2026",
@@ -1490,6 +1503,16 @@
       "signed": null,
       "published": "2025-11-24",
       "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=India+Increases+Import+Duty+on+Yellow+Peas_New+Delhi_India_IN2025-0069.pdf"
+    },
+    {
+      "id": "co-fas-milk-powder-cvd-2026",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CO2026-0001",
+      "document": "GAIN report (attaches MINCIT Resolution 365 of 2025)",
+      "title": "Colombia Closes Countervailing Duty Case on US Powdered Milk Without Measures",
+      "signed": null,
+      "published": "2026-01-12",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Colombia+Closes+Countervailing+Duty+Case+on+US+Powdered+Milk+Without+Measures_Bogota_Colombia_CO2026-0001.pdf"
     }
   ]
 }

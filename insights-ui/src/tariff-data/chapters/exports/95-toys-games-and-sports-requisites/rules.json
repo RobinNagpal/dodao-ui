@@ -1,0 +1,325 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 95,
+    "padded": "95",
+    "slug": "95-toys-games-and-sports-requisites",
+    "title": "Toys, Games and Sports Equipment; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/rules",
+    "path": "/industry-tariff-report/exports/chapters/95-toys-games-and-sports-requisites/rules",
+    "h1": "HTS Chapter 95: Toys, Games and Sports Equipment; Parts and Accessories Thereof — U.S. Export Rules & Ways to Pay Less Abroad",
+    "seo": {
+      "title": "Toy, Video Game & Golf HS Codes and Export Rules: Schedule B, EAR",
+      "shortDescription": "HS and Schedule B codes for toys, video game consoles, trading cards, golf clubs and exercise equipment, plus U.S. export rules: licences, CPSC notices, AES.",
+      "keywords": [
+        "hs code for toys",
+        "hs code video game console",
+        "hs code golf clubs",
+        "hs code exercise equipment",
+        "hs code trading cards",
+        "game controller hs code",
+        "eccn number for toys"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Exporting toys, games or sports equipment from the U.S. takes little federal paperwork: find the Schedule B number, screen the buyer and file in AES (shipments to Canada are generally exempt). Almost all Chapter 95 goods are **EAR99**, so no Commerce licence is needed except for sanctioned destinations: toys (9503) are on the Russia and Belarus industrial list, so they need a **BIS licence** for those countries, and video game consoles that use encryption may be classified **5A992.c** (mass market) rather than EAR99. Two agency rules matter: a toy or children's product that does not meet U.S. **CPSC** rules can be exported only after a notice to CPSC **30 days** ahead, and makers and dealers of **slot machines** and other gambling devices must register with the U.S. Attorney General each year before shipping them, including abroad.",
+  "regulationsAsOf": "2026-11-18",
+  "steps": [
+    {
+      "id": "schedule-b",
+      "title": "Find the Schedule B number",
+      "whatToDo": "Look up the 10-digit Schedule B number for each product with the Census Bureau's free search tool. Its first six digits are the same as the HS code every country uses, so it also tells you which line of the buyer's tariff applies. The U.S. import (HTS) number and the Schedule B number match only to six digits.",
+      "when": "Every export. It goes on the export filing (the last step) and on the commercial invoice.",
+      "citations": [
+        {
+          "label": "Census: Schedule B",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/index.html"
+        },
+        {
+          "label": "Schedule B search tool",
+          "url": "https://uscensus.prod.3ceonline.com/"
+        },
+        {
+          "label": "Schedule B introduction (2026)",
+          "url": "https://www.census.gov/foreign-trade/schedules/b/2026/introduction.pdf"
+        }
+      ],
+      "chapterNote": "Toys of every kind, dolls, puzzles, scale models, ride-on toys and toy parts are one HS subheading, 9503.00. Games are 9504: billiards 9504.20, coin- or card-operated games including arcade and slot machines 9504.30, playing and trading cards 9504.40, video game consoles, handhelds, controllers and their parts 9504.50, and board games, casino tables and bowling equipment 9504.90; game software on discs or cartridges is classified with recorded media in 8523, not here. Christmas articles are 9505.10 and other festive and party articles 9505.90. Sports goods are 9506: skis 9506.11, golf clubs 9506.31, golf balls 9506.32, other golf equipment such as heads and shafts 9506.39, table tennis 9506.40, tennis rackets 9506.51 and other rackets, including pickleball paddles, 9506.59, balls 9506.61–9506.69, skates 9506.70, exercise equipment 9506.91 and other sports and outdoor-game equipment 9506.99. Fishing rods are 9507.10, hooks 9507.20, reels 9507.30 and other tackle 9507.90; amusement rides are 9508.21–9508.29, fairground amusements 9508.30. The first six digits of the 10-digit Schedule B number are the HS code on the Overview."
+    },
+    {
+      "id": "screen",
+      "title": "Screen the buyer and everyone in the deal",
+      "whatToDo": "Check the buyer, the end user and any agent against the Consolidated Screening List. It combines the Commerce lists (Entity List, Denied Persons, Unverified, Military End-User), the State Department lists and the Treasury (OFAC) sanctions lists of parties you may not deal with, or may deal with only under a licence.",
+      "when": "Every export, before you accept the order.",
+      "citations": [
+        {
+          "label": "trade.gov: Consolidated Screening List",
+          "url": "https://www.trade.gov/consolidated-screening-list"
+        },
+        {
+          "label": "CSL search",
+          "url": "https://www.trade.gov/data-visualization/csl-search"
+        }
+      ],
+      "chapterNote": "Screen distributors, retailers and online-marketplace sellers as well as the end user; consoles and electronic games are often resold, so watch for diversion to Russia, Belarus or other restricted destinations."
+    },
+    {
+      "id": "licence",
+      "title": "Check whether you need an export licence",
+      "whatToDo": "Find the product's Export Control Classification Number (ECCN) on the Commerce Control List. Most goods are not listed and are EAR99. For a listed ECCN, look up the destination on the Commerce Country Chart under each reason for control: an X means a licence is needed unless a licence exception applies. Even EAR99 goods need a licence for embargoed countries and for restricted end users or end uses.",
+      "when": "Every export of goods subject to the Export Administration Regulations (EAR).",
+      "citations": [
+        {
+          "label": "15 CFR 732.3",
+          "url": "https://www.ecfr.gov/current/title-15/section-732.3"
+        },
+        {
+          "label": "15 CFR 738.4",
+          "url": "https://www.ecfr.gov/current/title-15/section-738.4"
+        },
+        {
+          "label": "Commerce Control List (15 CFR 774 Supp. 1)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        },
+        {
+          "label": "BIS: classify your item",
+          "url": "https://www.bis.gov/licensing/classify-your-item"
+        }
+      ],
+      "chapterNote": "Most toys, games, sports goods and fishing tackle are EAR99. Video game consoles, handhelds and other games that use encryption for networking may be classified ECCN 5A992.c (mass-market encryption, 15 CFR 740.17(b)(1)), which needs no licence to most countries but does to embargoed ones; ask the maker for the classification. For Russia and Belarus, Supplement No. 4 to Part 746 lists toys (9503.00), so they need a licence even when EAR99."
+    },
+    {
+      "id": "sanctions",
+      "title": "Check sanctions on the destination",
+      "whatToDo": "Check the destination against OFAC's sanctions programs and the EAR's embargo rules. Cuba, Iran and North Korea have country-wide rules, and Syria still needs a Commerce licence for most items; Russia and Belarus need a licence for any item with an ECCN. Several programs have special permissions for food and medicine.",
+      "when": "Exports to a sanctioned or embargoed country, or to a listed person anywhere.",
+      "citations": [
+        {
+          "label": "OFAC: sanctions programs",
+          "url": "https://ofac.treasury.gov/sanctions-programs-and-country-information"
+        },
+        {
+          "label": "15 CFR Part 746 (embargoes)",
+          "url": "https://www.ecfr.gov/current/title-15/part-746"
+        }
+      ],
+      "chapterNote": null
+    },
+    {
+      "id": "eei",
+      "title": "File the export in AES (Electronic Export Information)",
+      "whatToDo": "You (the U.S. principal party in interest) or your freight forwarder file the EEI in the Automated Export System — free through ACE AESDirect — and put the confirmation number (ITN) on the shipping documents. File at least 24 hours before an ocean shipment is loaded, 2 hours before a flight departs, or 1 hour before a truck reaches the border. Not filing can cost a civil penalty of up to $17,412 per violation.",
+      "when": "When one Schedule B number in one shipment to one buyer is worth over $2,500, and at any value when the shipment needs a Commerce licence or a DEA permit or declaration, or ships an EAR item to Cuba, Iran, North Korea or Syria, or a Commerce Control List item to China, Russia or Venezuela.",
+      "citations": [
+        {
+          "label": "15 CFR 30.2",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.2"
+        },
+        {
+          "label": "15 CFR 30.4 (when to file)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.4"
+        },
+        {
+          "label": "15 CFR 30.37 ($2,500 exemption)",
+          "url": "https://www.ecfr.gov/current/title-15/section-30.37"
+        },
+        {
+          "label": "15 CFR 758.1",
+          "url": "https://www.ecfr.gov/current/title-15/section-758.1"
+        },
+        {
+          "label": "Census: AES",
+          "url": "https://www.census.gov/foreign-trade/aes/index.html"
+        }
+      ],
+      "chapterNote": "Shipments to Canada, the largest buyer, are generally exempt from EEI filing unless they need a licence or another exception applies (15 CFR 30.36). Small parcels of toys or cards worth $2,500 or less per Schedule B number need no EEI to most destinations, but a filing is required for any shipment that needs a licence, such as toys to Russia or Belarus."
+    }
+  ],
+  "rules": [
+    {
+      "id": "cpsc-noncomplying",
+      "agency": "Consumer Product Safety Commission (CPSC)",
+      "title": "Toys and children's products that do not meet U.S. safety rules: a product that does not comply with a CPSC rule, such as a toy that fails the mandatory toy standard (16 CFR Part 1250, which adopts ASTM F963) or a banned hazardous substance, can be exported only after the exporter files a statement with CPSC at least 30 days before export (16 CFR Part 1019); CPSC can object to the export. Products that meet U.S. rules need no notice.",
+      "citations": [
+        {
+          "label": "16 CFR Part 1019 (export of noncomplying products)",
+          "url": "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-A/part-1019"
+        },
+        {
+          "label": "16 CFR Part 1250 (safety standard for toys)",
+          "url": "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-B/part-1250"
+        }
+      ]
+    },
+    {
+      "id": "bis-encryption-consoles",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Video game consoles and electronic games with encryption: consoles, handhelds and similar devices that use encryption for networking or online services may be classified ECCN 5A992.c (mass-market encryption items) rather than EAR99. They can be exported without a licence to most destinations under 15 CFR 740.17(b)(1) or as NLR, but need a licence for embargoed and sanctioned destinations; confirm the ECCN with the manufacturer.",
+      "citations": [
+        {
+          "label": "15 CFR 740.17 (License Exception ENC)",
+          "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-740/section-740.17"
+        },
+        {
+          "label": "15 CFR Part 774, Supplement No. 1 (ECCN 5A992)",
+          "url": "https://www.ecfr.gov/current/title-15/part-774/appendix-Supplement%20No.%201%20to%20Part%20774"
+        }
+      ]
+    },
+    {
+      "id": "bis-russia-belarus",
+      "agency": "Bureau of Industry and Security (BIS)",
+      "title": "Russia and Belarus: Supplement No. 4 to Part 746 lists HS subheading 9503.00 (toys, dolls, puzzles and models), so toys need a BIS licence to Russia or Belarus even when they are EAR99 (15 CFR 746.8(a)(5)); any item with an ECCN, such as a 5A992.c console, also needs a licence for those countries.",
+      "citations": [
+        {
+          "label": "15 CFR 746.8",
+          "url": "https://www.ecfr.gov/current/title-15/section-746.8"
+        },
+        {
+          "label": "Supplement No. 4 to Part 746",
+          "url": "https://www.ecfr.gov/current/title-15/subtitle-B/chapter-VII/subchapter-C/part-746/appendix-Supplement%20No.%204%20to%20Part%20746"
+        }
+      ]
+    },
+    {
+      "id": "doj-gambling-devices",
+      "agency": "Department of Justice (Gambling Devices Act)",
+      "title": "Slot machines and other gambling devices (part of 9504.30): anyone in the business of making, buying, selling or shipping gambling devices in interstate or foreign commerce must register with the Attorney General each calendar year, after November 30 of the year before and before the activity. Each device must be numbered and marked with the maker's name and date of manufacture, and monthly records of every device sold or shipped, with buyer, consignee and carrier, must be kept for five years (15 U.S.C. 1173).",
+      "citations": [
+        {
+          "label": "15 U.S.C. 1173 (registration of manufacturers and dealers)",
+          "url": "https://www.govinfo.gov/link/uscode/15/1173?type=usc&year=mostrecent&link-type=html"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "heading": "9503",
+      "label": "Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters",
+      "ruleIds": ["cpsc-noncomplying", "bis-russia-belarus"],
+      "note": "Toys that fail the U.S. toy standard need the 30-day CPSC export notice; all toys need a BIS licence for Russia and Belarus."
+    },
+    {
+      "heading": "9504",
+      "label": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment",
+      "ruleIds": ["bis-encryption-consoles", "doj-gambling-devices", "cpsc-noncomplying"],
+      "note": "Consoles with encryption may be ECCN 5A992.c; slot machines need annual Gambling Devices Act registration with the Attorney General."
+    },
+    {
+      "heading": "9505",
+      "label": "Christmas ornaments, artificial Christmas trees, Halloween and party articles, magic tricks",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "9506",
+      "label": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "9507",
+      "label": "Fishing rods, reels, hooks, line, lures and other fishing tackle; landing nets",
+      "ruleIds": [],
+      "note": null
+    },
+    {
+      "heading": "9508",
+      "label": "Amusement park rides, carousels, water park and fairground amusements, traveling circuses and theaters",
+      "ruleIds": [],
+      "note": null
+    }
+  ],
+  "savings": [
+    {
+      "id": "fta-rate",
+      "title": "Claim the free-trade-agreement rate abroad",
+      "saves": "The partner country's tariff on qualifying U.S. goods — often 0% instead of its normal rate.",
+      "appliesTo": "Goods that meet the agreement's rules of origin, shipped to one of the 20 U.S. free-trade-agreement partners: Australia, Bahrain, Canada, Chile, Colombia, Costa Rica, Dominican Republic, El Salvador, Guatemala, Honduras, Israel, Jordan, Korea, Mexico, Morocco, Nicaragua, Oman, Panama, Peru and Singapore.",
+      "document": "A certification of origin from the exporter, producer or importer, which the buyer uses to claim the rate at import. For USMCA there is no set form, but it must contain the nine data elements in Annex 5-A.",
+      "caveat": "Whoever certifies must be able to back it up: for USMCA, a U.S. exporter or producer keeps origin records for at least 5 years, gives CBP a copy on request and tells buyers promptly about errors. Check the product's rule of origin and the partner's rate in the FTA Tariff Tool first.",
+      "citations": [
+        {
+          "label": "trade.gov: FTA Tariff Tool",
+          "url": "https://www.trade.gov/fta-tariff-tool-home"
+        },
+        {
+          "label": "trade.gov: U.S. free trade agreements",
+          "url": "https://www.trade.gov/free-trade-agreements"
+        },
+        {
+          "label": "19 CFR Part 182 (USMCA; 182.21 for exporters)",
+          "url": "https://www.ecfr.gov/current/title-19/part-182"
+        },
+        {
+          "label": "USMCA Chapter 5: origin procedures",
+          "url": "https://ustr.gov/sites/default/files/files/agreements/FTA/USMCA/Text/05_Origin_Procedures.pdf"
+        }
+      ]
+    },
+    {
+      "id": "drawback",
+      "title": "Get U.S. duty back on imported inputs (drawback)",
+      "saves": "99% of the U.S. import duties, taxes and fees paid on goods or materials that are exported, or used to make the goods you export.",
+      "appliesTo": "Imported goods exported unused, and imported materials used to make an exported product (or, under the substitution rules, goods of the same kind).",
+      "document": "An electronic drawback claim in ACE, filed within 5 years of the import date, with the import and export records that tie the two together.",
+      "caveat": "Antidumping and countervailing duties are not refunded, and CBP takes no paper claims. The refund is on U.S. duties only; it does not lower the buyer's tariff.",
+      "citations": [
+        {
+          "label": "19 CFR Part 190",
+          "url": "https://www.ecfr.gov/current/title-19/part-190"
+        },
+        {
+          "label": "CBP: drawback overview",
+          "url": "https://www.cbp.gov/trade/programs-administration/entry-summary/drawback-overview"
+        },
+        {
+          "label": "19 U.S.C. 1313",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title19/html/USCODE-2024-title19-chap4-subtitleII-partI-sec1313.htm"
+        }
+      ]
+    },
+    {
+      "id": "ca-remission",
+      "title": "Have your Canadian buyer claim remission of Canada's surtax",
+      "saves": "Canada's 50% surtax on listed U.S. consoles, sports and exercise equipment and fishing rods, for buyers that use the goods in Canadian manufacturing or processing, and for health-care, public-safety and national-security buyers.",
+      "appliesTo": "U.S. Chapter 95 goods under the United States Surtax Order (2026) imported into Canada for those uses.",
+      "document": "The Canadian importer claims remission from the CBSA under the United States Surtax Remission Order (2025), which SOR/2026-186 extended to the 2026 surtax.",
+      "caveat": "Conditions and time limits apply, and goods sold as is to retailers or consumers, which is most consoles and sports gear, do not qualify.",
+      "citations": [
+        {
+          "label": "SOR/2026-186 (United States Surtax Order (2026))",
+          "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+        },
+        {
+          "label": "United States Surtax Remission Order (2025), SOR/2025-122",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2025-122/"
+        }
+      ]
+    },
+    {
+      "id": "cn-exclusion",
+      "title": "Have your Chinese buyer use China's tariff exclusion process",
+      "saves": "China's 2019 counter-tariffs answering U.S. Section 301, which list almost every U.S. Chapter 95 line (25% on most toys, consoles, golf equipment and fishing rods; 20% on skis, golf clubs and balls; 10% on cards and fitness equipment) on top of the 10% extra tariff when the buyer holds no exclusion.",
+      "appliesTo": "U.S. toys, games, sports equipment and fishing tackle imported into China by a buyer whose exclusion covers the goods.",
+      "document": "The Chinese importer applies on China's Ministry of Finance exclusion system; the U.S. exporter supplies product and origin details.",
+      "caveat": "Exclusions are valid until December 31, 2026 and no extension is announced. They do not remove China's extra 10% on all U.S. goods.",
+      "citations": [
+        {
+          "label": "Tariff Commission Announcement No. 3 of 2019",
+          "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+        },
+        {
+          "label": "White House fact sheet on the U.S.–China deal (Nov 1, 2025)",
+          "url": "https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/"
+        }
+      ]
+    }
+  ],
+  "disclaimer": "This page summarizes U.S. export rules to help you find the right regulation; it is not legal advice. Rules change and depend on the exact product, buyer and destination — check the cited regulation and the agency before you ship."
+}

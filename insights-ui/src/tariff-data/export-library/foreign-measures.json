@@ -49,7 +49,11 @@
         "32": "yes",
         "93": "partly",
         "70": "yes",
-        "7": "yes"
+        "7": "yes",
+        "21": "yes",
+        "95": "partly",
+        "4": "yes",
+        "97": "partly"
       },
       "inForce": false
     },
@@ -107,7 +111,8 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "97": "no"
       }
     },
     {
@@ -158,7 +163,11 @@
         "32": "partly",
         "93": "no",
         "70": "no",
-        "7": "yes"
+        "7": "yes",
+        "21": "yes",
+        "95": "no",
+        "4": "yes",
+        "97": "no"
       },
       "inForce": false
     },
@@ -210,7 +219,11 @@
         "32": "no",
         "93": "no",
         "70": "partly",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "partly",
+        "4": "yes",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "ca-2026-list"
@@ -263,7 +276,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "ca-sk-levy-2026"
@@ -318,7 +335,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -369,7 +390,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -421,7 +446,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "partly"
+        "7": "partly",
+        "21": "partly",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -491,7 +520,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -542,7 +575,11 @@
         "32": "yes",
         "93": "yes",
         "70": "yes",
-        "7": "yes"
+        "7": "yes",
+        "21": "yes",
+        "95": "yes",
+        "4": "partly",
+        "97": "yes"
       },
       "inForce": false
     },
@@ -600,7 +637,8 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "97": "no"
       }
     },
     {
@@ -651,7 +689,11 @@
         "32": "yes",
         "93": "partly",
         "70": "yes",
-        "7": "yes"
+        "7": "yes",
+        "21": "yes",
+        "95": "partly",
+        "4": "yes",
+        "97": "partly"
       },
       "inForce": false,
       "effectiveSourceId": "tw-art-fact"
@@ -704,7 +746,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false,
       "effectiveSourceId": "bd-art-fact"
@@ -757,10 +803,70 @@
         "32": "yes",
         "93": "yes",
         "70": "yes",
-        "7": "no"
+        "7": "no",
+        "21": "partly",
+        "95": "yes",
+        "4": "no",
+        "97": "partly"
       },
       "inForce": false,
       "effectiveSourceId": "in-framework-ws"
+    },
+    {
+      "id": "co-milk-powder-cvd",
+      "date": "2025-12-30",
+      "type": "reference",
+      "countries": ["Colombia"],
+      "title": "Colombia closes its countervailing duty case on U.S. milk powder without duties",
+      "before": "4.86% provisional duty (Sept 2024 to Jan 2025)",
+      "now": "No duty",
+      "status": "Closed without duties by Resolution 365 of December 30, 2025",
+      "detail": "Colombia's trade ministry (MINCIT) opened the case itself in July 2024 (Resolution 192) and put a 4.86% provisional duty on U.S. milk powder from September 2024 for four months, ending in January 2025. Its January 8, 2025 essential-facts report recommended a 2.8% final duty, but Resolution 365 of December 30, 2025 closed the investigation with no duty, finding no substantial causal link between U.S. milk powder and the injury to Colombia's dairy sector. U.S. milk powder keeps entering under the U.S.–Colombia trade agreement, whose quota phases out in 2026.",
+      "sourceIds": ["co-fas-milk-powder-cvd-2026"],
+      "allGoods": false,
+      "coverage": {
+        "4": "yes",
+        "2": "no",
+        "3": "no",
+        "7": "no",
+        "8": "no",
+        "10": "no",
+        "12": "no",
+        "21": "no",
+        "22": "no",
+        "23": "no",
+        "26": "no",
+        "27": "no",
+        "28": "no",
+        "29": "no",
+        "30": "no",
+        "32": "no",
+        "33": "no",
+        "34": "no",
+        "38": "no",
+        "39": "no",
+        "40": "no",
+        "44": "no",
+        "47": "no",
+        "48": "no",
+        "52": "no",
+        "70": "no",
+        "71": "no",
+        "72": "no",
+        "73": "no",
+        "74": "no",
+        "76": "no",
+        "84": "no",
+        "85": "no",
+        "87": "no",
+        "88": "no",
+        "90": "no",
+        "93": "no",
+        "94": "no",
+        "95": "no",
+        "97": "no"
+      },
+      "inForce": false
     },
     {
       "id": "mx-ligie-2026",
@@ -810,7 +916,11 @@
         "32": "no",
         "93": "no",
         "70": "partly",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "partly",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -862,7 +972,11 @@
         "87": "no",
         "39": "partly",
         "72": "partly",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "ca-sor-2025-267"
@@ -917,7 +1031,11 @@
         "88": "no",
         "90": "no",
         "94": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -968,7 +1086,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -1020,7 +1142,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -1072,7 +1198,11 @@
         "32": "yes",
         "93": "yes",
         "70": "yes",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "yes",
+        "4": "partly",
+        "97": "yes"
       },
       "inForce": false
     },
@@ -1124,7 +1254,11 @@
         "32": "yes",
         "93": "partly",
         "70": "partly",
-        "7": "partly"
+        "7": "partly",
+        "21": "yes",
+        "95": "yes",
+        "4": "partly",
+        "97": "partly"
       },
       "inForce": false
     },
@@ -1178,7 +1312,11 @@
         "90": "no",
         "93": "no",
         "94": "no",
-        "7": "yes"
+        "7": "yes",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -1231,7 +1369,11 @@
         "88": "no",
         "90": "no",
         "94": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -1283,7 +1425,11 @@
         "32": "partly",
         "93": "partly",
         "70": "partly",
-        "7": "partly"
+        "7": "partly",
+        "21": "partly",
+        "95": "partly",
+        "4": "partly",
+        "97": "no"
       }
     },
     {
@@ -1340,7 +1486,8 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "97": "no"
       }
     },
     {
@@ -1391,7 +1538,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -1443,7 +1594,11 @@
         "32": "partly",
         "93": "partly",
         "70": "partly",
-        "7": "yes"
+        "7": "yes",
+        "21": "yes",
+        "95": "yes",
+        "4": "partly",
+        "97": "yes"
       },
       "inForce": false
     },
@@ -1502,7 +1657,8 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "97": "no"
       }
     },
     {
@@ -1555,7 +1711,11 @@
         "88": "no",
         "90": "no",
         "94": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -1606,7 +1766,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "cn-mofcom-pom-2025"
@@ -1676,7 +1840,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -1727,7 +1895,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -1779,7 +1951,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "ca-sor-2025-118"
@@ -1832,7 +2008,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "yes"
+        "7": "yes",
+        "21": "partly",
+        "95": "no",
+        "4": "yes",
+        "97": "no"
       },
       "inForce": false,
       "effectiveSourceId": "cn-sctc-mar2025"
@@ -1885,7 +2065,11 @@
         "32": "no",
         "93": "partly",
         "70": "partly",
-        "7": "partly"
+        "7": "partly",
+        "21": "partly",
+        "95": "partly",
+        "4": "partly",
+        "97": "partly"
       },
       "inForce": false
     },
@@ -1937,7 +2121,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -1989,7 +2177,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -2041,7 +2233,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": false
     },
@@ -2093,7 +2289,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       },
       "inForce": true,
       "effectiveSourceId": "cn-sctc-feb2025"
@@ -2147,7 +2347,11 @@
         "88": "no",
         "90": "no",
         "94": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -2184,7 +2388,11 @@
         "32": "yes",
         "93": "partly",
         "70": "partly",
-        "7": "partly"
+        "7": "partly",
+        "21": "yes",
+        "95": "yes",
+        "4": "partly",
+        "97": "partly"
       }
     },
     {
@@ -2233,7 +2441,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -2282,7 +2494,11 @@
         "32": "no",
         "93": "no",
         "70": "no",
-        "7": "no"
+        "7": "no",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     },
     {
@@ -2343,7 +2559,11 @@
         "90": "no",
         "93": "no",
         "94": "no",
-        "7": "yes"
+        "7": "yes",
+        "21": "no",
+        "95": "no",
+        "4": "no",
+        "97": "no"
       }
     }
   ],
@@ -3127,6 +3347,16 @@
       "signed": "2026-03-31",
       "published": "2026-03-31",
       "url": "https://content.dgft.gov.in/Website/dgftprod/8652d04c-f30a-4985-8692-f20002b6e1a3/Noti-70-yellow-peas.pdf"
+    },
+    {
+      "id": "co-fas-milk-powder-cvd-2026",
+      "publisher": "USDA Foreign Agricultural Service",
+      "citation": "GAIN CO2026-0001",
+      "document": "GAIN report (attaches MINCIT Resolution 365 of 2025)",
+      "title": "Colombia Closes Countervailing Duty Case on US Powdered Milk Without Measures",
+      "signed": null,
+      "published": "2026-01-12",
+      "url": "https://apps.fas.usda.gov/newgainapi/api/Report/DownloadReportByFileName?fileName=Colombia+Closes+Countervailing+Duty+Case+on+US+Powdered+Milk+Without+Measures_Bogota_Colombia_CO2026-0001.pdf"
     }
   ]
 }

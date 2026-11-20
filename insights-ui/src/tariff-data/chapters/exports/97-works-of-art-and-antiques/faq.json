@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 97,
+    "padded": "97",
+    "slug": "97-works-of-art-and-antiques",
+    "title": "Works of art, collectors' pieces and antiques"
+  },
+  "page": {
+    "slug": "exports/faq",
+    "path": "/industry-tariff-report/exports/chapters/97-works-of-art-and-antiques/faq",
+    "h1": "HTS Chapter 97: Works of art, collectors' pieces and antiques — U.S. Export FAQ",
+    "seo": {
+      "title": "U.S. Art Export FAQ: HS Codes for Paintings, Tariffs, Ivory Rules | KoalaGains",
+      "shortDescription": "Short answers to what people search about exporting U.S. art: HS codes for paintings, sculpture and antiques, tariffs in the UK, EU, Canada and China, licences.",
+      "keywords": [
+        "hs code for original painting",
+        "hs code for sculpture",
+        "hs code antiques",
+        "is there a tariff on art",
+        "art export license",
+        "ivory antiques rules"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "Questions people search about exporting U.S. art, collectors’ pieces and antiques, answered from the other export pages of this report.",
+  "keyTakeaways": [
+    "U.S. exports of works of art, collectors’ pieces and antiques were $10.21B in 2025; hand-made paintings and drawings (heading 9701) were 72.7%, and the UK and Switzerland bought 39%.",
+    "Eight of the ten largest markets charge 0% on U.S. art; China (counter-tariffs plus 10%) and the UAE (5%) are the exceptions, and Canada’s 25% counter-tariff on U.S. original paintings ended September 1, 2025.",
+    "Art is EAR99 and needs no U.S. export licence except to Russia, Belarus and embargoed countries; ivory and other wildlife, and Native American cultural items, have their own rules."
+  ],
+  "questionSource": "Google search suggestions (suggestqueries.google.com) for queries such as \"hts code for original painting\", \"hs code for oil painting\", \"hs code for sculpture\", \"hs code antiques\", \"hs code for coins collection\", \"is there a tariff on art\", \"tariffs on artwork\", \"are paintings subject to tariffs\", \"canada tariff on us art\", \"import duty on art in uk\", \"import tax on art switzerland\", \"eu cultural goods import regulation\", \"selling art to china\", \"art export license\", \"antique export\", \"ivory antique\" and \"art market by country\", collected on November 20, 2026.",
+  "faqs": [
+    {
+      "id": "hs-code-painting",
+      "question": "What is the HS code for an original painting?",
+      "searchedAs": [
+        "hts code for original painting",
+        "hs code for original painting",
+        "hs code for oil painting",
+        "oil on canvas painting hs code",
+        "hs code for original artwork",
+        "hs code for artwork"
+      ],
+      "answer": "Paintings, drawings and pastels made entirely by hand are HS heading 9701: 9701.91 for works up to 100 years old and 9701.21 for older ones, with mosaics and collages in the other 9701 lines. Original prints are 9702. The U.S. export code, the Schedule B number, starts with the same six digits.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-sculpture",
+      "question": "What is the HS code for a sculpture?",
+      "searchedAs": ["hs code for sculpture", "hs code for bronze sculpture", "hs code for original sculpture", "hs code for artwork sculpture"],
+      "answer": "Original sculpture and statuary in any material is HS 9703: 9703.10 if over 100 years old and 9703.90 otherwise. Mass-produced reproductions and commercial craft items are not Chapter 97 goods even if an artist designed them.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-antiques",
+      "question": "What is the HS code for antiques over 100 years old?",
+      "searchedAs": ["hs code antiques", "hts code antiques", "hs code antique over 100 years", "hs code antique painting"],
+      "answer": "Antiques over 100 years old are HS 9706: 9706.10 if over 250 years old and 9706.90 otherwise. An old painting, print or sculpture stays in its own heading (9701 to 9703, in the lines for works over 100 years).",
+      "link": "exports/rules"
+    },
+    {
+      "id": "hs-code-collections",
+      "question": "What is the HS code for a coin collection, stamps or fossils?",
+      "searchedAs": ["hs code for coin collection", "hs code for coins", "hs code for fossils", "hs code for stamp"],
+      "answer": "Collections and collectors’ pieces are HS 9705: 9705.31 and 9705.39 for numismatic pieces such as coin collections, 9705.21 to 9705.29 for zoological, botanical, mineralogical or paleontological pieces, and 9705.10 for archaeological, ethnographic or historical ones. Used stamps and stamps not of current issue are 9704.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "tariff-on-art",
+      "question": "Is there a tariff on art exported from the U.S.?",
+      "searchedAs": [
+        "is there a tariff on art",
+        "tariffs on artwork",
+        "are there tariffs on artwork",
+        "is fine art subject to tariffs",
+        "is original art subject to tariffs"
+      ],
+      "answer": "Usually not. Eight of the ten largest markets, the EU, the UK, Switzerland, Hong Kong, South Korea, Japan, Mexico and Canada, charge 0% on U.S. paintings, prints, sculpture and antiques. The UAE charges 5%, and China adds counter-tariffs and a 10% extra duty, so a U.S. original painting pays 31% there.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "canada-art",
+      "question": "Are there tariffs on art from the U.S. to Canada?",
+      "searchedAs": [
+        "are there tariffs on art from us to canada",
+        "canadian tariffs on us art",
+        "is there duty on art coming into canada",
+        "shipping art to canada"
+      ],
+      "answer": "Not now. Canada lets original paintings, prints, sculpture and antiques in free from any country, and other qualifying U.S. art free under CUSMA. Its 25% counter-tariff on U.S. original paintings, drawings and pastels by artists (tariff item 9701.91.10) applied from March 4 to September 1, 2025.",
+      "link": "exports/tariff-updates"
+    },
+    {
+      "id": "uk-art",
+      "question": "What is the UK import duty on art from the U.S.?",
+      "searchedAs": ["import duty on art into uk", "uk import duty on artwork", "customs duty on artwork uk", "importing art into uk from usa"],
+      "answer": "The UK Global Tariff is 0% on every Chapter 97 line, so U.S. art pays no UK customs duty. Pieces containing elephant or certain whale and hippo ivory need an Ivory Act exemption to be imported for sale. Import VAT is the buyer’s matter and is not covered here.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "switzerland-art",
+      "question": "Does Switzerland charge import duty on art?",
+      "searchedAs": ["import duty art switzerland", "import tax art switzerland", "shipping art to switzerland"],
+      "answer": "No: Switzerland’s tariff is 0% on works of art, and it abolished all industrial tariffs on January 1, 2024. Cultural property must still be declared as such at Swiss customs, including in a free port, and since January 1, 2026 the declaration gives each object’s type, dating and dimensions.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "eu-cultural-goods",
+      "question": "Does the EU need an import licence for art and antiques from the U.S.?",
+      "searchedAs": ["eu regulation import cultural goods", "shipping artwork internationally customs"],
+      "answer": "Only for older cultural goods. Since June 28, 2025, Regulation (EU) 2019/880 requires an import licence for archaeological objects and dismembered parts of monuments over 250 years old, and an importer statement for paintings, sculpture, prints, collections and antiques over 200 years old worth €18,000 or more. EU duty on art is 0%.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "china-art",
+      "question": "Does China tariff U.S. art?",
+      "searchedAs": ["selling art in china"],
+      "answer": "Yes. On top of its normal rate (1% on original paintings and sculpture, 0% on antiques), China charges 2019 counter-tariffs of 10–25% unless the buyer holds an exclusion and a 10% extra on all U.S. goods: 31% on an original painting and 30% on an antique. Imported artworks for sale also need approval from a provincial culture department.",
+      "link": "exports/markets"
+    },
+    {
+      "id": "export-licence-art",
+      "question": "Do I need an export license to ship art or antiques from the U.S.?",
+      "searchedAs": ["art export license", "antique export license", "export license usa cost"],
+      "answer": "Usually not: art, collectors’ pieces and antiques are EAR99. BIS requires a licence for Russia and Belarus for every Chapter 97 item worth $300 or more per unit, and art for North Korea faces a general policy of denial. File the export in AES when a Schedule B line is worth over $2,500.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "ivory-antiques",
+      "question": "Can antiques containing ivory be exported from the U.S.?",
+      "searchedAs": ["ivory antiques rules", "ivory antique exemption", "cites antiques"],
+      "answer": "Only if they meet the Endangered Species Act antique tests: at least 100 years old, not repaired or modified with listed species since December 28, 1973, and entered through a designated port. The exporter also files an FWS declaration and usually needs a CITES pre-Convention certificate, which the importing country must accept.",
+      "link": "exports/rules"
+    },
+    {
+      "id": "who-buys-us-art",
+      "question": "Which countries buy the most U.S. art?",
+      "searchedAs": ["art market share by country", "biggest art markets in the world", "international art trade"],
+      "answer": "In 2025 the UK bought 23.2% of U.S. Chapter 97 exports ($2.36B) and Switzerland 16.2% ($1.65B), followed by France (12.7%), Hong Kong (6.6%) and Germany (6.0%). EU countries together took 37.5%. Total exports were $10.21B.",
+      "link": "exports"
+    }
+  ]
+}

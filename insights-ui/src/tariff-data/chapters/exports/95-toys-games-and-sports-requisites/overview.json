@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 95,
+    "padded": "95",
+    "slug": "95-toys-games-and-sports-requisites",
+    "title": "Toys, Games and Sports Equipment; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports",
+    "path": "/industry-tariff-report/exports/chapters/95-toys-games-and-sports-requisites",
+    "h1": "HTS Chapter 95: Toys, Games and Sports Equipment; Parts and Accessories Thereof — U.S. Exports & Foreign Tariffs",
+    "seo": {
+      "title": "U.S. Toy, Video Game & Sports Equipment Exports: Buyers & Tariffs",
+      "shortDescription": "The U.S. exported $6.71B of video game consoles, toys, cards and sports gear in 2025; Canada (39%) and Mexico (14%) buy most. Who buys what, and the tariffs.",
+      "keywords": [
+        "us toy exports",
+        "toy exports by country",
+        "us video game console exports",
+        "us sporting goods exports",
+        "us exercise equipment exports",
+        "us golf equipment exports",
+        "us trading card exports"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "The U.S. exported **$6.71 billion** of video game consoles, toys, cards, sports and exercise equipment, fishing tackle and amusement rides (HTS Chapter 95) in 2025, down **3.5%** from 2024. Games are the largest group (heading 9504, **$2.99 billion**, 45%), led by **video game consoles** and their controllers and parts (9504.50, **$1.28 billion**, down 14.9%), coin-operated games (**$605 million**) and playing and trading cards (**$540 million**, up 46.8%). Sports equipment follows (9506, **$2.02 billion**), led by exercise machines (9506.91, **$710 million**) and golf clubs, balls and other golf gear (**$690 million**), then toys, dolls and puzzles (9503, **$1.17 billion**). **Canada** buys **38.7%** and **Mexico** **13.7%**; the UK, Australia and Japan take 3.7–4.5% each.\n\nMost buyers charge little or nothing: qualifying U.S. goods enter Canada, Mexico, Australia and South Korea free under their trade agreements, the EU has charged **0%** on every U.S. Chapter 95 line since **July 1, 2026**, and Japan and the UK charge 0–4%. The exception is **Canada**: since **September 8, 2026** it charges a **50%** surtax on U.S. video game consoles, exercise equipment, other sports and outdoor-game gear, golf equipment other than complete clubs and balls, and fishing rods, with no CUSMA exemption. **China** adds **10%** to every U.S. good, and Brazil's normal rates (20%, 35% on most toys) are the highest among the large buyers. For toys, what decides access is mostly product safety: toy-safety rules and marks such as the EU's CE marking, the UK's UKCA, Brazil's INMETRO certificate and China's CCC.",
+  "latestYear": 2025,
+  "priorYear": 2024,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "stats": [
+    {
+      "label": "2025 U.S. exports",
+      "value": "$6.71B"
+    },
+    {
+      "label": "Change vs 2024",
+      "value": "-3.5%"
+    },
+    {
+      "label": "Largest product group (9504)",
+      "value": "45%",
+      "note": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment"
+    },
+    {
+      "label": "Two largest buyers",
+      "value": "52%",
+      "note": "Canada, Mexico"
+    },
+    {
+      "label": "Top 12 buyers with an extra duty on U.S. Chapter 95 goods",
+      "value": "2 of 12",
+      "note": "Canada (50% surtax on listed consoles, sports gear and fishing rods) and China (all goods)"
+    }
+  ],
+  "keyTakeaways": [
+    "Canada, which buys 38.7% of U.S. Chapter 95 exports, charges 50% on U.S. video game consoles, exercise machines, other sports gear, golf parts and fishing rods since September 8, 2026. Toys, playing and trading cards, complete golf clubs, golf balls and Christmas articles are not on its list and still enter free under CUSMA.",
+    "U.S. sales to Mexico, the second buyer, fell 23.9% in 2025 to $922 million and another 25.9% in January–August 2026, while Canada held roughly flat (+1.0% in 2025, −4.4% so far in 2026) and Australia grew 26.6%.",
+    "Playing and trading cards (9504.40) were the fastest-growing large line in 2025, up 46.8% to $540 million; the EU, the third-largest market after Canada and Mexico, has let them and every other U.S. Chapter 95 good in at 0% since July 1, 2026.",
+    "China adds 10% to U.S. toys and consoles on top of a 0% normal rate (6% on most sports gear), and two dates could raise that: December 31, 2026 (tariff exclusions end) and January 10, 2027 (24-point suspension ends)."
+  ],
+  "byYear": [
+    {
+      "year": 2020,
+      "totalUsd": 5344556813,
+      "partnerAUsd": 2169294613,
+      "partnerBUsd": 702323497,
+      "restUsd": 2472938703
+    },
+    {
+      "year": 2021,
+      "totalUsd": 6770932264,
+      "partnerAUsd": 2717873360,
+      "partnerBUsd": 946958532,
+      "restUsd": 3106100372
+    },
+    {
+      "year": 2022,
+      "totalUsd": 7386132502,
+      "partnerAUsd": 2788470242,
+      "partnerBUsd": 1104229377,
+      "restUsd": 3493432883
+    },
+    {
+      "year": 2023,
+      "totalUsd": 7603163565,
+      "partnerAUsd": 2760344555,
+      "partnerBUsd": 1281025443,
+      "restUsd": 3561793567
+    },
+    {
+      "year": 2024,
+      "totalUsd": 6955995626,
+      "partnerAUsd": 2567325020,
+      "partnerBUsd": 1211018366,
+      "restUsd": 3177652240
+    },
+    {
+      "year": 2025,
+      "totalUsd": 6710116321,
+      "partnerAUsd": 2593743847,
+      "partnerBUsd": 921596839,
+      "restUsd": 3194775635
+    }
+  ],
+  "byYearPartners": ["Canada", "Mexico"],
+  "byYearCaption": "U.S. exports of Chapter 95 goods each year, split into the two largest 2025 buyers (Canada and Mexico) and everyone else.",
+  "yearToDate": {
+    "year": 2026,
+    "throughMonth": 8,
+    "exportsUsd": 4204048429,
+    "priorExportsUsd": 4415619645,
+    "changePct": -4.8,
+    "topBuyers": [
+      {
+        "countryCode": 124,
+        "country": "Canada",
+        "exportsUsd": 1576421542,
+        "priorExportsUsd": 1648423241,
+        "changePct": -4.4
+      },
+      {
+        "countryCode": 484,
+        "country": "Mexico",
+        "exportsUsd": 473819470,
+        "priorExportsUsd": 639670096,
+        "changePct": -25.9
+      },
+      {
+        "countryCode": 36,
+        "country": "Australia",
+        "exportsUsd": 216960009,
+        "priorExportsUsd": 194100348,
+        "changePct": 11.8
+      },
+      {
+        "countryCode": 826,
+        "country": "United Kingdom",
+        "exportsUsd": 195132421,
+        "priorExportsUsd": 203378458,
+        "changePct": -4.1
+      },
+      {
+        "countryCode": 392,
+        "country": "Japan",
+        "exportsUsd": 148039824,
+        "priorExportsUsd": 156897168,
+        "changePct": -5.6
+      },
+      {
+        "countryCode": 76,
+        "country": "Brazil",
+        "exportsUsd": 122923756,
+        "priorExportsUsd": 83077713,
+        "changePct": 48
+      },
+      {
+        "countryCode": 156,
+        "country": "China",
+        "exportsUsd": 118376266,
+        "priorExportsUsd": 70839492,
+        "changePct": 67.1
+      },
+      {
+        "countryCode": 528,
+        "country": "Netherlands",
+        "exportsUsd": 93337368,
+        "priorExportsUsd": 109760375,
+        "changePct": -15
+      }
+    ],
+    "note": "Monthly figures as reported by the United States to UN Comtrade; the latest months can still be revised."
+  },
+  "topMarkets": [
+    {
+      "countryCode": 124,
+      "country": "Canada",
+      "exportsUsd": 2593743847,
+      "priorExportsUsd": 2567325020,
+      "sharePct": 38.7,
+      "changePct": 1,
+      "tariffNow": "Free (CUSMA), but 50% surtax on consoles, most sports and exercise gear and fishing rods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 484,
+      "country": "Mexico",
+      "exportsUsd": 921596839,
+      "priorExportsUsd": 1211018366,
+      "sharePct": 13.7,
+      "changePct": -23.9,
+      "tariffNow": "Free (USMCA); 30% normal rate on most toys since 2026",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 826,
+      "country": "United Kingdom",
+      "exportsUsd": 301585448,
+      "priorExportsUsd": 273099518,
+      "sharePct": 4.5,
+      "changePct": 10.4,
+      "tariffNow": "0–4% (UK Global Tariff); consoles free",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 36,
+      "country": "Australia",
+      "exportsUsd": 287884342,
+      "priorExportsUsd": 227409127,
+      "sharePct": 4.3,
+      "changePct": 26.6,
+      "tariffNow": "Free (AUSFTA)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 392,
+      "country": "Japan",
+      "exportsUsd": 247357402,
+      "priorExportsUsd": 207970457,
+      "sharePct": 3.7,
+      "changePct": 18.9,
+      "tariffNow": "Free on toys, consoles and most sports gear; 3.2% on cards, balls, festive goods and tackle",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 528,
+      "country": "Netherlands",
+      "exportsUsd": 148243374,
+      "priorExportsUsd": 195228916,
+      "sharePct": 2.2,
+      "changePct": -24.1,
+      "tariffNow": "Free on all U.S. Chapter 95 goods since July 1, 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 276,
+      "country": "Germany",
+      "exportsUsd": 147612978,
+      "priorExportsUsd": 142950078,
+      "sharePct": 2.2,
+      "changePct": 3.3,
+      "tariffNow": "Free on all U.S. Chapter 95 goods since July 1, 2026",
+      "status": "lowered"
+    },
+    {
+      "countryCode": 410,
+      "country": "Rep. of Korea",
+      "exportsUsd": 136622796,
+      "priorExportsUsd": 165372638,
+      "sharePct": 2,
+      "changePct": -17.4,
+      "tariffNow": "Free (KORUS)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 76,
+      "country": "Brazil",
+      "exportsUsd": 129915225,
+      "priorExportsUsd": 105012508,
+      "sharePct": 1.9,
+      "changePct": 23.7,
+      "tariffNow": "20% on most goods, 35% on most toys (normal rate)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 156,
+      "country": "China",
+      "exportsUsd": 108108056,
+      "priorExportsUsd": 114995662,
+      "sharePct": 1.6,
+      "changePct": -6,
+      "tariffNow": "Normal rate (0% toys and consoles, 6% sports gear) + 10% on all U.S. goods",
+      "status": "raised"
+    },
+    {
+      "countryCode": 344,
+      "country": "China, Hong Kong SAR",
+      "exportsUsd": 100978364,
+      "priorExportsUsd": 94009667,
+      "sharePct": 1.5,
+      "changePct": 7.4,
+      "tariffNow": "Free (Hong Kong charges no import tariffs)",
+      "status": "unchanged"
+    },
+    {
+      "countryCode": 251,
+      "country": "France",
+      "exportsUsd": 93698534,
+      "priorExportsUsd": 90068329,
+      "sharePct": 1.4,
+      "changePct": 4,
+      "tariffNow": "Free on all U.S. Chapter 95 goods since July 1, 2026",
+      "status": "lowered"
+    }
+  ],
+  "othersExportsUsd": 1492769116,
+  "othersPriorExportsUsd": 1561535340,
+  "byHeading": [
+    {
+      "heading": "9503",
+      "label": "Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters",
+      "exportsUsd": 1169547014,
+      "priorExportsUsd": 1231456266,
+      "changePct": -5,
+      "sharePct": 17.4
+    },
+    {
+      "heading": "9504",
+      "label": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment",
+      "exportsUsd": 2990385233,
+      "priorExportsUsd": 3068308236,
+      "changePct": -2.5,
+      "sharePct": 44.6
+    },
+    {
+      "heading": "9505",
+      "label": "Christmas ornaments, artificial Christmas trees, Halloween and party articles, magic tricks",
+      "exportsUsd": 145327859,
+      "priorExportsUsd": 160514634,
+      "changePct": -9.5,
+      "sharePct": 2.2
+    },
+    {
+      "heading": "9506",
+      "label": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey",
+      "exportsUsd": 2021438837,
+      "priorExportsUsd": 2078451510,
+      "changePct": -2.7,
+      "sharePct": 30.1
+    },
+    {
+      "heading": "9507",
+      "label": "Fishing rods, reels, hooks, line, lures and other fishing tackle; landing nets",
+      "exportsUsd": 143821124,
+      "priorExportsUsd": 139285875,
+      "changePct": 3.3,
+      "sharePct": 2.1
+    },
+    {
+      "heading": "9508",
+      "label": "Amusement park rides, carousels, water park and fairground amusements, traveling circuses and theaters",
+      "exportsUsd": 239596254,
+      "priorExportsUsd": 277979105,
+      "changePct": -13.8,
+      "sharePct": 3.6
+    }
+  ],
+  "byLine": [
+    {
+      "hs6": "9504.50",
+      "heading": "9504",
+      "description": "Games; video game consoles and machines, other than those of subheading 9504.30",
+      "exportsUsd": 1275852736,
+      "priorExportsUsd": 1498359194,
+      "changePct": -14.9,
+      "sharePct": 19
+    },
+    {
+      "hs6": "9503.00",
+      "heading": "9503",
+      "description": "Tricycles, scooters, pedal cars and similar wheeled toys; dolls' carriages; dolls; other toys; reduced-size (scale) models and similar recreational models, working or not; puzzles of all kinds",
+      "exportsUsd": 1169547014,
+      "priorExportsUsd": 1231456266,
+      "changePct": -5,
+      "sharePct": 17.4
+    },
+    {
+      "hs6": "9506.91",
+      "heading": "9506",
+      "description": "Athletics and gymnastics equipment",
+      "exportsUsd": 709798813,
+      "priorExportsUsd": 695068737,
+      "changePct": 2.1,
+      "sharePct": 10.6
+    },
+    {
+      "hs6": "9504.30",
+      "heading": "9504",
+      "description": "Games; operated by coins, banknotes, bank cards, tokens or by other means of payment, other than billiard articles and accesssories, and automatic bowling alley equipment",
+      "exportsUsd": 605287153,
+      "priorExportsUsd": 655566629,
+      "changePct": -7.7,
+      "sharePct": 9
+    },
+    {
+      "hs6": "9504.40",
+      "heading": "9504",
+      "description": "Games; playing cards",
+      "exportsUsd": 540309073,
+      "priorExportsUsd": 368079644,
+      "changePct": 46.8,
+      "sharePct": 8.1
+    },
+    {
+      "hs6": "9504.90",
+      "heading": "9504",
+      "description": "Games; articles for funfair, table or parlour games, including pintables, special tables for casino games, automatic bowling alley equipment, n.e.c. in heading 9504",
+      "exportsUsd": 532977004,
+      "priorExportsUsd": 516837720,
+      "changePct": 3.1,
+      "sharePct": 7.9
+    },
+    {
+      "hs6": "9506.99",
+      "heading": "9506",
+      "description": "Equipment for outdoor games and recreation n.e.c. in heading no. 9506",
+      "exportsUsd": 450107808,
+      "priorExportsUsd": 479976752,
+      "changePct": -6.2,
+      "sharePct": 6.7
+    },
+    {
+      "hs6": "9506.39",
+      "heading": "9506",
+      "description": "Golf equipment; other than clubs and balls",
+      "exportsUsd": 278352422,
+      "priorExportsUsd": 281807233,
+      "changePct": -1.2,
+      "sharePct": 4.1
+    },
+    {
+      "hs6": "9506.31",
+      "heading": "9506",
+      "description": "Golf clubs; complete",
+      "exportsUsd": 245333745,
+      "priorExportsUsd": 220090483,
+      "changePct": 11.5,
+      "sharePct": 3.7
+    },
+    {
+      "hs6": "9506.32",
+      "heading": "9506",
+      "description": "Golf balls",
+      "exportsUsd": 166808435,
+      "priorExportsUsd": 203314485,
+      "changePct": -18,
+      "sharePct": 2.5
+    }
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 95, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    }
+  ],
+  "coverageNote": "The 12 buyers listed take 78% of 2025 U.S. Chapter 95 exports. FOB value of U.S. exports, as reported by the United States to UN Comtrade. They can differ from what the destination country reports as imports."
+}

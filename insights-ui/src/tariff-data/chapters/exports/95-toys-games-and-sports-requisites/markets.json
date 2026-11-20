@@ -1,0 +1,843 @@
+{
+  "schemaVersion": 1,
+  "direction": "export",
+  "chapter": {
+    "number": 95,
+    "padded": "95",
+    "slug": "95-toys-games-and-sports-requisites",
+    "title": "Toys, Games and Sports Equipment; Parts and Accessories Thereof"
+  },
+  "page": {
+    "slug": "exports/markets",
+    "path": "/industry-tariff-report/exports/chapters/95-toys-games-and-sports-requisites/markets",
+    "h1": "HTS Chapter 95: Toys, Games and Sports Equipment; Parts and Accessories Thereof — Export Markets & Foreign Tariffs on U.S. Goods",
+    "seo": {
+      "title": "Toy & Sports Equipment Tariffs by Country: Canada, Mexico, EU, China",
+      "shortDescription": "What 9 markets charge on U.S. toys, consoles, cards, golf and gym gear: Canada 50% on listed lines, Mexico free under USMCA, EU 0%, Brazil 20–35%, China +10%.",
+      "keywords": [
+        "canadian duty on sports equipment",
+        "is there duty on golf clubs from usa to canada",
+        "arancel juguetes mexico",
+        "does mexico have tariffs on us goods",
+        "eu tariffs on us goods list",
+        "japan tariffs on us goods",
+        "does australia have tariffs on us goods"
+      ]
+    },
+    "lastCheckedAt": "2026-11-20"
+  },
+  "intro": "For most buyers of U.S. toys, games and sports equipment the tariff is low or zero: Canada, Mexico, Australia and South Korea take qualifying goods free under their trade agreements, the EU charges 0% on all U.S. Chapter 95 goods from July 1, 2026, and Japan and the UK charge 0–4%. **Canada** is the exception that costs money: a **50%** surtax on U.S. video game consoles, exercise machines, other sports gear, golf parts and fishing rods, on top of CUSMA's 0%. **China** adds 10% to every U.S. good, and **Brazil** charges its normal 20% (35% on most toys). Beyond the tariff, what decides access for toys is safety certification: CE marking in the EU, UKCA or CE in Great Britain, INMETRO in Brazil, CCC in China, KC in Korea, and labelling and testing rules in Canada, Mexico, Japan and Australia; consoles and electronic games also need the usual radio and electrical approvals.",
+  "tradeYear": 2025,
+  "tariffYear": 2026,
+  "valueBasis": "FOB value of U.S. exports, as reported by the United States to UN Comtrade.",
+  "groups": [
+    {
+      "heading": "9503",
+      "label": "Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters",
+      "shortLabel": "Toys & dolls"
+    },
+    {
+      "heading": "9504",
+      "label": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment",
+      "shortLabel": "Video & board games"
+    },
+    {
+      "heading": "9505",
+      "label": "Christmas ornaments, artificial Christmas trees, Halloween and party articles, magic tricks",
+      "shortLabel": "Christmas & festive"
+    },
+    {
+      "heading": "9506",
+      "label": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey",
+      "shortLabel": "Sports & fitness"
+    },
+    {
+      "heading": "9507",
+      "label": "Fishing rods, reels, hooks, line, lures and other fishing tackle; landing nets",
+      "shortLabel": "Fishing tackle"
+    },
+    {
+      "heading": "9508",
+      "label": "Amusement park rides, carousels, water park and fairground amusements, traveling circuses and theaters",
+      "shortLabel": "Amusement rides"
+    }
+  ],
+  "markets": [
+    {
+      "countryCode": 124,
+      "name": "Canada",
+      "rule": "CUSMA preferential tariff (duty free), plus a 50% surtax on listed U.S.-origin consoles, sports and exercise equipment and fishing rods under the United States Surtax Order (2026), with no CUSMA exemption",
+      "usTradeAgreement": "USMCA (CUSMA in Canada)",
+      "exportsUsd": 2593743847,
+      "priorExportsUsd": 2567325020,
+      "sharePct": 38.7,
+      "changePct": 1,
+      "status": "raised",
+      "cells": {
+        "9503": {
+          "exportsUsd": 741397004,
+          "rate": "Free (CUSMA)",
+          "normalRate": "0–8% MFN",
+          "basis": "9503.00: free under the CBSA Customs Tariff 2026 MFN rate except wheeled ride-on toys (9503.00.10, 8%); free under CUSMA. Not on the 2026 surtax list; toys paid 25% from March 13 to August 31, 2025 under SOR/2025-95"
+        },
+        "9504": {
+          "exportsUsd": 1048125987,
+          "rate": "Free (CUSMA) + 50% on consoles",
+          "normalRate": null,
+          "basis": "9504.50 (video game consoles, controllers and parts): free under the CBSA Customs Tariff 2026 MFN rate and CUSMA, plus 50% under the United States Surtax Order (2026), SOR/2026-186, since September 8, 2026, on goods of U.S. origin with no CUSMA exemption. Coin-operated games (9504.30), playing and trading cards (9504.40), billiards and other games (9504.20, 9504.90) are not listed"
+        },
+        "9505": {
+          "exportsUsd": 77318748,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "9505.90: free under the CBSA Customs Tariff 2026 MFN rate; Christmas and other festive articles are not on the 2026 list (25% from March 13 to August 31, 2025 under SOR/2025-95)"
+        },
+        "9506": {
+          "exportsUsd": 626752406,
+          "rate": "Free (CUSMA) + 50% on most gear",
+          "normalRate": "0–7% MFN",
+          "basis": "9506.91 (exercise equipment): free under the CBSA Customs Tariff 2026 MFN rate and CUSMA, plus 50% under SOR/2026-186 on 9506.39 (golf equipment other than complete clubs and balls), 9506.91 and 9506.99 (other sports and outdoor-game equipment, including hockey gear and swimming pools). Golf clubs (9506.31), golf balls (9506.32), skis, rackets, balls, skates and table-tennis gear are not listed; MFN rates in 9506 run 0–7%"
+        },
+        "9507": {
+          "exportsUsd": 78592835,
+          "rate": "Free (CUSMA) + 50% on rods",
+          "normalRate": "0–7% MFN",
+          "basis": "9507.10.90 (fishing rods): free under the CBSA Customs Tariff 2026 MFN rate, plus 50% under SOR/2026-186. Hooks, reels and other tackle (0–7% MFN, free under CUSMA) are not listed"
+        },
+        "9508": {
+          "exportsUsd": 21556867,
+          "rate": "Free (CUSMA)",
+          "normalRate": null,
+          "basis": "9508: free under the CBSA Customs Tariff 2026 MFN rate; amusement rides are not on the 2026 list (25% from March 13 to August 31, 2025 under SOR/2025-95)"
+        }
+      },
+      "profile": {
+        "headline": "The largest buyer by far ($2.59 billion, 38.7%), led by consoles and other games ($1.05 billion) and toys ($741 million), and the only one that targets U.S. Chapter 95 goods: consoles, exercise machines, other sports gear, golf parts and fishing rods pay 50% since September 8, 2026. Toys, cards, golf clubs and balls still enter free.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters (9503)",
+        "tariffNow": "Free (CUSMA), but 50% surtax on consoles, most sports and exercise gear and fishing rods",
+        "regulator": {
+          "name": "Health Canada (Toys Regulations under the Canada Consumer Product Safety Act)",
+          "url": "https://laws-lois.justice.gc.ca/eng/regulations/SOR-2011-17/",
+          "requirement": "No approval before sale, but toys must meet the Toys Regulations (SOR/2011-17), which set requirements such as small-part, sharp-edge, toxicity, flammability and bilingual warning-label rules; electronic games with radios need Innovation, Science and Economic Development Canada certification."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Canada import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/canada-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 484,
+      "name": "Mexico",
+      "rule": "USMCA (T-MEC) preferential rate: duty free for qualifying U.S. goods; Mexico's general tariff (raised to 30% on most toys from January 1, 2026) for goods that do not qualify",
+      "usTradeAgreement": "USMCA (T-MEC in Mexico)",
+      "exportsUsd": 921596839,
+      "priorExportsUsd": 1211018366,
+      "sharePct": 13.7,
+      "changePct": -23.9,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 154662049,
+          "rate": "Free (USMCA)",
+          "normalRate": "30% MFN",
+          "basis": "9503.00 (toys, dolls, puzzles, models): Mexico's general rate on almost every toy line rose to 30% under the decree of December 29, 2025 (in force January 1, 2026), from 15% or free in the 2022 LIGIE Tariff. USMCA-qualifying U.S. toys enter free"
+        },
+        "9504": {
+          "exportsUsd": 493275857,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–30% MFN",
+          "basis": "9504.50.04 (video game consoles) and 9504.50.03 (parts): free general rate (LIGIE Tariff, 2022). Playing cards (9504.40.01) rose from 15% to 30% under the December 29, 2025 decree. Free under USMCA"
+        },
+        "9505": {
+          "exportsUsd": 4189345,
+          "rate": "Free (USMCA)",
+          "normalRate": "10–30% MFN",
+          "basis": "9505.90.99 (other festive and party articles): general rate raised from 15% to 30% by the December 29, 2025 decree; artificial Christmas trees 15% and other Christmas articles 10% (LIGIE Tariff, 2022). Free under USMCA"
+        },
+        "9506": {
+          "exportsUsd": 229993296,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–15% MFN",
+          "basis": "9506.91.03 (exercise equipment): free general rate (LIGIE Tariff, 2022); balls and some other sports goods pay up to 15%. Not changed by the 2025 decree; free under USMCA"
+        },
+        "9507": {
+          "exportsUsd": 5883328,
+          "rate": "Free (USMCA)",
+          "normalRate": "10% MFN",
+          "basis": "9507.10.01 (fishing rods): 10% general rate, the same as hooks (LIGIE Tariff, 2022); free under USMCA"
+        },
+        "9508": {
+          "exportsUsd": 33592964,
+          "rate": "Free (USMCA)",
+          "normalRate": "0–10% MFN",
+          "basis": "9508.21.01 (roller coasters): free general rate; other rides 0–10% (LIGIE Tariff, 2022); free under USMCA"
+        }
+      },
+      "profile": {
+        "headline": "Second buyer ($922 million) but falling fast (−23.9% in 2025, −25.9% in January–August 2026). Qualifying U.S. goods enter free under USMCA; since January 2026 toys that fail the origin rules face a 30% general rate.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506)",
+        "tariffNow": "Free (USMCA); 30% normal rate on most toys since 2026",
+        "regulator": {
+          "name": "Secretaría de Economía (NOM-015-SCFI-2007)",
+          "url": "https://platiica.economia.gob.mx/normalizacion/nom-015-scfi-2007/",
+          "requirement": "Toys must carry Spanish-language commercial information and warnings under NOM-015-SCFI-2007 (toy labelling), checked at import; electronic games and consoles also need the applicable NOM electrical-safety certification."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Mexico import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/mexico-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 97,
+      "name": "European Union",
+      "rule": "EU common external tariff, with 0% on all U.S.-origin Chapter 95 goods under Regulation (EU) 2026/1455 (July 1, 2026 to December 31, 2029)",
+      "usTradeAgreement": null,
+      "exportsUsd": 742985601,
+      "priorExportsUsd": 759138191,
+      "sharePct": 11.1,
+      "changePct": -2.1,
+      "status": "lowered",
+      "members": [
+        {
+          "countryCode": 528,
+          "country": "Netherlands",
+          "exportsUsd": 148243374,
+          "priorExportsUsd": 195228916,
+          "changePct": -24.1
+        },
+        {
+          "countryCode": 276,
+          "country": "Germany",
+          "exportsUsd": 147612978,
+          "priorExportsUsd": 142950078,
+          "changePct": 3.3
+        },
+        {
+          "countryCode": 251,
+          "country": "France",
+          "exportsUsd": 93698534,
+          "priorExportsUsd": 90068329,
+          "changePct": 4
+        },
+        {
+          "countryCode": 724,
+          "country": "Spain",
+          "exportsUsd": 74126390,
+          "priorExportsUsd": 63306503,
+          "changePct": 17.1
+        },
+        {
+          "countryCode": 380,
+          "country": "Italy",
+          "exportsUsd": 58057127,
+          "priorExportsUsd": 37118199,
+          "changePct": 56.4
+        }
+      ],
+      "cells": {
+        "9503": {
+          "exportsUsd": 39704608,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "0–4.7% MFN",
+          "basis": "CN 9503 00: EU MFN 0–4.7% by CN line (WITS/TRAINS 2023); 0% for U.S.-origin goods from July 1, 2026 to December 31, 2029 under Regulation (EU) 2026/1455, whose Annex I covers all of Chapter 95"
+        },
+        "9504": {
+          "exportsUsd": 323801490,
+          "rate": "Free",
+          "normalRate": "0–2.7% MFN",
+          "basis": "CN 9504 50 (video game consoles): EU MFN 0% (WITS/TRAINS 2023); playing cards (9504 40) 2.7% before, 0% for U.S. goods under Regulation (EU) 2026/1455"
+        },
+        "9505": {
+          "exportsUsd": 18754609,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "0–2.7% MFN",
+          "basis": "CN 9505 90: EU MFN 2.7% (WITS/TRAINS 2023); 0% for U.S. goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "9506": {
+          "exportsUsd": 308413554,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "0–4.7% MFN",
+          "basis": "CN 9506 91 (exercise equipment): EU MFN 2.7% (WITS/TRAINS 2023); skis 3.7% and rackets 4.7%. All 0% for U.S. goods under Regulation (EU) 2026/1455 from July 1, 2026"
+        },
+        "9507": {
+          "exportsUsd": 17380803,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "1.7–3.7% MFN",
+          "basis": "CN 9507 10 (fishing rods): EU MFN 3.7% (WITS/TRAINS 2023); hooks 1.7–3.7%. 0% for U.S. goods under Regulation (EU) 2026/1455"
+        },
+        "9508": {
+          "exportsUsd": 34930537,
+          "rate": "Free (U.S. goods)",
+          "normalRate": "1.7% MFN",
+          "basis": "CN 9508: EU MFN 1.7% (WITS/TRAINS 2023); 0% for U.S. goods under Regulation (EU) 2026/1455"
+        }
+      },
+      "profile": {
+        "headline": "The Netherlands, Germany and France lead $743 million of EU purchases, mostly games and sports gear. Since July 1, 2026 every U.S. Chapter 95 line enters the EU at 0%; toys must carry CE marking under the EU's toy-safety rules.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506)",
+        "tariffNow": "Free on all U.S. Chapter 95 goods since July 1, 2026",
+        "regulator": {
+          "name": "Toy Safety Directive 2009/48/EC (CE marking); Toy Safety Regulation (EU) 2025/2509 from August 1, 2030",
+          "url": "https://eur-lex.europa.eu/eli/reg/2025/2509/oj",
+          "requirement": "Toys must meet the EU toy-safety requirements and carry CE marking, with an EU importer named on the toy or packaging. Regulation (EU) 2025/2509, adopted November 26, 2025, replaces the Directive from August 1, 2030 and adds a digital product passport for each toy."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: EU import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/eu-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 826,
+      "name": "United Kingdom",
+      "rule": "UK Global Tariff (MFN); the U.S.–UK Economic Prosperity Deal gives no Chapter 95 preference",
+      "usTradeAgreement": null,
+      "exportsUsd": 301585448,
+      "priorExportsUsd": 273099518,
+      "sharePct": 4.5,
+      "changePct": 10.4,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 35712984,
+          "rate": "0–4%",
+          "normalRate": null,
+          "basis": "9503.00: UK Global Tariff 0–4% by commodity code (WITS/TRAINS 2023)"
+        },
+        "9504": {
+          "exportsUsd": 125473025,
+          "rate": "Free (cards 2%)",
+          "normalRate": null,
+          "basis": "9504.50 (video game consoles): UK Global Tariff 0% (WITS/TRAINS 2023); playing cards 2%"
+        },
+        "9505": {
+          "exportsUsd": 8187540,
+          "rate": "0–2%",
+          "normalRate": null,
+          "basis": "9505.90: UK Global Tariff 2% (WITS/TRAINS 2023); Christmas articles 0–2%"
+        },
+        "9506": {
+          "exportsUsd": 121666587,
+          "rate": "0–4%",
+          "normalRate": null,
+          "basis": "9506.91 (exercise equipment): UK Global Tariff 2% (WITS/TRAINS 2023); lawn-tennis rackets 4%, other lines 0–2%"
+        },
+        "9507": {
+          "exportsUsd": 1876427,
+          "rate": "2%",
+          "normalRate": null,
+          "basis": "9507.10: UK Global Tariff 2% (WITS/TRAINS 2023)"
+        },
+        "9508": {
+          "exportsUsd": 8668885,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9508: UK Global Tariff 0% (WITS/TRAINS 2023)"
+        }
+      },
+      "profile": {
+        "headline": "The third buyer ($302 million, up 10.4%), split between games and sports gear. Consoles enter free and other goods pay 0–4%; toys must meet the UK's own toy-safety regulations.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506)",
+        "tariffNow": "0–4% (UK Global Tariff); consoles free",
+        "regulator": {
+          "name": "Toys (Safety) Regulations 2011",
+          "url": "https://www.legislation.gov.uk/uksi/2011/1881/contents",
+          "requirement": "Toys sold in Great Britain must meet the Toys (Safety) Regulations 2011 and carry UKCA or CE marking, with the UK importer's name and address."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: UK import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/united-kingdom-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 36,
+      "name": "Australia",
+      "rule": "AUSFTA: duty free for qualifying U.S. goods; MFN (0–5%) otherwise",
+      "usTradeAgreement": "U.S.–Australia FTA",
+      "exportsUsd": 287884342,
+      "priorExportsUsd": 227409127,
+      "sharePct": 4.3,
+      "changePct": 26.6,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 19087113,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% MFN",
+          "basis": "9503.00: Australia MFN 0–5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9504": {
+          "exportsUsd": 162756905,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% MFN",
+          "basis": "9504.50: Australia MFN 0% (WITS/TRAINS 2023); billiards and playing cards 5%; duty free under AUSFTA"
+        },
+        "9505": {
+          "exportsUsd": 2996393,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9505.90: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        },
+        "9506": {
+          "exportsUsd": 85315211,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% MFN",
+          "basis": "9506.91: Australia MFN 5% (WITS/TRAINS 2023); skis and rackets 0%; duty free under AUSFTA"
+        },
+        "9507": {
+          "exportsUsd": 4017090,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "0–5% MFN",
+          "basis": "9507.10: Australia MFN 5% (WITS/TRAINS 2023); hooks 0%; duty free under AUSFTA"
+        },
+        "9508": {
+          "exportsUsd": 13711630,
+          "rate": "Free (AUSFTA)",
+          "normalRate": "5% MFN",
+          "basis": "9508: Australia MFN 5% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under AUSFTA"
+        }
+      },
+      "profile": {
+        "headline": "U.S. sales rose 26.6% to $288 million in 2025, more than half of it games ($163 million). All qualifying U.S. goods enter free under AUSFTA; toys for young children must meet mandatory ACCC safety standards.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506)",
+        "tariffNow": "Free (AUSFTA)",
+        "regulator": {
+          "name": "Australian Competition and Consumer Commission (mandatory safety standards)",
+          "url": "https://www.productsafety.gov.au/product-safety-laws/safety-standards-bans/mandatory-standards/toys-for-children-up-to-and-including-36-months-of-age",
+          "requirement": "No approval before sale, but toys for children up to and including 36 months must meet the mandatory safety standard (small parts), and other mandatory standards cover products such as aquatic toys, projectile toys and button batteries."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Australia import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/australia-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 392,
+      "name": "Japan",
+      "rule": "Japan's WTO (MFN) rates; the 2025 U.S.–Japan agreement did not change them",
+      "usTradeAgreement": null,
+      "exportsUsd": 247357402,
+      "priorExportsUsd": 207970457,
+      "sharePct": 3.7,
+      "changePct": 18.9,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 8425514,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9503.00: Japan WTO rate free (Japan's Tariff Schedule, October 31, 2026)"
+        },
+        "9504": {
+          "exportsUsd": 44138475,
+          "rate": "Free (cards 3.2%)",
+          "normalRate": null,
+          "basis": "9504.50: Japan WTO rate free; playing cards (9504.40) 3.2% (Japan's Tariff Schedule, October 31, 2026)"
+        },
+        "9505": {
+          "exportsUsd": 1578726,
+          "rate": "3.2%",
+          "normalRate": null,
+          "basis": "9505.90: Japan WTO rate 3.2% (general 3.8%), the same as Christmas articles (Japan's Tariff Schedule, October 31, 2026)"
+        },
+        "9506": {
+          "exportsUsd": 131481119,
+          "rate": "Free (balls 3.2%)",
+          "normalRate": null,
+          "basis": "9506.91: Japan WTO rate free; golf, ski and exercise equipment, rackets and skates are free, while tennis and other balls (9506.61–9506.69) pay 3.2% (Japan's Tariff Schedule, October 31, 2026)"
+        },
+        "9507": {
+          "exportsUsd": 4817126,
+          "rate": "3.2%",
+          "normalRate": null,
+          "basis": "9507.10: Japan WTO rate 3.2% (general 3.8%) on rods, hooks, reels and other tackle (Japan's Tariff Schedule, October 31, 2026)"
+        },
+        "9508": {
+          "exportsUsd": 56916442,
+          "rate": "Free",
+          "normalRate": null,
+          "basis": "9508: Japan WTO rate free (Japan's Tariff Schedule, October 31, 2026)"
+        }
+      },
+      "profile": {
+        "headline": "Japan buys mostly sports equipment ($131 million) and amusement rides ($57 million). Toys, consoles and most sports gear are free; cards, balls, festive goods and tackle pay 3.2%.",
+        "mainProducts": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506) · Amusement park rides, carousels, water park and fairground amusements, traveling circuses and theaters (9508)",
+        "tariffNow": "Free on toys, consoles and most sports gear; 3.2% on cards, balls, festive goods and tackle",
+        "regulator": {
+          "name": "Food Sanitation Act toy standards (Ministry of Health, Labour and Welfare / Consumer Affairs Agency)",
+          "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/shokuhin/kigu/index.html",
+          "requirement": "Toys designated under the Food Sanitation Act (toys for infants that may touch the mouth) must meet its specifications, for example on phthalates and heavy metals, and the importer files an import notification; the toy-industry ST mark is voluntary."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Japan import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/japan-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 410,
+      "name": "South Korea",
+      "rule": "KORUS: duty free for qualifying U.S. goods; Korea's MFN (mostly 8%) otherwise",
+      "usTradeAgreement": "U.S.–Korea FTA (KORUS)",
+      "exportsUsd": 136622796,
+      "priorExportsUsd": 165372638,
+      "sharePct": 2,
+      "changePct": -17.4,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 10430676,
+          "rate": "Free (KORUS)",
+          "normalRate": "0–8% MFN",
+          "basis": "9503.00: Korea MFN 0–8% (WITS/TRAINS 2023); duty free for qualifying U.S. goods under KORUS"
+        },
+        "9504": {
+          "exportsUsd": 30560125,
+          "rate": "Free (KORUS)",
+          "normalRate": null,
+          "basis": "9504.50: Korea MFN 0% (WITS/TRAINS 2023); the other 9504 lines are also 0%"
+        },
+        "9505": {
+          "exportsUsd": 933532,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "9505.90: Korea MFN 8% (WITS/TRAINS 2023); duty free under KORUS"
+        },
+        "9506": {
+          "exportsUsd": 83711563,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "9506.91: Korea MFN 8% (WITS/TRAINS 2023), as on golf, ski and other sports equipment; duty free under KORUS"
+        },
+        "9507": {
+          "exportsUsd": 1968115,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "9507.10: Korea MFN 8% (WITS/TRAINS 2023); duty free under KORUS"
+        },
+        "9508": {
+          "exportsUsd": 9018785,
+          "rate": "Free (KORUS)",
+          "normalRate": "8% MFN",
+          "basis": "9508: Korea MFN 8% (WITS/TRAINS 2023); duty free under KORUS"
+        }
+      },
+      "profile": {
+        "headline": "Sports equipment is most of U.S. sales ($84 million of $137 million). Qualifying U.S. goods enter free under KORUS instead of Korea's 8% MFN rate; children's products need KC certification.",
+        "mainProducts": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506) · Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504)",
+        "tariffNow": "Free (KORUS)",
+        "regulator": {
+          "name": "Korean Agency for Technology and Standards (KC certification)",
+          "url": "https://www.kats.go.kr/en/main.do",
+          "requirement": "Toys and other children's products must have KC safety certification under the Special Act on the Safety of Children's Products before sale; electronic games also need KC electrical and radio certification."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: South Korea import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/south-korea-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 76,
+      "name": "Brazil",
+      "rule": "Brazil's applied MFN rates under the Mercosur common external tariff; no U.S. trade agreement",
+      "usTradeAgreement": null,
+      "exportsUsd": 129915225,
+      "priorExportsUsd": 105012508,
+      "sharePct": 1.9,
+      "changePct": 23.7,
+      "status": "unchanged",
+      "cells": {
+        "9503": {
+          "exportsUsd": 23796819,
+          "rate": "35% (2–35%)",
+          "normalRate": null,
+          "basis": "9503.00: Brazil applied MFN 2–35% by NCM line, 35% on most toys (WITS/TRAINS 2023); no U.S. trade agreement"
+        },
+        "9504": {
+          "exportsUsd": 80395180,
+          "rate": "0–20%",
+          "normalRate": null,
+          "basis": "9504.50 (video game consoles): Brazil applied MFN 20% (WITS/TRAINS 2023); playing cards 20%, other games 0–20%"
+        },
+        "9505": {
+          "exportsUsd": 377567,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "9505.90: Brazil applied MFN 20% (WITS/TRAINS 2023)"
+        },
+        "9506": {
+          "exportsUsd": 22008573,
+          "rate": "20% (skis 2%)",
+          "normalRate": null,
+          "basis": "9506.91: Brazil applied MFN 20% (WITS/TRAINS 2023); skis and ski bindings 2%"
+        },
+        "9507": {
+          "exportsUsd": 545974,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "9507.10: Brazil applied MFN 20% (WITS/TRAINS 2023)"
+        },
+        "9508": {
+          "exportsUsd": 2791112,
+          "rate": "20%",
+          "normalRate": null,
+          "basis": "9508.10: Brazil applied MFN 20% (WITS/TRAINS 2023); the other ride lines were not checked"
+        }
+      },
+      "profile": {
+        "headline": "U.S. sales rose 23.7% to $130 million, mostly games ($80 million). Brazil has no U.S. trade agreement and charges 20% on most Chapter 95 goods and 35% on most toys, which also need INMETRO certification.",
+        "mainProducts": "Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504) · Toys, dolls, puzzles, building sets, scale models, tricycles and toy scooters (9503)",
+        "tariffNow": "20% on most goods, 35% on most toys (normal rate)",
+        "regulator": {
+          "name": "INMETRO (compulsory toy certification)",
+          "url": "https://www.gov.br/inmetro/pt-br",
+          "requirement": "Toys for children under 14 need compulsory INMETRO conformity certification by an accredited body and the INMETRO mark before they can be sold; consoles with radios also need Anatel approval."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: Brazil import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/brazil-import-requirements-and-documentation"
+        }
+      }
+    },
+    {
+      "countryCode": 156,
+      "name": "China",
+      "rule": "China MFN rate plus the 10% extra tariff on all U.S. goods (24 further points suspended to January 10, 2027); 2019 counter-tariffs on listed lines unless excluded",
+      "usTradeAgreement": null,
+      "exportsUsd": 108108056,
+      "priorExportsUsd": 114995662,
+      "sharePct": 1.6,
+      "changePct": -6,
+      "status": "raised",
+      "cells": {
+        "9503": {
+          "exportsUsd": 12343350,
+          "rate": "0% + 10%",
+          "normalRate": "0% MFN",
+          "basis": "9503.00: China MFN 0% (WITS/TRAINS 2023) plus the 10% extra tariff on all U.S. goods. The 2019 counter-tariffs (25% on most toys, 20% on ride-on toys) apply unless the buyer holds an exclusion"
+        },
+        "9504": {
+          "exportsUsd": 30784987,
+          "rate": "0% + 10%",
+          "normalRate": "0% MFN",
+          "basis": "9504.50: China MFN 0% (WITS/TRAINS 2023) plus 10%; listed at 25% (TV game consoles and parts) in Annex 1 of the 2019 counter-tariffs, exclusions available to December 31, 2026"
+        },
+        "9505": {
+          "exportsUsd": 2879326,
+          "rate": "0% + 10%",
+          "normalRate": "0% MFN",
+          "basis": "9505.90: China MFN 0% (WITS/TRAINS 2023) plus 10%"
+        },
+        "9506": {
+          "exportsUsd": 46739799,
+          "rate": "6% + 10%",
+          "normalRate": "6% MFN",
+          "basis": "9506.91: China MFN 6% (WITS/TRAINS 2023) plus 10%; skis, bindings and other ski equipment have a 3% interim rate in 2026 (Tariff Commission Announcement No. 11 of 2025)"
+        },
+        "9507": {
+          "exportsUsd": 5566170,
+          "rate": "6% + 10%",
+          "normalRate": "6% MFN",
+          "basis": "9507.10: China MFN 6% (WITS/TRAINS 2023) plus 10%"
+        },
+        "9508": {
+          "exportsUsd": 9794424,
+          "rate": "6% + 10%",
+          "normalRate": "6% MFN",
+          "basis": "9508: China MFN 6% (WITS/TRAINS 2023) plus 10%"
+        }
+      },
+      "profile": {
+        "headline": "A small buyer ($108 million) whose purchases jumped 67.1% in January–August 2026. Toys and consoles are 0% under China's normal rate but pay the 10% extra tariff on all U.S. goods, which would rise to 34% if the suspension ends on January 10, 2027.",
+        "mainProducts": "Sports and exercise equipment: golf, balls, skis, skates, fitness machines, pools, archery, hockey (9506) · Video game consoles, board and card games, billiards, arcade, casino and bowling equipment (9504)",
+        "tariffNow": "Normal rate (0% toys and consoles, 6% sports gear) + 10% on all U.S. goods",
+        "regulator": {
+          "name": "State Administration for Market Regulation / CNCA (China Compulsory Certification)",
+          "url": "https://www.cnca.gov.cn/",
+          "requirement": "Toys in the CCC catalogue, such as electric toys, plastic toys, metal toys, projectile toys, dolls and children's ride-on vehicles, cannot be imported or sold without the CCC certificate and mark; sports equipment generally needs no CCC."
+        },
+        "countryGuide": {
+          "label": "Country Commercial Guide: China import requirements",
+          "url": "https://www.trade.gov/country-commercial-guides/china-import-requirements-and-documentation"
+        }
+      }
+    }
+  ],
+  "biggestLanes": [
+    {
+      "market": "Canada",
+      "heading": "9504",
+      "exportsUsd": 1048125987,
+      "rate": "Free (CUSMA) + 50% on consoles"
+    },
+    {
+      "market": "Canada",
+      "heading": "9503",
+      "exportsUsd": 741397004,
+      "rate": "Free (CUSMA)"
+    },
+    {
+      "market": "Canada",
+      "heading": "9506",
+      "exportsUsd": 626752406,
+      "rate": "Free (CUSMA) + 50% on most gear"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9504",
+      "exportsUsd": 493275857,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "European Union",
+      "heading": "9504",
+      "exportsUsd": 323801490,
+      "rate": "Free"
+    },
+    {
+      "market": "European Union",
+      "heading": "9506",
+      "exportsUsd": 308413554,
+      "rate": "Free (U.S. goods)"
+    },
+    {
+      "market": "Mexico",
+      "heading": "9506",
+      "exportsUsd": 229993296,
+      "rate": "Free (USMCA)"
+    },
+    {
+      "market": "Australia",
+      "heading": "9504",
+      "exportsUsd": 162756905,
+      "rate": "Free (AUSFTA)"
+    }
+  ],
+  "assumptions": [
+    "Each cell uses one representative six-digit subheading per heading: 9503.00 (toys), 9504.50 (video game consoles, the largest U.S. line), 9505.90 (other festive articles), 9506.91 (exercise equipment, the largest sports line), 9507.10 (fishing rods) and 9508 (amusement rides). The basis says where other lines of the heading differ; national 8–10-digit lines can differ too.",
+    "Canada's rates come from the CBSA Customs Tariff 2026 and its surtax from the Canada Gazette: the United States Surtax Order (2026), SOR/2026-186, which applies to goods of U.S. origin under the CUSMA marking rules whether or not they qualify for CUSMA. Remission claims (for goods used in Canadian manufacturing, or by health-care and public-safety buyers) are not netted out.",
+    "Mexico's general rates come from the LIGIE Tariff (DOF, June 7, 2022) as amended by the decree of December 29, 2025. Mexico (USMCA), Canada (CUSMA), Australia (AUSFTA) and South Korea (KORUS) apply 0% only to goods that meet the agreement's rules of origin; the normal-rate column shows what a non-qualifying U.S. good pays.",
+    "For the EU, Regulation (EU) 2026/1455 sets 0% on all of Chapter 95 for U.S.-origin goods from July 1, 2026 to December 31, 2029; the normal-rate column shows the EU rate before that date.",
+    "Japan's rates are the WTO rates in Japan's Tariff Schedule of October 31, 2026. Rates for the EU, UK, Australia, South Korea, Brazil and China are World Bank/UNCTAD WITS (TRAINS) MFN applied rates for 2023, the latest year WITS holds for these markets; a range shows the lowest and highest national line under the subheading.",
+    "China's cells add the 10% extra tariff on all U.S. goods to the MFN rate. China's 2019 counter-tariffs (10–25% on most Chapter 95 lines under Announcement No. 3 of 2019) are not added, because importers can hold line-by-line exclusions valid until December 31, 2026.",
+    "VAT, sales taxes, Brazil's IPI and other internal taxes, and the buyer's import paperwork are not included."
+  ],
+  "sources": [
+    {
+      "id": "comtrade-exports",
+      "publisher": "UN Comtrade",
+      "citation": "UN Comtrade, U.S. exports 2020–2025",
+      "document": "UN Comtrade public API (preview), United States exports, annual, HS",
+      "title": "United States exports, HS chapter 95, by partner, heading and subheading",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://comtradeplus.un.org/"
+    },
+    {
+      "id": "ca-cbsa-t2026-95",
+      "publisher": "Canada Border Services Agency",
+      "citation": "Customs Tariff 2026, Chapter 95",
+      "document": "Customs Tariff schedule",
+      "title": "Departmental Consolidation of the Customs Tariff 2026: Chapter 95",
+      "signed": null,
+      "published": "2026-01-01",
+      "url": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2026/html/00/ch95-eng.html"
+    },
+    {
+      "id": "ca-sor-2026-186",
+      "publisher": "Government of Canada (Canada Gazette, Part II)",
+      "citation": "SOR/2026-186",
+      "document": "Order",
+      "title": "United States Surtax Order (2026)",
+      "signed": null,
+      "published": "2026-09-23",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-09-23/html/sor-dors186-eng.html"
+    },
+    {
+      "id": "mx-ligie-2022",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "LIGIE Tariff, DOF Jun 7, 2022",
+      "document": "Ley de los Impuestos Generales de Importación y de Exportación",
+      "title": "Ley de los Impuestos Generales de Importación y de Exportación (Tarifa), Chapter 95",
+      "signed": null,
+      "published": "2022-06-07",
+      "url": "https://www.dof.gob.mx/nota_detalle.php?codigo=5654292&fecha=07/06/2022"
+    },
+    {
+      "id": "mx-dof-2025",
+      "publisher": "Diario Oficial de la Federación (Mexico)",
+      "citation": "DOF, Dec 29, 2025",
+      "document": "Decree",
+      "title": "Decreto por el que se reforman diversas fracciones arancelarias de la Tarifa de la Ley de los Impuestos Generales de Importación y de Exportación",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://dof.gob.mx/nota_detalle.php?codigo=5777376&fecha=29%2F12%2F2025"
+    },
+    {
+      "id": "eu-framework",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2026/1455",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2026/1455 on the adjustment of customs duties on imports of certain goods originating in the United States of America",
+      "signed": "2026-06-25",
+      "published": "2026-06-30",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1455/oj"
+    },
+    {
+      "id": "eu-toy-reg",
+      "publisher": "EUR-Lex",
+      "citation": "Regulation (EU) 2025/2509",
+      "document": "Regulation",
+      "title": "Regulation (EU) 2025/2509 on the safety of toys and repealing Directive 2009/48/EC (applies from August 1, 2030)",
+      "signed": "2025-11-26",
+      "published": "2025-12-12",
+      "url": "https://eur-lex.europa.eu/eli/reg/2025/2509/oj"
+    },
+    {
+      "id": "wits-trains-2023",
+      "publisher": "World Bank WITS (UNCTAD TRAINS)",
+      "citation": "WITS/TRAINS MFN applied rates, 2023",
+      "document": "Tariff database",
+      "title": "MFN applied tariff rates by HS six-digit subheading, Chapter 95 (reporters: EU, UK, Australia, South Korea, Brazil, China, Mexico)",
+      "signed": null,
+      "published": "2026-11-20",
+      "url": "https://wits.worldbank.org/tariff/trains/en/country/BRA/partner/WLD/product/950300"
+    },
+    {
+      "id": "jp-tariff-95",
+      "publisher": "Japan Customs",
+      "citation": "Japan's Tariff Schedule, Chapter 95 (Oct 31, 2026)",
+      "document": "Tariff schedule",
+      "title": "Customs Tariff Schedules of Japan, Chapter 95: toys, games and sports requisites (general, WTO and EPA rates)",
+      "signed": null,
+      "published": "2026-10-31",
+      "url": "https://www.customs.go.jp/english/tariff/2026_10_31/data/e_95.htm"
+    },
+    {
+      "id": "cn-2019-no3",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 3 of 2019",
+      "document": "Tariff Commission Announcement No. 3 of 2019 and Annexes 1–4 (25%, 20%, 10% and 5% lists)",
+      "title": "Higher additional tariffs on part of the U.S. goods on the US$60 billion list, from June 1, 2019",
+      "signed": null,
+      "published": "2019-05-13",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/201905/t20190513_3256788.htm"
+    },
+    {
+      "id": "cn-interim-2026",
+      "publisher": "State Council Tariff Commission (PRC)",
+      "citation": "Tariff Commission Announcement No. 11 of 2025",
+      "document": "2026 Tariff Adjustment Plan",
+      "title": "2026 tariff adjustment plan (interim import rates: 3% on skis, ski bindings and other ski equipment, 9506.11–9506.19)",
+      "signed": null,
+      "published": "2025-12-29",
+      "url": "https://gss.mof.gov.cn/gzdt/zhengcefabu/202512/t20251229_3980625.htm"
+    }
+  ],
+  "coverageNote": "The 9 markets shown take 82% of 2025 U.S. Chapter 95 exports. A customs union (the EU) is one market: its members share one tariff."
+}
