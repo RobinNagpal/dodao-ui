@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import LogRocket from 'logrocket';
+import { getOrCreateVisitorId } from '@/utils/visitor-id';
 
 const PROJECT_ID = 'm3ahri/koalagains';
 const MIN_CLICKS = 2; // Require at least 2 clicks in the current session
@@ -12,7 +13,6 @@ export const PROD_HOST = 'koalagains.com'; // ✅ only allow this exact host
 
 // LocalStorage keys (lifetime analytics; not used for gating)
 const LS = {
-  id: 'lr_anon_id',
   clicks: 'lr_click_count', // lifetime click counter (optional analytics)
 };
 type LocalKey = (typeof LS)[keyof typeof LS];
@@ -60,23 +60,6 @@ function ssOnce(key: SessionKey): boolean {
   } catch {
     return true;
   }
-}
-
-function getOrCreateAnonId(): string {
-  try {
-    const existing = localStorage.getItem(LS.id);
-    if (existing) return existing;
-  } catch {
-    /* fall through */
-  }
-  const id =
-    typeof crypto !== 'undefined' && 'randomUUID' in crypto ? (crypto.randomUUID() as string) : `lr_${Math.random().toString(36).slice(2)}${Date.now()}`;
-  try {
-    localStorage.setItem(LS.id, id);
-  } catch {
-    /* noop */
-  }
-  return id;
 }
 
 /** ✅ allow LR only on the exact production host */
@@ -155,7 +138,7 @@ function connectAndIdentify(country: string | null): void {
   // identify once per session
   if (ssOnce(SS.identified)) {
     try {
-      const id = getOrCreateAnonId();
+      const id = getOrCreateVisitorId();
       LogRocket.identify(id, {
         country: country ?? 'UN',
         audience: 'public',

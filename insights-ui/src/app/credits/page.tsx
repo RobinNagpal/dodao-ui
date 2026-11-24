@@ -19,17 +19,15 @@ import PageWrapper from '@dodao/web-core/components/core/page/PageWrapper';
 import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import { useSession } from 'next-auth/react';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
-const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export default function CreditsPage(): JSX.Element {
   const { data: koalaSession, status: sessionStatus } = useSession();
   const session: KoalaGainsSession | null = koalaSession as KoalaGainsSession | null;
 
-  const router = useRouter();
+  // Logged-out visitors see the prices and can pick a pack; the balance and
+  // history are theirs only once they log in.
+  const signedOut = sessionStatus === 'unauthenticated';
 
   // "Load more" raises the limit; the hook refetches when the URL changes and
   // keeps showing the current rows until the longer list arrives.
@@ -52,20 +50,6 @@ export default function CreditsPage(): JSX.Element {
   // Returning from Stripe: confirm the purchase (the webhook can land after the
   // redirect), then the event above re-reads the balance and history.
   const checkoutReturn = useCheckoutReturn(Boolean(session));
-
-  if (sessionStatus !== 'loading' && !session) {
-    return (
-      <PageWrapper>
-        <Stack gap="md">
-          <Heading as="h1" size="2xl">
-            Report credits
-          </Heading>
-          <Text>Sign in to see your credit balance and buy more.</Text>
-          <LoginPopup open={true} onClose={() => router.push('/')} />
-        </Stack>
-      </PageWrapper>
-    );
-  }
 
   const credits = data?.credits ?? 0;
   const reservedCredits = data?.reservedCredits ?? 0;
@@ -96,28 +80,30 @@ export default function CreditsPage(): JSX.Element {
           <BuyCreditsPanel />
         </Stack>
 
-        <Stack gap="md">
-          <Heading as="h2" size="lg">
-            History
-          </Heading>
-          {/* Spinner until the first load finishes, so an empty state never flashes before real rows. */}
-          {data ? (
-            <>
-              <CreditHistoryTabs transactions={data.transactions} hasMore={data.hasMore} />
-              {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
-              {loadMoreFailed && <Text tone="muted">We could not load older history. Please try again.</Text>}
-              {data.hasMore && (
-                <Button variant="outlined" loading={loading} disabled={loading} onClick={() => setHistoryLimit((limit) => limit + CREDIT_HISTORY_PAGE_SIZE)}>
-                  Load more
-                </Button>
-              )}
-            </>
-          ) : error ? (
-            <Text tone="muted">We could not load your history. Please refresh the page.</Text>
-          ) : (
-            <SectionLoading />
-          )}
-        </Stack>
+        {!signedOut && (
+          <Stack gap="md">
+            <Heading as="h2" size="lg">
+              History
+            </Heading>
+            {/* Spinner until the first load finishes, so an empty state never flashes before real rows. */}
+            {data ? (
+              <>
+                <CreditHistoryTabs transactions={data.transactions} hasMore={data.hasMore} />
+                {/* "Load more" pages the whole history, so it keeps filling both tabs. */}
+                {loadMoreFailed && <Text tone="muted">We could not load older history. Please try again.</Text>}
+                {data.hasMore && (
+                  <Button variant="outlined" loading={loading} disabled={loading} onClick={() => setHistoryLimit((limit) => limit + CREDIT_HISTORY_PAGE_SIZE)}>
+                    Load more
+                  </Button>
+                )}
+              </>
+            ) : error ? (
+              <Text tone="muted">We could not load your history. Please refresh the page.</Text>
+            ) : (
+              <SectionLoading />
+            )}
+          </Stack>
+        )}
       </Stack>
     </PageWrapper>
   );

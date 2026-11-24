@@ -22,10 +22,9 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
 
-// Both are only needed once the user actually engages with the control, so they
-// stay out of the report page's critical bundle.
+// Only needed once the user actually engages with the control, so it stays out
+// of the report page's critical bundle.
 const RegenerateReportModal = dynamic(() => import('@/components/credits/RegenerateReportModal'), { ssr: false });
-const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 /**
  * What to tell the user when a run did not start, keyed by outcome. The
@@ -81,7 +80,6 @@ export default function ReportGenerationControl({
   // Once mounted the modal stays mounted, so closing it plays its exit
   // transition instead of vanishing. Same pattern as the favourite/notes buttons.
   const [hasMountedModal, setHasMountedModal] = useState(false);
-  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   // Shown at the top of the modal after the server refused a spend.
   const [modalNotice, setModalNotice] = useState<string | null>(null);
 
@@ -145,7 +143,7 @@ export default function ReportGenerationControl({
   }, []);
 
   // A click while the session is still loading is remembered and replayed once
-  // it resolves, rather than flashing the login prompt at a signed-in user.
+  // it resolves, rather than flashing the logged-out modal at a signed-in user.
   const [openWhenSessionLoads, setOpenWhenSessionLoads] = useState(false);
 
   const openModal = useCallback(async () => {
@@ -153,12 +151,9 @@ export default function ReportGenerationControl({
       setOpenWhenSessionLoads(true);
       return;
     }
-    if (!session) {
-      setIsLoginPopupOpen(true);
-      return;
-    }
     showModal();
-    await refetchStatus();
+    // Logged-out visitors get the cost and the packs; there is no status to read.
+    if (session) await refetchStatus();
   }, [session, sessionLoading, showModal, refetchStatus]);
 
   useEffect(() => {
@@ -189,10 +184,6 @@ export default function ReportGenerationControl({
   // be too low. The answer is shared with the navbar, so it is one request.
   const canAffordFromBalance = typeof balance === 'number' && balance >= CREDITS_PER_REPORT;
   const purchasesEnabled = usePurchasesEnabled(!sessionLoading && (!session || (balance !== undefined && !canAffordFromBalance)));
-
-  // With buying off, the floating CTA is only for users who can actually
-  // regenerate; for anyone else it would lead to a dead end.
-  const ctaUseful = canAffordFromBalance || purchasesEnabled !== false;
 
   const handleConfirm = async () => {
     const response = await triggerGeneration(`${getBaseUrl()}/api/${KoalaGainsSpaceId}/users/report-generation`, { kind, symbol, exchange });
@@ -241,7 +232,7 @@ export default function ReportGenerationControl({
 
   // The floating CTA sits above the page (z-40) but below nothing that a
   // `relative z-10` modal establishes, so it is hidden while a dialog is open.
-  const dialogOpen = isModalOpen || isLoginPopupOpen;
+  const dialogOpen = isModalOpen;
 
   return (
     <>
@@ -266,9 +257,10 @@ export default function ReportGenerationControl({
       {/* The inline button above competes with the comparison / competition /
           favourite actions, so the same action is repeated as a floating CTA —
           visible from the moment the page opens, no scroll needed. Shown to
-          logged-out visitors too: `openModal` sends them to the login prompt
-          first. Tablet and up only; phones keep the inline button alone. */}
-      {!generationInProgress && !dialogOpen && ctaUseful && (
+          everyone, logged out too, and also while buying is switched off: the
+          modal's pack picker then records which pack they wanted. Tablet and
+          up only; phones keep the inline button alone. */}
+      {!generationInProgress && !dialogOpen && (
         <FloatingReportCta
           label="Get the latest analysis"
           subLabel={age ? `This report was generated ${age}` : null}
@@ -277,7 +269,7 @@ export default function ReportGenerationControl({
         />
       )}
 
-      {session && hasMountedModal && (
+      {hasMountedModal && (
         <RegenerateReportModal
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -290,10 +282,9 @@ export default function ReportGenerationControl({
           purchasesEnabled={purchasesEnabled}
           notice={modalNotice}
           onConfirm={handleConfirm}
+          signedIn={Boolean(session)}
         />
       )}
-
-      {!session && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
     </>
   );
 }

@@ -2815,9 +2815,16 @@ model StripeCreditPurchase {
 
 /// One click on "Buy" while buying is switched off (App Settings → Payments): demand we couldn't serve.
 model CreditPurchaseInterest {
-  id      String @id @default(uuid())
-  userId  String @map("user_id")
-  spaceId String @default("koala_gains") @map("space_id")
+  id          String  @id @default(uuid())
+  /// Null for a logged-out visitor; filled in later if that browser logs in and clicks again.
+  userId      String? @map("user_id")
+  spaceId     String  @default("koala_gains") @map("space_id")
+  /// Random id kept in the visitor's browser, so logged-out clicks can be counted per visitor.
+  anonymousId String? @map("anonymous_id")
+  /// SHA-256 of the client IP (never the raw IP); only used to rate-limit clicks.
+  ipHash      String? @map("ip_hash")
+  /// Two-letter country code from the hosting edge, when it sends one.
+  country     String?
 
   packKey       String  @map("pack_key")
   credits       Int
@@ -2828,10 +2835,12 @@ model CreditPurchaseInterest {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([spaceId, createdAt])
   @@index([userId])
+  @@index([anonymousId])
+  @@index([ipHash, createdAt])
   @@map("credit_purchase_interests")
 }
 

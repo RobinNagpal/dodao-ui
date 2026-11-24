@@ -19,10 +19,15 @@ import { loadPurchasesEnabled, usePurchasesEnabled } from '@/hooks/usePurchasesE
 import { callCreditApi } from '@/utils/credits/credit-api-client';
 import { formatPackDetail, formatUsd } from '@/utils/credits/credit-format';
 import { getCurrentReturnPath } from '@/utils/credits/credit-return-path';
+import { getOrCreateVisitorId } from '@/utils/visitor-id';
 import Button from '@dodao/web-core/components/core/buttons/Button';
 import SingleSectionModal from '@dodao/web-core/components/core/modals/SingleSectionModal';
 import { useNotificationContext } from '@dodao/web-core/ui/contexts/NotificationContext';
+import { useSession } from 'next-auth/react';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
+
+const LoginPopup = dynamic(() => import('@/components/login/login-popup').then((m) => ({ default: m.LoginPopup })), { ssr: false });
 
 export interface BuyCreditsPanelProps {
   /** `grid` on the roomy credits page, `list` inside the narrow modal. */
@@ -38,8 +43,11 @@ const DEFAULT_PACK_KEY = CREDIT_PACKS.find((pack) => pack.recommended)?.key ?? C
  * the prices a user sees are identical wherever they decide to buy.
  *
  * While an admin has buying switched off, the picker and button stay usable: a
- * click records which pack the user wanted (admin → Credit Purchase Interest)
- * and explains in a modal that buying is paused.
+ * click records which pack the visitor wanted (admin → Credit Purchase Interest),
+ * logged in or not, and explains in a modal that buying is paused.
+ *
+ * Logged-out visitors can browse the packs; only when they click Buy while buying
+ * is on are they asked to log in (Stripe needs an account to add credits to).
  */
 export default function BuyCreditsPanel({ layout = 'grid', source = 'credits-page' }: BuyCreditsPanelProps): JSX.Element {
   const [selectedPackKey, setSelectedPackKey] = useState<string>(DEFAULT_PACK_KEY);
@@ -48,6 +56,8 @@ export default function BuyCreditsPanel({ layout = 'grid', source = 'credits-pag
   // The pack a user tried to buy while buying was off; drives the "paused" modal.
   const [pausedPack, setPausedPack] = useState<CreditPack | null>(null);
   const { showNotification } = useNotificationContext();
+  const { status: sessionStatus } = useSession();
+  const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false);
   // null while loading. Admins can switch buying off (e.g. during a Stripe
   // issue); the checkout API enforces the same switch server-side.
   const loadedPurchasesEnabled = usePurchasesEnabled();
@@ -61,12 +71,18 @@ export default function BuyCreditsPanel({ layout = 'grid', source = 'credits-pag
   const recordInterest = async (pack: CreditPack): Promise<RecordCreditPurchaseInterestResponse | null> => {
     const result = await callCreditApi<RecordCreditPurchaseInterestResponse>('users/credits/purchase-interest', {
       method: 'POST',
-      body: { packKey: pack.key, source, pagePath: getCurrentReturnPath() } satisfies RecordCreditPurchaseInterestRequest,
+      body: { packKey: pack.key, source, pagePath: getCurrentReturnPath(), anonymousId: getOrCreateVisitorId() } satisfies RecordCreditPurchaseInterestRequest,
     });
     return result.ok ? result.data : null;
   };
 
   const handleCheckout = async () => {
+    // Login brings them back to this page, where they pick a pack and click Buy again.
+    if (sessionStatus !== 'authenticated') {
+      setLoading(false);
+      setIsLoginPopupOpen(true);
+      return;
+    }
     setLoading(true);
     const result = await callCreditApi<CreateCheckoutSessionResponse>('users/credits/checkout-session', {
       method: 'POST',
@@ -152,6 +168,8 @@ export default function BuyCreditsPanel({ layout = 'grid', source = 'credits-pag
           </Button>
         }
       />
+
+      {sessionStatus === 'unauthenticated' && <LoginPopup open={isLoginPopupOpen} onClose={() => setIsLoginPopupOpen(false)} />}
 
       <SingleSectionModal open={pausedPack !== null} onClose={() => setPausedPack(null)} title="Buying credits is paused">
         <Stack gap="md">
