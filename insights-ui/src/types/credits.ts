@@ -157,18 +157,25 @@ export interface RecordCreditPurchaseInterestRequest {
   packKey: string;
   source: CreditPurchaseInterestSource;
   pagePath?: string;
+  /** This browser's random visitor id; identifies a logged-out visitor. */
+  anonymousId?: string;
 }
 
 export interface RecordCreditPurchaseInterestResponse {
   recorded: boolean;
 }
 
-/** One user who clicked "Buy" while buying was switched off. */
+/** One user, or one logged-out visitor, who clicked "Buy" while buying was switched off. */
 export interface AdminCreditInterestUserResponse {
-  userId: string;
+  /** Null for a logged-out visitor. */
+  userId: string | null;
+  /** Set for a logged-out visitor: the random id kept in their browser. */
+  anonymousId: string | null;
   name: string | null;
   email: string | null;
-  username: string;
+  username: string | null;
+  /** Country of the most recent click, when known. */
+  country: string | null;
   clicks: number;
   /** Pack of the most recent click. */
   lastPackCredits: number;
@@ -189,8 +196,11 @@ export interface AdminCreditInterestPackResponse {
 
 export interface AdminCreditInterestResponse {
   totalClicks: number;
+  /** Distinct logged-in users. */
   uniqueUsers: number;
-  /** Sum over users of the largest pack each one clicked: the revenue we couldn't take. */
+  /** Distinct logged-out visitors (by browser id). */
+  anonymousVisitors: number;
+  /** Sum over users and anonymous visitors of the largest pack each one clicked: the revenue we couldn't take. */
   potentialRevenueInCents: number;
   packs: AdminCreditInterestPackResponse[];
   users: AdminCreditInterestUserResponse[];

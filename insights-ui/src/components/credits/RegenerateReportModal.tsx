@@ -27,6 +27,8 @@ export interface RegenerateReportModalProps {
   /** One-line notice above the body, e.g. after the balance changed under a spend. */
   notice?: string | null;
   onConfirm: () => void;
+  /** False for a logged-out visitor: no balance to show, just the cost and the packs. */
+  signedIn?: boolean;
 }
 
 /**
@@ -47,6 +49,7 @@ export default function RegenerateReportModal({
   purchasesEnabled = null,
   notice = null,
   onConfirm,
+  signedIn = true,
 }: RegenerateReportModalProps): JSX.Element {
   const credits = status?.credits ?? 0;
   const canAfford = credits >= CREDITS_PER_REPORT;
@@ -61,6 +64,19 @@ export default function RegenerateReportModal({
   );
 
   const body = (): JSX.Element => {
+    // Logged out: show what it costs and let them pick a pack. Buy asks them to
+    // log in (or, while buying is off, records which pack they wanted).
+    if (!signedIn) {
+      return (
+        <Stack gap="lg">
+          <Text size="sm">
+            Regenerating the {reportLabel} report costs {formatCredits(CREDITS_PER_REPORT)}. Each credit gets you one full report and never expires.
+          </Text>
+          <BuyCreditsPanel layout="list" source="regenerate-modal" />
+        </Stack>
+      );
+    }
+
     // Back from Stripe: the purchase is still being confirmed, so any balance
     // shown now could be the old one.
     if (addingCredits) {

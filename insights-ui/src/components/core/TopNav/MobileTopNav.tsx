@@ -23,8 +23,6 @@ interface MobileTopNavProps {
   credits: number | null | undefined;
   /** Whether to offer credits to a signed-out visitor instead of the balance link. */
   showBuyCreditsPrompt: boolean;
-  /** Opens the login prompt — a signed-out visitor has to log in before buying. */
-  onBuyCreditsClick: () => void;
 }
 
 export default function MobileTopNav({
@@ -36,7 +34,6 @@ export default function MobileTopNav({
   isLoggedIn,
   credits,
   showBuyCreditsPrompt,
-  onBuyCreditsClick,
 }: MobileTopNavProps) {
   const pathname = usePathname() ?? '';
   const isStocksRoute = pathname.startsWith('/stocks');
@@ -82,17 +79,10 @@ export default function MobileTopNav({
                 ))}
               </div>
             )}
-            {/* Signed out: same offer as the desktop pill. The drawer closes
-                first so the login modal isn't opened inside this dialog. */}
+            {/* Signed out: same link as the desktop pill. */}
             {showBuyCreditsPrompt && (
               <div className="-mx-3 py-6">
-                <CreditsNavLink
-                  variant="menu"
-                  onBuyCreditsClick={() => {
-                    setMobileMenuOpen(false);
-                    onBuyCreditsClick();
-                  }}
-                />
+                <CreditsNavLink variant="menu" onClick={() => setMobileMenuOpen(false)} />
               </div>
             )}
             <div className="space-y-2 py-6">

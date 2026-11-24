@@ -14,30 +14,32 @@ import { useFetchData } from '@dodao/web-core/ui/hooks/fetch/useFetchData';
 import getBaseUrl from '@dodao/web-core/utils/api/getBaseURL';
 import React from 'react';
 
-const USER_COLUMNS = ['User', 'Name', 'Clicks', 'Last pack', 'Largest pack', 'Bought before', 'First click', 'Last click'];
-const USER_COLUMN_WIDTHS = [24, 16, 8, 10, 10, 10, 11, 11];
+const USER_COLUMNS = ['User', 'Name', 'Country', 'Clicks', 'Last pack', 'Largest pack', 'Bought before', 'First click', 'Last click'];
+const USER_COLUMN_WIDTHS = [22, 14, 7, 7, 10, 10, 9, 10, 11];
 
-const PACK_COLUMNS = ['Pack', 'Clicks', 'Users'];
+const PACK_COLUMNS = ['Pack', 'Clicks', 'People'];
 const PACK_COLUMN_WIDTHS = [40, 30, 30];
 
 function toUserRow(user: AdminCreditInterestUserResponse): TableRow {
+  const label = user.userId ? user.email ?? user.name ?? user.username ?? user.userId : 'Anonymous visitor';
   return {
-    id: user.userId,
+    id: user.userId ?? `anon:${user.anonymousId}`,
     item: user,
     columns: [
       // Only buyers have a credit history to open.
-      user.hasPurchased ? (
+      user.userId && user.hasPurchased ? (
         <TextLink key="user" href={`/admin-v1/user-credits/${user.userId}`}>
-          {user.email ?? user.name ?? user.username}
+          {label}
         </TextLink>
       ) : (
-        user.email ?? user.name ?? user.username
+        label
       ),
       user.name ?? '—',
+      user.country ?? '—',
       String(user.clicks),
       `${user.lastPackCredits} credits`,
       `${user.maxPackCredits} credits`,
-      user.hasPurchased ? 'Yes' : 'No',
+      user.userId ? (user.hasPurchased ? 'Yes' : 'No') : '—',
       formatShortDate(user.firstClickAt),
       formatShortDate(user.lastClickAt),
     ],
@@ -65,7 +67,9 @@ export default function AdminCreditInterestPage(): React.JSX.Element {
         <Heading as="h1" size="2xl">
           Credit purchase interest
         </Heading>
-        <Text tone="muted">People who clicked &quot;Buy&quot; while buying credits was switched off in App Settings → Payments. Most recent click first.</Text>
+        <Text tone="muted">
+          People who clicked &quot;Buy&quot; while buying credits was switched off in App Settings → Payments, logged in or not. Most recent click first.
+        </Text>
       </Stack>
 
       {data ? (
@@ -75,9 +79,13 @@ export default function AdminCreditInterestPage(): React.JSX.Element {
           <Stack gap="lg">
             <StatCardGrid
               stats={[
-                { label: 'Interested users', value: String(data.uniqueUsers) },
+                {
+                  label: 'Interested users',
+                  value: String(data.uniqueUsers + data.anonymousVisitors),
+                  note: `${data.uniqueUsers} logged in, ${data.anonymousVisitors} anonymous`,
+                },
                 { label: 'Total clicks', value: String(data.totalClicks) },
-                { label: 'Potential revenue', value: formatUsd(data.potentialRevenueInCents), note: 'Largest pack each user picked' },
+                { label: 'Potential revenue', value: formatUsd(data.potentialRevenueInCents), note: 'Largest pack each person picked' },
               ]}
             />
 
@@ -90,7 +98,7 @@ export default function AdminCreditInterestPage(): React.JSX.Element {
 
             <Stack gap="sm">
               <Heading as="h2" size="lg">
-                By user
+                By person
               </Heading>
               <Table data={data.users.map(toUserRow)} columnsHeadings={USER_COLUMNS} columnsWidthPercents={USER_COLUMN_WIDTHS} firstColumnBold />
             </Stack>

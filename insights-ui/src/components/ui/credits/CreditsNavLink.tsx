@@ -23,28 +23,20 @@ export type CreditsNavLinkProps = VariantProps<typeof creditsNavLink> & {
    * "—"). Omit for a signed-out visitor to render the buy prompt instead.
    */
   credits?: number | null;
-  /** Signed-out click handler — the caller opens the login prompt. Required for the signed-out form. */
-  onBuyCreditsClick?: () => void;
+  /** Extra click handler, e.g. to close the mobile drawer before navigating. */
+  onClick?: () => void;
   className?: string;
 };
 
 /**
- * Navbar pill for report credits. Signed in it shows the balance and links to
- * the credits page; signed out it invites the visitor to buy and hands the click
- * back to the caller, which has to get them logged in first.
+ * Navbar pill for report credits, linking to the credits page. Signed in it
+ * shows the balance; signed out it invites the visitor to buy (the credits page
+ * shows the packs and asks them to log in only when they click Buy).
  */
-export default function CreditsNavLink({ credits, onBuyCreditsClick, variant, className }: CreditsNavLinkProps): React.JSX.Element {
-  if (credits === undefined) {
-    return (
-      <button type="button" onClick={onBuyCreditsClick} className={cn(creditsNavLink({ variant }), 'cursor-pointer', className)}>
-        Buy Credits
-      </button>
-    );
-  }
-
+export default function CreditsNavLink({ credits, onClick, variant, className }: CreditsNavLinkProps): React.JSX.Element {
   return (
-    <Link href="/credits" className={cn(creditsNavLink({ variant }), className)}>
-      Credits: {credits === null ? '—' : credits}
+    <Link href="/credits" onClick={onClick} className={cn(creditsNavLink({ variant }), className)}>
+      {credits === undefined ? 'Buy Credits' : `Credits: ${credits === null ? '—' : credits}`}
     </Link>
   );
 }
