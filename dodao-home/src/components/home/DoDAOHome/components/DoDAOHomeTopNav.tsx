@@ -16,9 +16,13 @@ import {
   CubeTransparentIcon,
   HandRaisedIcon,
   WrenchScrewdriverIcon,
+  LockClosedIcon,
+  ServerStackIcon,
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { roboticsAreas as areas } from '@/components/robotics-page/areas/roboticsAreas';
 import { useCases as allUseCases } from '@/components/robotics-page/use-cases/useCases';
+import { safetyAreas } from '@/components/robot-safety/robotSafetyContent';
 import { CONTACT_MAILTO } from './DoDAOHomeHero';
 
 interface MenuItem {
@@ -79,6 +83,23 @@ const useCases: MenuItem[] = allUseCases.map((useCase) => ({
   href: `/robotics/use-cases/${useCase.slug}`,
   icon: useCaseIcons[useCase.slug] ?? BeakerIcon,
 }));
+
+const safetyAreaIcons: Record<string, MenuItem['icon']> = {
+  'physical-safety': UserGroupIcon,
+  'ai-behaviour': CpuChipIcon,
+  cybersecurity: LockClosedIcon,
+  'company-security': ServerStackIcon,
+};
+
+const safetyItems: MenuItem[] = [
+  {
+    name: 'Safety & security readiness',
+    description: 'Get your robot through buyer, inspector and regulator checks.',
+    href: '/robot-safety',
+    icon: ShieldCheckIcon,
+  },
+  ...safetyAreas.map((area) => ({ name: area.label, description: area.question, href: `/robot-safety#${area.id}`, icon: safetyAreaIcons[area.id] })),
+];
 
 const aiAgentServices = [
   {
@@ -192,6 +213,9 @@ export default function DoDAOHomeTopNav() {
           <DesktopDropdown label="Use Cases" panelClassName="w-[24rem]">
             <MenuColumn title="Built end to end, in simulation" items={useCases} />
           </DesktopDropdown>
+          <DesktopDropdown label="Safety & Security" panelClassName="w-[24rem]">
+            <MenuColumn title="For robot makers and integrators" items={safetyItems} />
+          </DesktopDropdown>
           <DesktopDropdown label="AI & Web3" panelClassName="w-[40rem]">
             <div className="grid grid-cols-2 gap-2">
               <MenuColumn title="Products" items={products} />
@@ -227,6 +251,7 @@ export default function DoDAOHomeTopNav() {
               <div className="space-y-1">
                 <MobileGroup title="Robotics" items={roboticsAreas} />
                 <MobileGroup title="Use Cases" items={useCases} />
+                <MobileGroup title="Safety & Security" items={safetyItems} />
                 <MobileGroup title="AI & Web3" items={aiAndWeb3} />
                 <a
                   href="https://docs.dodao.io"
