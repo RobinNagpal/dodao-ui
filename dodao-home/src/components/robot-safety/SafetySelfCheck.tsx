@@ -70,9 +70,7 @@ export default function SafetySelfCheck() {
       <div className="lg:col-span-5">
         <div className="rounded-3xl bg-surface p-6 ring-1 ring-border sm:p-8 lg:sticky lg:top-24" aria-live="polite">
           <p className="text-sm font-medium text-accent">{anyChecked ? 'Where to start' : 'Your result'}</p>
-          <p className="font-display mt-2 text-2xl font-semibold leading-tight text-heading">
-            {anyChecked ? 'These questions apply to you' : 'Tick the lines that are true for you'}
-          </p>
+          <p className="font-display mt-2 text-2xl font-semibold leading-tight text-heading">{anyChecked ? 'Start with these' : 'Tick what is true'}</p>
           <ul className="mt-6 space-y-3">
             {safetyAreas.map((area) => {
               const relevance = relevanceFor(area.id);

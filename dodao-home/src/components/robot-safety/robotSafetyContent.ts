@@ -37,10 +37,10 @@ export const safetyAreas: SafetyArea[] = [
     label: 'Physical safety',
     question: 'Is it safe to work next to?',
     whyNow:
-      'The main robot safety standard, ISO 10218, was rewritten in 2025 and is far longer. A "cobot" label is no longer enough: every new task, gripper or speed needs its own risk check, with force limits for each part of the body.',
+      'ISO 10218 was rewritten in 2025 and is far longer. A "cobot" label is not enough any more: each task, gripper and speed needs its own risk check, with force limits for each part of the body.',
     whatWeDo:
-      'We run the risk assessment task by task and use simulation to find the contact points that matter, so fewer need measuring on the real robot. Then we plan the force and stop-time tests and draft the technical file.',
-    youGet: ['Risk assessment', 'Force and stop-time test plan', 'Draft technical file'],
+      'We run the risk assessment task by task. Simulation shows which contact points matter, so fewer need measuring on the real robot. Then we plan the force and stop-time tests and draft the technical file.',
+    youGet: ['Risk assessment', 'Force test plan', 'Technical file draft'],
     standards: ['ISO 10218-1/-2', 'ISO 12100', 'ISO 13849', 'ANSI/A3 R15.06'],
   },
   {
@@ -50,10 +50,10 @@ export const safetyAreas: SafetyArea[] = [
     label: 'AI behaviour',
     question: 'Does the AI stay safe after every update?',
     whyNow:
-      'A model update can change how a robot moves near people, but most safety files assume a machine that never changes. From January 2027, if the AI itself keeps people safe, the EU requires an outside body to review it.',
+      'A model update can change how the robot moves near people, but most safety files assume a machine that never changes. From January 2027, if the AI itself keeps people safe, an outside body must review it in the EU.',
     whatWeDo:
-      'We write down what the AI decides and what a separate safety layer always enforces. Then we build normal and rare test scenes, re-run them in simulation after every model update, and test the riskiest ones on the real robot.',
-    youGet: ['Safety design note', 'Simulation test scenes', 'A report per model version'],
+      'We separate what the AI decides from what a safety layer always enforces. Then we re-run normal and rare test scenes in simulation after every update, and test the riskiest ones on the real robot.',
+    youGet: ['Safety design note', 'Test scenes', 'Report per model version'],
     standards: ['ISO 10218-2', 'EU Machinery Regulation', 'EU AI Act'],
   },
   {
@@ -63,10 +63,10 @@ export const safetyAreas: SafetyArea[] = [
     label: 'Product cybersecurity',
     question: 'Can someone hack the robot?',
     whyNow:
-      'Robot security flaws are now public news, and the law has caught up. Since September 2026 the EU requires makers to report actively exploited flaws within 24 hours, and buyers increasingly ask for IEC 62443.',
+      'Robot security flaws now make the news. Since September 2026 the EU requires makers to report exploited flaws within 24 hours, and buyers increasingly ask for IEC 62443.',
     whatWeDo:
-      'We review threats to the robot, its controller, apps and remote access, and run a penetration test, where experts try to break in. We list every software part and set up the reporting process.',
-    youGet: ['Pen test report with fixes', 'Software parts list (SBOM)', 'Flaw reporting playbook'],
+      'We review threats to the robot, controller, apps and remote access, and run a penetration test where experts try to break in. Then we list every software part and set up the reporting process.',
+    youGet: ['Pen test report', 'Software parts list', 'Reporting playbook'],
     standards: ['EU Cyber Resilience Act', 'IEC 62443'],
   },
   {
@@ -76,9 +76,9 @@ export const safetyAreas: SafetyArea[] = [
     label: 'Company security',
     question: 'Is our data safe with your company?',
     whyNow:
-      'The first large customer often asks for a SOC 2 report before signing. Their IT team wants to know where robot video is stored and who can log in remotely, and standard audit tools miss these robot-specific parts.',
+      'The first large customer often asks for a SOC 2 report before signing. Their IT team asks where robot video is stored and who can log in remotely, and standard audit tools miss these robot parts.',
     whatWeDo:
-      'We set the audit scope, find the gaps, write the policies and set up controls in a tool such as Vanta or Drata, including the robot items. Then we support the audit and answer buyer questionnaires.',
+      'We set the audit scope, close the gaps and set up controls in a tool such as Vanta or Drata, robot items included. Then we support the audit and answer buyer questionnaires.',
     youGet: ['Audit-ready controls', 'Audit support', 'Buyer security pack'],
     standards: ['SOC 2', 'ISO 27001'],
   },

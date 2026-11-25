@@ -1,7 +1,7 @@
 import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import LoopingVideo from '@/components/home/DoDAOHome/components/LoopingVideo';
 import { ActionLink, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
-import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, CubeTransparentIcon, LinkIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, CubeTransparentIcon, DocumentCheckIcon, LinkIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import {
@@ -36,12 +36,12 @@ function Hero() {
             <span className="h-px w-8 bg-accent" aria-hidden="true" />
             Robot safety &amp; security readiness
           </p>
-          <h1 className="font-display mt-5 text-4xl font-semibold leading-[1.04] text-heading sm:text-5xl lg:text-6xl">
+          <h1 className="font-display mt-5 text-balance text-4xl font-semibold leading-[1.04] text-heading sm:text-5xl lg:text-6xl">
             Get your robot cleared to work around people.
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-body">
-            Before a robot goes live at a customer site, buyers, inspectors and regulators all want proof that it is safe and secure. We prepare that proof: we
-            find the gaps, run the tests in simulation and on your robot, and hand a complete evidence pack to the lab or auditor who signs off.
+            Buyers, inspectors and regulators all want proof that your robot is safe and secure before it goes live. We find what is missing, run the tests in
+            simulation and on your robot, and turn the results into evidence the lab or auditor accepts.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <ActionLink href={SAFETY_CONTACT_MAILTO} size="lg">
@@ -178,7 +178,7 @@ function FourQuestions() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           kicker="What we cover"
-          title="Four questions, asked at every check"
+          title={<span className="block text-balance">Four questions, asked at every check</span>}
           lead="Whoever is doing the check, they ask the same four things. One change, like a new AI model, can touch all four at once, so we handle them together."
         />
         <nav aria-label="The four questions" className="mt-10 flex flex-wrap gap-2">
@@ -206,7 +206,7 @@ function FourQuestions() {
                   </span>
                   {area.label}
                 </p>
-                <h3 className="font-display mt-4 text-3xl font-semibold leading-tight text-heading sm:text-4xl">{area.question}</h3>
+                <h3 className="font-display mt-4 text-balance text-3xl font-semibold leading-tight text-heading sm:text-4xl">{area.question}</h3>
                 <div className="mt-7 space-y-5">
                   <Detail title="Why it is harder now">{area.whyNow}</Detail>
                   <Detail title="What we do">{area.whatWeDo}</Detail>
@@ -237,8 +237,8 @@ function WhyNow() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           kicker="Why now"
-          title="The rules changed in 2025, and more arrive in 2026 and 2027"
-          lead="The main robot safety standard was rewritten, and new EU laws on product security, liability and machinery start one after another."
+          title={<span className="block text-balance">New rules, one after another</span>}
+          lead="The main robot safety standard was rewritten in 2025, and new EU laws on product security, liability and machinery follow in 2026 and 2027."
         />
         <ol className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {milestones.map((milestone) => {
@@ -282,7 +282,7 @@ function TwoMarkets() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           kicker="An example"
-          title="One robot, two first customers"
+          title="One robot, two markets"
           lead="A startup sells an AI robot cell to a car-parts factory in Germany and to a warehouse in the US. The rules work differently in each place."
         />
         <div className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -311,24 +311,20 @@ function TwoMarkets() {
 
         {/* Where the two paths meet: most of the evidence is the same */}
         <div className="mt-4 rounded-3xl bg-primary/10 p-7 ring-1 ring-inset ring-primary/40 sm:p-9">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-md">
-              <h3 className="flex items-center gap-2.5 text-xl font-semibold text-heading">
-                <LinkIcon className="h-6 w-6 text-accent" aria-hidden="true" />
-                Most of the evidence is the same
-              </h3>
-              <p className="mt-2 text-[0.95rem] leading-6 text-body">
-                So we build it once. Selling later in the UK, Canada, Japan or Korea? Their rules mostly build on the same ISO 10218 standard.
-              </p>
-            </div>
-            <ul className="flex flex-wrap gap-2 lg:max-w-xl lg:justify-end">
-              {sharedEvidence.map((item) => (
-                <li key={item} className="rounded-full bg-surface px-4 py-2 text-sm font-medium text-heading ring-1 ring-border">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <h3 className="flex items-center gap-2.5 text-xl font-semibold text-heading">
+            <LinkIcon className="h-6 w-6 text-accent" aria-hidden="true" />
+            Most of the evidence is the same, so we build it once
+          </h3>
+          <p className="mt-2 max-w-3xl text-[0.95rem] leading-6 text-body">
+            Selling later in the UK, Canada, Japan or Korea? Their rules mostly build on the same ISO 10218 standard, so the same evidence carries over.
+          </p>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {sharedEvidence.map((item) => (
+              <li key={item} className="rounded-full bg-surface px-4 py-2 text-sm font-medium text-heading ring-1 ring-border">
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
@@ -341,7 +337,7 @@ function SelfCheck() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           kicker="Self-check"
-          title="Which questions apply to you?"
+          title="What applies to you?"
           lead="Tick each line that is true for your company. The panel shows which of the four questions to start with."
         />
         <div className="mt-12">
@@ -359,7 +355,7 @@ function HowWeWork() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           kicker="How we work"
-          title="Know where you stand before you commit"
+          title={<span className="block text-balance">Know where you stand before you commit</span>}
           lead="Six steps. The first two are small and fixed in cost, and they tell you exactly what is missing before you sign up for anything larger."
         />
         <ol className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -433,26 +429,26 @@ function RoleColumn({ role, highlight, arrowAfter }: { role: (typeof roles)[numb
 function WhyUs() {
   const reasons = [
     {
-      icon: ShieldCheckIcon,
-      title: 'Safety, AI and security in one place',
-      text: 'A new AI model or a remote-access feature can affect all three. We check them together, instead of you coordinating three firms.',
+      icon: DocumentCheckIcon,
+      title: 'From test results to sign-off',
+      text: 'We map every result to the standard the checker uses, such as ISO 10218, IEC 62443 or SOC 2, and hand over evidence they accept.',
     },
     {
-      icon: CubeTransparentIcon,
-      title: 'Simulation before hardware',
-      text: 'We find risky contact points and edge cases early, before you buy safety parts or book a lab.',
+      icon: ShieldCheckIcon,
+      title: 'Safety, AI and security in one place',
+      text: 'A new AI model can affect all three. We check them together, so you are not coordinating three firms.',
     },
     {
       icon: LinkIcon,
       title: 'Evidence that stays current',
-      text: 'Each test is linked to the risk it covers. After a change, you re-test only what is affected instead of starting again.',
+      text: 'Each test is linked to the risk it covers. After a change, you re-test only what is affected.',
     },
   ];
   return (
     <section className="dodao-light bg-bg py-24 sm:py-28">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:items-stretch lg:px-8">
         <div className="lg:col-span-5">
-          <SectionIntro kicker="Why us" title="Built on the same tools we use to build robots" />
+          <SectionIntro kicker="Why us" title={<span className="block text-balance">Testing is only half the job</span>} />
           <ul className="mt-10 space-y-7">
             {reasons.map((reason) => (
               <li key={reason.title} className="flex gap-4">
@@ -468,24 +464,29 @@ function WhyUs() {
           </ul>
         </div>
 
-        <div className="lg:col-span-7">
-          <div className="rounded-3xl bg-surface p-5 ring-1 ring-border sm:p-7">
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { src: '/robotics/demos/ur-arm-pick-simulation.png', label: 'In simulation', alt: 'A UR robot arm picking a part in our simulation' },
-                { src: '/robotics/demos/ur-arm-pick-real.png', label: 'On the real robot', alt: 'The same UR robot arm picking the part in the real cell' },
-              ].map((shot) => (
-                <figure key={shot.src}>
-                  <div className="relative aspect-square overflow-hidden rounded-2xl bg-viewport">
-                    <Image src={shot.src} alt={shot.alt} fill sizes="(min-width: 1024px) 28vw, 50vw" className="object-cover" />
-                  </div>
-                  <figcaption className="mt-2 text-center text-sm font-medium text-muted">{shot.label}</figcaption>
-                </figure>
-              ))}
-            </div>
-            <p className="mt-5 text-[0.95rem] leading-6 text-body">
-              We model real arms, grippers, cameras and cells in physics simulation for our own robotics projects. The same models let us test safety cases
-              before anyone stands next to the robot.
+        {/* Stretches to the height of the left column so both sides line up */}
+        <div className="flex flex-col rounded-3xl bg-surface p-5 ring-1 ring-border sm:p-7 lg:col-span-7">
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { src: '/robotics/demos/ur-arm-pick-simulation.png', label: 'In simulation', alt: 'A UR robot arm picking a part in our simulation' },
+              { src: '/robotics/demos/ur-arm-pick-real.png', label: 'On the real robot', alt: 'The same UR robot arm picking the part in the real cell' },
+            ].map((shot) => (
+              <figure key={shot.src}>
+                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-viewport">
+                  <Image src={shot.src} alt={shot.alt} fill sizes="(min-width: 1024px) 28vw, 50vw" className="object-cover" />
+                </div>
+                <figcaption className="mt-2 text-center text-sm font-medium text-muted">{shot.label}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="mt-auto pt-6">
+            <h3 className="flex items-center gap-2.5 text-lg font-semibold text-heading">
+              <CubeTransparentIcon className="h-6 w-6 text-primary" aria-hidden="true" />
+              Simulation before hardware
+            </h3>
+            <p className="mt-1.5 text-[0.95rem] leading-6 text-body">
+              We already model real arms, grippers and cells for our own robotics projects. The same models let us test safety cases before anyone stands next
+              to the robot, or before you buy safety parts or book a lab.
             </p>
             <ActionLink href="/#use-cases" variant="secondary" className="mt-5">
               See our simulation work
