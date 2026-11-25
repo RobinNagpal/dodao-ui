@@ -4,6 +4,7 @@ import EngagementSteps from './components/EngagementSteps';
 import { Footer } from './components/Footer';
 import HowWeHelp from './components/HowWeHelp';
 import ModelOrCodeMap from './components/ModelOrCodeMap';
+import RobotSafetySection from './components/RobotSafetySection';
 import StartProject from './components/StartProject';
 import UseCases from './components/UseCases';
 import WhatWeBuild from './components/WhatWeBuild';
@@ -20,6 +21,9 @@ export default function DoDAOHome() {
       {/* The ten technical areas (linking to /robotics/[area]) and how a project runs */}
       <WhatWeBuild />
       <EngagementSteps />
+
+      {/* Second service line: getting an existing robot through safety and security checks (/robot-safety) */}
+      <RobotSafetySection />
 
       {/* Earlier AI agent + DeFi work, linking out to each product page */}
       <EarlierWork />
