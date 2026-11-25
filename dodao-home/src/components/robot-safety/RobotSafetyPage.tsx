@@ -82,9 +82,6 @@ function Hero() {
               Check what applies to you
             </ActionLink>
           </div>
-          <div className="mt-6">
-            <PdfDownload />
-          </div>
           <p className="mt-8 text-sm text-muted">For robot makers, AI robotics startups and integrators.</p>
         </div>
 
