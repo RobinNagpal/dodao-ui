@@ -1,5 +1,5 @@
-import { safetyAreas, SAFETY_CONTACT_MAILTO } from '@/components/robot-safety/robotSafetyContent';
-import { ArrowUpRightIcon } from '@heroicons/react/24/outline';
+import { safetyAreas, SAFETY_CONTACT_MAILTO, SAFETY_PDF } from '@/components/robot-safety/robotSafetyContent';
+import { ArrowUpRightIcon, DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { ActionLink } from './SiteUi';
 
 /** Home page band introducing the robot safety & security readiness service (/robot-safety). */
@@ -27,6 +27,14 @@ export default function RobotSafetySection() {
               Free 30-min call
             </ActionLink>
           </div>
+          <a
+            href={SAFETY_PDF.href}
+            download={SAFETY_PDF.fileName}
+            className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-primary-text/85 underline-offset-4 hover:text-primary-text hover:underline"
+          >
+            <DocumentArrowDownIcon className="h-5 w-5" aria-hidden="true" />
+            Or download the 3-page overview (PDF)
+          </a>
         </div>
 
         <div className="lg:col-span-7">

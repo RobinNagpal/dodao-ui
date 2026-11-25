@@ -5,6 +5,13 @@
  * keep facts here in line with it and with the research in reports/Robot safety compliance offering.
  */
 
+/** The printable 3-page overview (source: reports/service-overview-source/service-overview-final.html). */
+export const SAFETY_PDF = {
+  href: '/robot-safety/dodao-robot-safety-security-overview.pdf',
+  fileName: 'DoDAO - Robot safety and security readiness.pdf',
+  details: 'PDF · 3 pages · 475 KB',
+};
+
 export const SAFETY_CONTACT_MAILTO = 'mailto:info@dodao.com?subject=Robot%20safety%20%26%20security%20readiness';
 
 /** The four checks a robot passes between the factory and daily use. */

@@ -1,7 +1,16 @@
 import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import LoopingVideo from '@/components/home/DoDAOHome/components/LoopingVideo';
 import { ActionLink, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
-import { ArrowPathIcon, ArrowRightIcon, CheckCircleIcon, CubeTransparentIcon, DocumentCheckIcon, LinkIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowPathIcon,
+  ArrowRightIcon,
+  CheckCircleIcon,
+  CubeTransparentIcon,
+  DocumentArrowDownIcon,
+  DocumentCheckIcon,
+  LinkIcon,
+  ShieldCheckIcon,
+} from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import {
@@ -12,6 +21,7 @@ import {
   milestones,
   roles,
   SAFETY_CONTACT_MAILTO,
+  SAFETY_PDF,
   SafetyArea,
   safetyAreas,
   sharedEvidence,
@@ -21,6 +31,27 @@ import SafetySelfCheck from './SafetySelfCheck';
 
 /** The page is a static export, so "in force" vs "coming" is decided at build time. */
 const BUILD_DATE = new Date();
+
+/** Download link for the printable overview, for sharing with a team or a buyer. */
+function PdfDownload({ onViewport = false }: { onViewport?: boolean }) {
+  return (
+    <a
+      href={SAFETY_PDF.href}
+      download={SAFETY_PDF.fileName}
+      className={`group inline-flex items-center gap-3 rounded-2xl p-2 pr-5 ring-1 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+        onViewport ? 'bg-on-viewport/5 ring-on-viewport/20 hover:bg-on-viewport/10' : 'bg-surface/60 ring-border hover:ring-primary/50'
+      }`}
+    >
+      <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-primary/15 text-link ring-1 ring-inset ring-primary/40 transition group-hover:bg-primary group-hover:text-primary-text">
+        <DocumentArrowDownIcon className="h-5 w-5" aria-hidden="true" />
+      </span>
+      <span>
+        <span className={`block text-sm font-semibold ${onViewport ? 'text-on-viewport' : 'text-heading'}`}>Download the 3-page overview</span>
+        <span className={`block text-xs ${onViewport ? 'text-on-viewport-muted' : 'text-muted'}`}>{SAFETY_PDF.details}</span>
+      </span>
+    </a>
+  );
+}
 
 function Hero() {
   const evidence = ['Risk assessment', 'AI test scenes', 'Pen test report', 'SOC 2 controls'];
@@ -50,6 +81,9 @@ function Hero() {
             <ActionLink href="#self-check" size="lg" variant="secondary">
               Check what applies to you
             </ActionLink>
+          </div>
+          <div className="mt-6">
+            <PdfDownload />
           </div>
           <p className="mt-8 text-sm text-muted">For robot makers, AI robotics startups and integrators.</p>
         </div>
@@ -528,7 +562,10 @@ function StartCall() {
               Take the self-check
             </ActionLink>
           </div>
-          <p className="mt-12 text-sm text-on-viewport-muted">This page gives general information. It is not legal advice.</p>
+          <div className="mt-8">
+            <PdfDownload onViewport />
+          </div>
+          <p className="mt-10 text-sm text-on-viewport-muted">This page gives general information. It is not legal advice.</p>
         </div>
       </div>
     </section>
