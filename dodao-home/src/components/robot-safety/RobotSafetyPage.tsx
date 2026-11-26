@@ -1,16 +1,8 @@
 import { Footer } from '@/components/home/DoDAOHome/components/Footer';
 import LoopingVideo from '@/components/home/DoDAOHome/components/LoopingVideo';
+import { PdfDownload as SharedPdfDownload, RoleFlow, SimVsRealShots } from '@/components/home/DoDAOHome/components/ServicePageParts';
 import { ActionLink, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
-import {
-  ArrowPathIcon,
-  ArrowRightIcon,
-  CheckCircleIcon,
-  CubeTransparentIcon,
-  DocumentArrowDownIcon,
-  DocumentCheckIcon,
-  LinkIcon,
-  ShieldCheckIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowPathIcon, CheckCircleIcon, CubeTransparentIcon, DocumentCheckIcon, LinkIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { ReactNode } from 'react';
 import {
@@ -34,23 +26,7 @@ const BUILD_DATE = new Date();
 
 /** Download link for the printable overview, for sharing with a team or a buyer. */
 function PdfDownload({ onViewport = false }: { onViewport?: boolean }) {
-  return (
-    <a
-      href={SAFETY_PDF.href}
-      download={SAFETY_PDF.fileName}
-      className={`group inline-flex items-center gap-3 rounded-2xl p-2 pr-5 ring-1 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-        onViewport ? 'bg-on-viewport/5 ring-on-viewport/20 hover:bg-on-viewport/10' : 'bg-surface/60 ring-border hover:ring-primary/50'
-      }`}
-    >
-      <span className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-primary/15 text-link ring-1 ring-inset ring-primary/40 transition group-hover:bg-primary group-hover:text-primary-text">
-        <DocumentArrowDownIcon className="h-5 w-5" aria-hidden="true" />
-      </span>
-      <span>
-        <span className={`block text-sm font-semibold ${onViewport ? 'text-on-viewport' : 'text-heading'}`}>Download the 3-page overview</span>
-        <span className={`block text-xs ${onViewport ? 'text-on-viewport-muted' : 'text-muted'}`}>{SAFETY_PDF.details}</span>
-      </span>
-    </a>
-  );
+  return <SharedPdfDownload pdf={SAFETY_PDF} label="Download the 3-page overview" onViewport={onViewport} />;
 }
 
 function Hero() {
@@ -413,15 +389,8 @@ function HowWeWork() {
         </p>
 
         <h3 className="font-display mt-20 text-2xl font-semibold text-heading sm:text-3xl">Who does what</h3>
-        <div className="mt-8 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr]">
-          {roles.map((role, index) => (
-            <RoleColumn
-              key={role.name}
-              role={role}
-              highlight={role.name === 'Us'}
-              arrowAfter={index < roles.length - 1 ? (index === 0 ? 'Access and decisions' : 'Ready evidence pack') : undefined}
-            />
-          ))}
+        <div className="mt-8">
+          <RoleFlow roles={roles} highlight="Us" arrowLabels={['Access and decisions', 'Ready evidence pack']} />
         </div>
         <p className="mt-6 flex items-start gap-2.5 text-base leading-7 text-body">
           <ShieldCheckIcon className="mt-0.5 h-6 w-6 flex-none text-accent" aria-hidden="true" />
@@ -429,31 +398,6 @@ function HowWeWork() {
         </p>
       </div>
     </section>
-  );
-}
-
-function RoleColumn({ role, highlight, arrowAfter }: { role: (typeof roles)[number]; highlight: boolean; arrowAfter?: string }) {
-  return (
-    <>
-      <div className={`rounded-3xl p-7 ring-1 ${highlight ? 'bg-primary text-primary-text ring-primary' : 'bg-surface ring-border'}`}>
-        <p className={`text-2xl font-semibold ${highlight ? '' : 'text-heading'}`}>{role.name}</p>
-        <p className={`text-sm ${highlight ? 'text-primary-text/80' : 'text-accent'}`}>{role.role}</p>
-        <ul className="mt-5 space-y-2.5">
-          {role.duties.map((duty) => (
-            <li key={duty} className={`flex gap-2.5 text-[0.95rem] leading-6 ${highlight ? 'text-primary-text' : 'text-body'}`}>
-              <CheckCircleIcon className={`mt-0.5 h-5 w-5 flex-none ${highlight ? 'text-primary-text/80' : 'text-link'}`} aria-hidden="true" />
-              {duty}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {arrowAfter && (
-        <div className="flex items-center justify-center gap-2 text-xs font-medium text-muted lg:flex-col lg:px-1">
-          <ArrowRightIcon className="h-5 w-5 rotate-90 text-accent lg:rotate-0" aria-hidden="true" />
-          <span className="lg:max-w-[5.5rem] lg:text-center">{arrowAfter}</span>
-        </div>
-      )}
-    </>
   );
 }
 
@@ -497,19 +441,7 @@ function WhyUs() {
 
         {/* Stretches to the height of the left column so both sides line up */}
         <div className="flex flex-col rounded-3xl bg-surface p-5 ring-1 ring-border sm:p-7 lg:col-span-7">
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { src: '/robotics/demos/ur-arm-pick-simulation.png', label: 'In simulation', alt: 'A UR robot arm picking a part in our simulation' },
-              { src: '/robotics/demos/ur-arm-pick-real.png', label: 'On the real robot', alt: 'The same UR robot arm picking the part in the real cell' },
-            ].map((shot) => (
-              <figure key={shot.src}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-viewport">
-                  <Image src={shot.src} alt={shot.alt} fill sizes="(min-width: 1024px) 28vw, 50vw" className="object-cover" />
-                </div>
-                <figcaption className="mt-2 text-center text-sm font-medium text-muted">{shot.label}</figcaption>
-              </figure>
-            ))}
-          </div>
+          <SimVsRealShots />
           <div className="mt-auto pt-6">
             <h3 className="flex items-center gap-2.5 text-lg font-semibold text-heading">
               <CubeTransparentIcon className="h-6 w-6 text-primary" aria-hidden="true" />

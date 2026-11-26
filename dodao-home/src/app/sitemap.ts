@@ -43,7 +43,8 @@ function findPageRoutes(dir: string, segments: string[] = []): string[] {
 
 function priorityFor(route: string): number {
   if (route === '/') return 1.0;
-  if (route === '/robot-safety' || route.startsWith('/robotics/') || route.startsWith('/home-section/dodao-io/products')) return 0.8;
+  if (route === '/robot-safety' || route === '/ml-safety-evaluation' || route.startsWith('/robotics/') || route.startsWith('/home-section/dodao-io/products'))
+    return 0.8;
   return 0.7;
 }
 
