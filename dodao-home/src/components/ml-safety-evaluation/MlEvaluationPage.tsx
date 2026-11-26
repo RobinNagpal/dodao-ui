@@ -1,4 +1,5 @@
 import { Footer } from '@/components/home/DoDAOHome/components/Footer';
+import LoopingVideo from '@/components/home/DoDAOHome/components/LoopingVideo';
 import { PdfDownload as SharedPdfDownload, RoleFlow, SimVsRealShots } from '@/components/home/DoDAOHome/components/ServicePageParts';
 import { ActionLink, SectionIntro } from '@/components/home/DoDAOHome/components/SiteUi';
 import {
@@ -231,7 +232,7 @@ function Packages() {
         <SectionIntro
           kicker="What we do"
           title={<span className="block text-balance">Three packages, used alone or together</span>}
-          lead="Each package is a set of specific technical tasks you can assign to us. Physical tests on the specimen, such as stopping time or contact force, can be added where your plan needs them."
+          lead="Each package is a set of specific technical tasks you can assign to us. Physical tests on the specimen, such as stopping time or contact force, and production checks that every unit runs the certified model version, can be added where your plan needs them."
         />
         <div className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3">
           {packages.map((pkg) => (
@@ -434,8 +435,15 @@ function Contact() {
   return (
     <section id="contact" className="relative isolate scroll-mt-20 overflow-hidden bg-viewport">
       <div className="absolute inset-0 -z-10" aria-hidden="true">
-        <div className="absolute inset-0 bg-gradient-to-r from-viewport via-viewport/90 to-primary/30" />
-        <div className="dodao-viewport-grid absolute inset-0 opacity-50" />
+        {/* Placeholder stock footage (Mixkit free licence), same treatment as the /robot-safety closing section */}
+        <LoopingVideo
+          src="/robotics/stock-footage/industrial-cell.mp4"
+          poster="/robotics/stock-footage/industrial-cell.jpg"
+          label=""
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-viewport/85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-viewport via-viewport/80 to-primary/30" />
       </div>
       <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
         <div className="max-w-3xl">

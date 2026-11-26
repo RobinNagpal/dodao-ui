@@ -81,9 +81,17 @@ export const packages: Package[] = [
     id: 'file-review',
     number: 1,
     title: 'ML technical file review',
-    summary: 'We check the ML parts of the Annex IV technical file and send you a gap list before testing starts.',
-    basis: 'Annex IV, Part A, points (b), (f), (g) and (n)',
+    summary: 'We check the scope and the ML parts of the Annex IV technical file, and send you a gap list before testing starts.',
+    basis: 'Annex I, Part A, items 5 and 6; Annex IV, Part A, points (b), (f), (g) and (n)',
     groups: [
+      {
+        name: 'Scope check',
+        checks: [
+          'Which functions use ML, and which of those ensure safety',
+          'Whether the model can change its behaviour from learning, before or after sale',
+          'A written scope memo, for your decision on items 5 and 6',
+        ],
+      },
       {
         name: 'For each ML safety function, we check the file describes',
         checks: [
@@ -118,13 +126,13 @@ export const packages: Package[] = [
         checks: [
           'Frozen model run on a held-out test set',
           'Missed detections and false alarms reported separately, per condition',
-          'A confidence bound on every number, given the test set size',
+          'A confidence bound on every number, compared with the manufacturer’s target',
         ],
       },
       {
         name: 'Robustness',
         checks: [
-          'Glare, dust, partial blocking, unusual objects and body positions',
+          'Glare, dust, partial blocking, unusual objects and body positions, and small input changes that should not change the output',
           'Sensor faults: noise, dropped frames, delay, a dead sensor',
           'The machine goes to a safe state when the model is uncertain',
         ],
@@ -143,7 +151,7 @@ export const packages: Package[] = [
         name: 'Limits, logging and correction',
         checks: [
           'Movement limits: we try to drive the ML past its task and movement space, at maximum speed and load',
-          'Logging: safety decisions can be rebuilt from the log, kept for one year and protected from change',
+          'Logging: safety decisions can be rebuilt from a log kept for one year, and uploaded safety software versions are logged for five years',
           'Correction: stops work in every mode while the ML is active, and a bad model can be rolled back',
         ],
       },
@@ -151,8 +159,8 @@ export const packages: Package[] = [
         name: 'Separation, updates and security',
         checks: [
           'An ML failure cannot disable the conventional safety functions (EN ISO 13849-1, EN IEC 62061)',
-          'Each update is re-tested against the same test set and limits before release',
-          'Model weights, data and safety settings are protected, and an untested model cannot be pushed remotely',
+          'Each update is re-tested against the same test set and limits before release, and any learning in use stays bounded',
+          'Model weights, data and safety settings are protected, changes are recorded, and an untested model cannot be pushed remotely (IEC 62443)',
         ],
       },
     ],
