@@ -18,6 +18,7 @@ import {
   WrenchScrewdriverIcon,
   LockClosedIcon,
   ServerStackIcon,
+  ScaleIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 import { roboticsAreas as areas } from '@/components/robotics-page/areas/roboticsAreas';
@@ -100,6 +101,15 @@ const safetyItems: MenuItem[] = [
     icon: ShieldCheckIcon,
   },
   ...safetyAreas.map((area) => ({ name: area.label, description: area.question, href: `/robot-safety#${area.id}`, icon: safetyAreaIcons[area.id] })),
+];
+
+const notifiedBodyItems: MenuItem[] = [
+  {
+    name: 'ML evaluation for notified bodies',
+    description: 'ML testing for EU Machinery Regulation assessments, as your subcontractor.',
+    href: '/ml-safety-evaluation',
+    icon: ScaleIcon,
+  },
 ];
 
 const aiAgentServices = [
@@ -219,6 +229,9 @@ export default function DoDAOHomeTopNav() {
           </DesktopDropdown>
           <DesktopDropdown label="Safety & Security" panelClassName="w-[24rem]">
             <MenuColumn title="For robot makers and integrators" items={safetyItems} />
+            <div className="mt-2 border-t border-border pt-2">
+              <MenuColumn title="For notified bodies" items={notifiedBodyItems} />
+            </div>
           </DesktopDropdown>
           <DesktopDropdown label="AI & Web3" panelClassName="w-[40rem]">
             <div className="grid grid-cols-2 gap-2">
@@ -256,7 +269,7 @@ export default function DoDAOHomeTopNav() {
               <div className="space-y-1">
                 <MobileGroup title="Robotics" items={roboticsAreas} />
                 <MobileGroup title="Use Cases" items={useCases} />
-                <MobileGroup title="Safety & Security" items={safetyItems} />
+                <MobileGroup title="Safety & Security" items={[...safetyItems, ...notifiedBodyItems]} />
                 <MobileGroup title="AI & Web3" items={aiAndWeb3} />
                 <a
                   href="https://docs.dodao.io"

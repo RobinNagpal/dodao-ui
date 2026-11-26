@@ -33,6 +33,7 @@ const siteColumns = [
     title: 'Robotics',
     links: [
       { name: 'Safety & security readiness', href: '/robot-safety' },
+      { name: 'ML evaluation for notified bodies', href: '/ml-safety-evaluation' },
       { name: 'Model or no model', href: '/robotics/model-or-no-model' },
       ...roboticsAreas.map((area) => ({ name: area.name, href: `/robotics/${area.slug}` })),
     ],
